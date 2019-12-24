@@ -16,7 +16,7 @@ Applications can also embed libnvim to work with the C API directly.
                                       Type |gO| to see the table of contents.
 
 ==============================================================================
-API Usage						*api-rpc* *RPC* *rpc*
+API 使用方法						*api-rpc* *RPC* *rpc*
 
 							*msgpack-rpc*
 RPC is the typical way to control Nvim programmatically.  Nvim implements the
