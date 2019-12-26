@@ -32,12 +32,12 @@ MessagePack-RPC protocolを実装しています。
 Many clients use the API: user interfaces (GUIs), remote plugins, scripts like
 "nvr" (https://github.com/mhinz/neovim-remote).  Even Nvim itself can control
 other Nvim instances.  API clients can:
-多くのクライアントは、GUI, リモートプラグイン、nvrのようなスクリプト的なAPIを
-使います。 Nvim自身は他のNvimのインスタンスでさえ制御可能です。
+GUI, リモートプラグイン、nvrのようなスクリプトの多くは、APIを使います。
+Nvim自身は他のNvimのインスタンスでさえ制御可能です。
 APIクライアントは、以下のことが可能です
 
   - Call any API function
-  - いくつものAPIでも呼ぶことができる
+  - どのAPIでも呼ぶことができる
 
   - Listen for events
   - イベント監視ができる
