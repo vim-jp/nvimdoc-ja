@@ -33,7 +33,7 @@ Many clients use the API: user interfaces (GUIs), remote plugins, scripts like
 "nvr" (https://github.com/mhinz/neovim-remote).  Even Nvim itself can control
 other Nvim instances.  API clients can:
 GUI, リモートプラグイン、nvrのようなスクリプトの多くのクライアントは、APIを使います。
-Nvim自身は他のNvimのインスタンスでさえ制御可能です。
+Nvim自身でさえ、他のNvimのインスタンスを制御可能です。
 APIクライアントは、以下のことが可能です
 
   - Call any API function
@@ -46,6 +46,7 @@ APIクライアントは、以下のことが可能です
   - Nvimからのリモート呼び出しを受け取ることができる
 
 The RPC API is like a more powerful version of Vim's "clientserver" feature.
+RPC APIはVimの"clientserver"をよりパワフルにしたようなものとなります。
 
 CONNECTING						*rpc-connecting*
 
