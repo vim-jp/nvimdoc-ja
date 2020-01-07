@@ -54,6 +54,10 @@ See |channel-intro| for various ways to open a channel. Channel-opening
 functions take an `rpc` key in the options dictionary. RPC channels can also
 be opened by other processes connecting to TCP/IP sockets or named pipes
 listened to by Nvim.
+チャネルを開くためのいくつかの方法を |channel-intro| で確認してください。
+チャネルを開く関数は、オプション辞書の`rpc`を取り込みます。
+RPCチャネルはその他のプロセス――TCP/IPソケットや、Nvimによるリッスン中のパイプ
+で開くこともできます。
 
 Nvim creates a default RPC socket at |startup|, given by |v:servername|. To
 start with a TCP/IP socket instead, use |--listen| with a TCP-style address: >
