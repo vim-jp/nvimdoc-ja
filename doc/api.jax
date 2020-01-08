@@ -63,7 +63,7 @@ Nvim creates a default RPC socket at |startup|, given by |v:servername|. To
 start with a TCP/IP socket instead, use |--listen| with a TCP-style address: >
 Nvimは |startup| のときに |v:servername| によって与えられた、標準RPCソケットを
 作ります。
-標準RPCソケット以外でnvimを起動するには、以下のように |--listen| を使い、
+標準RPCソケット以外でnvimを起動するには、以下のように |--listen| を使い
 TCP形式のアドレスを指定してください。
 
     nvim --listen 127.0.0.1:6666
