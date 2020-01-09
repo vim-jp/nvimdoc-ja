@@ -73,6 +73,8 @@ More endpoints can be started with |serverstart()|.
 
 Note that localhost TCP sockets are generally less secure than named pipes,
 and can lead to vunerabilities like remote code execution.
+Note 一般的に、ローカルホストのTCPソケットは、名前付きパイプよりも安全性が低いです。
+リモートコード実行のような脆弱性につながる可能性があります。
 
 Connecting to the socket is the easiest way a programmer can test the API,
 which can be done through any msgpack-rpc client library or full-featured
