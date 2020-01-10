@@ -80,6 +80,9 @@ Connecting to the socket is the easiest way a programmer can test the API,
 which can be done through any msgpack-rpc client library or full-featured
 |api-client|. Here's a Ruby script that prints "hello world!" in the current
 Nvim instance:
+msgpack-rpcライブラリまたは |api-client|の全機能を通してソケットに
+接続することは、プログラマがAPIのテストを簡単にする最も簡単な方法です。
+以下は、Nvimインスタンスで "hello world!" を出力するRubyスクリプトです。
 >
     #!/usr/bin/env ruby
     # Requires msgpack-rpc: gem install msgpack-rpc
