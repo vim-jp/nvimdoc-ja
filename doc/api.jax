@@ -104,8 +104,7 @@ msgpack-rpcライブラリまたは |api-client|の全機能を通してソケ�
 <
 A better way is to use the Python REPL with the `neovim` package, where API
 functions can be called interactively:
-より良い方法は、pynvimをPythonのREPLで使用すると、API機能を対話的に呼ぶ
-ことができます。
+より良い方法は、API機能を対話的に呼ぶことができる、pynvimをPythonのREPLで使用することです。
 >
     >>> from pynvim import attach
     >>> nvim = attach('socket', path='[address]')
