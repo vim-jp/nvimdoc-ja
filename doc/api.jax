@@ -112,6 +112,8 @@ functions can be called interactively:
 <
 You can also embed Nvim via |jobstart()|, and communicate using |rpcrequest()|
 and |rpcnotify()|:
+Nvimの |jobstart()| 経由で |rpcrequest()| と|rpcnotify()|を使っての通信を埋め込む
+こともできます。
 >
     let nvim = jobstart(['nvim', '--embed'], {'rpc': v:true})
     echo rpcrequest(nvim, 'nvim_eval', '"Hello " . "world!"')
