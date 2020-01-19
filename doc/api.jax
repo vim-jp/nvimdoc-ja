@@ -125,6 +125,9 @@ API Definitions						*api-definitions*
 							*api-types*
 The Nvim C API defines custom types for all function parameters. Some are just
 typedefs around C99 standard types, others are Nvim-defined data structures.
+NvimのC言語APIは、すべての関数パラメータのために、カスタム型を定義します。
+NvimのC言語APIのいくつかは、まさにC99規格の標準の型であり、残りはNVIMに定義
+されたデータ型です。
 
 Basic types ~
 
