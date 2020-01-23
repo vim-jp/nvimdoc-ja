@@ -120,7 +120,7 @@ Nvimの |jobstart()| 経由で |rpcrequest()| と|rpcnotify()|を使っての通
     call jobstop(nvim)
 
 ==============================================================================
-API定義	        					*api-definitions*
+API定義	~        					*api-definitions*
 
 							*api-types*
 The Nvim C API defines custom types for all function parameters. Some are just
@@ -129,7 +129,7 @@ NvimのC言語APIは、すべての関数パラメータのために、カスタ
 NvimのC言語APIのいくつかは、ただのC99標準周辺のtypedefsであり、
 残りはNVIMによって定義されたデータ構造です。
 
-Basic types ~
+基本型 ~
 
   API Type				C type
   ------------------------------------------------------------------------
@@ -145,7 +145,7 @@ Basic types ~
   Note: empty Array is accepted as a valid argument for Dictionary parameter.
   注意：空の配列は辞書パラメータにとって有効な引き数として認識されます。
 
-Special types (msgpack EXT) ~
+特別な型 (msgpack 拡張) ~
 
   These are integer typedefs discriminated as separate Object subtypes. They
   can be treated as opaque integers, but are mutually incompatible: Buffer may
@@ -157,6 +157,9 @@ Special types (msgpack EXT) ~
   The EXT object data is the (integer) object handle. The EXT type codes given
   in the |api-metadata| `types` key are stable: they will not change and are
   thus forward-compatible.
+  拡張オブジェクトデータは、整数型のオブジェクトハンドルである。
+  |api-metadata|型のキーの中で与えられる拡張データ型のコードは安定しています。
+  従って、これらは変更されず前方互換性があります。
 
   EXT Type	C type					Data
   ------------------------------------------------------------------------
