@@ -150,14 +150,14 @@ NvimのC言語APIのいくつかは、ただのC99標準周辺のtypedefsであ�
   These are integer typedefs discriminated as separate Object subtypes. They
   can be treated as opaque integers, but are mutually incompatible: Buffer may
   be passed as an integer but not as Window or Tabpage.
-  いくつかの整数型はいくつかの分割されたオブジェクトのサブタイプとして区別
+  いくつかの整数型は、いくつかの分割されたオブジェクトのサブタイプとして区別
   されます。
 
 
   The EXT object data is the (integer) object handle. The EXT type codes given
   in the |api-metadata| `types` key are stable: they will not change and are
   thus forward-compatible.
-  拡張オブジェクトデータは、整数型のオブジェクトハンドルである。
+  拡張オブジェクトデータは、整数型のオブジェクトハンドルです。
   |api-metadata|型のキーの中で与えられる拡張データ型のコードは安定しています。
   従って、これらは変更されず前方互換性があります。
 
@@ -171,6 +171,8 @@ NvimのC言語APIのいくつかは、ただのC99標準周辺のtypedefsであ�
 							*api-indexing*
 Most of the API uses 0-based indices, and ranges are end-exclusive. For the
 end of a range, -1 denotes the last line/column.
+APIの大半は0-basedインデックスを使用し、その範囲はend-exclusiveです。
+インデックス範囲の終わりは、最後の行/列を示します。
 
 Exception: the following API functions use "mark-like" indexing (1-based
 lines, 0-based columns):
