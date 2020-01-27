@@ -171,13 +171,13 @@ NvimのC言語APIのいくつかは、ただのC99標準周辺のtypedefsであ�
 							*api-indexing*
 Most of the API uses 0-based indices, and ranges are end-exclusive. For the
 end of a range, -1 denotes the last line/column.
-APIの大半は0-basedインデックスを使用し、その範囲はend-exclusiveです。
+APIの大半は、添字が0から始まるインデックス方式を使用し、その範囲は終端を含みません。
 インデックス範囲の終わりは、最後の行/列を示します。
 
 Exception: the following API functions use "mark-like" indexing (1-based
 lines, 0-based columns): 
-例外: 次のようなAPI機能は vimのマークのようなインデックスを貼ります（1-based
-line,  0-based columns）。
+例外: 次のようなAPI機能は、vimのマーク機能のようなインデックスを
+貼ります（添字が1から始まる行, 添字が1から始まるカラム）。
 
     |nvim_buf_get_mark()|
     |nvim_win_get_cursor()|
