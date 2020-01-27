@@ -175,7 +175,9 @@ APIの大半は0-basedインデックスを使用し、その範囲はend-exclus
 インデックス範囲の終わりは、最後の行/列を示します。
 
 Exception: the following API functions use "mark-like" indexing (1-based
-lines, 0-based columns):
+lines, 0-based columns): 
+例外: 次のようなAPI機能は vimのマークのようなインデックスを貼ります（1-based
+line,  0-based columns）。
 
     |nvim_buf_get_mark()|
     |nvim_win_get_cursor()|
