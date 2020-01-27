@@ -190,6 +190,13 @@ user input in a "modal" fashion (e.g. the |hit-enter-prompt|), the request
 will block.  Non-deferred ({fast}) functions such as |nvim_get_mode()| and
 |nvim_input()| are served immediately (i.e. without waiting in the input
 queue).  Lua code can use |vim.in_fast_event()| to detect a {fast} context.
+多くのAPI関数は、メインループと通常の入力でシーケンシャル遅延処理される
+キューです。
+それで、もしエディタがモーダル（例: |hit-enter-prompt|）でユーザの入力を
+待っているならば、リクエストはブロックされるでしょう。
+|nvim_get_mode()| や|nvim_input()|のような遅延処理されない関数は、
+入力キューでの待機なしで、即座に実施されます。
+
 
 ==============================================================================
 API metadata						*api-metadata*
