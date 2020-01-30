@@ -199,18 +199,27 @@ queue).  Lua code can use |vim.in_fast_event()| to detect a {fast} context.
 
 
 ==============================================================================
-API metadata						*api-metadata*
+API メタデータ						*api-metadata*
 
 The Nvim C API is automatically exposed to RPC by the build system, which
 parses headers in src/nvim/api/* and generates dispatch-functions mapping RPC
 API method names to public C API functions, converting/validating arguments
 and return values.
+NvimのC言語APIは、ビルド時にsrc/nvim/api/*内のヘッダを変換・検証してパースし、
+RPC API関数と同じ名前のC言語API関数とのマッピングを自動的に生成・公開します。
 
 Nvim exposes its API metadata as a Dictionary with these items:
+Nvimは、以下の項目をディクショナリ型のAPIのメタデータとして公開します。
 
 version			Nvim version, API level/compatibility
+                        Nvimのバージョン APIレベル/互換性
+
 version.api_level	API version integer *api-level*
+                        APIのバージョン int型で*api-level*
+
 version.api_compatible	API is backwards-compatible with this level
+                        API Levelにおける後方互換性
+                        
 version.api_prerelease	Declares the API as unstable/unreleased >
 			(version.api_prerelease && fn.since == version.api_level)
 functions		API function signatures, containing |api-types| info
