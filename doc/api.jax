@@ -228,7 +228,7 @@ version.api_prerelease	Declares the API as unstable/unreleased >
 functions		API function signatures, containing |api-types| info
                         describing the return value and parameters.
                         返却値やパラメータを記述した|api-types| 情報を含む
-                        APIメソッドの署名
+                        API関数のシグネチャ
 
 ui_events		|UI| event signatures
 
