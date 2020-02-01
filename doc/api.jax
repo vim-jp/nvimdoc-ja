@@ -231,22 +231,39 @@ functions		API function signatures, containing |api-types| info
                         API関数のシグネチャ
 
 ui_events		|UI| event signatures
+			|UI| イベントのシグネチャ
 
 ui_options		Supported |ui-option|s
+			サポートされている |ui-options|
+
 {fn}.since		API level where function {fn} was introduced
+			API levelの関数がどこで紹介されていたか
+
 {fn}.deprecated_since	API level where function {fn} was deprecated
+			API level 関数がいつ廃止されていたか
+
 types			Custom handle types defined by Nvim
+			Nvimによって定義されたカスタムハンドルの型
+
 error_types		Possible error types returned by API functions
+			API関数によって返却可能なエラー型
 
 About the `functions` map:
 
   - Container types may be decorated with type/size constraints, e.g.
     ArrayOf(Buffer) or ArrayOf(Integer, 2).
+    コンテナ型は 型/サイズの制約によって修飾できます。
+    e.g.
+    ArrayOf(Buffer) or ArrayOf(Integer, 2).
+
   - Functions considered to be methods that operate on instances of Nvim
     special types (msgpack EXT) have the "method=true" flag. The receiver type
     is that of the first argument. Method names are prefixed with `nvim_` plus
     a type name, e.g. `nvim_buf_get_lines` is the `get_lines` method of
     a Buffer instance. |dev-api|
+    Nvimの特別な型（msgpack拡張）インスタンスを操作するメソッドと見なされる
+    関数は、"method=true"フラグを持ちます。
+
   - Global functions have the "method=false" flag and are prefixed with just
     `nvim_`, e.g. `nvim_get_buffers`.
 
