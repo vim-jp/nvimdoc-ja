@@ -253,7 +253,7 @@ About the `functions` map:
   - Container types may be decorated with type/size constraints, e.g.
     ArrayOf(Buffer) or ArrayOf(Integer, 2).
     コンテナ型は 型/サイズの制約によって修飾できます。
-    e.g.
+    例.
     ArrayOf(Buffer) or ArrayOf(Integer, 2).
 
   - Functions considered to be methods that operate on instances of Nvim
