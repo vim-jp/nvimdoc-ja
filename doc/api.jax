@@ -279,7 +279,8 @@ APIの発見にメタデータを使うことができます。
   1. Connect to a running Nvim instance and call |nvim_get_api_info()| via
      msgpack-rpc. This is best for clients written in dynamic languages which
      can define functions at runtime.
-
+     起動中のNvimインスタンセスに接続し、msgpack-rpc経由で |nvim_get_api_info()|を
+     コールします。
 
   2. Start Nvim with the |--api-info| option. Useful for clients written in
      statically-compiled languages.
