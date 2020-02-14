@@ -249,6 +249,7 @@ error_types		Possible error types returned by API functions
 			API関数によって返却可能なエラー型
 
 About the `functions` map:
+メソッドのマッピングについて:
 
   - Container types may be decorated with type/size constraints, e.g.
     ArrayOf(Buffer) or ArrayOf(Integer, 2).
@@ -281,17 +282,23 @@ APIの発見にメタデータを使うことができます。
      can define functions at runtime.
      起動中のNvimインスタンセスに接続し、msgpack-rpc経由で |nvim_get_api_info()|を
      コールします。
+     これが、実行中にメソッドを定義できる動的な言語で記述されたクライアントにとって、
+     最善です。
 
   2. Start Nvim with the |--api-info| option. Useful for clients written in
      statically-compiled languages.
-
+     静的なコンパイルされた言語については、Nvimを|--api-info|オプション付きで起動してください。
+     
   3. Use the |api_info()| Vimscript function.
+     Vimscriptは|api_info()|を使ってください。
 
 Example: To get a human-readable list of API functions: >
+例: 人間にとって読みやすいAPIメソッドのリストを取得するためには:
     :new|put =map(filter(api_info().functions, '!has_key(v:val,''deprecated_since'')'), 'v:val.name')
-<
+
 Example: To get a formatted dump of the API using python (requires the
 "pyyaml" and "msgpack-python" modules): >
+例: 
     nvim --api-info | python -c 'import msgpack, sys, yaml; print yaml.dump(msgpack.unpackb(sys.stdin.read()))'
 <
 
