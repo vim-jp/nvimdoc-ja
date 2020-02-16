@@ -516,22 +516,40 @@ Floating windows ("floats") are displayed on top of normal windows.  This is
 useful to implement simple widgets, such as tooltips displayed next to the
 cursor. Floats are fully functional windows supporting user editing, common
 |api-window| calls, and most window options (except 'statusline').
+Floating windowは通常のウィンドウの上に表示されます。
+カーソルの近くに表示されるウィンドウ等、シンプルなウィジェットを実装するのに
+便利です。|api-window|の呼び出しやウィンドウオプション('statusline'を除く)等、
+通常の編集機能を完全にサポートしています。
 
 Two ways to create a floating window:
+Floating windowを作成する2つの方法:
 - |nvim_open_win()| creates a new window (needs a buffer, see |nvim_create_buf()|)
+- |nvim_open_win()|で新しいウィンドウを作る。 
+  (バッファが必要。|nvim_create_buf()|を参照。)
 - |nvim_win_set_config()| reconfigures a normal window into a float
+- |nvim_win_set_config()|で通常のウィンドウをFloating Windowに再設定する。
 
 To close it use |nvim_win_close()| or a command such as |:close|.
+ウィンドウを閉じるには|nvim_win_close()|を呼び出すか|:close|といったコマンドを
+使用します。
 
 Buffer text can be highlighted by typical mechanisms (syntax highlighting,
 |api-highlights|). The |hl-NormalFloat| group highlights normal text;
 'winhighlight' can be used as usual to override groups locally. Floats inherit
 options from the current window; specify `style=minimal` in |nvim_open_win()|
 to disable various visual features such as the 'number' column.
+バッファのテキストは通常の方法(構文ハイライト、|api-highlights|)でハイライトする
+ことができます。|hl-NormalFloat|グループは通常のテキストをハイライトします。
+'winhighlight'は通常通り、ウィンドウローカルなハイライトグループを上書きでき
+ます。カレントウィンドウのオプションを継承します。
+|nvim_open_win()|で`style=minimal`を指定すると、'number'等の様々な視覚効果が
+無効になります。
 
 Currently, floating windows don't support widgets like border or scrollbar.
+現在、Floating windowでは枠線やスクロールバー等の機能はサポートしていません。
 
 Example: create a float with scratch buffer: >
+例:バッファでFloating  windowを作成する:
 
     let buf = nvim_create_buf(v:false, v:true)
     call nvim_buf_set_lines(buf, 0, -1, v:true, ["test", "text"])
@@ -539,6 +557,7 @@ Example: create a float with scratch buffer: >
         \ 'row': 1, 'anchor': 'NW', 'style': 'minimal'}
     let win = nvim_open_win(buf, 0, opts)
     " optional: change highlight, otherwise Pmenu is used
+    " オプション: ハイライトを変更します。そうでなければPmenuが使われます。
     call nvim_win_set_option(win, 'winhl', 'Normal:MyHighlight')
 >
 
