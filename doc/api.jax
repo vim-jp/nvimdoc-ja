@@ -298,14 +298,16 @@ Example: To get a human-readable list of API functions: >
 
 Example: To get a formatted dump of the API using python (requires the
 "pyyaml" and "msgpack-python" modules): >
-例: 
     nvim --api-info | python -c 'import msgpack, sys, yaml; print yaml.dump(msgpack.unpackb(sys.stdin.read()))'
 <
+例: python(要 "pyyaml" and "msgpack-python"モジュール)を使用して、フォーマット済APIダンプを取得するには:
 
 ==============================================================================
 API contract                                                     *api-contract*
+API規約
 
 The Nvim API is composed of functions and events.
+NVIMのAPIは関数とイベントから構成される。
 
 - Clients call functions like those described at |api-global|.
 - Clients can subscribe to |ui-events|, |api-buffer-updates|, etc.
