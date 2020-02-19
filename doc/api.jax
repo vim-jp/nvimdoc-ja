@@ -482,25 +482,39 @@ similar to |matchaddpos()| but with some key differences. The added highlights
 are associated with a buffer and adapts to line insertions and deletions,
 similar to signs. It is also possible to manage a set of highlights as a group
 and delete or replace all at once.
+Nvimは位置ベースのハイライトをバッファに追加できます。|matchaddpos()|に似ていま
+すが、いくつか重要な違いがあります。追加されたハイライトはバッファに関連づけられ
+signの様に行の追加と削除に追従します。ハイライトのセットをグループとして管理し、
+一度に削除や置換をすることもできます。
 
 The intended use case are linter or semantic highlighter plugins that monitor
 a buffer for changes, and in the background compute highlights to the buffer.
 Another use case are plugins that show output in an append-only buffer, and
 want to add highlights to the outputs. Highlight data cannot be preserved
 on writing and loading a buffer to file, nor in undo/redo cycles.
+意図された使い方は、バッファの変更を監視しバックグラウンドでハイライトを計算する
+リンターやセマンティックハイライトプラグインです。もう1つの使用例として出力専用
+バッファの出力にハイライトを追加するプラグインがあります。ハイライトのデータは
+バッファの読み書き、アンドゥ/リドゥで保持されません。
 
 Highlights are registered using the |nvim_buf_add_highlight()| function. If an
 external highlighter plugin wants to add many highlights in a batch,
 performance can be improved by calling |nvim_buf_add_highlight()| as an
 asynchronous notification, after first (synchronously) reqesting a source id.
+ハイライトは|nvim_buf_add_highlight()|関数を使って登録します。外部のハイライト
+プラグインで一度に多くのハイライトを追加したい場合、最初に(同期的に)ソースidを
+取得した後で|nvim_buf_add_highlight()|を非同期的に呼び出すことでパフォーマンスが
+改善されます。
 
 Example using the Python API client (|pynvim|):
+Python APIクライアント(|pynvim|)を使った例:
 >
     src = vim.new_highlight_source()
     buf = vim.current.buffer
     for i in range(5):
         buf.add_highlight("String",i,0,-1,src_id=src)
     # some time later ...
+    # しばらくしてから ...
     buf.clear_namespace(src)
 <
 If the highlights don't need to be deleted or updated, just pass -1 as
@@ -508,13 +522,19 @@ src_id (this is the default in python). Use |nvim_buf_clear_namespace()| to
 clear highlights from a specific source, in a specific line range or the
 entire buffer by passing in the line range 0, -1 (the latter is the default in
 python as used above).
+ハイライトの削除や更新をしない場合、src_idに-1を渡します(Pythonのデフォルト値)。
+|nvim_buf_clear_namespace()|を使用するとハイライトを削除できます。範囲指定をする
+ことができ、0、-1を指定するとバッファ全体が対象になります(-1は上記で使用した
+Pythonのデフォルト値です)。
 
 Example using the API from Vimscript: >
+Vimscriptを使った例:
 
     call nvim_buf_set_lines(0, 0, 0, v:true, ["test text"])
     let src = nvim_buf_add_highlight(0, 0, "String", 1, 0, 4)
     call nvim_buf_add_highlight(0, src, "Identifier", 0, 5, -1)
     " some time later ...
+    " しばらくしてから ...
     call nvim_buf_clear_namespace(0, src, 0, -1)
 
 
