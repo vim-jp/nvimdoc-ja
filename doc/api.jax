@@ -570,35 +570,49 @@ Extended marks (extmarks) represent buffer annotations that track text changes
 in the buffer. They could be used to represent cursors, folds, misspelled
 words, and anything else that needs to track a logical location in the buffer
 over time.
+Extended marks(extmarks)はバッファのテキスト変更に追従するバッファ注釈です。
+カーソル、折り畳み、スペルミスの単語等、バッファ内の論理的な位置を継続的に追う
+必要のあるものを表すために使用できます。
 
 Example:
+例:
 
 We will set an extmark at the first row and third column. |api-indexing| is
 zero-indexed, so we use row=0 and column=2. Passing id=0 creates a new mark
 and returns the id: >
+1行目の3列目にExtmarkをセットします。|api-indexing|は0から始まるため、行に0、
+列に2を指定します。
 
     let g:mark_ns = nvim_create_namespace('myplugin')
     let g:mark_id = nvim_buf_set_extmark(0, g:mark_ns, 0, 0, 2, {})
 
 We can get a mark by its id: >
+idからマークを取得する:
 
     echo nvim_buf_get_extmark_by_id(0, g:mark_ns, g:mark_id)
     => [0, 2]
 
 We can get all marks in a buffer for our namespace (or by a range): >
+ネームスペース(範囲指定も可)に含まれるバッファ内のすべてのマークを取得する:
 
     echo nvim_buf_get_extmarks(0, g:mark_ns, 0, -1, {})
     => [[1, 0, 2]]
 
 Deleting all text surrounding an extmark does not remove the extmark. To
 remove an extmark use |nvim_buf_del_extmark()|.
+Extmarkが含まれるテキストを削除してもExtmarkは削除されません。
+Extmarkを削除するには|nvim_buf_del_extmark()|を使用してください。
 
 Namespaces allow your plugin to manage only its own extmarks, ignoring those
 created by another plugin.
+ネームスペースを使用すると、別のプラグインで作られたマークを気にすることなく利用
+できます。
 
 Extmark positions changed by an edit will be restored on undo/redo. Creating
 and deleting extmarks is not a buffer change, thus new undo states are not
 created for extmark changes.
+Extmarkの位置が編集によって変っても、アンドゥ/リドゥで復元されます。
+Extmarkの作成と削除はバッファの変更ではないため、アンドゥ/リドゥはできません。
 
 ==============================================================================
 Global Functions                                                  *api-global*
