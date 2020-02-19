@@ -310,9 +310,16 @@ The Nvim API is composed of functions and events.
 NVIMのAPIは関数とイベントから構成される。
 
 - Clients call functions like those described at |api-global|.
+  クライアントは|api-global|で記述された関数のようにコールする。
+
 - Clients can subscribe to |ui-events|, |api-buffer-updates|, etc.
+  クライアントは|ui-events|, |api-buffer-updates|などを読み込む
+
 - API function names are prefixed with "nvim_".
+  API関数の名前は "nvim_" のプレフィックスがつく。
+
 - API event names are prefixed with "nvim_" and suffixed with "_event".
+  APIのイベント名は"nvim_"のプレフィックスと"_event"のサフィックスがつく。
 
 As Nvim evolves the API may change in compliance with this CONTRACT:
 
