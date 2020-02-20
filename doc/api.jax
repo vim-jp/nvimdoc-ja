@@ -322,9 +322,14 @@ NVIMのAPIは関数とイベントから構成される。
   APIのイベント名は"nvim_"のプレフィックスと"_event"のサフィックスがつく。
 
 As Nvim evolves the API may change in compliance with this CONTRACT:
+Nvimが進歩するにつれて、APIは規約に従って変更するかもしれません:
 
 - New functions and events may be added.
+  新しい関数やイベントが追加されるかもしれません。
+
   - Any such extensions are OPTIONAL: old clients may ignore them.
+    古いクライアントのような任意の拡張は、無視するかもしれません
+
 - Function signatures will NOT CHANGE (after release).
   - Functions introduced in the development (unreleased) version MAY CHANGE.
     (Clients can dynamically check `api_prerelease`, etc. |api-metadata|)
