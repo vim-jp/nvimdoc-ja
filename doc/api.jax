@@ -331,6 +331,8 @@ Nvimが進歩するにつれて、APIは規約に従って変更するかもし�
     古いクライアントのような任意の拡張は、無視するかもしれません
 
 - Function signatures will NOT CHANGE (after release).
+  リリース後は、関数のシグニチャを変更しないでしょう。
+
   - Functions introduced in the development (unreleased) version MAY CHANGE.
     (Clients can dynamically check `api_prerelease`, etc. |api-metadata|)
 - Event parameters will not be removed or reordered (after release).
