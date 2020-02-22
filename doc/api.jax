@@ -654,21 +654,30 @@ Global Functions                                                  *api-global*
 nvim_exec({src}, {output})                                       *nvim_exec()*
                 Executes Vimscript (multiline block of Ex-commands), like
                 anonymous |:source|.
+                |:source|の様にVimscript(複数行のEXコマンド)を実行します。
 
                 Unlike |nvim_command()| this function supports heredocs,
                 script-scope (s:), etc.
+                |nvim_command()|とは異なりヒアドキュメントやスクリプトスコープ
+                (s:)等をサポートします。
 
                 On execution error: fails with VimL error, does not update
                 v:errmsg.
+                実行エラー時: 関数は失敗し、v:errmsgは更新されません。
 
                 Parameters: ~
                     {src}     Vimscript code
+                    {src}     Vimscriptコード
                     {output}  Capture and return all (non-error, non-shell
                               |:!|) output
+                    {output}  すべての出力(エラーとshell(|:!|)を除く)を
+                              キャプチャして返す。
 
                 Return: ~
                     Output (non-error, non-shell |:!|) if `output` is true,
                     else empty string.
+                    `output`がtrueならoutput(エラーとshell(:!)を除く)を返す。
+                    それ以外なら空の文字列を返す。
 
                 See also: ~
                     |execute()|
@@ -676,90 +685,123 @@ nvim_exec({src}, {output})                                       *nvim_exec()*
 
 nvim_command({command})                                       *nvim_command()*
                 Executes an ex-command.
+                1つのEXコマンドを実行します。
 
                 On execution error: fails with VimL error, does not update
                 v:errmsg.
+                実行エラー時: 関数は失敗し、v:errmsgは更新されません。
 
                 Parameters: ~
                     {command}  Ex-command string
+                    {command}  Exコマンドstring
 
                 See also: ~
                     |nvim_exec()|
 
 nvim_get_hl_by_name({name}, {rgb})                     *nvim_get_hl_by_name()*
                 Gets a highlight definition by name.
+                名前からハイライト定義を取得します。
 
                 Parameters: ~
                     {name}  Highlight group name
+                    {name}  ハイライトグループ名
                     {rgb}   Export RGB colors
+                    {rgb}   RBGカラーの出力
 
                 Return: ~
                     Highlight definition map
+                    ハイライト定義Map
 
                 See also: ~
-                    nvim_get_hl_by_id
+                    |nvim_get_hl_by_id()|
 
 nvim_get_hl_by_id({hl_id}, {rgb})                        *nvim_get_hl_by_id()*
                 Gets a highlight definition by id. |hlID()|
+                IDからハイライト定義を取得します。|hlID()|
 
                 Parameters: ~
                     {hl_id}  Highlight id as returned by |hlID()|
+                    {hl_id}  |hlID()|が返すID。
                     {rgb}    Export RGB colors
+                    {rgb}    RBGカラーの出力
 
                 Return: ~
                     Highlight definition map
+                    ハイライト定義Map
 
                 See also: ~
-                    nvim_get_hl_by_name
+                    |nvim_get_hl_by_name()|
 
 nvim_feedkeys({keys}, {mode}, {escape_csi})                  *nvim_feedkeys()*
                 Sends input-keys to Nvim, subject to various quirks controlled
                 by `mode` flags. This is a blocking call, unlike
                 |nvim_input()|.
+                入力キーをNvimに送ります。`mode`フラグで挙動を制御できます。
+                |nvim_input()|と異なりブロッキングコールです。
 
                 On execution error: does not fail, but updates v:errmsg.
+                エラー発生時:関数は失敗せず、v:errmsgが更新されます。
 
                 Parameters: ~
                     {keys}        to be typed
+                    {keys}        入力するキー。
                     {mode}        behavior flags, see |feedkeys()|
+                    {mode}        フラグ。|feedkeys()|を参照。
                     {escape_csi}  If true, escape K_SPECIAL/CSI bytes in
                                   `keys`
+                    {escape_csi}  trueの時、`keys`のK_SPECIAL/CSIバイトを
+                                  エスケープする。
 
                 See also: ~
-                    feedkeys()
+                    |feedkeys()|
                     vim_strsave_escape_csi
 
 nvim_input({keys})                                              *nvim_input()*
                 Queues raw user-input. Unlike |nvim_feedkeys()|, this uses a
                 low-level input buffer and the call is non-blocking (input is
                 processed asynchronously by the eventloop).
+                ユーザー入力をキューに入れます。|nvim_feedkeys()|と異なり、
+                低レベルの入力バッファを使用しノンブロッキングで呼び出されます。
+                (入力はイベントループによって非同期に処理されます。)
 
                 On execution error: does not fail, but updates v:errmsg.
+                エラー発生時:関数は失敗せず、v:errmsgが更新されます。
 
                 Note:
                     |keycodes| like <CR> are translated, so "<" is special. To
                     input a literal "<", send <LT>.
+                    <CR>のような|keycodes|は変換されます。"<"は特別です。
+                    "<"を入力するには<LT>を使います。
                 Note:
                     For mouse events use |nvim_input_mouse()|. The pseudokey
                     form "<LeftMouse><col,row>" is deprecated since
                     |api-level| 6.
+                    マウスイベントは|nvim_input_mouse()|を使用してください。
+                    疑似キー形式"<LeftMouse><col,row>"はAPIレベル6から非推奨に
+                    なりました。
 
                 Attributes: ~
                     {fast}
 
                 Parameters: ~
                     {keys}  to be typed
+                    {keys}  入力するキー。
 
                 Return: ~
                     Number of bytes actually written (can be fewer than
                     requested if the buffer becomes full).
+                    実際に書き込まれたバイト数。(バッファがいっぱいになった場合
+                    は実際より少なくなることがあります。)
 
                                                           *nvim_input_mouse()*
 nvim_input_mouse({button}, {action}, {modifier}, {grid}, {row}, {col})
                 Send mouse event from GUI.
+                GUIからマウスイベントを送ります。
 
                 Non-blocking: does not wait on any result, but queues the
                 event to be processed soon by the event loop.
+                ノンブロッキング:結果を待ちませんが、イベントループによってすぐ
+                に処理されるようにマウスイベントをキューに入れます。
 
                 Note:
                     Currently this doesn't support "scripting" multiple mouse
@@ -768,6 +810,11 @@ nvim_input_mouse({button}, {action}, {modifier}, {grid}, {row}, {col})
                     used to implement real-time mouse input in a GUI. The
                     deprecated pseudokey form ("<LeftMouse><col,row>") of
                     |nvim_input()| has the same limitiation.
+                    現在、ループ内で複数のマウスイベントを呼び出すスクリプトの
+                    ようなことはできません。マウスの中間位置は無視されます。
+                    GUIでリアルタイムのマウス入力を実装するために使用します。
+                    |nvim_input()|の非推奨な疑似キー("<LeftMouse><col,row>")も
+                    同様の制限があります。
 
                 Attributes: ~
                     {fast}
@@ -775,265 +822,374 @@ nvim_input_mouse({button}, {action}, {modifier}, {grid}, {row}, {col})
                 Parameters: ~
                     {button}    Mouse button: one of "left", "right",
                                 "middle", "wheel".
+                    {button}    マウスボタン: "left", "right", "middle",
+                                "wheel"のうち1つ
                     {action}    For ordinary buttons, one of "press", "drag",
                                 "release". For the wheel, one of "up", "down",
                                 "left", "right".
+                    {action}    ボタンの場合: "press", "drag", "release"のうち
+                                1つ。
+                                ホイールの場合: "up", "down", "left", "right"の
+                                うち1つ。
                     {modifier}  String of modifiers each represented by a
                                 single char. The same specifiers are used as
                                 for a key press, except that the "-" separator
                                 is optional, so "C-A-", "c-a" and "CA" can all
                                 be used to specify Ctrl+Alt+click.
+                    {modifier}  1つの文字で表される修飾子キー。"-"が任意なことを
+                                除き、キー入力と同じです。そのため、"C-A-",
+                                "c-a", "CA"を使用してCtrl+Alt+クリックを指定でき
+                                ます。
                     {grid}      Grid number if the client uses |ui-multigrid|,
                                 else 0.
+                    {grid}      クライアントが|ui-multigrid|を使用している場合
+                                グリッドナンバー。それ以外は0。
                     {row}       Mouse row-position (zero-based, like redraw
                                 events)
+                    {row}       マウスの行位置(redrawイベントのように0ベース)。
                     {col}       Mouse column-position (zero-based, like redraw
                                 events)
+                    {col}       マウスの列位置(redrawイベントのように0ベース)。
 
                                                     *nvim_replace_termcodes()*
 nvim_replace_termcodes({str}, {from_part}, {do_lt}, {special})
                 Replaces terminal codes and |keycodes| (<CR>, <Esc>, ...) in a
                 string with the internal representation.
+                文字列内の端末コードとキーコード(|keycodes| <CR>,<Esc>等)を
+                内部表現に置き変えます。
 
                 Parameters: ~
                     {str}        String to be converted.
+                    {str}        変換する文字列。
                     {from_part}  Legacy Vim parameter. Usually true.
+                    {from_part}  古いVimパラメータ。通常はtrue。
                     {do_lt}      Also translate <lt>. Ignored if `special` is
                                  false.
+                    {do_lt}      <lt>も変換する。`special`がfalseなら無視される。
                     {special}    Replace |keycodes|, e.g. <CR> becomes a "\n"
                                  char.
+                    {special}    <CR>を"\n"のように|keycodes|を置き変える。
 
                 See also: ~
                     replace_termcodes
-                    cpoptions
+                    |cpoptions|
 
 nvim_eval({expr})                                                *nvim_eval()*
                 Evaluates a VimL |expression|. Dictionaries and Lists are
                 recursively expanded.
+                VimL式(|expression|)を評価します。辞書とリストは再帰的に展開され
+                ます。
 
                 On execution error: fails with VimL error, does not update
                 v:errmsg.
+                エラー発生時:関数は失敗し、v:errmsgは更新されません。
 
                 Parameters: ~
                     {expr}  VimL expression string
+                    {expr}  VimL式の文字列。
 
                 Return: ~
                     Evaluation result or expanded object
+                    評価結果か展開されたオブジェクト。
 
 nvim_exec_lua({code}, {args})                                *nvim_exec_lua()*
                 Execute Lua code. Parameters (if any) are available as `...`
                 inside the chunk. The chunk can return a value.
+                Luaコードを実行します。パラメータ(もしあれば)はチャンク内で`...`
+                として使用できます。チャンクは値を返すことができます。
 
                 Only statements are executed. To evaluate an expression,
                 prefix it with `return` : return my_function(...)
+                文のみが実行されます。式を評価するには`retuen`にプレフィックスを
+                つけます。: return my_function( ... )
 
                 Parameters: ~
                     {code}  Lua code to execute
+                    {code}  実行するLuaコード。
                     {args}  Arguments to the code
+                    {args}  コードへの引数。
 
                 Return: ~
                     Return value of Lua code if present or NIL.
+                    Luaコードの戻り値。またはNIL。
 
 nvim_call_function({fn}, {args})                        *nvim_call_function()*
                 Calls a VimL function with the given arguments.
+                指定された引数でVimL関数を呼びます。
 
                 On execution error: fails with VimL error, does not update
                 v:errmsg.
+                エラー発生時:関数は失敗し、v:errmsgは更新されません。
 
                 Parameters: ~
                     {fn}    Function to call
+                    {fn}    呼び出す関数。
                     {args}  Function arguments packed in an Array
+                    {args}  配列にまとめた引数。
 
                 Return: ~
                     Result of the function call
+                    関数を呼んだ結果。
 
 nvim_call_dict_function({dict}, {fn}, {args})      *nvim_call_dict_function()*
                 Calls a VimL |Dictionary-function| with the given arguments.
+                指定された引数でVimLの|Dictionary-function|を呼びます。
 
                 On execution error: fails with VimL error, does not update
                 v:errmsg.
+                エラー発生時:関数は失敗し、v:errmsgは更新されません。
 
                 Parameters: ~
                     {dict}  Dictionary, or String evaluating to a VimL |self|
                             dict
+                    {dict}  辞書、または|self|辞書を評価する文字列。
                     {fn}    Name of the function defined on the VimL dict
+                    {fn}    VimL辞書で定義された関数名。
                     {args}  Function arguments packed in an Array
+                    {args}  配列にまとめた引数。
 
                 Return: ~
                     Result of the function call
+                    関数を呼んだ結果。
 
 nvim_strwidth({text})                                        *nvim_strwidth()*
                 Calculates the number of display cells occupied by `text` .
                 <Tab> counts as one cell.
+                `text`が占める表示セルの数を計算します。<Tab>は1つのセルとして
+                カウントされます。
 
                 Parameters: ~
                     {text}  Some text
+                    {text}  テキスト。
 
                 Return: ~
                     Number of cells
+                    セルの数。
 
 nvim_list_runtime_paths()                          *nvim_list_runtime_paths()*
                 Gets the paths contained in 'runtimepath'.
+                |'runtimepath'|に含まれるパスを取得します。
 
                 Return: ~
                     List of paths
+                    パスのリスト。
 
 nvim_set_current_dir({dir})                           *nvim_set_current_dir()*
                 Changes the global working directory.
+                グローバルな作業ディレクトリを変更します。
 
                 Parameters: ~
                     {dir}  Directory path
+                    {dir}  ディレクトリパス。
 
 nvim_get_current_line()                              *nvim_get_current_line()*
                 Gets the current line.
+                現在行を取得します。
 
                 Return: ~
                     Current line string
+                    現在行の文字列。
 
 nvim_set_current_line({line})                        *nvim_set_current_line()*
                 Sets the current line.
+                現在行を置き変えます。
 
                 Parameters: ~
                     {line}  Line contents
+                    {line}  行の内容。
 
 nvim_del_current_line()                              *nvim_del_current_line()*
                 Deletes the current line.
+                現在行を削除します。
 
 nvim_get_var({name})                                          *nvim_get_var()*
                 Gets a global (g:) variable.
+                グローバル(|g:|)変数を取得します。
 
                 Parameters: ~
                     {name}  Variable name
+                    {name}  変数名。
 
                 Return: ~
                     Variable value
+                    変数名。
 
 nvim_set_var({name}, {value})                                 *nvim_set_var()*
                 Sets a global (g:) variable.
+                グローバル(|g:|)変数に値をセットします。
 
                 Parameters: ~
                     {name}   Variable name
+                    {name}   変数名。
                     {value}  Variable value
+                    {value}  変数の値。
 
 nvim_del_var({name})                                          *nvim_del_var()*
                 Removes a global (g:) variable.
+                グローバル(|g:|)変数を削除します。
 
                 Parameters: ~
                     {name}  Variable name
+                    {name}  変数名。
 
 nvim_get_vvar({name})                                        *nvim_get_vvar()*
                 Gets a v: variable.
+                定義済み変数(|v:|)を取得します。
 
                 Parameters: ~
                     {name}  Variable name
+                    {name}  変数名。
 
                 Return: ~
                     Variable value
+                    変数の値。
 
 nvim_set_vvar({name}, {value})                               *nvim_set_vvar()*
                 Sets a v: variable, if it is not readonly.
+                読み取り専用でなければ、定義済み変数(|v:|)に値をセットします。
 
                 Parameters: ~
                     {name}   Variable name
+                    {name}   変数名。
                     {value}  Variable value
+                    {value}  変数の値。
 
 nvim_get_option({name})                                    *nvim_get_option()*
                 Gets an option value string.
+                オプションの値を取得します。
 
                 Parameters: ~
                     {name}  Option name
+                    {name}  オプション名。
 
                 Return: ~
                     Option value (global)
+                    オプションの値。(グローバル)
 
 nvim_set_option({name}, {value})                           *nvim_set_option()*
                 Sets an option value.
+                オプションに値をセットします。
 
                 Parameters: ~
                     {name}   Option name
+                    {name}   オプション名。
                     {value}  New option value
+                    {value}  新しい値。
 
 nvim_out_write({str})                                       *nvim_out_write()*
                 Writes a message to the Vim output buffer. Does not append
                 "\n", the message is buffered (won't display) until a linefeed
                 is written.
+                Vimの出力バッファにメッセージを書き込みます。"\n"を追加しない
+                場合、"\n"が書き込まれるまでバッファリングされます(表示されませ
+                ん)。
 
                 Parameters: ~
                     {str}  Message
+                    {str}  メッセージ
 
 nvim_err_write({str})                                       *nvim_err_write()*
                 Writes a message to the Vim error buffer. Does not append
                 "\n", the message is buffered (won't display) until a linefeed
                 is written.
+                Vimのエラーバッファにメッセージを書き込みます。"\n"を追加しない
+                場合、"\n"が書き込まれるまでバッファリングされます(表示されませ
+                ん)。
 
                 Parameters: ~
                     {str}  Message
+                    {str}  メッセージ
 
 nvim_err_writeln({str})                                   *nvim_err_writeln()*
                 Writes a message to the Vim error buffer. Appends "\n", so the
                 buffer is flushed (and displayed).
+                Vimのエラーバッファにメッセージを書き込みます。"\n"を追加し、
+                バッファはフラッシュされます(表示されます)。
 
                 Parameters: ~
                     {str}  Message
+                    {str}  メッセージ
 
                 See also: ~
-                    nvim_err_write()
+                    |nvim_err_write()|
 
 nvim_list_bufs()                                            *nvim_list_bufs()*
                 Gets the current list of buffer handles
+                現在のバッファハンドルのリストを取得します。
 
                 Includes unlisted (unloaded/deleted) buffers, like `:ls!` .
+                `:ls!`のようにバッファリストにない(非ロード、削除された)バッファ
+                も含まれます。
                 Use |nvim_buf_is_loaded()| to check if a buffer is loaded.
+                |nvim_buf_is_loaded()|を使用してバッファがロードされているかを
+                確認します。
 
                 Return: ~
                     List of buffer handles
+                    バッファハンドルのリスト。
 
 nvim_get_current_buf()                                *nvim_get_current_buf()*
                 Gets the current buffer.
+                カレントバッファを取得します。
 
                 Return: ~
                     Buffer handle
+                    バッファハンドル。
 
 nvim_set_current_buf({buffer})                        *nvim_set_current_buf()*
                 Sets the current buffer.
+                カレントバッファをセットします。
 
                 Parameters: ~
                     {buffer}  Buffer handle
+                    {buffer}  バッファハンドル。
 
 nvim_list_wins()                                            *nvim_list_wins()*
                 Gets the current list of window handles.
+                現在のウィンドウハンドルのリストを取得します。
 
                 Return: ~
                     List of window handles
+                    ウィンドウハンドルのリスト。
 
 nvim_get_current_win()                                *nvim_get_current_win()*
                 Gets the current window.
+                カレントウィンドウを取得します。
 
                 Return: ~
                     Window handle
+                    ウィンドウハンドル。
 
 nvim_set_current_win({window})                        *nvim_set_current_win()*
                 Sets the current window.
+                カレントウィンドウをセットします。
 
                 Parameters: ~
                     {window}  Window handle
+                    {window}  ウィンドウハンドル。
 
 nvim_create_buf({listed}, {scratch})                       *nvim_create_buf()*
                 Creates a new, empty, unnamed buffer.
+                空の無名バッファを作成します。
 
                 Parameters: ~
                     {listed}   Sets 'buflisted'
+                    {listed}   'buflisted'を設定します。
                     {scratch}  Creates a "throwaway" |scratch-buffer| for
                                temporary work (always 'nomodified')
+                    {scratch}  一時的な作業用の"使い捨ての"スクラッチバッファ(|scratch-buffer|)
+                               を作成します(常に'nomodified')。
 
                 Return: ~
                     Buffer handle, or 0 on error
+                    バッファハンドル。エラーなら0。
 
                 See also: ~
                     buf_open_scratch
 
 nvim_open_win({buffer}, {enter}, {config})                   *nvim_open_win()*
                 Open a new window.
+                新しいウィンドウを開きます。
 
                 Currently this is used to open floating and external windows.
                 Floats are windows that are drawn above the split layout, at
@@ -1041,17 +1197,30 @@ nvim_open_win({buffer}, {enter}, {config})                   *nvim_open_win()*
                 internally or by external GUI with the |ui-multigrid|
                 extension. External windows are only supported with multigrid
                 GUIs, and are displayed as separate top-level windows.
+                現在、Floating windowと外部ウィンドウを開くために使用されていま
+                す。Floating windowは他のウィンドウのアンカー位置に描画される
+                ウィンドウです。内部的に描画することも、|ui-multigrid|拡張を備え
+                た外部GUIで描画することもできます。外部ウィンドウは、マルチ
+                グリッドGUIでのみサポートされ、独立したトップレベルウィンドウと
+                して表示されます。
 
                 For a general overview of floats, see |api-floatwin|.
+                Floating windowsの概要は、|api-floatwin|を参照してください。
 
                 Exactly one of `external` and `relative` must be specified.
                 The `width` and `height` of the new window must be specified.
+                `external`か`relative`を指定する必要があります。
+                新しいウィンドウの`width`と`height`を指定する必要があります。
 
                 With relative=editor (row=0,col=0) refers to the top-left
                 corner of the screen-grid and (row=Lines-1,col=Columns-1)
                 refers to the bottom-right corner. Fractional values are
                 allowed, but the builtin implementation (used by non-multigrid
                 UIs) will always round down to nearest integer.
+                relative=editor (row=0,col=0)はスクリーングリッドの左上角を参照
+                し、(row=Lines-1,col=Columns-1)は右下角を参照します。小数を使用
+                できますが、組み込み実装(非マルチグリッドUI)では近い値が使われま
+                す。
 
                 Out-of-bounds values, and configurations that make the float
                 not fit inside the main editor, are allowed. The builtin
@@ -1059,41 +1228,67 @@ nvim_open_win({buffer}, {enter}, {config})                   *nvim_open_win()*
                 main screen grid. External GUIs could let floats hover outside
                 of the main window like a tooltip, but this should not be used
                 to specify arbitrary WM screen positions.
+                範囲外の値、エディタ内に収まらないFloating windowの設定は許可
+                されます。組み込み実装ではスクリーングリッドに収まるように切り捨
+                てられます。外部GUIではツールチップのようにメインウインドウの外
+                に表示できますが、これを任意のWMスクリーン位置の指定に使用しない
+                でください。
 
                 Example (Lua): window-relative float >
+                例(Lua): window-relative float
                     vim.api.nvim_open_win(0, false,
                       {relative='win', row=3, col=3, width=12, height=3})
 <
 
                 Example (Lua): buffer-relative float (travels as buffer is
                 scrolled) >
+                例(Lua): buffer-relative float(バッファがスクロールされると移動します。)
                     vim.api.nvim_open_win(0, false,
                       {relative='win', width=12, height=3, bufpos={100,10}})
 <
 
                 Parameters: ~
                     {buffer}  Buffer to display, or 0 for current buffer
+                    {buffer}  表示するバッファ。0でカレントバッファ。
                     {enter}   Enter the window (make it the current window)
+                    {enter}   ウィンドウに入る(カレントウィンドウにする)。
                     {config}  Map defining the window configuration. Keys:
+                    {config}  設定を定義したMap。Keys:
                               •  `relative` : Sets the window layout to "floating", placed
                                 at (row,col) coordinates relative to:
+                              •  `relative` :ウィンドウレイアウトを"floating"に
+                                 設定し、(row,col)座標に配置します。:
                                 • "editor" The global editor grid
+                                • "editor" グローバルなエディタグリッド。
                                 • "win" Window given by the `win` field, or
                                   current window.
+                                • "win" `win`フィールドで指定されたウィンドウ。
+                                   またはカレントウィンドウ。
                                 • "cursor" Cursor position in current window.
+                                • "cursor" カレントウィンドウのカーソル位置。
 
                               • `win` : |window-ID| for relative="win".
+                              • `win` : relative="win"の|window-ID|。
                               •  `anchor` : Decides which corner of the float to place
                                 at (row,col):
+                              •  `anchor` : (row,col)の位置をFloating windowの
+                                  どこにするかを決める。
                                 • "NW" northwest (default)
+                                • "NW" 北西 (デフォルト)。
                                 • "NE" northeast
+                                • "NE" 北東。
                                 • "SW" southwest
+                                • "SW" 南西。
                                 • "SE" southeast
+                                • "SE" 南東。
 
                               • `width` : Window width (in character cells).
                                 Minimum of 1.
+                              • `width` : ウィンドウ幅(文字セル単位)。最小は1。
                               • `height` : Window height (in character cells).
                                 Minimum of 1.
+                              • `height` : ウィンドウ高さ(文字セル単位)。
+                                 最小は1。
                               • `bufpos` : Places float relative to buffer
                                 text (only when relative="win"). Takes a tuple
                                 of zero-indexed [line, column]. `row` and
@@ -1101,20 +1296,41 @@ nvim_open_win({buffer}, {enter}, {config})                   *nvim_open_win()*
                                 position, else they default to `row=1` and
                                 `col=0` (thus like a tooltip near the buffer
                                 text).
+                              • `bufpos` : バッファテキストを基準にFloating
+                                 windowを配置します(relative="win"の時のみ)。
+                                 0から始まる[line, column]のタプルを取ります。
+                                 `row`と`col`が指定されている場合その位置が適用
+                                 されます。それ以外の場合はデフォルトで`row`=1,
+                                 `col`=0になります。(バッファテキスト近くのツー
+                                 ルチップのようになります。)
                               • `row` : Row position in units of "screen cell
                                 height", may be fractional.
+                              • `row` : 画面セルの高さを単位とする行の位置。
+                                 小数になるかもしれません。
                               • `col` : Column position in units of "screen
                                 cell width", may be fractional.
+                              • `col` : 画面セルの幅を単位とする列の位置。
+                                 小数になるかもしれません。
                               • `focusable` : Enable focus by user actions
                                 (wincmds, mouse events). Defaults to true.
                                 Non-focusable windows can be entered by
                                 |nvim_set_current_win()|.
+                              • `focusable` : ユーザー操作によってフォーカスを
+                                 許可するかどうか(ウィンドウコマンド、マウスイベ
+                                 ント)。デフォルトはtrue。フォーカスできないウィ
+                                 ンドウは、|nvim_set_current_win()|で入ることが
+                                 できます。
                               • `external` : GUI should display the window as
                                 an external top-level window. Currently
                                 accepts no other positioning configuration
                                 together with this.
+                              • `external` : GUIは外部のトップレベルウィンドウ
+                                 として表示する必要があります。現在、他の位置を
+                                 決めるオプションと同時に指定できません。
                               •  `style` : Configure the appearance of the window.
                                 Currently only takes one non-empty value:
+                              •  `style` : ウィンドウの外観を設定します。現在、
+                                  空ではない値を1つだけ受け取ります。:
                                 • "minimal" Nvim will display the window with
                                   many UI options disabled. This is useful
                                   when displaying a temporary float where the
@@ -1127,27 +1343,44 @@ nvim_open_win({buffer}, {enter}, {config})                   *nvim_open_win()*
                                   `eob` flag of 'fillchars' to a space char,
                                   and clearing the |EndOfBuffer| region in
                                   'winhighlight'.
+                                • "minimal" 多くのUIオプションを無効にして表示
+                                   します。テキストを編集しない一時的なFloating
+                                   windowとして使用するのに便利です。無効になる
+                                   オプションは、'number', 'relativenumber',
+                                   'cursorline', 'cursorcolumn', 'foldcolumn',
+                                   'spell', 'list'です。'signcolumn'は`auto`に
+                                   変更され、'colorcolumn'は削除されます。
+                                   バッファ終端領域を非表示にするには'fillchars'
+                                   の`eob`フラグを空白文字に設定し、'winhighlight'
+                                   の|EndOfBuffer|を削除します。
 
                 Return: ~
                     Window handle, or 0 on error
+                    ウィンドウハンドル。エラー時は0。
 
 nvim_list_tabpages()                                    *nvim_list_tabpages()*
                 Gets the current list of tabpage handles.
+                現在のタブページハンドルのリストを取得します。
 
                 Return: ~
                     List of tabpage handles
+                    タブページハンドルのリスト。
 
 nvim_get_current_tabpage()                        *nvim_get_current_tabpage()*
                 Gets the current tabpage.
+                現在のタブページハンドルを取得します。
 
                 Return: ~
                     Tabpage handle
+                    タブページハンドル。
 
 nvim_set_current_tabpage({tabpage})               *nvim_set_current_tabpage()*
                 Sets the current tabpage.
+                現在のタブページをセットします。
 
                 Parameters: ~
                     {tabpage}  Tabpage handle
+                    {tabpage}  タブページハンドル。
 
 nvim_create_namespace({name})                        *nvim_create_namespace()*
                 Creates a new namespace, or gets an existing one.
