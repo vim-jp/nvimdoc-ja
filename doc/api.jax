@@ -335,10 +335,20 @@ Nvimが進歩するにつれて、APIは規約に従って変更するかもし�
 
   - Functions introduced in the development (unreleased) version MAY CHANGE.
     (Clients can dynamically check `api_prerelease`, etc. |api-metadata|)
+  非リリースな開発中に導入された関数は、変更されるかもしれません。
+  （クライアントは`api_prerelease`などをチェックします |api-metadata|）
+
 - Event parameters will not be removed or reordered (after release).
+  リリース後のイベントのパラメータは、削除または記録はされないでしょう。
+
 - Events may be EXTENDED: new parameters may be added.
+  イベントは拡張されるかもしれません: 新しいパラメータは追加されるかもしれません。
+
+
 - New items may be ADDED to map/list parameters/results of functions and
   events.
+  新しい関数やイベントのmap/listやparameters/resultsは追加されるかもしれません。
+
   - Any such new items are OPTIONAL: old clients may ignore them.
   - Existing items will not be removed (after release).
 - Deprecated functions will not be removed until Nvim version 2.0
