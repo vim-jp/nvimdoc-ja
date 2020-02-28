@@ -350,8 +350,13 @@ Nvimが進歩するにつれて、APIは規約に従って変更するかもし�
   新しい関数やイベントのmap/listやparameters/resultsは追加されるかもしれません。
 
   - Any such new items are OPTIONAL: old clients may ignore them.
+    古いクライアントのような任意のイベントは、無視するかもしれません。
+
   - Existing items will not be removed (after release).
+    リリース後の既存の項目は削除されないでしょう。
+
 - Deprecated functions will not be removed until Nvim version 2.0
+  Nvimのバージョン2.0まで、廃止された関数は削除されないでしょう。
 
 ==============================================================================
 Global events						    *api-global-events*
