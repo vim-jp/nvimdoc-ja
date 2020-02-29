@@ -360,24 +360,31 @@ Nvimが進歩するにつれて、APIは規約に従って変更するかもし�
 
 ==============================================================================
 Global events						    *api-global-events*
+APIのグローバルなイベント
 
 When a client invokes an API request as an async notification, it is not
 possible for Nvim to send an error response. Instead, in case of error, the
 following notification will be sent to the client:
-
+クライアントが非同期通知としてAPIリクエストを呼んだとき、Nvimはエラー応答を
+送信できません。
                                                              *nvim_error_event*
 nvim_error_event[{type}, {message}]
 
 {type} is a numeric id as defined by `api_info().error_types`, and {message} is
 a string with the error message.
+{type}は、`api_info().error_types`によって定義された整数値です。
+{message}は、エラーメッセージの文字列です。
 
 ==============================================================================
 Buffer update events					*api-buffer-updates*
+バッファ更新イベント
 
 API clients can "attach" to Nvim buffers to subscribe to buffer update events.
 This is similar to |TextChanged| but more powerful and granular.
+APIクライアントは、Nバッファ更新イベントを読み込むために、vimバッファへアタッチできます。
 
 Call |nvim_buf_attach()| to receive these events on the channel:
+チャンネルでそれらのイベントを受信するためには、|nvim_buf_attach()|をコールしてください。
 
                                                         *nvim_buf_lines_event*
 nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, {more}]
