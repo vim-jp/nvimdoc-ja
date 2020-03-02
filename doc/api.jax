@@ -393,10 +393,19 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
   zero-indexed) were changed to the new text in the {linedata} list. The
   granularity is a line, i.e. if a single character is changed in the editor,
   the entire line is sent.
+  1行目{firstline}から最終行{lastline}（0から始まるインデックス方式）までの間の
+  バッファテキストが、{linedata}リストのなかで新しい行に変更されたときです。
+  粒度は行単位です。例として、もしエディタ内で1文字変更されたなら、行全体が
+  送られます。
+
 
   When {changedtick} is |v:null| this means the screen lines (display) changed
   but not the buffer contents. {linedata} contains the changed screen lines.
   This happens when 'inccommand' shows a buffer preview.
+  {changedtick}が|v:null|なとき、これは表示行を変更されたことを意味します。
+  しかし、バッファ内容ではありません。
+  これは、'inccommand'がバッファプレビューを表示したときに発生します。
+
 
   Properties:~
     {buf} API buffer handle (buffer number)
