@@ -405,6 +405,7 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
   {changedtick}が|v:null|なとき、これは表示行を変更されたことを意味します。
   しかし、バッファ内容ではありません。
   これは、'inccommand'がバッファプレビューを表示したときに発生します。
+  -- nekowasabi WIP
 
 
   Properties:~
