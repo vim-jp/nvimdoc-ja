@@ -405,11 +405,13 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
   {changedtick}が|v:null|なとき、これは表示行を変更されたことを意味します。
   しかし、バッファ内容ではありません。
   これは、'inccommand'がバッファプレビューを表示したときに発生します。
-  -- nekowasabi WIP
 
 
   Properties:~
+  プロパティ:
     {buf} API buffer handle (buffer number)
+    {buf} APIバッファハンドル（バッファ番号）
+  -- nekowasabi WIP
 
     {changedtick} value of |b:changedtick| for the buffer. If you send an API
     command back to nvim you can check the value of |b:changedtick| as part of
