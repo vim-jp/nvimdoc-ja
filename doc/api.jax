@@ -411,11 +411,16 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
   プロパティ:
     {buf} API buffer handle (buffer number)
     {buf} APIバッファハンドル（バッファ番号）
-  -- nekowasabi WIP
 
     {changedtick} value of |b:changedtick| for the buffer. If you send an API
     command back to nvim you can check the value of |b:changedtick| as part of
     your request to ensure that no other changes have been made.
+    {changedtick}は、バッファ用変数である|b:changedtick|の値。
+    nvimに返却されるAPIコマンドを送信時、
+    リクエスト全体の一部として、他の変更は行われていないことを
+    |b:changedtick|の値で確認できる。
+    -- nekowasabi WIP
+
 
     {firstline} integer line number of the first line that was replaced.
     Zero-indexed: if line 1 was replaced then {firstline} will be 0, not 1.
