@@ -419,13 +419,17 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
     nvimに返却されるAPIコマンドを送信時、
     リクエスト全体の一部として、他の変更は行われていないことを
     |b:changedtick|の値で確認できる。
-    -- nekowasabi WIP
 
 
     {firstline} integer line number of the first line that was replaced.
     Zero-indexed: if line 1 was replaced then {firstline} will be 0, not 1.
     {firstline} is always less than or equal to the number of lines that were
     in the buffer before the lines were replaced.
+    {firstline}は置換された最初の行番号を示す整数値。
+    0から始まるインデックス方式:1行目が置換されたなら、{firstline}は、
+    1ではなく0です。
+    {firstline}は、いつもバッファ内の行が置換される前の行番号以下または同値です。
+    -- nekowasabi WIP
 
     {lastline} integer line number of the first line that was not replaced
     (i.e. the range {firstline}, {lastline} is end-exclusive).
