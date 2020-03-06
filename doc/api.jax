@@ -429,7 +429,6 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
     0から始まるインデックス方式:1行目が置換されたなら、{firstline}は、
     1ではなく0です。
     {firstline}は、いつもバッファ内の行が置換される前の行番号以下または同値です。
-    -- nekowasabi WIP
 
     {lastline} integer line number of the first line that was not replaced
     (i.e. the range {firstline}, {lastline} is end-exclusive).
@@ -437,6 +436,10 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
     of 6. {lastline} is always be less than or equal to the number of lines
     that were in the buffer before the lines were replaced. {lastline} will be
     -1 if the event is part of the initial update after attaching.
+    {lastline}は置換されていない最初の行番号を示す整数値。
+    (例. {firstline}と{lastline}の範囲は)
+    -- nekowasabi WIP
+
 
     {linedata} list of strings containing the contents of the new buffer
     lines. Newline characters are omitted; empty lines are sent as empty
