@@ -437,7 +437,7 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
     that were in the buffer before the lines were replaced. {lastline} will be
     -1 if the event is part of the initial update after attaching.
     {lastline}は置換されていない最初の行番号を示す整数値。
-    (例. {firstline}と{lastline}の範囲は)
+    (例. {firstline}と{lastline}の範囲は、終端を含まない)
     -- nekowasabi WIP
 
 
