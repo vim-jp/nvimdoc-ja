@@ -1430,81 +1430,122 @@ nvim_set_current_tabpage({tabpage})               *nvim_set_current_tabpage()*
 
 nvim_create_namespace({name})                        *nvim_create_namespace()*
                 Creates a new namespace, or gets an existing one.
+                ネームスペースを作成するか、既存のものを取得します。
 
                 Namespaces are used for buffer highlights and virtual text,
                 see |nvim_buf_add_highlight()| and
                 |nvim_buf_set_virtual_text()|.
+                ネームスペースはバッファのハイライトとVirtual textで使用されます。
+                |nvim_buf_add_highlight()|と|nvim_buf_set_virtual_text()|を参照。
 
                 Namespaces can be named or anonymous. If `name` matches an
                 existing namespace, the associated id is returned. If `name`
                 is an empty string a new, anonymous namespace is created.
+                ネームスペースは名前付きか匿名にできます。`name`が既存のネームス
+                ペースと一致する場合、関連付けされたidが返されます。
+                `name`が空の文字列の場合、新しい匿名のネームスペースが作られます。
 
                 Parameters: ~
                     {name}  Namespace name or empty string
+                    {name}  ネームスペース名または空の文字列。
 
                 Return: ~
                     Namespace id
+                    ネームスペースID
 
 nvim_get_namespaces()                                  *nvim_get_namespaces()*
                 Gets existing, non-anonymous namespaces.
+                匿名ではない既存のネームスペースを取得します。
 
                 Return: ~
                     dict that maps from names to namespace ids.
+                    名前をkey、idをvalueとする辞書配列。
 
 nvim_paste({data}, {crlf}, {phase})                             *nvim_paste()*
                 Pastes at cursor, in any mode.
+                任意のモードでカーソル位置に貼り付けします。
 
                 Invokes the `vim.paste` handler, which handles each mode
                 appropriately. Sets redo/undo. Faster than |nvim_input()|.
                 Lines break at LF ("\n").
+                各モードを適切に処理する`vim.paste`ハンドラーを呼び出します。
+                LF("\n")で改行します。
 
                 Errors ('nomodifiable', `vim.paste()` failure, …) are
                 reflected in `err` but do not affect the return value (which
                 is strictly decided by `vim.paste()` ). On error, subsequent
                 calls are ignored ("drained") until the next paste is
                 initiated (phase 1 or -1).
+                エラー('nomodifiable', `vim.paste()`の失敗)は`err`に反映されます
+                が、返り値に影響はありません(厳密には`vim.paste()`に決定される)。
+                エラー発生時、次の貼り付けが開始(phase 0か-1)されるまでその後の
+                呼び出しは無視("drained")されます。
 
                 Parameters: ~
                     {data}   Multiline input. May be binary (containing NUL
                              bytes).
+                    {data}   複数行の入力。バイナリ(NULバイトを含む)も可能。
                     {crlf}   Also break lines at CR and CRLF.
+                    {crlf}   CRとCRLFで改行する。
                     {phase}  -1: paste in a single call (i.e. without
                              streaming). To "stream" a paste, call `nvim_paste` sequentially with these `phase` values:
                              • 1: starts the paste (exactly once)
                              • 2: continues the paste (zero or more times)
                              • 3: ends the paste (exactly once)
+                    {phase}  -1: 1回の呼び出しで貼り付け(ストリームではない)。
+                             ストリームとして貼り付けするにはこれらの`phase`値で
+                             `nvim_paste`を順番に呼び出す。:
+                             • 1: 貼り付け開始(1回だけ)
+                             • 2: 貼り付けを続行(0回以上)
+                             • 3: 貼り付け終了(1回だけ)
 
                 Return: ~
-
                     • true: Client may continue pasting.
                     • false: Client must cancel the paste.
+                    • true: クライアントは貼り付けを続行できます。
+                    • false:クライアントは貼り付けをキャンセルする必要が
+                      あります。
 
 nvim_put({lines}, {type}, {after}, {follow})                      *nvim_put()*
                 Puts text at cursor, in any mode.
+                任意のモードでカーソル位置にテキストを挿入します。
 
                 Compare |:put| and |p| which are always linewise.
+                常に行単位である|:put|と|p|を比較してください。
 
                 Parameters: ~
                     {lines}   |readfile()|-style list of lines.
                               |channel-lines|
+                    {lines}   |readfile()|形式の行のリスト。|channel-lines|
                     {type}    Edit behavior: any |getregtype()| result, or:
                               • "b" |blockwise-visual| mode (may include
                                 width, e.g. "b3")
                               • "c" |charwise| mode
                               • "l" |linewise| mode
                               • "" guess by contents, see |setreg()|
+                    {type}    動作を編集: |getregtype()|の結果。または:
+                              • "b" |blockwise-visual|モード。("b3"のように幅を
+                                含むことができる)
+                              • "c" |charwise|モード。
+                              • "l" |linewise|モード。
+                              • "" 内容から推測する。|setreg()|を参照。
                     {after}   Insert after cursor (like |p|), or before (like
                               |P|).
+                    {after}   カーソルの後ろに挿入する(|p|のように)。または、
+                              前に挿入する(|P|のように)。
                     {follow}  Place cursor at end of inserted text.
+                    {follow}  挿入されたテキストの最後にカーソルを置く。
 
 nvim_subscribe({event})                                     *nvim_subscribe()*
                 Subscribes to event broadcasts.
+                イベントブロードキャストを購読します。
 
                 Parameters: ~
                     {event}  Event type string
 
 nvim_unsubscribe({event})                                 *nvim_unsubscribe()*
                 Unsubscribes to event broadcasts.
+                イベントブロードキャストの購読を解除します。
 
                 Parameters: ~
                     {event}  Event type string
@@ -1512,41 +1553,54 @@ nvim_unsubscribe({event})                                 *nvim_unsubscribe()*
 nvim_get_color_by_name({name})                      *nvim_get_color_by_name()*
                 Returns the 24-bit RGB value of a |nvim_get_color_map()| color
                 name or "#rrggbb" hexadecimal string.
+                |nvim_get_color_map()|の色名か"#rrggbb"のような16進文字列の
+                24ビットRGB値を返します。
 
                 Example: >
+                例:
                     :echo nvim_get_color_by_name("Pink")
                     :echo nvim_get_color_by_name("#cbcbcb")
 <
 
                 Parameters: ~
                     {name}  Color name or "#rrggbb" string
+                    {name}  色名または、"#rrggbb"のような文字列。
 
                 Return: ~
                     24-bit RGB value, or -1 for invalid argument.
+                    24ビットRGB値。無効な引数の場合は-1。
 
 nvim_get_color_map()                                    *nvim_get_color_map()*
                 Returns a map of color names and RGB values.
+                色名とRGB値のMapを返します。
 
                 Keys are color names (e.g. "Aqua") and values are 24-bit RGB
                 color values (e.g. 65535).
+                keyは色名(例"Aqua")、valueは24ビットRGB値(例 65535)です。
 
                 Return: ~
                     Map of color names and RGB values.
+                    色名とRGB値のMap
 
 nvim_get_context({opts})                                  *nvim_get_context()*
                 Gets a map of the current editor state.
+                現在のエディタの状態を取得します。
 
                 Parameters: ~
                     {opts}  Optional parameters.
                             • types: List of |context-types| ("regs", "jumps",
                               "bufs", "gvars", …) to gather, or empty for
                               "all".
+                    {opts}  オプションのパラメーター。
+                            • types:|context-types|のリスト ("regs", "jumps",
+                              "bufs", "gvars", …)。空の場合は全て。
 
                 Return: ~
                     map of global |context|.
 
 nvim_load_context({dict})                                *nvim_load_context()*
                 Sets the current editor state from the given |context| map.
+                指定された|context|のMapから現在のエディタの状態を設定します。
 
                 Parameters: ~
                     {dict}  |Context| map.
@@ -1554,9 +1608,12 @@ nvim_load_context({dict})                                *nvim_load_context()*
 nvim_get_mode()                                              *nvim_get_mode()*
                 Gets the current mode. |mode()| "blocking" is true if Nvim is
                 waiting for input.
+                現在のモードを取得します。Nvimが入力を待っている場合、
+                |mode()| "blocking"はtrueになります。
 
                 Return: ~
                     Dictionary { "mode": String, "blocking": Boolean }
+                    辞書 { "mode": String, "blocking": Boolean }
 
                 Attributes: ~
                     {fast}
@@ -1564,28 +1621,40 @@ nvim_get_mode()                                              *nvim_get_mode()*
 nvim_get_keymap({mode})                                    *nvim_get_keymap()*
                 Gets a list of global (non-buffer-local) |mapping|
                 definitions.
+                グローバル(バッファローカルでない)な|mapping|定義を取得します。
 
                 Parameters: ~
                     {mode}  Mode short-name ("n", "i", "v", ...)
+                    {mode}  モードの短縮名("n", "i", "v", ...)
 
                 Return: ~
                     Array of maparg()-like dictionaries describing mappings.
                     The "buffer" key is always zero.
+                    |maparg()|のようなマッピングを記述した辞書配列。
+                    "buffer" keyは常に0。
 
 nvim_set_keymap({mode}, {lhs}, {rhs}, {opts})              *nvim_set_keymap()*
                 Sets a global |mapping| for the given mode.
+                与えられたモードのグローバル|mapping|を設定します。
 
                 To set a buffer-local mapping, use |nvim_buf_set_keymap()|.
+                バッファローカルなマッピングを設定するには、|nvim_buf_set_keymap()|
+                を使用してください。
 
                 Unlike |:map|, leading/trailing whitespace is accepted as part
                 of the {lhs} or {rhs}. Empty {rhs} is |<Nop>|. |keycodes| are
                 replaced as usual.
+                |:map|と異なり、先頭/末尾の空白は{lhs}または{rhs}の一部として
+                受け入れられます。空の{rhs}は|<Nop>|です。|keycodes|は通常通りに
+                置き換えられます。
 
                 Example: >
+                例:
                     call nvim_set_keymap('n', ' <NL>', '', {'nowait': v:true})
 <
 
                 is equivalent to: >
+                上記は下記と同等:
                     nmap <nowait> <Space><NL> <Nop>
 <
 
@@ -1593,37 +1662,57 @@ nvim_set_keymap({mode}, {lhs}, {rhs}, {opts})              *nvim_set_keymap()*
                     {mode}  Mode short-name (map command prefix: "n", "i",
                             "v", "x", …) or "!" for |:map!|, or empty string
                             for |:map|.
+                    {mode}  モードの短縮名(map command prefix: "n", "i",
+                            "v", "x", …)または、|:map!|の"！"または、|:map|の
+                            空文字列。
                     {lhs}   Left-hand-side |{lhs}| of the mapping.
+                    {lhs}   マッピングの左側。(Left-hand-side |{lhs}|)
                     {rhs}   Right-hand-side |{rhs}| of the mapping.
+                    {rhs}   マッピングの右側。(Right-hand-side |{rhs}|)
                     {opts}  Optional parameters map. Accepts all
                             |:map-arguments| as keys excluding |<buffer>| but
                             including |noremap|. Values are Booleans. Unknown
                             key is an error.
+                    {opts}  オプションのパラメーターMap。|<buffer>|を除くすべて
+                            の|:map-arguments|をキーとして受け入れます。
+                            |<noremap>|というキーも受け入れます。 valueはbool値
+                            です。不明なkeyはエラーになります。
 
 nvim_del_keymap({mode}, {lhs})                             *nvim_del_keymap()*
                 Unmaps a global |mapping| for the given mode.
+                与えられたモードのグローバル|mapping|を削除します。
 
                 To unmap a buffer-local mapping, use |nvim_buf_del_keymap()|.
+                バッファローカルなマップを削除する場合は、|nvim_buf_del_keymap()|
+                を使用してください。
 
                 See also: ~
                     |nvim_set_keymap()|
 
 nvim_get_commands({opts})                                *nvim_get_commands()*
                 Gets a map of global (non-buffer-local) Ex commands.
+                グローバル(バッファローカルでない)なEXコマンドのMapを取得します。
 
                 Currently only |user-commands| are supported, not builtin Ex
                 commands.
+                現在、|user-commands|のみサポートされています。
+                組み込みのEXコマンドではありません。
 
                 Parameters: ~
                     {opts}  Optional parameters. Currently only supports
                             {"builtin":false}
+                    {opts}  オプションのパラメータ。現在は1つのみサポート
+                            {"builtin":false}
 
                 Return: ~
                     Map of maps describing commands.
+                    コマンドの辞書のMap。
 
 nvim_get_api_info()                                      *nvim_get_api_info()*
                 Returns a 2-tuple (Array), where item 0 is the current channel
                 id and item 1 is the |api-metadata| map (Dictionary).
+                2要素タプル(配列)を返します。アイテム0は現在のチャンネルID、
+                アイテム0は|api-metadata|辞書です。
 
                 Return: ~
                     2-tuple [{channel-id}, {api-metadata}]
@@ -1635,21 +1724,31 @@ nvim_get_api_info()                                      *nvim_get_api_info()*
 nvim_set_client_info({name}, {version}, {type}, {methods},
                      {attributes})
                 Self-identifies the client.
+                クライアントを自己認識します。
 
                 The client/plugin/application should call this after
                 connecting, to provide hints about its identity and purpose,
                 for debugging and orchestration.
+                クライアント/プラグイン/アプリケーションは接続後、デバッグと
+                オーケストレーションのために、アイデンティティと目的のヒント
+                を提供するために呼び出す必要があります。
 
                 Can be called more than once; the caller should merge old info
                 if appropriate. Example: library first identifies the channel,
                 then a plugin using that library later identifies itself.
+                複数回呼び出すことができます。呼び出し元は、必要に応じて古い情報
+                をマージする必要があります。例:ライブラリは最初にチャンネルを
+                識別し、次にそのライブラリを使用するプラグインが識別します。
 
                 Note:
                     "Something is better than nothing". You don't need to
                     include all the fields.
+                    何もないよりはまし。すべてのフィールドを含める必要はありませ
+                    ん。
 
                 Parameters: ~
                     {name}        Short name for the connected client
+                    {name}        接続されたクライアントの短縮名。
                     {version}     Dictionary describing the version, with
                                   these (optional) keys:
                                   • "major" major version (defaults to 0 if
@@ -1660,6 +1759,16 @@ nvim_set_client_info({name}, {version}, {type}, {methods},
                                     prerelease, like "dev" or "beta1"
                                   • "commit" hash or similar identifier of
                                     commit
+                    {version}     次のキー(オプション)を使用してバージョンを説明
+                                  する辞書:
+                                  • "major" メジャーバージョン (デフォルトは0
+                                     設定されていない場合、まだリリースされてい
+                                     ない)
+                                  • "minor" マイナーバージョン。
+                                  • "patch" パッチナンバー。
+                                  • "prerelease" "dev"や"beta1"のように文字で
+                                    説明するプレリリース。
+                                  • "commit" コミットハッシュか類似の識別子。
                     {type}        Must be one of the following values. Client
                                   libraries should default to "remote" unless
                                   overridden by the user.
@@ -1671,6 +1780,17 @@ nvim_set_client_info({name}, {version}, {type}, {methods},
                                   • "host" plugin host, typically started by
                                     nvim
                                   • "plugin" single plugin, started by nvim
+                    {type}        次の値のいずれかでなければいけません。ユーザー
+                                  が上書きしない限り、クライアントライブラリは
+                                  デフォルトで"remote"に設定する必要があります。
+                                  • "remote" Nvimに接続されたリモートクライアント。
+                                  • "ui" GUIフロントエンド。
+                                  • "embedder" コンポーネントとしてNvimを使用す
+                                    るアプリケーション(vimモードを実装するIDE/エ
+                                    ディタ等)。
+                                  • "host" 通常、Nvimによって起動されるプラグイ
+                                    ンホスト。
+                                  • "plugin" Nvimに起動された1つのプラグイン。
                     {methods}     Builtin methods in the client. For a host,
                                   this does not include plugin methods which
                                   will be discovered later. The key should be
@@ -1686,6 +1806,19 @@ nvim_set_client_info({name}, {version}, {type}, {methods},
                                   • "nargs" Number of arguments. Could be a
                                     single integer or an array of two
                                     integers, minimum and maximum inclusive.
+                    {methods}     クライアント組み込みのメソッド。ホストの場合、
+                                  後で検出されるプラグインメソッドは含まれません。
+                                  キーはメソッド名である必要があり、値はこれらの
+                                  (オプション)キーを持つ辞書です。(Nvimの将来の
+                                  バージョンで更にキーが追加される可能性があるた
+                                  め、不明なキーは無視されます。クライアントは、
+                                  このバージョン以降のNvimで定義されているキー
+                                  のみを使用する必要があります。):
+                                  • "async" trueの場合、通知として送信します。
+                                    falseか未定義の場合、ブロッキング要求を使用
+                                    します。
+                                  • "nargs" 引数の数。1つの整数、または最小値と
+                                    最大値をを含む2つの整数の配列を指定できます。
                     {attributes}  Arbitrary string:string map of informal
                                   client properties. Suggested keys:
                                   • "website": Client homepage URL (e.g.
@@ -1695,9 +1828,18 @@ nvim_set_client_info({name}, {version}, {type}, {methods},
                                   • "logo": URI or path to image, preferably
                                     small logo or icon. .png or .svg format is
                                     preferred.
+                    {attributes}  任意の文字列: 非公式のクライアントプロパティ
+                                  Map。推奨されるキー。:
+                                  • "website": クライアントホームページURL
+                                    (Githubリポジトリ等)
+                                  • "license": ライセンスの説明 ("Apache2"
+                                    "GPLv3", "MIT", …)
+                                  • "logo": 画像のURIまたはパス。.pngか.svgの小
+                                    さなロゴかアイコンが推奨されます。
 
 nvim_get_chan_info({chan})                              *nvim_get_chan_info()*
                 Get information about a channel.
+                チャンネルに関する情報を取得します。
 
                 Return: ~
                     Dictionary describing a channel, with these keys:
@@ -1723,16 +1865,44 @@ nvim_get_chan_info({chan})                              *nvim_get_chan_info()*
                     • "client" information about the client on the other end
                       of the RPC channel, if it has added it using
                       |nvim_set_client_info()|. (optional)
+                Return: ~
+                    これらのキーを持つチャンネルに関する辞書:
+                    • "stream" チャンネルの基礎となるストリーム。
+                      • "stdio" Nvimインスタンスのstdinとstdout。
+                      • "stderr" Nvimインスタンスのstde。
+                      • "socket" TCP/IPソケットまたは名前付きパイプ。
+                      • "job" stdioを介して通信を伴うjob。
+
+                    • "mode" チャンネルで取得したデータの解釈方法。
+                      • "bytes" 生データの送受信。
+                      • "terminal" |termina|インスタンスはASCIIシーケンスを解釈
+                        する。
+                      • "rpc" |RPC|通信がアクティブ。
+
+                    • "pty" 使用されている場合、疑似端末の名前(オプション)。
+                      POSIXシステムでは、これは/dev/pts/1のようなデバイスパスに
+                      なります。名前がわからない場合でもptyが使われていることを
+                      示すキーは存在します。これはWindowsでwinptyを使用したケー
+                      スです。
+                    • "buffer" 接続された|terminal|インスタンスを持つバッファ。
+                      (オプション)
+                    • "client" |nvim_set_client_info()|を使用してRPCチャンネル
+                      を追加した場合、反対側のクライアントに関する情報
+                      (オプション)
 
 nvim_list_chans()                                          *nvim_list_chans()*
                 Get information about all open channels.
+                開いているすべてのチャンネルに関する情報を取得します。
 
                 Return: ~
                     Array of Dictionaries, each describing a channel with the
                     format specified at |nvim_get_chan_info()|.
+                    |nvim_get_chan_info()|で指定された形式でチャンネルを記述す
+                    る辞書配列。
 
 nvim_call_atomic({calls})                                 *nvim_call_atomic()*
                 Calls many API methods atomically.
+                複数のAPIメソッドをアトミックに呼び出します。
 
                 This has two main usages:
                 1. To perform several requests from an async context
@@ -1742,11 +1912,20 @@ nvim_call_atomic({calls})                                 *nvim_call_atomic()*
                    have such side-effects, e.g. |:sleep| may wake timers).
                 2. To minimize RPC overhead (roundtrips) of a sequence of many
                    requests.
+                主に2つの使い方があります:
+                1. 非同期コンテキストから複数のリクエストをアトミックに実行しま
+                   す。つまり、再描画、他のクライアントからのRPCリクエスト、ユー
+                   ザー対話はありません。(しかし、APIメソッドは副作用を持つ
+                   autocommandやイベント処理を起動することがあります。例えば、
+                   |:sleep|はタイマーを起動することがあります。)
+                2. 多くのリクエストのRPCオーバーヘッド(往復)を最小限に抑えるため。
 
                 Parameters: ~
                     {calls}  an array of calls, where each call is described
                              by an array with two elements: the request name,
                              and an array of arguments.
+                    {calls}  呼び出す配列。2つの要素を持つ配列で記述される:
+                             リクエスト名と引数の配列。
 
                 Return: ~
                     Array of two elements. The first is an array of return
@@ -1756,10 +1935,16 @@ nvim_call_atomic({calls})                                 *nvim_call_atomic()*
                     error, the error type and the error message. If an error
                     occurred, the values from all preceding calls will still
                     be returned.
+                    2つの要素を持つ配列。1つ目は戻り値の配列です。2つ目はすべて
+                    の呼び出しが成功した場合はNILです。呼び出しがエラーになった
+                    場合、エラーが発生した0ベースのインデックス、エラーの種類、
+                    エラーメッセージの3つの要素を持つ配列になります。エラーが
+                    発生した場合でも、先行するすべての呼び出しから値が返されます。
 
                                                      *nvim_parse_expression()*
 nvim_parse_expression({expr}, {flags}, {highlight})
                 Parse a VimL expression.
+                VimL式をパースします。
 
                 Attributes: ~
                     {fast}
@@ -1767,6 +1952,7 @@ nvim_parse_expression({expr}, {flags}, {highlight})
                 Parameters: ~
                     {expr}       Expression to parse. Always treated as a
                                  single line.
+                    {expr}       パースする式。常に1行として扱われます。
                     {flags}      Flags:
                                  • "m" if multiple expressions in a row are
                                    allowed (only the first one will be
@@ -1783,6 +1969,18 @@ nvim_parse_expression({expr}, {flags}, {highlight})
                                  • "E" to parse like for "<C-r>=".
                                  • empty string for ":call".
                                  • "lm" to parse for ":let".
+                    {flags}      フラグ:
+                                 • "m" 複数の式を行内で使用できる場合。(最初の
+                                   式のみがパースされます。)
+                                 • "E" EOCトークンが許可されていない場合。(パー
+                                   スを停止するか、エラーも発生しますが演算子/ス
+                                   ペースとして認識され るかを決定します)
+                                 • "l" ":let"か":for"の左辺値でパースを開始する
+                                   必要がある場合。共通のフラグセット:
+                                 • "m" ":echo"のようにパースします。
+                                 • "E" "<C-r>="のようにパースします。
+                                 • ":call"の空の文字列。
+                                 • "lm" ":let"のパースをします。
                     {highlight}  If true, return value will also include
                                  "highlight" key containing array of 4-tuples
                                  (arrays) (Integer, Integer, Integer, String),
@@ -1791,166 +1989,260 @@ nvim_parse_expression({expr}, {flags}, {highlight})
                                  starting column and ending column (latter
                                  exclusive: one should highlight region
                                  [start_col, end_col)).
+                    {highlight}  trueの場合、"highlight"キーを含む4要素タプル(配
+                                 列)を返します(Integer, Integer, Integer,
+                                 String)。最初の3つはハイライトされた領域を定義
+                                 し、行、開始列、終了列を表します(後者は排他的:
+                                 領域をハイライトする必要があります[start_col,
+                                 end_col])。
 
                 Return: ~
-
                     • AST: top-level dictionary with these keys:
+                    • AST: これらのキーを持つトップレベル辞書:
                       • "error": Dictionary with error, present only if parser
                         saw some error. Contains the following keys:
                         • "message": String, error message in printf format,
                           translated. Must contain exactly one "%.*s".
                         • "arg": String, error message argument.
+                      • "error": エラーの辞書。パーサーがエラーを検出した場合の
+                        み存在します。次のキーが含まれます。:
+                        • "message": 文字列。printf形式に変換されたエラーメッセ
+                          ージ。"%.*s"を1つだけ含む必要があります。
+                        • "arg": 文字列。エラーメッセージ引数。
 
                       • "len": Amount of bytes successfully parsed. With flags
                         equal to "" that should be equal to the length of expr
                         string. (“Sucessfully parsed” here means “participated
                         in AST creation”, not “till the first error”.)
+                      • "len": 正常にパースされたバイト数。フラグが""の場合、
+                        expr文字列の長さと等しくなければなりません。
                       • "ast": AST, either nil or a dictionary with these
                         keys:
+                      • "ast": AST。nilまたはこれらのキーを持つ辞書:
                         • "type": node type, one of the value names from
                           ExprASTNodeType stringified without "kExprNode"
                           prefix.
+                        • "type": ノードタイプ。"kExprNode"接頭辞なしで文字列化
+                          されたExprASTNodeTypeの1つ。
                         • "start": a pair [line, column] describing where node
                           is "started" where "line" is always 0 (will not be 0
                           if you will be using nvim_parse_viml() on e.g.
                           ":let", but that is not present yet). Both elements
                           are Integers.
+                        • "start": ノードが"start"される場所を説明するペア
+                          [line, column] "line"は常に0(たとえば、|:let|で
+                          |nvim_parse_viml()|を使用する場合は0になりませんが、ま
+                          だ存在しません)。両方の要素は整数です。
                         • "len": “length” of the node. This and "start" are
                           there for debugging purposes primary (debugging
                           parser and providing debug information).
+                        • "len": ノードの長さ。これと"start"は主にデバッグ目的
+                          で使用されます。(パーサーのデバッグとデバッグ情報の提
+                          供)
                         • "children": a list of nodes described in top/"ast".
                           There always is zero, one or two children, key will
                           not be present if node has no children. Maximum
                           number of children may be found in node_maxchildren
                           array.
+                        • "children": "ast"で説明されているノードのリスト。常に
+                          0,1,2個の子があり、ノードに子がない場合キーは存在しま
+                          せん。子の最大数はnode_maxchildren配列にあります。
 
                     • Local values (present only for certain nodes):
+                    • ローカル値(特定のノードにのみ存在)
                       • "scope": a single Integer, specifies scope for
                         "Option" and "PlainIdentifier" nodes. For "Option" it
                         is one of ExprOptScope values, for "PlainIdentifier"
                         it is one of ExprVarScope values.
+                      • "scope": 1つの整数。"Option"と"PlainIdentifier"ノードの
+                        スコープを指定します。"Option"の場合ExprOptScope値の1つ
+                        になり、"PlainIdentifier"の場合ExprVarScope値の1つになり
+                        ます。
                       • "ident": identifier (without scope, if any), present
                         for "Option", "PlainIdentifier", "PlainKey" and
                         "Environment" nodes.
+                      • "ident":"Option", "PlainIdentifier", "PlainKey",
+                        "Environment"ノードに存在する識別子(スコープがない場合)。
                       • "name": Integer, register name (one character) or -1.
                         Only present for "Register" nodes.
+                      • "name":整数。レジスタ名(1文字)または-1。"Register"ノー
+                        ドにのみ存在します。
                       • "cmp_type": String, comparison type, one of the value
                         names from ExprComparisonType, stringified without
                         "kExprCmp" prefix. Only present for "Comparison"
                         nodes.
+                      • "cmp_type":文字列。比較タイプ、ExprComparisonTypeの値名
+                        の1つ。"kExprCmp"接頭辞なしで文字列化されています。
+                        "Comparison"ノードにのみ存在します。
                       • "ccs_strategy": String, case comparison strategy, one
                         of the value names from ExprCaseCompareStrategy,
                         stringified without "kCCStrategy" prefix. Only present
                         for "Comparison" nodes.
+                      • "ccs_strategy": 文字列。ケース比較方法。
+                        ExprCaseCompareStrategy値名の1つ。"kExprCmp"接頭辞なしで
+                        文字列化されています。
                       • "augmentation": String, augmentation type for
                         "Assignment" nodes. Is either an empty string, "Add",
                         "Subtract" or "Concat" for "=", "+=", "-=" or ".="
                         respectively.
+                      • "augmentation": 文字列。"Assignment"ノードの拡張タイプ。
+                        空の文字列, "=", "+=", "-=", ".="のずれかです。
                       • "invert": Boolean, true if result of comparison needs
                         to be inverted. Only present for "Comparison" nodes.
+                      • "invert": 真偽値。比較結果を反転する必要がある場合は
+                        true。"Comparison"ノードにのみ存在します。
                       • "ivalue": Integer, integer value for "Integer" nodes.
+                      • "ivalue": 整数。"Integer"ノードの整数値。
                       • "fvalue": Float, floating-point value for "Float"
                         nodes.
+                      • "fvalue": 実数。"Float"ノードの浮動小数点値。
                       • "svalue": String, value for "SingleQuotedString" and
                         "DoubleQuotedString" nodes.
+                      • "svalue":文字列。"SingleQuotedString"と
+                        "DoubleQuotedString"ノードの値。
 
 nvim__id({obj})                                                   *nvim__id()*
                 Returns object given as argument.
+                引数で与えられたオブジェクトを返します。
 
                 This API function is used for testing. One should not rely on
                 its presence in plugins.
+                このAPI関数はテストに使用されます。プラグインでの存在に依存すべ
+                き ではありません。
 
                 Parameters: ~
                     {obj}  Object to return.
+                    {obj}  返すオブジェクト。
 
                 Return: ~
                     its argument.
+                    引数。
 
 nvim__id_array({arr})                                       *nvim__id_array()*
                 Returns array given as argument.
+                引数で与えられた配列を返します。
 
                 This API function is used for testing. One should not rely on
                 its presence in plugins.
+                このAPI関数はテストに使用されます。プラグインでの存在に依存すべ
+                き ではありません。
 
                 Parameters: ~
                     {arr}  Array to return.
+                    {arr}  返す配列。
 
                 Return: ~
                     its argument.
+                    引数。
 
 nvim__id_dictionary({dct})                             *nvim__id_dictionary()*
                 Returns dictionary given as argument.
+                引数で与えられた辞書を返します。
 
                 This API function is used for testing. One should not rely on
                 its presence in plugins.
+                このAPI関数はテストに使用されます。プラグインでの存在に依存すべ
+                き ではありません。
 
                 Parameters: ~
                     {dct}  Dictionary to return.
+                    {dct}  返す辞書。
 
                 Return: ~
                     its argument.
+                    引数。
 
 nvim__id_float({flt})                                       *nvim__id_float()*
                 Returns floating-point value given as argument.
+                引数で与えられた実数を返します。
 
                 This API function is used for testing. One should not rely on
                 its presence in plugins.
+                このAPI関数はテストに使用されます。プラグインでの存在に依存すべ
+                き ではありません。
 
                 Parameters: ~
                     {flt}  Value to return.
+                    {flt}  返す値。
 
                 Return: ~
                     its argument.
+                    引数。
 
 nvim__stats()                                                  *nvim__stats()*
                 Gets internal stats.
+                内部統計を取得します。
 
                 Return: ~
                     Map of various internal stats.
+                    内部統計Map。
 
 nvim_list_uis()                                              *nvim_list_uis()*
                 Gets a list of dictionaries representing attached UIs.
+                接続されたUIを表す辞書のリストを取得します。
 
                 Return: ~
                     Array of UI dictionaries, each with these keys:
+                    UI辞書の配列。それぞれがこれらのキーを持ちます。:
                     • "height" Requested height of the UI
+                    • "height" 要求されたUIの高さ。
                     • "width" Requested width of the UI
+                    • "width" 要求されたUIの幅。
                     • "rgb" true if the UI uses RGB colors (false implies
                       |cterm-colors|)
+                    • "rgb" UIがRGBカラーを使用する場合はtrue。(falseは|cterm-colors|
+                      を意味します。)
                     • "ext_..." Requested UI extensions, see |ui-option|
+                    • "ext_..." 要求されたUI拡張。|ui-option|を参照。
                     • "chan" Channel id of remote UI (not present for TUI)
+                    • "chan" リモートUIのチャンネルid。(TUIには存在しません)
 
 nvim_get_proc_children({pid})                       *nvim_get_proc_children()*
                 Gets the immediate children of process `pid` .
+                プロセス`pid`の直接の子プロセスを取得します。
 
                 Return: ~
                     Array of child process ids, empty if process not found.
+                    子プロセスのidの配列。プロセスが見つからなければ空。
 
 nvim_get_proc({pid})                                         *nvim_get_proc()*
                 Gets info describing process `pid` .
+                プロセス`pid`に関する情報を取得します。
 
                 Return: ~
                     Map of process properties, or NIL if process not found.
+                    プロセスのプロパティMap。プロセスが見つからなければNIL。
 
                                                 *nvim_select_popupmenu_item()*
 nvim_select_popupmenu_item({item}, {insert}, {finish}, {opts})
                 Selects an item in the completion popupmenu.
+                補完ポップアップメニューで項目を選択します。
 
                 If |ins-completion| is not active this API call is silently
                 ignored. Useful for an external UI using |ui-popupmenu| to
                 control the popupmenu with the mouse. Can also be used in a
                 mapping; use <cmd> |:map-cmd| to ensure the mapping doesn't
                 end completion mode.
+                |ins-completion|が無効の場合、このAPIコールは静かに無視されます。
+                |ui-popupmenu|を使用してマウスでポップアップメニューを制御する外
+                部UIに便利です。マッピングでも使用できます。<cmd> |:map-cmd|を使
+                用してマッピングが補完モードを終了しないようにします。
 
                 Parameters: ~
                     {item}    Index (zero-based) of the item to select. Value
                               of -1 selects nothing and restores the original
                               text.
+                    {item}    選択する項目のインデックス(0ベース)。-1なら何も選
+                              択せず、元のテキストを復元します。
                     {insert}  Whether the selection should be inserted in the
                               buffer.
+                    {insert}  選択範囲をバッファに挿入するかどうか。
                     {finish}  Finish the completion and dismiss the popupmenu.
                               Implies `insert` .
+                    {finish}  補完を完了してポップアップメニューを閉じます。
+                              `insert`を意味します。
                     {opts}    Optional parameters. Reserved for future use.
+                    {opts}    オプションのパラメーター。将来のために予約済みです。
 
 nvim__inspect_cell({grid}, {row}, {col})                *nvim__inspect_cell()*
                 TODO: Documentation
