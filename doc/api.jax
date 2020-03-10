@@ -438,21 +438,26 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
     -1 if the event is part of the initial update after attaching.
     {lastline}は置換されていない最初の行番号を示す整数値。
     (例. {firstline}と{lastline}の範囲は、終端を含まない)
-    -- nekowasabi WIP
 
 
     {linedata} list of strings containing the contents of the new buffer
     lines. Newline characters are omitted; empty lines are sent as empty
     strings.
+    {linedata}は、新しいバッファのコンテンツを含む文字列のリストです。
+    新しい行の文字は省かれます; 空行は空の文字として扱われます。
 
     {more} boolean, true for a "multipart" change notification: the current
     change was chunked into multiple |nvim_buf_lines_event| notifications
     (e.g. because it was too big).
+    {more}は真偽値です。trueは複数箇所の文字変更の通知です: 現在のの変更は
+    複数の |nvim_buf_lines_event| 通知のなかにまとめられました。
+    (現在のの変更は大きすぎるためです)
 
 nvim_buf_changedtick_event[{buf}, {changedtick}]  *nvim_buf_changedtick_event*
 
   When |b:changedtick| was incremented but no text was changed. Relevant for
   undo/redo.
+  -- nekowasabi WIP
 
   Properties:~
     {buf} API buffer handle (buffer number)
