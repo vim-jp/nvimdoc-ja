@@ -459,23 +459,35 @@ nvim_buf_changedtick_event[{buf}, {changedtick}]  *nvim_buf_changedtick_event*
   undo/redo.
   |b:changedtick| がインクリメントされたがテキストの変更がなかった場合の、
   アンドゥ/リドゥに関連します。
-  -- nekowasabi WIP
 
   Properties:~
     {buf} API buffer handle (buffer number)
     {changedtick} new value of |b:changedtick| for the buffer
+    {buf} APIバッファハンドル（バッファ番号）
+    {changedtick} バッファのための |b:changedtick| の最新の値
 
 nvim_buf_detach_event[{buf}]                           *nvim_buf_detach_event*
 
   When buffer is detached (i.e. updates are disabled). Triggered explicitly by
   |nvim_buf_detach()| or implicitly in these cases:
+  バッファがデタッチしたとき（例. 更新が無効化された）のイベント。
+  |nvim_buf_detach()|による明示的なトリガ、または以下の暗黙的な場合:
+
   - Buffer was |abandon|ed and 'hidden' is not set.
+    バッファが廃棄され、'hidden'がセットされていない
+
   - Buffer was reloaded, e.g. with |:edit| or an external change triggered
     |:checktime| or 'autoread'.
+    |:edit|または|:checktime|または'autoread'による外部的な変更によって、バッファがリロードされたとき
+
   - Generally: whenever the buffer contents are unloaded from memory.
+    一般的に:
+    バッファの内容がメモリから廃棄されるときいつでもイベントが発火する
 
   Properties:~
     {buf} API buffer handle (buffer number)
+    {buf} APIバッファハンドル（バッファ番号）
+  -- nekowasabi WIP
 
 
 EXAMPLE ~
