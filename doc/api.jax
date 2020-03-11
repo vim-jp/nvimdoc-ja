@@ -457,6 +457,8 @@ nvim_buf_changedtick_event[{buf}, {changedtick}]  *nvim_buf_changedtick_event*
 
   When |b:changedtick| was incremented but no text was changed. Relevant for
   undo/redo.
+  |b:changedtick| がインクリメントされたがテキストの変更がなかった場合の、
+  アンドゥ/リドゥに関連します。
   -- nekowasabi WIP
 
   Properties:~
