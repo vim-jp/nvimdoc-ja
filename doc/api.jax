@@ -487,22 +487,29 @@ nvim_buf_detach_event[{buf}]                           *nvim_buf_detach_event*
   Properties:~
     {buf} API buffer handle (buffer number)
     {buf} APIバッファハンドル（バッファ番号）
-  -- nekowasabi WIP
 
 
 EXAMPLE ~
 
 Calling |nvim_buf_attach()| with send_buffer=true on an empty buffer, emits: >
+空のバッファ上で、send_buffer=trueとともに|nvim_buf_attach|呼ぶと、次の
+イベントが発生します。
   nvim_buf_lines_event[{buf}, {changedtick}, 0, -1, [""], v:false]
 
 User adds two lines to the buffer, emits: >
+ユーザがバッファに2行追加したら、次のイベントが発生します。
   nvim_buf_lines_event[{buf}, {changedtick}, 0, 0, ["line1", "line2"], v:false]
 
 User moves to a line containing the text "Hello world" and inserts "!", emits: >
+ユーザが"Hello world"を含む行に移動し、"!"を挿入したら、次のイベントが
+発生します。
   nvim_buf_lines_event[{buf}, {changedtick}, {linenr}, {linenr} + 1,
                        ["Hello world!"], v:false]
 
 User moves to line 3 and deletes 20 lines using "20dd", emits: >
+ユーザが3行目に移動して、"20dd"で20行を削除したら、次のイベントが
+発生します。
+-- nekowasabi WIP
   nvim_buf_lines_event[{buf}, {changedtick}, 2, 22, [], v:false]
 
 User selects lines 3-5 using |linewise-visual| mode and then types "p" to
