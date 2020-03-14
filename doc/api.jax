@@ -509,11 +509,13 @@ User moves to a line containing the text "Hello world" and inserts "!", emits: >
 User moves to line 3 and deletes 20 lines using "20dd", emits: >
 ユーザが3行目に移動して、"20dd"で20行を削除したら、次のイベントが
 発生します。
--- nekowasabi WIP
   nvim_buf_lines_event[{buf}, {changedtick}, 2, 22, [], v:false]
 
 User selects lines 3-5 using |linewise-visual| mode and then types "p" to
 paste a block of 6 lines, emits: >
+ユーザは|linewise-visual|モードで3-5行目を選択し、"p"を入力してから
+6行ペーストすると、次のイベントが発生します。
+-- nekowasabi WIP
   nvim_buf_lines_event[{buf}, {changedtick}, 2, 5,
     ['pasted line 1', 'pasted line 2', 'pasted line 3', 'pasted line 4',
      'pasted line 5', 'pasted line 6'],
