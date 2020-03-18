@@ -2297,18 +2297,27 @@ the buffer lines until it is reloaded (usually by opening the
 buffer again in a new window). API methods such as
 |nvim_buf_get_lines()| and |nvim_buf_line_count()| will be
 affected.
+バッファは|:bunload|または、|'bufhidden'|によってアンロードできます。
+バッファがアンロードされると、ファイルの内容はメモリから開放され、リロードされる
+(通常、新しいウィンドウで再度開く)までバッファを操作できません。
+|nvim_buf_get_lines()|や|nvim_buf_line_count()|などのAPIメソッドが影響を受けます。
 
 You can use |nvim_buf_is_loaded()| or |nvim_buf_line_count()|
 to check whether a buffer is loaded.
+|nvim_buf_is_loaded()|または|nvim_buf_line_count()|を使用してバッファがロードさ
+れているかどうかを確認できます。
 
 nvim_buf_line_count({buffer})                          *nvim_buf_line_count()*
                 Gets the buffer line count
+                バッファの行数を取得します。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                    {buffer}  バッファハンドル。カレントバッファの場合は0。
 
                 Return: ~
                     Line count, or 0 for unloaded buffer. |api-buffer|
+                    行数。アンロードされたバッファの場合は0。|api-buffer|
 
 nvim_buf_attach({buffer}, {send_buffer}, {opts})           *nvim_buf_attach()*
                 Activates buffer-update events on a channel, or as Lua
@@ -2382,23 +2391,36 @@ nvim_buf_detach({buffer})                                  *nvim_buf_detach()*
                                                         *nvim_buf_get_lines()*
 nvim_buf_get_lines({buffer}, {start}, {end}, {strict_indexing})
                 Gets a line-range from the buffer.
+                バッファから行範囲を取得します。
 
                 Indexing is zero-based, end-exclusive. Negative indices are
                 interpreted as length+1+index: -1 refers to the index past the
                 end. So to get the last element use start=-2 and end=-1.
+                0ベースのインデックスで最後は排他的です。負のインデックスは
+                長さ+1+インデックスとして解釈されます。-1は末尾を越えたインデッ
+                クスを表します。したがって、最後の要素を取得するにはstart=-2,
+                end=-1を使用します。
 
                 Out-of-bounds indices are clamped to the nearest valid value,
                 unless `strict_indexing` is set.
+                範囲外のインデックスは`strict_indexing`が指定されていない限り、
+                最も近い有効な値に固定されます。
 
                 Parameters: ~
                     {buffer}           Buffer handle, or 0 for current buffer
+                    {buffer}           バッファハンドル。カレントバッファの場合
+                                       は0。
                     {start}            First line index
+                    {start}            最初の行のインデックス。
                     {end}              Last line index (exclusive)
+                    {end}              最後の行のインデックス。(排他的)
                     {strict_indexing}  Whether out-of-bounds should be an
                                        error.
+                    {strict_indexing}  範囲外をエラーにするかどうか。
 
                 Return: ~
                     Array of lines, or empty array for unloaded buffer.
+                    行の配列。アンロードされたバッファの場合は空の配列。
 
                                                         *nvim_buf_set_lines()*
 nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
