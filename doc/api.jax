@@ -558,14 +558,19 @@ UTF-32 and UTF-16 sizes of the deleted region is also passed as additional
 arguments {old_utf32_size} and {old_utf16_size}.
 {old_byte_size}は、{lastline}後の最新の追加行を含む、{firstline}から
 {lastline}の範囲で置換された内容の合計バイト数です。
--- nekowasabi WIP
+もし`utf_sizes`が|nvim_buf_attach()|の引数内でtrueに設定されたならば、
+削除された領域のUTF-32とUTF-16サイズもまた{old_utf32_size}と{old_utf16_size}の
+追加引数として許可される。
 
 "on_changedtick" is invoked when |b:changedtick| was incremented but no text
 was changed. The parameters recieved are ("changedtick", {buf}, {changedtick}).
+テキストの変更はないけれど|b:changedtick|がインクリメントされたとき、
+"on_changedtick"は呼び出される。
 
                                                         *api-lua-detach*
 In-process Lua callbacks can detach by returning `true`. This will detach all
 callbacks attached with the same |nvim_buf_attach| call.
+-- nekowasabi WIP
 
 
 ==============================================================================
