@@ -570,7 +570,9 @@ was changed. The parameters recieved are ("changedtick", {buf}, {changedtick}).
                                                         *api-lua-detach*
 In-process Lua callbacks can detach by returning `true`. This will detach all
 callbacks attached with the same |nvim_buf_attach| call.
--- nekowasabi WIP
+処理中において、Luaのコールバックは`true`の返却によってデタッチできる。
+このことは同じ|nvim_buf_attach|コールとともアタッチされたすべてのコールバックを
+デタッチします。
 
 
 ==============================================================================
@@ -2435,6 +2437,7 @@ nvim_buf_get_lines({buffer}, {start}, {end}, {strict_indexing})
 nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
                    {replacement})
                 Sets (replaces) a line-range in the buffer.
+-- nekowasabi WIP
 
                 Indexing is zero-based, end-exclusive. Negative indices are
                 interpreted as length+1+index: -1 refers to the index past the
