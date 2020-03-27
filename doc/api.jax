@@ -2437,6 +2437,7 @@ nvim_buf_get_lines({buffer}, {start}, {end}, {strict_indexing})
 nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
                    {replacement})
                 Sets (replaces) a line-range in the buffer.
+                バッファに範囲行をセット（置換）します。
 -- nekowasabi WIP
 
                 Indexing is zero-based, end-exclusive. Negative indices are
