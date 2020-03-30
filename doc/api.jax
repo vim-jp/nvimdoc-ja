@@ -2438,12 +2438,14 @@ nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
                    {replacement})
                 Sets (replaces) a line-range in the buffer.
                 バッファに範囲行をセット（置換）します。
--- nekowasabi WIP
 
                 Indexing is zero-based, end-exclusive. Negative indices are
                 interpreted as length+1+index: -1 refers to the index past the
                 end. So to change or delete the last element use start=-2 and
                 end=-1.
+                インデックスは0ベースで、終端を含まない。負のインデックスは、
+                長さ+1+インデックスとして解釈されます。
+                -- nekowasabi WIP
 
                 To insert lines at a given index, set `start` and `end` to the
                 same index. To delete a range of lines, set `replacement` to
@@ -2539,7 +2541,7 @@ nvim_buf_get_commands({buffer}, {opts})              *nvim_buf_get_commands()*
                     Map of maps describing commands.
 
 nvim_buf_set_var({buffer}, {name}, {value})               *nvim_buf_set_var()*
-                Sets a buffer-scoped (b:) variable
+ nvimdoc               Sets a buffer-scoped (b:) variable
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
