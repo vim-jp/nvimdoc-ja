@@ -2454,10 +2454,12 @@ nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
                 与えられたインデックスに行を挿入するために、同じインデックスに
                 始点と終点をセットします。範囲行を削除するためには、空の配列に
                 置換します。
-                -- nekowasabi WIP
 
                 Out-of-bounds indices are clamped to the nearest valid value,
                 unless `strict_indexing` is set.
+                範囲外のインデックスは`strict_indexing`が指定されていない限り、
+                最も近い有効な値に固定されます。
+                -- nekowasabi WIP
 
                 Parameters: ~
                     {buffer}           Buffer handle, or 0 for current buffer
