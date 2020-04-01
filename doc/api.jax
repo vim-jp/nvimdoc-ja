@@ -2444,12 +2444,17 @@ nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
                 end. So to change or delete the last element use start=-2 and
                 end=-1.
                 インデックスは0ベースで、終端を含まない。負のインデックスは、
-                長さ+1+インデックスとして解釈されます。
-                -- nekowasabi WIP
+                長さ+1+インデックスとして解釈されます。-1は末尾を越えたインデッ
+                クスを表します。したがって、最後の要素を取得するにはstart=-2,
+                end=-1を使用します。
 
                 To insert lines at a given index, set `start` and `end` to the
                 same index. To delete a range of lines, set `replacement` to
                 an empty array.
+                与えられたインデックスに行を挿入するために、同じインデックスに
+                始点と終点をセットします。範囲行を削除するためには、空の配列に
+                置換します。
+                -- nekowasabi WIP
 
                 Out-of-bounds indices are clamped to the nearest valid value,
                 unless `strict_indexing` is set.
