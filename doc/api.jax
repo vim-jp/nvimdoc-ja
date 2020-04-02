@@ -2459,12 +2459,15 @@ nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
                 unless `strict_indexing` is set.
                 範囲外のインデックスは`strict_indexing`が指定されていない限り、
                 最も近い有効な値に固定されます。
-                -- nekowasabi WIP
 
                 Parameters: ~
                     {buffer}           Buffer handle, or 0 for current buffer
+                                       バッファハンドルまたは現在のバッファ番号
                     {start}            First line index
+                                       最初の行のインデック
                     {end}              Last line index (exclusive)
+                                       最終行のインデックス（排他的）
+                -- nekowasabi WIP
                     {strict_indexing}  Whether out-of-bounds should be an
                                        error.
                     {replacement}      Array of lines to use as replacement
