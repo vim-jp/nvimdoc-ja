@@ -2472,6 +2472,7 @@ nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
                                        インデックス範囲外をエラーにすべきか
                                        どうかの判定
                     {replacement}      Array of lines to use as replacement
+                                       置換として利用するための文字行の配列
                     --- nekowasabi WIP
 
 nvim_buf_get_offset({buffer}, {index})                 *nvim_buf_get_offset()*
