@@ -2467,10 +2467,12 @@ nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
                                        最初の行のインデック
                     {end}              Last line index (exclusive)
                                        最終行のインデックス（排他的）
-                -- nekowasabi WIP
                     {strict_indexing}  Whether out-of-bounds should be an
                                        error.
+                                       インデックス範囲外をエラーにすべきか
+                                       どうかの判定
                     {replacement}      Array of lines to use as replacement
+                    --- nekowasabi WIP
 
 nvim_buf_get_offset({buffer}, {index})                 *nvim_buf_get_offset()*
                 Returns the byte offset of a line (0-indexed). |api-indexing|
