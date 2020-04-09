@@ -2555,89 +2555,126 @@ nvim_buf_get_commands({buffer}, {opts})              *nvim_buf_get_commands()*
 
 nvim_buf_set_var({buffer}, {name}, {value})               *nvim_buf_set_var()*
  nvimdoc               Sets a buffer-scoped (b:) variable
+                バッファ変数(b:)をセットします。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                    {buffer}  バッファハンドル。カレントバッファは0。
                     {name}    Variable name
+                    {name}    変数名。
                     {value}   Variable value
+                    {value}   変数の値。
 
 nvim_buf_del_var({buffer}, {name})                        *nvim_buf_del_var()*
                 Removes a buffer-scoped (b:) variable
+                バッファ変数(b:)を削除します。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                    {buffer}  バッファハンドル。カレントバッファは0。
                     {name}    Variable name
+                    {name}    変数名。
 
 nvim_buf_get_option({buffer}, {name})                  *nvim_buf_get_option()*
                 Gets a buffer option value
+                バッファオプションの値を取得します。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                    {buffer}  バッファハンドル。カレントバッファは0。
                     {name}    Option name
+                    {name}    オプション名。
 
                 Return: ~
                     Option value
+                    オプションの値。
 
 nvim_buf_set_option({buffer}, {name}, {value})         *nvim_buf_set_option()*
                 Sets a buffer option value. Passing 'nil' as value deletes the
                 option (only works if there's a global fallback)
+                バッファオプションをセットします。値として'nil'を渡すとオプショ
+                ンが削除されます(グローバルフォールバッグがある場合にのみ)。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                    {buffer}  バッファハンドル。カレントバッファは0。
                     {name}    Option name
+                    {name}    オプション名。
                     {value}   Option value
+                    {value}   オプションの値。
 
 nvim_buf_get_name({buffer})                              *nvim_buf_get_name()*
                 Gets the full file name for the buffer
+                バッファのフルパスを取得します。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                    {buffer}  バッファハンドル。カレントバッファは0。
 
                 Return: ~
                     Buffer name
+                    バッファ名。
 
 nvim_buf_set_name({buffer}, {name})                      *nvim_buf_set_name()*
                 Sets the full file name for a buffer
+                バッファのフルパスをセットします。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                    {buffer}  バッファハンドル。カレントバッファは0。
                     {name}    Buffer name
+                    {name}    バッファ名。
 
 nvim_buf_is_loaded({buffer})                            *nvim_buf_is_loaded()*
                 Checks if a buffer is valid and loaded. See |api-buffer| for
                 more info about unloaded buffers.
+                バッファが有効でロードされているかチェックします。アンロードされ
+                たバッファについては|api-buffer|を参照してください。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                    {buffer}  バッファハンドル。カレントバッファは0。
 
                 Return: ~
                     true if the buffer is valid and loaded, false otherwise.
+                    バッファが有効でロードされている場合はtrue。それ以外はfalse。
 
 nvim_buf_is_valid({buffer})                              *nvim_buf_is_valid()*
                 Checks if a buffer is valid.
+                バッファが有効かどうかチェックします。
 
                 Note:
                     Even if a buffer is valid it may have been unloaded. See
                     |api-buffer| for more info about unloaded buffers.
+                    バッファが有効であってもアンロードされているかもしれません。
+                    アンロードされたバッファについては|api-buffer|を参照してくだ
+                    さい。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                    {buffer}  バッファハンドル。カレントバッファは0。
 
                 Return: ~
                     true if the buffer is valid, false otherwise.
+                    バッファが有効の場合はtrue。それ以外はfalse。
 
 nvim_buf_get_mark({buffer}, {name})                      *nvim_buf_get_mark()*
                 Return a tuple (row,col) representing the position of the
                 named mark.
+                マーク位置のタプル(row,col)を返します。
 
                 Marks are (1,0)-indexed. |api-indexing|
+                マークは(1,0)から始まります。|api-indexing|
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                    {buffer}  バッファハンドル。カレントバッファは0。
                     {name}    Mark name
+                    {name}    マーク名。
 
                 Return: ~
                     (row, col) tuple
+                    (row, col) タプル。
 
                                                 *nvim_buf_get_extmark_by_id()*
 nvim_buf_get_extmark_by_id({buffer}, {ns_id}, {id})
