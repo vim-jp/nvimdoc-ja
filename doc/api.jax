@@ -2473,16 +2473,24 @@ nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
                                        どうかの判定
                     {replacement}      Array of lines to use as replacement
                                        置換として利用するための文字行の配列
-                    --- nekowasabi WIP
 
 nvim_buf_get_offset({buffer}, {index})                 *nvim_buf_get_offset()*
                 Returns the byte offset of a line (0-indexed). |api-indexing|
+		行のバイトオフセットを返却します（0から始まるインデックス）
+		|api-indexing|を参照
 
                 Line 1 (index=0) has offset 0. UTF-8 bytes are counted. EOL is
                 one byte. 'fileformat' and 'fileencoding' are ignored. The
                 line index just after the last line gives the total byte-count
                 of the buffer. A final EOL byte is counted if it would be
                 written, see 'eol'.
+		1行目（index=0）は、オフセット0です。UTF-8のバイトはカウントされ
+		ます。EOLは1バイトです。
+		'fileformat'と'fileencoding'は無視されます。
+		行のインデックスは、最終行の直後までのバッファの合計バイト数を
+		与えます。最後のEOLバイトは、EOLが書き込まれていればカウント
+		されます。'eol'を参照。
+                    --- nekowasabi WIP
 
                 Unlike |line2byte()|, throws error for out-of-bounds indexing.
                 Returns -1 for unloaded buffer.
