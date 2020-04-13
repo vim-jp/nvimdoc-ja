@@ -2490,10 +2490,12 @@ nvim_buf_get_offset({buffer}, {index})                 *nvim_buf_get_offset()*
 		行のインデックスは、最終行の直後までのバッファの合計バイト数を
 		与えます。最後のEOLバイトは、EOLが書き込まれていればカウント
 		されます。'eol'を参照。
-                    --- nekowasabi WIP
 
                 Unlike |line2byte()|, throws error for out-of-bounds indexing.
                 Returns -1 for unloaded buffer.
+                |line2byte()|と異なり、インデックス範囲外の例外を投げます。
+                読み込まれていないバッファに-1を返却します。
+                    --- nekowasabi WIP
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
