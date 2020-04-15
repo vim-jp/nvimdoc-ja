@@ -2462,7 +2462,7 @@ nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
 
                 Parameters: ~
                     {buffer}           Buffer handle, or 0 for current buffer
-                                       バッファハンドルまたは現在のバッファ番号
+                                       バッファハンドルまたは現在のバッファの場合は0。
                     {start}            First line index
                                        最初の行のインデック
                     {end}              Last line index (exclusive)
@@ -2495,11 +2495,13 @@ nvim_buf_get_offset({buffer}, {index})                 *nvim_buf_get_offset()*
                 Returns -1 for unloaded buffer.
                 |line2byte()|と異なり、インデックス範囲外の例外を投げます。
                 読み込まれていないバッファに-1を返却します。
-                    --- nekowasabi WIP
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                              バッファハンドルまたは現在のバッファの場合は0。
                     {index}   Line index
+                              行インデックス
+                    --- nekowasabi WIP
 
                 Return: ~
                     Integer byte offset, or -1 for unloaded buffer.
