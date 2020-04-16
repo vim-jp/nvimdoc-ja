@@ -2513,20 +2513,28 @@ nvim_buf_get_var({buffer}, {name})                        *nvim_buf_get_var()*
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
-                 --- nekowasabi WIP
+                              バッファハンドルまたは現在のバッファの場合は0。
                     {name}    Variable name
+                              変数名
 
                 Return: ~
                     Variable value
+                    変数名
 
 nvim_buf_get_changedtick({buffer})                *nvim_buf_get_changedtick()*
                 Gets a changed tick of a buffer
+                バッファの変更タイミングを取得します。
+
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                              バッファハンドルまたは現在のバッファの場合は0。
 
                 Return: ~
                     `b:changedtick` value.
+                    `b:changedtick`の値
+                 --- nekowasabi WIP
+
 
 nvim_buf_get_keymap({buffer}, {mode})                  *nvim_buf_get_keymap()*
                 Gets a list of buffer-local |mapping| definitions.
