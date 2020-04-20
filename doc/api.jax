@@ -2533,15 +2533,18 @@ nvim_buf_get_changedtick({buffer})                *nvim_buf_get_changedtick()*
                 Return: ~
                     `b:changedtick` value.
                     `b:changedtick`の値
-                 --- nekowasabi WIP
 
 
 nvim_buf_get_keymap({buffer}, {mode})                  *nvim_buf_get_keymap()*
                 Gets a list of buffer-local |mapping| definitions.
+                バッファローカルなマッピングを取得します。
 
                 Parameters: ~
                     {mode}    Mode short-name ("n", "i", "v", ...)
+                              モードの短縮名 ("n", "i", "v", ...)
                     {buffer}  Buffer handle, or 0 for current buffer
+                              バッファハンドルまたは現在のバッファの場合は0。
+                 --- nekowasabi WIP
 
                 Return: ~
                     Array of maparg()-like dictionaries describing mappings.
