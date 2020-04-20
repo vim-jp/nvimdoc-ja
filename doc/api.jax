@@ -2544,18 +2544,22 @@ nvim_buf_get_keymap({buffer}, {mode})                  *nvim_buf_get_keymap()*
                               モードの短縮名 ("n", "i", "v", ...)
                     {buffer}  Buffer handle, or 0 for current buffer
                               バッファハンドルまたは現在のバッファの場合は0。
-                 --- nekowasabi WIP
 
                 Return: ~
                     Array of maparg()-like dictionaries describing mappings.
                     The "buffer" key holds the associated buffer handle.
+                    マッピングについて記述した、maparg()-likeの辞書配列。
+                    バッファキーは、バッファハンドルと連携したものを保持します。
 
                                                        *nvim_buf_set_keymap()*
 nvim_buf_set_keymap({buffer}, {mode}, {lhs}, {rhs}, {opts})
                 Sets a buffer-local |mapping| for the given mode.
+                与えられたモードに対して、バッファローカルなマッピングを設定します。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                              バッファハンドル。カレントバッファは0。
+                 --- nekowasabi WIP
 
                 See also: ~
                     |nvim_set_keymap()|
