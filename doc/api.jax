@@ -2587,7 +2587,6 @@ nvim_buf_get_commands({buffer}, {opts})              *nvim_buf_get_commands()*
                 Return: ~
                     Map of maps describing commands.
                     コマンドについて記述されたマッピング
-                 --- nekowasabi WIP
 
 nvim_buf_set_var({buffer}, {name}, {value})               *nvim_buf_set_var()*
  nvimdoc               Sets a buffer-scoped (b:) variable
@@ -2919,15 +2918,24 @@ nvim_buf_add_highlight({buffer}, {ns_id}, {hl_group}, {line},
 nvim_buf_clear_namespace({buffer}, {ns_id}, {line_start}, {line_end})
                 Clears namespaced objects (highlights, extmarks, virtual text)
                 from a region.
+                リージョンから、名前空間内のオブジェクト（highlights, extmarks,
+                virtual text）をクリアします。
 
                 Lines are 0-indexed. |api-indexing| To clear the namespace in
                 the entire buffer, specify line_start=0 and line_end=-1.
+                行は0インデックスです。|api-indexing| バッファ全体の名前空間を
+                クリアするために、line_startパラメータを0、line_endパラメータを
+                -1とします。
 
                 Parameters: ~
                     {buffer}      Buffer handle, or 0 for current buffer
+                                  バッファハンドルまたは現在のバッファの場合は0
                     {ns_id}       Namespace to clear, or -1 to clear all
                                   namespaces.
+                                  クリアする名前空間または、すべてクリアするときは-1
                     {line_start}  Start of range of lines to clear
+                                  クリアする行範囲の先頭
+                 --- nekowasabi WIP
                     {line_end}    End of range of lines to clear (exclusive)
                                   or -1 to clear to end of buffer.
 
