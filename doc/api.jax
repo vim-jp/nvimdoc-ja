@@ -2559,29 +2559,35 @@ nvim_buf_set_keymap({buffer}, {mode}, {lhs}, {rhs}, {opts})
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
                               バッファハンドル。カレントバッファは0。
-                 --- nekowasabi WIP
 
                 See also: ~
                     |nvim_set_keymap()|
 
 nvim_buf_del_keymap({buffer}, {mode}, {lhs})           *nvim_buf_del_keymap()*
                 Unmaps a buffer-local |mapping| for the given mode.
+                与えられたモードに対して、バッファローカルなマッピングを解除します。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                              バッファハンドル。カレントバッファは0。
 
                 See also: ~
                     |nvim_del_keymap()|
 
 nvim_buf_get_commands({buffer}, {opts})              *nvim_buf_get_commands()*
                 Gets a map of buffer-local |user-commands|.
+                バッファローカルなユーザコマンドのマッピングを取得します。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                              バッファハンドル。カレントバッファは0。
                     {opts}    Optional parameters. Currently not used.
+                              オプションのパラメータ。現在は使われていない。
 
                 Return: ~
                     Map of maps describing commands.
+                    コマンドについて記述されたマッピング
+                 --- nekowasabi WIP
 
 nvim_buf_set_var({buffer}, {name}, {value})               *nvim_buf_set_var()*
  nvimdoc               Sets a buffer-scoped (b:) variable
