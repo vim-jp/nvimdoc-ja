@@ -2509,7 +2509,7 @@ nvim_buf_get_offset({buffer}, {index})                 *nvim_buf_get_offset()*
 
 nvim_buf_get_var({buffer}, {name})                        *nvim_buf_get_var()*
                 Gets a buffer-scoped (b:) variable.
-                バッファローカルな変数を取得します　。
+                バッファローカルな変数を取得します。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
@@ -2877,7 +2877,7 @@ nvim_buf_add_highlight({buffer}, {ns_id}, {hl_group}, {line},
                 してネームスペースにハイライトを追加します。同じネームスペースの
                 すべてのハイライトは|nvim_buf_clear_namespace()|を1回呼び出すだ
                 けでクリアできます。ハイライトがAPI呼び出しで削除されない場合は、
-                `ns_id = ー1`を渡します。
+                `ns_id = -1`を渡します。
 
                 As a shorthand, `ns_id = 0` can be used to create a new
                 namespace for the highlight, the allocated id is then
@@ -2942,12 +2942,17 @@ nvim_buf_clear_namespace({buffer}, {ns_id}, {line_start}, {line_end})
                                                  *nvim_buf_set_virtual_text()*
 nvim_buf_set_virtual_text({buffer}, {ns_id}, {line}, {chunks}, {opts})
                 Set the virtual text (annotation) for a buffer line.
+                バッファ行のvirtual text(アノテーション)をセットします。
 
                 By default (and currently the only option) the text will be
                 placed after the buffer text. Virtual text will never cause
                 reflow, rather virtual text will be truncated at the end of
                 the screen line. The virtual text will begin one cell
                 (|lcs-eol| or space) after the ordinary text.
+                デフォルト(現在では唯一のオプション)では、テキストはバッファテキ
+                ストの後に配置されます。virtual textはリフローを起さず、画面の行
+                末で切り捨てられます。virtual textは通常のテキストの後のセル(
+                |lcs-eol|またはスペース)から始まります。
 
                 Namespaces are used to support batch deletion/updating of
                 virtual text. To create a namespace, use
@@ -2957,46 +2962,76 @@ nvim_buf_set_virtual_text({buffer}, {ns_id}, {line}, {chunks}, {opts})
                 |nvim_buf_add_highlight|, both can then be cleared with a
                 single call to |nvim_buf_clear_namespace|. If the virtual text
                 never will be cleared by an API call, pass `ns_id = -1` .
+                ネームスペースはvirtual textを一括で削除/更新するために使用され
+                ます。ネームスペースを作成するには|nvim_create_namespace()|を使
+                用します。virtual textは|nvim_buf_clear_namespace()|を使用してク
+                リアされます。virtual textと|nvim_buf_add_highlight()|によって追
+                加されたハイライトは同じ`ns_id`を使用でき、両方を1回の
+                |nvim_buf_clear_namespace()|呼び出しでクリアできます。
+                virtual textがAPI呼び出しで削除されない場合は、`ns_id = -1`を渡
+                します。
 
                 As a shorthand, `ns_id = 0` can be used to create a new
                 namespace for the virtual text, the allocated id is then
                 returned.
+                省略形として、`ns_id = 0`を使用して新しいネームスペースを作成
+                でき、割り当てられたidが返されます。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                    {buffer}  バッファハンドル。カレントバッファは0。
                     {ns_id}   Namespace to use or 0 to create a namespace, or
                               -1 for a ungrouped annotation
+                    {ns_id}   使用するネームスペース。ネームスペースを作成する場
+                              合は0。グループ化されていない場合は-1。
                     {line}    Line to annotate with virtual text
                               (zero-indexed)
+                    {line}    virtual textでアノテーションをつける行(0インデック
+                              ス)
                     {chunks}  A list of [text, hl_group] arrays, each
                               representing a text chunk with specified
                               highlight. `hl_group` element can be omitted for
                               no highlight.
+                    {chunks}  配列[text, hi_group]のリスト。それぞれ指定されたハ
+                              イライト付きのテキストチャンクを表します。
+                              `hi_group`要素はハイライトしない場合省略できます。
                     {opts}    Optional parameters. Currently not used.
+                    {opts}    オプションパラメーター。現在は未使用。
 
                 Return: ~
                     The ns_id that was used
+                    使用されたns_id。
 
 nvim_buf_get_virtual_text({buffer}, {lnum})      *nvim_buf_get_virtual_text()*
                 Get the virtual text (annotation) for a buffer line.
+                バッファ行のvirtual text(アノテーション)を取得します。
 
                 The virtual text is returned as list of lists, whereas the
                 inner lists have either one or two elements. The first element
                 is the actual text, the optional second element is the
                 highlight group.
+                virtual textはリストのリストとして返されますが内部のリストには1
+                つまたは2つの要素があります。1つ目の要素は実際のテキストで、2つ
+                目の要素はハイライトグループです。
 
                 The format is exactly the same as given to
                 nvim_buf_set_virtual_text().
+                フォーマットは|nvim_set_virtual_text()|に指定されたものと同じで
+                す。
 
                 If there is no virtual text associated with the given line, an
                 empty list is returned.
+                指定された行にvirtual textがない場合、空のリストが返されます。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
+                    {buffer}  バッファハンドル。カレントバッファは0。
                     {line}    Line to get the virtual text from (zero-indexed)
+                    {line}    virtual textを取得する行(0インデックス)。
 
                 Return: ~
                     List of virtual text chunks
+                    virtual textチャンクのリスト。
 
 nvim__buf_stats({buffer})                                  *nvim__buf_stats()*
                 TODO: Documentation
@@ -3007,152 +3042,212 @@ Window Functions                                                  *api-window*
 
 nvim_win_get_buf({window})                                *nvim_win_get_buf()*
                 Gets the current buffer in a window
+                ウィンドウ内のカレントバッファを取得します。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
 
                 Return: ~
                     Buffer handle
+                    バッファハンドル。
 
 nvim_win_set_buf({window}, {buffer})                      *nvim_win_set_buf()*
                 Sets the current buffer in a window, without side-effects
+                副作用なしで、ウィンドウのカレントバッファをセットします。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
                     {buffer}  Buffer handle
+                    {buffer}  バッファハンドル。
 
 nvim_win_get_cursor({window})                          *nvim_win_get_cursor()*
                 Gets the (1,0)-indexed cursor position in the window.
                 |api-indexing|
-
-                Parameters: ~
-                    {window}  Window handle, or 0 for current window
-
-                Return: ~
-                    (row, col) tuple
-
-nvim_win_set_cursor({window}, {pos})                   *nvim_win_set_cursor()*
-                Sets the (1,0)-indexed cursor position in the window.
+                ウィンドウの(1,0)インデックスなカーソル位置を取得します。
                 |api-indexing|
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
-                    {pos}     (row, col) tuple representing the new position
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
 
-nvim_win_get_height({window})                          *nvim_win_get_height()*
-                Gets the window height
+                Return: ~
+                    (row, col) tuple
+                    (row, col)タプル。
+
+nvim_win_set_cursor({window}, {pos})                   *nvim_win_set_cursor()*
+                Sets the (1,0)-indexed cursor position in the window.
+                |api-indexing|
+                ウィンドウの(1,0)インデックスなカーソル位置をセットします。
+                |api-indexing|
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
+                    {pos}     (row, col) tuple representing the new position
+                    {pos}     新しい位置を表す(row, col)タプル。
+
+nvim_win_get_height({window})                          *nvim_win_get_height()*
+                Gets the window height
+                ウィンドウの高さを取得します。
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
 
                 Return: ~
                     Height as a count of rows
+                    行数としての高さ。
 
 nvim_win_set_height({window}, {height})                *nvim_win_set_height()*
                 Sets the window height. This will only succeed if the screen
                 is split horizontally.
+                ウィンドウの高さを設定します。画面が水平分割されている場合にのみ
+                成功します。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
                     {height}  Height as a count of rows
+                    {height}  行数としての高さ。
 
 nvim_win_get_width({window})                            *nvim_win_get_width()*
                 Gets the window width
+                ウィンドウ幅を取得します。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
 
                 Return: ~
                     Width as a count of columns
+                    列数としての幅。
 
 nvim_win_set_width({window}, {width})                   *nvim_win_set_width()*
                 Sets the window width. This will only succeed if the screen is
                 split vertically.
+                ウィンドウ幅を設定します。画面が垂直分割されている場合にのみ成功
+                します。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
                     {width}   Width as a count of columns
+                    {width}   列数としての幅。
 
 nvim_win_get_var({window}, {name})                        *nvim_win_get_var()*
                 Gets a window-scoped (w:) variable
+                ウィンドウローカル(w:)な変数を取得します。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
                     {name}    Variable name
+                    {name}    変数名。
 
                 Return: ~
                     Variable value
+                    変数の値。
 
 nvim_win_set_var({window}, {name}, {value})               *nvim_win_set_var()*
                 Sets a window-scoped (w:) variable
+                ウィンドウローカル(w:)な変数をセットします。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
                     {name}    Variable name
+                    {name}    変数名。
                     {value}   Variable value
+                    {value}   変数の値。
 
 nvim_win_del_var({window}, {name})                        *nvim_win_del_var()*
                 Removes a window-scoped (w:) variable
+                ウィンドウローカル(w:)な変数を削除します。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
                     {name}    Variable name
+                    {name}    変数名。
 
 nvim_win_get_option({window}, {name})                  *nvim_win_get_option()*
                 Gets a window option value
+                ウィンドウオプションの値を取得します。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
                     {name}    Option name
+                    {name}    オプション名。
 
                 Return: ~
                     Option value
+                    オプションの値。
 
 nvim_win_set_option({window}, {name}, {value})         *nvim_win_set_option()*
                 Sets a window option value. Passing 'nil' as value deletes the
                 option(only works if there's a global fallback)
+                ウィンドウオプションをセットします。'nil'が値として渡されるとオ
+                プションが削除されます。(グローバルフォールバックがある場合のみ)
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
                     {name}    Option name
+                    {name}    オプション名。
                     {value}   Option value
+                    {value}   オプションの値。
 
 nvim_win_get_position({window})                      *nvim_win_get_position()*
                 Gets the window position in display cells. First position is
                 zero.
+                表示セル内のウィンドウ位置を取得します。最初の位置は0です。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
 
                 Return: ~
                     (row, col) tuple with the window position
+                    ウィンドウ位置の(row, col)タプル。
 
 nvim_win_get_tabpage({window})                        *nvim_win_get_tabpage()*
                 Gets the window tabpage
+                ウィンドウのタブページを取得します。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
 
                 Return: ~
                     Tabpage that contains the window
+                    ウィンドウを含むタブページ。
 
 nvim_win_get_number({window})                          *nvim_win_get_number()*
                 Gets the window number
+                ウィンドウ番号を取得します。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
 
                 Return: ~
                     Window number
+                    ウィンドウ番号。
 
 nvim_win_is_valid({window})                              *nvim_win_is_valid()*
                 Checks if a window is valid
+                ウィンドウが有効かチェックします。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
+                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
 
                 Return: ~
                     true if the window is valid, false otherwise
+                    ウィンドウが有効ならtrue。それ以外はfalse。
 
 nvim_win_set_config({window}, {config})                *nvim_win_set_config()*
                 Configures window layout. Currently only for floating and
