@@ -3298,7 +3298,6 @@ nvim_win_get_config({window})                          *nvim_win_get_config()*
 nvim_win_close({window}, {force})                           *nvim_win_close()*
                 Closes the window (like |:close| with a |window-ID|).
 		ウインドウを閉じます（|window-ID|ありの|:close|と同様）
-                 --- nekowasabi WIP
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
@@ -3318,25 +3317,34 @@ Tabpage Functions                                                *api-tabpage*
 
 nvim_tabpage_list_wins({tabpage})                   *nvim_tabpage_list_wins()*
                 Gets the windows in a tabpage
+		タブページ内のウインドウを取得します。
 
                 Parameters: ~
                     {tabpage}  Tabpage handle, or 0 for current tabpage
+			       タブページハンドルまたは現在のタブの場合は0
 
                 Return: ~
                     List of windows in `tabpage`
+		    タブページ内のウインドウリストを取得
 
 nvim_tabpage_get_var({tabpage}, {name})               *nvim_tabpage_get_var()*
                 Gets a tab-scoped (t:) variable
+		タブスコープ(t:)内の変数を取得します。
 
                 Parameters: ~
                     {tabpage}  Tabpage handle, or 0 for current tabpage
+			       タブページハンドルまたは現在のタブの場合は0
                     {name}     Variable name
+			       変数名
 
                 Return: ~
                     Variable value
+		    変数の値
 
 nvim_tabpage_set_var({tabpage}, {name}, {value})      *nvim_tabpage_set_var()*
                 Sets a tab-scoped (t:) variable
+		タブスコープ（t:）の変数をセットします
+                 --- nekowasabi WIP
 
                 Parameters: ~
                     {tabpage}  Tabpage handle, or 0 for current tabpage
