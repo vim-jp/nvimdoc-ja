@@ -3344,19 +3344,24 @@ nvim_tabpage_get_var({tabpage}, {name})               *nvim_tabpage_get_var()*
 nvim_tabpage_set_var({tabpage}, {name}, {value})      *nvim_tabpage_set_var()*
                 Sets a tab-scoped (t:) variable
 		タブスコープ（t:）の変数をセットします
-                 --- nekowasabi WIP
 
                 Parameters: ~
                     {tabpage}  Tabpage handle, or 0 for current tabpage
+			       タブページハンドルまたは現在のタブの場合は0
                     {name}     Variable name
+			       変数名
                     {value}    Variable value
+			       変数の値
 
 nvim_tabpage_del_var({tabpage}, {name})               *nvim_tabpage_del_var()*
                 Removes a tab-scoped (t:) variable
+		タブスコープ(t:)の変数を削除する
 
                 Parameters: ~
                     {tabpage}  Tabpage handle, or 0 for current tabpage
+			       タブページハンドルまたは現在のタブの場合は0
                     {name}     Variable name
+			       変数名
 
 nvim_tabpage_get_win({tabpage})                       *nvim_tabpage_get_win()*
                 Gets the current window in a tabpage
