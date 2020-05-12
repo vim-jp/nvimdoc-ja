@@ -3405,10 +3405,15 @@ UI Functions                                                          *api-ui*
 
 nvim_ui_attach({width}, {height}, {options})                *nvim_ui_attach()*
                 Activates UI events on the channel.
+		チャンネルのUIイベントを有効化する。
 
                 Entry point of all UI clients. Allows |--embed| to continue
                 startup. Implies that the client is ready to show the UI. Adds
                 the client to the list of UIs. |nvim_list_uis()|
+		すべてのUIクライアントのエントリポイントです。
+		スタートアップを継続するために、|--embed| を許可します。
+		クライアントがUIを表示し始めるのを示します。
+		クライアントをUIリスト(|nvim_list_uis()|)に追加します。
 
                 Note:
                     If multiple UI clients are attached, the global screen
