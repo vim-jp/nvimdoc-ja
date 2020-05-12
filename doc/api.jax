@@ -3365,30 +3365,39 @@ nvim_tabpage_del_var({tabpage}, {name})               *nvim_tabpage_del_var()*
 
 nvim_tabpage_get_win({tabpage})                       *nvim_tabpage_get_win()*
                 Gets the current window in a tabpage
+		タブページ内の、現在のウインドウを取得する
 
                 Parameters: ~
                     {tabpage}  Tabpage handle, or 0 for current tabpage
+			       タブページハンドルまたは現在のタブの場合は0
 
                 Return: ~
                     Window handle
+		    ウインドウハンドルを返却する
 
 nvim_tabpage_get_number({tabpage})                 *nvim_tabpage_get_number()*
                 Gets the tabpage number
+		タブのページ番号を取得する
 
                 Parameters: ~
                     {tabpage}  Tabpage handle, or 0 for current tabpage
+			       タブページハンドルまたは現在のタブの場合は0
 
                 Return: ~
                     Tabpage number
+		    タブ番号を返却する
 
 nvim_tabpage_is_valid({tabpage})                     *nvim_tabpage_is_valid()*
                 Checks if a tabpage is valid
+		タブページが有効かをチェックする
 
                 Parameters: ~
                     {tabpage}  Tabpage handle, or 0 for current tabpage
+			       タブページハンドルまたは現在のタブの場合は0
 
                 Return: ~
                     true if the tabpage is valid, false otherwise
+		    タブページが有効であればtrue、そうでなければfalseを返却する
 
 
 ==============================================================================
