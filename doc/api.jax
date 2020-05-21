@@ -3420,11 +3420,18 @@ nvim_ui_attach({width}, {height}, {options})                *nvim_ui_attach()*
                     dimensions degrade to the smallest client. E.g. if client
                     A requests 80x40 but client B requests 200x100, the global
                     screen has size 80x40.
+		    もし複数のUIクライアントがアタッチされたなら、グローバルな
+		    スクリーン座標は、最小のクライアントに縮小されます。
+		    例．クライアントAの解像度がが80x40、クライアントBが200x100なら、
+		    グローバルな解像度は80x40となる。
 
                 Parameters: ~
                     {width}    Requested screen columns
+			       リクエストされたスクリーンの行	
                     {height}   Requested screen rows
+			       リクエストされたスクリーンの列
                     {options}  |ui-option| map
+			       |ui-option|のマップ
 
 nvim_ui_detach()                                            *nvim_ui_detach()*
                 Deactivates UI events on the channel.
