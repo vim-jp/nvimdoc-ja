@@ -3435,8 +3435,10 @@ nvim_ui_attach({width}, {height}, {options})                *nvim_ui_attach()*
 
 nvim_ui_detach()                                            *nvim_ui_detach()*
                 Deactivates UI events on the channel.
+		チャンネルのUIイベントを非活性化する。
 
                 Removes the client from the list of UIs. |nvim_list_uis()|
+		UIリストからクライアントを削除する。
 
 nvim_ui_try_resize({width}, {height})                   *nvim_ui_try_resize()*
                 TODO: Documentation
