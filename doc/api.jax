@@ -3451,6 +3451,9 @@ nvim_ui_try_resize_grid({grid}, {width}, {height})
                 Tell Nvim to resize a grid. Triggers a grid_resize event with
                 the requested grid size or the maximum size if it exceeds size
                 limits.
+		グリッドのリサイズをNvimに通知します。
+		グリッドサイズを超過した場合、リクエストされたグリッドサイズまたは
+		サイズの最大値グリッドのリサイズイベントをトリガします。
 
                 On invalid grid handle, fails with error.
 
