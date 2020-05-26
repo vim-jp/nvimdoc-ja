@@ -3456,17 +3456,23 @@ nvim_ui_try_resize_grid({grid}, {width}, {height})
 		サイズの最大値グリッドのリサイズイベントをトリガします。
 
                 On invalid grid handle, fails with error.
+		不正なグリッドハンドルなら、エラーを返却する
 
                 Parameters: ~
                     {grid}    The handle of the grid to be changed.
+			      変更されたグリッドのハンドル
                     {width}   The new requested width.
+			      新しくリクエストされた幅
                     {height}  The new requested height.
+			      新しくリクエストされた高さ
 
 nvim_ui_pum_set_height({height})                    *nvim_ui_pum_set_height()*
                 Tells Nvim the number of elements displaying in the popumenu,
                 to decide <PageUp> and <PageDown> movement.
+		ポップアップメニュー内に表示する要素の数をNvimに通知する
 
                 Parameters: ~
                     {height}  Popupmenu height, must be greater than zero.
+			      0より大きいに違いないポップアップメニューの高さ
 
  vim:tw=78:ts=8:ft=help:norl:
