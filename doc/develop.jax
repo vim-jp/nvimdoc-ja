@@ -26,12 +26,18 @@ Design goals						*design-goals*
 
 Most important things come first (roughly).  Some items conflict; this is
 intentional.  A balance must be found.
+端的に、最も重要なことを最初に言うなら、いくつかの項目はの内容は衝突しますが、
+これは意図的なものです。バランスを見極めなければなりません。
+
 
 
 NVIM IS... IMPROVED					*design-improved*
 
 The Neo bits of Nvim should make it a better Vim, without becoming a
 completely different editor.
+Nvimの新しい要素によって、Vimと異なるエディタになってしまうことなしに、
+NvimをよりよいVimとして作るべきです。
+
 - In matters of taste, prefer Vim/Unix tradition. If there is no relevant
   Vim/Unix tradition, consider the "common case".
 - A feature that people do not know about is a useless feature.  Don't add
