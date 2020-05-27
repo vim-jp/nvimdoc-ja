@@ -9,14 +9,20 @@ Development of Nvim					*development* *dev*
 This reference describes design constraints and guidelines, for developing
 Nvim applications or Nvim itself.
 Architecture and internal concepts are covered in src/nvim/README.md
+このリファレンスはNvimアプリケーションまたはNvim本体の開発のために、
+デザインに関する規約とガイドラインについて記述しています。
+アーキテクチャと内部のコンセプトは、src/nvim/README.md にあります。
 
 Nvim is free and open source.  Everybody is encouraged to contribute.
+Nvimは無料かつオープンソースです。
+皆様の貢献をお待ちしております。
     https://github.com/neovim/neovim/blob/master/CONTRIBUTING.md
 
                                       Type |gO| to see the table of contents.
 
 ==============================================================================
 Design goals						*design-goals*
+デザインのゴール
 
 Most important things come first (roughly).  Some items conflict; this is
 intentional.  A balance must be found.
