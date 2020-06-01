@@ -40,6 +40,9 @@ NvimをよりよいVimとして作るべきです。
 
 - In matters of taste, prefer Vim/Unix tradition. If there is no relevant
   Vim/Unix tradition, consider the "common case".
+  好みの場合においては、Vim/Unixの伝統を好みます。
+  もし該当するものがないならば、Vim/Unixの伝統やよくあるケースを考慮しましょう。
+
 - A feature that people do not know about is a useless feature.  Don't add
   obscure features, or at least add hints in documentation that they exist.
 - There is no limit to the features that can be added.  Selecting new features
