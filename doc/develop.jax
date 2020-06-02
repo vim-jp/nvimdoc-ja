@@ -45,6 +45,10 @@ NvimをよりよいVimとして作るべきです。
 
 - A feature that people do not know about is a useless feature.  Don't add
   obscure features, or at least add hints in documentation that they exist.
+  人々が知らない機能は不要な機能です。
+  曖昧な機能を加えてはいけません。あるいは、少なくともドキュメントに機能が存在する
+  ことを示すリストを追加してください。
+
 - There is no limit to the features that can be added.  Selecting new features
   is based on (1) what users ask for, (2) how much effort it takes to
   implement and (3) someone actually implementing it.
