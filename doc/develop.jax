@@ -52,6 +52,13 @@ NvimをよりよいVimとして作るべきです。
 - There is no limit to the features that can be added.  Selecting new features
   is based on (1) what users ask for, (2) how much effort it takes to
   implement and (3) someone actually implementing it.
+  追加できる機能に制限はありません。
+  新しい機能は
+  (1) ユーザが求めるもの
+  (2) 実装にどれだけの手間がかかるか
+  (3) 誰が実際に実装するか
+  に基づきます。
+
 - Backwards compatibility is a feature.  The RPC API in particular should
   never break.
 
