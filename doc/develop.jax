@@ -61,12 +61,17 @@ NvimをよりよいVimとして作るべきです。
 
 - Backwards compatibility is a feature.  The RPC API in particular should
   never break.
+  後方互換性は1つの機能です。特にRPC APIについては壊すべきではありません。
 
 
 NVIM IS... WELL DOCUMENTED				*design-documented*
+NVIMはドキュメンテーションを重視します
 
 - A feature that isn't documented is a useless feature.  A patch for a new
   feature must include the documentation.
+  ドキュメントのない機能は不要な機能です。
+  新機能のパッチは、ドキュメントを含まなければなりません。
+
 - Documentation should be comprehensive and understandable.  Use examples.
 - Don't make the text unnecessarily long.  Less documentation means that an
   item is easier to find.
