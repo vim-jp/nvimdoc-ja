@@ -73,6 +73,8 @@ NVIMはドキュメンテーションを重視します
   新機能のパッチは、ドキュメントを含まなければなりません。
 
 - Documentation should be comprehensive and understandable.  Use examples.
+  ドキュメントは包括的で理解しやすいものにすべきです。
+
 - Don't make the text unnecessarily long.  Less documentation means that an
   item is easier to find.
 
