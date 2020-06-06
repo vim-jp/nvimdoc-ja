@@ -77,11 +77,16 @@ NVIMはドキュメンテーションを重視します
 
 - Don't make the text unnecessarily long.  Less documentation means that an
   item is easier to find.
+  不必要に長いドキュメントを作らないでください。簡潔なドキュメントは見つけやすい
+  ドキュメントを意味します。
 
 
 NVIM IS... HIGH SPEED AND SMALL IN SIZE			*design-speed-size*
+NVIMは高速かつ小さなサイズです
 
 Keep Nvim small and fast.
+Nvimは小さく高速であることを保ちましょう
+
 - Computers are becoming faster and bigger each year.  Vim can grow too, but
   no faster than computers are growing.  Keep Vim usable on older systems.
 - Many users start Vim from a shell very often.  Startup time must be short.
