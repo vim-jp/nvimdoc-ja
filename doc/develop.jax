@@ -89,7 +89,14 @@ Nvimは小さく高速であることを保ちましょう
 
 - Computers are becoming faster and bigger each year.  Vim can grow too, but
   no faster than computers are growing.  Keep Vim usable on older systems.
+  コンピュータは年を追うごとに高速かつ大容量になります。
+  Vimも同様に成長できます。しかし、コンピュータの高速化よりは速くならないように、
+  Vimを古いシステムでも有用であるように保ちましょう。
+
 - Many users start Vim from a shell very often.  Startup time must be short.
+  多くのユーザのほとんどは、Vimをシェルから実行します。
+  起動時間は短くあるべきです。
+
 - Commands must work efficiently.  The time they consume must be as small as
   possible.  Useful commands may take longer.
 - Don't forget that some people use Vim over a slow connection.  Minimize the
