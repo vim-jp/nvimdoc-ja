@@ -99,8 +99,15 @@ Nvimは小さく高速であることを保ちましょう
 
 - Commands must work efficiently.  The time they consume must be as small as
   possible.  Useful commands may take longer.
+  コマンドは効果的に動作しなければなりません。
+  ユーザの消費時間はできるだけ少なくしましょう。
+  有用なコマンドは時間がかかる場合があります。
+
 - Don't forget that some people use Vim over a slow connection.  Minimize the
   communication overhead.
+  ユーザのいくらかはVimを低速な接続環境で使っていることを忘れないでください。
+  通信のオーバーヘッドを小さくしましょう。
+
 - Vim is a component among other components.  Don't turn it into a massive
   application, but have it work well together with other programs.
 
