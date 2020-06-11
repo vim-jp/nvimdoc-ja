@@ -110,9 +110,13 @@ Nvimは小さく高速であることを保ちましょう
 
 - Vim is a component among other components.  Don't turn it into a massive
   application, but have it work well together with other programs.
+  Vimはコンポーネントの中のコンポーネントです。巨大なアプリケーションにしては
+  いけません。各プログラムと強調して動作するようにしましょう。
+
 
 
 NVIM IS... MAINTAINABLE					*design-maintain*
+NVIMはメンテナンスしやすい
 
 - The source code should not become a mess.  It should be reliable code.
 - Use comments in a useful way!  Quoting the function name and argument names
