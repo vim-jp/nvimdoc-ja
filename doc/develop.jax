@@ -119,8 +119,13 @@ NVIM IS... MAINTAINABLE					*design-maintain*
 NVIMはメンテナンスしやすい
 
 - The source code should not become a mess.  It should be reliable code.
+  ソースコードは複雑にすべきではない。信頼できるコードにすべきです。
+
 - Use comments in a useful way!  Quoting the function name and argument names
   is NOT useful.  Do explain what they are for.
+  コメントは有用な場合のみ使いましょう。メソッド名や引数名のコメントを書いても
+  意味がありません。コードの意味を説明するためにコメントを書いてください。
+
 - Porting to another platform should be made easy, without having to change
   too much platform-independent code.
 - Use the object-oriented spirit: Put data and code together.  Minimize the
