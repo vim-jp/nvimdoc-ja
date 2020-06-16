@@ -1,4 +1,4 @@
-*develop.txt*          Nvim
+develop.txt*          Nvim
 
 
                             NVIM REFERENCE MANUAL
@@ -128,6 +128,9 @@ NVIMはメンテナンスしやすい
 
 - Porting to another platform should be made easy, without having to change
   too much platform-independent code.
+  他のプラットフォームへの接続は、多すぎるプラットフォーム依存のコードなしに、
+  簡単であるべきです。
+
 - Use the object-oriented spirit: Put data and code together.  Minimize the
   knowledge spread to other parts of the code.
 

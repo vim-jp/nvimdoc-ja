@@ -5079,7 +5079,6 @@ dev-provider	develop.jax	/*dev-provider*
 dev-ui	develop.jax	/*dev-ui*
 develop-spell	spell.jax	/*develop-spell*
 develop-spell-suggestions	spell.jax	/*develop-spell-suggestions*
-develop.txt	develop.jax	/*develop.txt*
 development	develop.jax	/*development*
 dgn	motion.jax	/*dgn*
 dh	change.jax	/*dh*
