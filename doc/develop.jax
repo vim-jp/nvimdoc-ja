@@ -133,13 +133,17 @@ NVIMはメンテナンスしやすい
 
 - Use the object-oriented spirit: Put data and code together.  Minimize the
   knowledge spread to other parts of the code.
+  オブジェクト指向を使いましょう。データとコードは一体のものです。
+  コード間の知識（依存）を分離し、最小化しましょう。
 
 
 NVIM IS... NOT						*design-not*
+NVIMはなにでないか
 
 Nvim is not an operating system; instead it should be composed with other
 tools or hosted as a component. Marvim once said: "Unlike Emacs, Nvim does not
 include the kitchen sink... but it's good for plumbing."
+NvimはOSではありません。
 
 
 ==============================================================================
