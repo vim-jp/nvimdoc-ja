@@ -143,11 +143,14 @@ NVIMはなにでないか
 Nvim is not an operating system; instead it should be composed with other
 tools or hosted as a component. Marvim once said: "Unlike Emacs, Nvim does not
 include the kitchen sink... but it's good for plumbing."
-NvimはOSではありません。
-
+NvimはOSではありません。その代わり、他のツールまたはコンポーネントとして構成されて
+いるべきです。
+Marvimはかつて、「Emacsと違って、Nvimにキッチンシンクは含まれていない……、
+けれど配管には適している」と言った。
 
 ==============================================================================
 Developer guidelines				        *dev-guidelines*
+開発者ガイドライン
 
 
 PROVIDERS 						*dev-provider*
@@ -155,6 +158,8 @@ PROVIDERS 						*dev-provider*
 A primary goal of Nvim is to allow extension of the editor without special
 knowledge in the core.  Some core functions are delegated to "providers"
 implemented as external scripts.
+Nvimの主要なゴールは、コア部分の特有の知識なしにエディタ機能の拡張ができるように
+することです。
 
 Examples:
 
