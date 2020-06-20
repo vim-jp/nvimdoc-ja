@@ -111,7 +111,7 @@ Nvimは小さく高速であることを保ちましょう
 - Vim is a component among other components.  Don't turn it into a massive
   application, but have it work well together with other programs.
   Vimはコンポーネントの中のコンポーネントです。巨大なアプリケーションにしては
-  いけません。各プログラムと強調して動作するようにしましょう。
+  いけません。各プログラムと協調して動作するようにしましょう。
 
 
 
@@ -160,8 +160,10 @@ knowledge in the core.  Some core functions are delegated to "providers"
 implemented as external scripts.
 Nvimの主要なゴールは、コア部分の特有の知識なしにエディタ機能の拡張ができるように
 することです。
+いくつかのコア機能は、外部スクリプトとして実装された"プロバイダ"へ委譲されます。
 
 Examples:
+例
 
 1. In the Vim source code, clipboard logic accounts for more than 1k lines of
    C source code (ui.c), to perform two tasks that are now accomplished with
