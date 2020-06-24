@@ -168,6 +168,9 @@ Examples:
 1. In the Vim source code, clipboard logic accounts for more than 1k lines of
    C source code (ui.c), to perform two tasks that are now accomplished with
    shell commands such as xclip or pbcopy/pbpaste.
+   ソースコードにおいて、クリップボードのロジックはui.cのC言語ソースコードのなかで
+   1000行以上を占めます。
+   xclipまたはpbcopy/pbpasteのようなシェルコマンドと連携して動かすようにするためです。
 
 2. Python scripting support: Vim has three files dedicated to embedding the
    Python interpreter: if_python.c, if_python3.c and if_py_both.h. Together
