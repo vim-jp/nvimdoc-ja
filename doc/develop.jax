@@ -177,6 +177,11 @@ Examples:
    these files sum about 9.5k lines of C source code. In contrast, Nvim Python
    scripting is performed by an external host process implemented in ~2k lines
    of Python.
+   Pythonの言語サポート: VimはPythonインタプリタを埋め込むための、
+   3つのファイル（if_python.c, if_python3.c and if_py_both.h.）があります。
+   3つのファイルはともに約9500行のC言語で書かれたコードです。
+   -- imakoko
+   対照的に、
 
 The provider framework invokes VimL from C.  It is composed of two functions
 in eval.c:
