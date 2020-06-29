@@ -180,11 +180,12 @@ Examples:
    Pythonの言語サポート: VimはPythonインタプリタを埋め込むための、
    3つのファイル（if_python.c, if_python3.c and if_py_both.h.）があります。
    3つのファイルはともに約9500行のC言語で書かれたコードです。
-   -- imakoko
-   対照的に、
+   対照的に、NvimのPythonスクリプトは、2000行ほどのPythonで実装され外部プロセスに
+   よって実行されます。
 
 The provider framework invokes VimL from C.  It is composed of two functions
 in eval.c:
+   -- imakoko
 
 - eval_call_provider(name, method, arguments): calls provider#{name}#Call
   with the method and arguments.
