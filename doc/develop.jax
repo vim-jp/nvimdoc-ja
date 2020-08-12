@@ -185,6 +185,9 @@ Examples:
 
 The provider framework invokes VimL from C.  It is composed of two functions
 in eval.c:
+提供されるフレームワークはC言語からVimLを呼び出します。
+フレームワークはeval.c内の2つの機能で構成されています。
+
    -- imakoko
 
 - eval_call_provider(name, method, arguments): calls provider#{name}#Call
