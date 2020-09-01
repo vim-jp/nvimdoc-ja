@@ -192,6 +192,8 @@ in eval.c:
 
 - eval_call_provider(name, method, arguments): calls provider#{name}#Call
   with the method and arguments.
+  メソッドと引数とともに calls provider#{name}#Call をコールします
+
 - eval_has_provider(name): Checks the `g:loaded_{name}_provider` variable
   which must be set to 2 by the provider script to indicate that it is
   "enabled and working". Called by |has()| to check if features are available.
