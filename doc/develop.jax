@@ -188,7 +188,6 @@ in eval.c:
 提供されるフレームワークはC言語からVimLを呼び出します。
 フレームワークはeval.c内の2つの機能で構成されています。
 
-   -- imakoko
 
 - eval_call_provider(name, method, arguments): calls provider#{name}#Call
   with the method and arguments.
@@ -206,7 +205,11 @@ For example, the Python provider is implemented by the
 "autoload/provider/python.vim" script, which sets `g:loaded_python_provider`
 to 2 only if a valid external Python host is found.  Then `has("python")`
 reflects whether Python support is working.
-
+例として、Python用プロバイダは、"autoload/provider/python.vim"によって実装
+されています。有効な外部Pythonホストより発見されたなら、`g:loaded_python_provider` 
+に2をセットします。そして`has("python")`は、Pythonサポートが有効かを
+反映します。
+   -- imakoko
 							*provider-reload*
 Sometimes a GUI or other application may want to force a provider to
 "reload".  To reload a provider, undefine its "loaded" flag, then use
