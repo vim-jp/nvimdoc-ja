@@ -209,11 +209,13 @@ reflects whether Python support is working.
 されています。有効な外部Pythonホストより発見されたなら、`g:loaded_python_provider` 
 に2をセットします。そして`has("python")`は、Pythonサポートが有効かを
 反映します。
-   -- imakoko
 							*provider-reload*
 Sometimes a GUI or other application may want to force a provider to
 "reload".  To reload a provider, undefine its "loaded" flag, then use
 |:runtime| to reload it: >
+ときどき、GUIまたは他のアプリケーションは、プロバイダにリロードを強制したく
+なるかもしれない。プロバイダをリロードするために、"loaded"フラグを未定義にし、
+それからリロードのために|:runtime|を使ってください。
 
     :unlet g:loaded_clipboard_provider
     :runtime autoload/provider/clipboard.vim
