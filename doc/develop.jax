@@ -225,8 +225,17 @@ DOCUMENTATION						*dev-doc*
 
 - Do not prefix help tags with "nvim-". Use |vim_diff.txt| to document
   differences from Vim; no other distinction is necessary.
+  "nvim-" のようなヘルプタグのプレフィックスをつけてはいけません。
+  Vimとの違いを文書化するためには、|vim_diff.txt| を使用してください。
+  それ以外の区別は必要ありません。
+
 - If a Vim feature is removed, delete its help section and move its tag to
   |vim_diff.txt|.
+  もしVimの機能が削除されたならば、ヘルプ内の項目を削除して、|vim_diff.txt|へタグを
+  移動してください。
+
+  -- imakoko
+
 - Move deprecated features to |deprecated.txt|.
 - Use consistent language.
     - "terminal" in a help tag always means "the embedded terminal emulator", not
