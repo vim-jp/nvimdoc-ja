@@ -234,9 +234,10 @@ DOCUMENTATION						*dev-doc*
   もしVimの機能が削除されたならば、ヘルプ内の項目を削除して、|vim_diff.txt|へタグを
   移動してください。
 
-  -- imakoko
 
 - Move deprecated features to |deprecated.txt|.
+  廃止となった機能は|deprecated.txt|へ移動してください。
+  -- imakoko
 - Use consistent language.
     - "terminal" in a help tag always means "the embedded terminal emulator", not
       "the user host terminal".
