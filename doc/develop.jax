@@ -237,10 +237,13 @@ DOCUMENTATION						*dev-doc*
 
 - Move deprecated features to |deprecated.txt|.
   廃止となった機能は|deprecated.txt|へ移動してください。
-  -- imakoko
 - Use consistent language.
+  一貫した用語を使用してください。
     - "terminal" in a help tag always means "the embedded terminal emulator", not
       "the user host terminal".
+    - ヘルプタグにおける "terminal" は、常に"埋め込みターミナルエミュレータ"を
+      意味し、"ユーザの使用しているターミナル"ではありません。
+  -- imakoko
     - Use "tui-" to prefix help tags related to the host terminal, and "TUI"
       in prose if possible.
 - Docstrings: do not start parameter descriptions with "The" or "A" unless it
