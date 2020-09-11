@@ -247,7 +247,6 @@ DOCUMENTATION						*dev-doc*
       in prose if possible.
       ホストターミナルと関連するヘルプタグのプレフィックスは"tui-"を使用し、
       可能であれば、"TUI"を散文で使用してください。
-  -- imakoko
 - Docstrings: do not start parameter descriptions with "The" or "A" unless it
   is critical to avoid ambiguity.
   Docstrings: 曖昧さを避けるために重要な場合を除いて、パラメータの説明に、
@@ -263,6 +262,9 @@ C docstrings ~
 Nvim API documentation lives in the source code, as docstrings (Doxygen
 comments) on the function definitions.  The |api| :help is generated
 from the docstrings defined in src/nvim/api/*.c.
+NvimのAPIドキュメントは、ソースコードの関数定義において、docstringsとして
+活用しています（Doxygenのコメント形式）。
+  -- imakoko
 
 Docstring format:
 - Lines start with `///`
