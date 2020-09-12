@@ -274,7 +274,7 @@ Docstring format:
 - Limited markdown is supported.
   制限付きmarkdownがサポートされています
   - List-items start with `-` (useful to nest or "indent")
-    リスト表記は`-` で始めてください（インデントでネストすると便利です）
+    リスト表記は`-`で始めてください（入れ子にしたりインデントしたりするのに便利です）
 - Use `<pre>`  for code samples.
   コードのサンプルは`<pre>` を使ってください
 
