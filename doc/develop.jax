@@ -264,16 +264,21 @@ comments) on the function definitions.  The |api| :help is generated
 from the docstrings defined in src/nvim/api/*.c.
 NvimのAPIドキュメントは、ソースコードの関数定義において、docstringsとして
 活用しています（Doxygenのコメント形式）。
-  -- imakoko
 
 Docstring format:
 - Lines start with `///`
+  行は`///`で始めてください
 - Special tokens start with `@` followed by the token name:
   `@note`, `@param`, `@returns`
+  特別なトークンは`@`で始めてください
 - Limited markdown is supported.
+  制限付きmarkdownがサポートされています
   - List-items start with `-` (useful to nest or "indent")
+    リスト表記は`-` で始めてください（インデントでネストすると便利です）
 - Use `<pre>`  for code samples.
+  コードのサンプルは`<pre>` を使ってください
 
+  -- imakoko
 Example: the help for |nvim_open_win()| is generated from a docstring defined
 in src/nvim/api/vim.c like this: >
 
