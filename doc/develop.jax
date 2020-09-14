@@ -281,6 +281,8 @@ Docstring format:
   -- imakoko
 Example: the help for |nvim_open_win()| is generated from a docstring defined
 in src/nvim/api/vim.c like this: >
+例:  以下のように、|nvim_open_win()|のヘルプは、src/nvim/api/vim.cソース内の
+docstringsの定義から生成されます。
 
     /// Opens a new window.
     /// ...
