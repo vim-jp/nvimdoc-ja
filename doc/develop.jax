@@ -278,7 +278,6 @@ Docstring format:
 - Use `<pre>`  for code samples.
   コードのサンプルは`<pre>` を使ってください
 
-  -- imakoko
 Example: the help for |nvim_open_win()| is generated from a docstring defined
 in src/nvim/api/vim.c like this: >
 例:  以下のように、|nvim_open_win()|のヘルプは、src/nvim/api/vim.cソース内の
@@ -310,6 +309,9 @@ Lua docstrings ~
 							*dev-lua-doc*
 Lua documentation lives in the source code, as docstrings on the function
 definitions.  The |lua-vim| :help is generated from the docstrings.
+Luaのメソッド定義のdocstringsという形式で、ドキュメントのソースコードのなかにあります。
+|lua-vim|のヘルプはdocstringsから生成されます。
+  -- imakoko
 
 Docstring format:
 - Lines in the main description start with `---`
