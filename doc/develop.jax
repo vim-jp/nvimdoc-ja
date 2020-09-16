@@ -311,10 +311,11 @@ Lua documentation lives in the source code, as docstrings on the function
 definitions.  The |lua-vim| :help is generated from the docstrings.
 Luaのメソッド定義のdocstringsという形式で、ドキュメントのソースコードのなかにあります。
 |lua-vim|のヘルプはdocstringsから生成されます。
-  -- imakoko
 
 Docstring format:
 - Lines in the main description start with `---`
+  主な概要の最初の行は`---`で始めてください
+  -- imakoko
 - Special tokens start with `--@` followed by the token name:
   `--@see`, `--@param`, `--@returns`
 - Limited markdown is supported.
