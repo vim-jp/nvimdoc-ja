@@ -315,10 +315,12 @@ Luaのメソッド定義のdocstringsという形式で、ドキュメントの�
 Docstring format:
 - Lines in the main description start with `---`
   主な概要の最初の行は`---`で始めてください
-  -- imakoko
 - Special tokens start with `--@` followed by the token name:
+  特別なトークンは、名前の前に `--@` をつけて始めてください
   `--@see`, `--@param`, `--@returns`
 - Limited markdown is supported.
+  制限付きmarkdownの書式がサポートされています
+  -- imakoko
   - List-items start with `-` (useful to nest or "indent")
 - Use `<pre>`  for code samples.
 
