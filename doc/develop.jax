@@ -320,12 +320,16 @@ Docstring format:
   `--@see`, `--@param`, `--@returns`
 - Limited markdown is supported.
   制限付きmarkdownの書式がサポートされています
-  -- imakoko
   - List-items start with `-` (useful to nest or "indent")
+  リスト表記は`-`で始めてください（入れ子にしたりインデントしたりするのに便利です）
 - Use `<pre>`  for code samples.
+  コードのサンプルは、`<pre>`タグを使ってください
 
 Example: the help for |vim.paste()| is generated from a docstring decorating
 vim.paste in src/nvim/lua/vim.lua like this: >
+例:
+以下のように、|vim.paste()|のヘルプは、src/nvim/lua/vim.lua内、
+vim.paseを装飾したのdocstringより生成される。
 
     --- Paste handler, invoked by |nvim_paste()| when a conforming UI
     --- (such as the |TUI|) pastes text into the editor.
@@ -346,7 +350,7 @@ vim.paste in src/nvim/lua/vim.lua like this: >
 
 
 LUA							*dev-lua*
-
+-- imakoko
 - Keep the core Lua modules |lua-stdlib| simple. Avoid elaborate OOP or
   pseudo-OOP designs. Plugin authors just want functions to call, they don't
   want to learn a big, fancy inheritance hierarchy. So we should avoid complex
