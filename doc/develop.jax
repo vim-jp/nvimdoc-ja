@@ -357,12 +357,13 @@ LUA							*dev-lua*
   objects: tables are usually better.
   Luaのコアモジュール|lua-stdlib|をシンプルなままに維持してください。
   凝ったOOPや擬似的なOOPは避けてください。
--- imakoko
 
 
 API							*dev-api*
 
 Use this template to name new API functions:
+新しいAPI機能の命名は、以下のテンプレートを使ってください
+-- imakoko
     nvim_{thing}_{action}_{arbitrary-qualifiers}
 
 If the function acts on an object then {thing} is the name of that object
