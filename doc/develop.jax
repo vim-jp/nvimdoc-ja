@@ -363,13 +363,16 @@ API							*dev-api*
 
 Use this template to name new API functions:
 新しいAPI機能の命名は、以下のテンプレートを使ってください
--- imakoko
     nvim_{thing}_{action}_{arbitrary-qualifiers}
 
 If the function acts on an object then {thing} is the name of that object
 (e.g. "buf" or "win"). If the function operates in a "global" context then
 {thing} is usually omitted (but consider "namespacing" your global operations
 with a {thing} that groups functions under a common concept).
+もし関数名がオブジェクトに対する振る舞いならば、{thing}は、オブジェクトの
+名前になります(例. "buf"や"win")。
+
+-- imakoko
 
 Use existing common {action} names if possible:
     add   Append to, or insert into, a collection
