@@ -371,10 +371,12 @@ If the function acts on an object then {thing} is the name of that object
 with a {thing} that groups functions under a common concept).
 もし関数名がオブジェクトに対する振る舞いならば、{thing}は、オブジェクトの
 名前になります(例. "buf"や"win")。
-
--- imakoko
+もし関数がグローバルに動作するならば、{thing}は常に省かれます（ただし、
+共通の概念下にある関数をグループ化する{thing}で、グローバルな操作を名前空間に
+ついては考慮してください）
 
 Use existing common {action} names if possible:
+-- imakoko
     add   Append to, or insert into, a collection
     del   Delete a thing (or group of things)
     exec  Execute code
