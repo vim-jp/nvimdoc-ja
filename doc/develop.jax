@@ -376,14 +376,21 @@ with a {thing} that groups functions under a common concept).
 ついては考慮してください）
 
 Use existing common {action} names if possible:
--- imakoko
+可能であれば、{action}部分の名前は、既存のものを使ってください。
     add   Append to, or insert into, a collection
+	  集合への追加または挿入
     del   Delete a thing (or group of things)
+	  集合からの削除
     exec  Execute code
+	  コード実行
     get   Get a thing (or group of things by query)
+	  要求によるデータの野取得
     list  Get all things
+	  すべてのデータ取得
     set   Set a thing (or group of things)
+	  データセット
 
+-- imakoko
 Use consistent names for {thing} in all API functions. E.g. a buffer is called
 "buf" everywhere, not "buffer" in some places and "buf" in others.
 
