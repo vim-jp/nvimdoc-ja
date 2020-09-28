@@ -394,6 +394,8 @@ Use existing common {action} names if possible:
 Use consistent names for {thing} in all API functions. E.g. a buffer is called
 "buf" everywhere, not "buffer" in some places and "buf" in others.
 すべてのAPI機能において、{thing}は一貫した名前を使ってください。
+例. ある場所では"buffer"、他の場所では"buf"ではなく、あらゆるところで、
+"buf"がバッファとしてコールされます。
 
 Example:
     `nvim_get_current_line` acts on the global editor state; the common
