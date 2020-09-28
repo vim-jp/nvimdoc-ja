@@ -393,6 +393,7 @@ Use existing common {action} names if possible:
 -- imakoko
 Use consistent names for {thing} in all API functions. E.g. a buffer is called
 "buf" everywhere, not "buffer" in some places and "buf" in others.
+すべてのAPI機能において、{thing}は一貫した名前を使ってください。
 
 Example:
     `nvim_get_current_line` acts on the global editor state; the common
