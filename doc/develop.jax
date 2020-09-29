@@ -390,7 +390,6 @@ Use existing common {action} names if possible:
     set   Set a thing (or group of things)
 	  データセット
 
--- imakoko
 Use consistent names for {thing} in all API functions. E.g. a buffer is called
 "buf" everywhere, not "buffer" in some places and "buf" in others.
 すべてのAPI機能において、{thing}は一貫した名前を使ってください。
@@ -400,10 +399,15 @@ Use consistent names for {thing} in all API functions. E.g. a buffer is called
 Example:
     `nvim_get_current_line` acts on the global editor state; the common
     {action} "get" is used but {thing} is omitted.
+    `nvim_get_current_line`は、グローバルなエディタの状態に従って動作します;
+    共通{action}の"get"は使われているけれど、{thing}は省かれています。
 
 Example:
+-- imakoko
     `nvim_buf_add_highlight` acts on a `Buffer` object (the first parameter)
     and uses the common {action} "add".
+    `nvim_buf_add_highlight`は、最初のパラメータである`Buffer`オブジェクトに
+    従って動作し、共通{action}は、"add"を使います。
 
 Example:
     `nvim_list_bufs` operates in a global context (first parameter is not
