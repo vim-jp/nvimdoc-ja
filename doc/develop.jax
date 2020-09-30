@@ -403,16 +403,19 @@ Example:
     共通{action}の"get"は使われているけれど、{thing}は省かれています。
 
 Example:
--- imakoko
     `nvim_buf_add_highlight` acts on a `Buffer` object (the first parameter)
     and uses the common {action} "add".
     `nvim_buf_add_highlight`は、最初のパラメータである`Buffer`オブジェクトに
     従って動作し、共通{action}は、"add"を使います。
 
 Example:
+-- imakoko
     `nvim_list_bufs` operates in a global context (first parameter is not
     a Buffer). The common {action} "list" indicates that it lists all bufs
     (plural) in the global context.
+    `nvim_list_bufs`は、グローバルな文脈（最初のパラメータがバッファではないとき）で
+    振る舞います。
+    共通の{action}である"list"は、
 
 Use this template to name new API events:
     nvim_{thing}_{event}_event
