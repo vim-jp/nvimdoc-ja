@@ -419,7 +419,6 @@ Example:
 
 Use this template to name new API events:
 新しいAPIイベントを命名するために、以下のテンプレートを使ってください。
--- imakoko
     nvim_{thing}_{event}_event
 
 Example:
@@ -432,6 +431,9 @@ API-CLIENT						*dev-api-client*
 API clients wrap the Nvim |API| to provide idiomatic "SDKs" for their
 respective platforms (see |jargon|). You can build a new API client for your
 favorite platform or programming language.
+APIクライアントは、それぞのプラットフォーム用の慣用的なSDKを提供するために、
+Nvimの|API|をラップします（|jargon|を確認してください）。
+-- imakoko
 
 List of API clients:
     https://github.com/neovim/neovim/wiki/Related-projects#api-clients
