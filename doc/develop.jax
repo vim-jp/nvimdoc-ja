@@ -450,12 +450,16 @@ Standard Features ~
   APIクライアントはmsgpack-rpcの詳細を隠蔽するために存在競っています。
   APIクライアントのラッパーは、Nvimからの|api-metadata|を読み込むことによって、
   自動的に生成されます。
--- imakoko
 - Clients should call |nvim_set_client_info()| after connecting, so users and
   plugins can detect the client by handling the |ChanInfo| event. This avoids
   the need for special variables or other client hints.
+  クライアントは、接続後に|nvim_set_client_info()|を呼ぶべきです。ユーザと
+  プラグインは、|ChanInfo|イベントのハンドリングによってクライアントを検出できます。
 - Clients should handle |nvim_error_event| notifications, which will be sent
   if an async request to nvim was rejected or caused an error.
+  クライアントは、nvimへの非同期なリクエストが拒否またはエラーが発生した
+  場合に送信される|nvim_error_event|の通知を処理する必要があります。
+-- imakoko
 
 Package Naming ~
 
