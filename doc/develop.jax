@@ -469,19 +469,25 @@ APIクライアントのパッケージは、"neovim"または"python-client"の
 あいまいな名前をつけるべきではありません。
 エコシステムの規約に従った、他の識別子の接頭語/接尾語として"nvim"を
 使ってください。
--- imakoko
 
 For example, Python packages tend to have "py" in the name, so "pynvim" is
 a good name: it's idiomatic and unambiguous. If the package is named "neovim",
 it confuses users, and complicates documentation and discussions.
+例として、Pythonのパッケージ名には、"py"が入っている傾向があります。
+"pynvim"は良い名前です: 慣用的で、曖昧さがありません。
+もしパッケージ名が "neovim"であるなら、ユーザを混乱させ、複雑なドキュメントや
+議論になっていたでしょう。
 
 Examples of API-client package names:
+APIクライアント名の例
         GOOD: nvim-racket
         GOOD: pynvim
         BAD:  python-client
         BAD:  neovim
 
 API client implementation guidelines ~
+APIクライアントの実装ガイドライン
+-- imakoko
 
 - Separate the transport layer from the rest of the library. |rpc-connecting|
 - Use a MessagePack library that implements at least version 5 of the
