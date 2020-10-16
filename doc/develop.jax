@@ -487,9 +487,10 @@ APIクライアント名の例
 
 API client implementation guidelines ~
 APIクライアントの実装ガイドライン
--- imakoko
 
 - Separate the transport layer from the rest of the library. |rpc-connecting|
+  ライブラリの他の部分から、トランスポート層を分離してください。|rpc-connecting|
+-- imakoko
 - Use a MessagePack library that implements at least version 5 of the
   MessagePack spec, which supports the BIN and EXT types used by Nvim.
 - Use a single-threaded event loop library/pattern.
