@@ -490,10 +490,13 @@ APIクライアントの実装ガイドライン
 
 - Separate the transport layer from the rest of the library. |rpc-connecting|
   ライブラリの他の部分から、トランスポート層を分離してください。|rpc-connecting|
--- imakoko
 - Use a MessagePack library that implements at least version 5 of the
   MessagePack spec, which supports the BIN and EXT types used by Nvim.
+  少なくともMessagePackバージョン5以上の実装である、MessagePackのライブラリを
+  使用してください。
 - Use a single-threaded event loop library/pattern.
+  シングルスレッドのイベントループのライブラリ/パターンを使用してください。
+-- imakoko
 - Use a fiber/coroutine library for the language being used for implementing
   a client. These greatly simplify concurrency and allow the library to
   expose a blocking API on top of a non-blocking event loop without the
