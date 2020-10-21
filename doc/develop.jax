@@ -496,11 +496,16 @@ APIクライアントの実装ガイドライン
   使用してください。
 - Use a single-threaded event loop library/pattern.
   シングルスレッドのイベントループのライブラリ/パターンを使用してください。
--- imakoko
 - Use a fiber/coroutine library for the language being used for implementing
   a client. These greatly simplify concurrency and allow the library to
   expose a blocking API on top of a non-blocking event loop without the
   complexity that comes with preemptive multitasking.
+  クライアントを実装に使用する言語は、fiber/coroutineライブラリを使用して
+  ください。
+  これらは大幅に並行処理を簡素化し、ノンブロッキングなイベントループの上に
+  ブロッキングAPIを公開するライブラリを許可することで、プリエンティブマルチタスクの
+  ような複雑さを必要ないようにします。
+-- imakoko
 - Don't assume anything about the order of responses to RPC requests.
 - Clients should expect requests, which must be handled immediately because
   Nvim is blocked while waiting for the client response.
