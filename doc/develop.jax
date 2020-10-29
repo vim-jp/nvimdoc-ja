@@ -505,8 +505,9 @@ APIクライアントの実装ガイドライン
   これらは大幅に並行処理を簡素化し、ノンブロッキングなイベントループの上に
   ブロッキングAPIを公開するライブラリを許可することで、プリエンティブマルチタスクの
   ような複雑さを必要ないようにします。
--- imakoko
 - Don't assume anything about the order of responses to RPC requests.
+  RPCリクエストへの応答の順番を決め打ちしないでください。
+-- imakoko
 - Clients should expect requests, which must be handled immediately because
   Nvim is blocked while waiting for the client response.
 - Clients should expect notifications, but these can be handled "ASAP" (rather
