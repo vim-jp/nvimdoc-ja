@@ -507,9 +507,11 @@ APIクライアントの実装ガイドライン
   ような複雑さを必要ないようにします。
 - Don't assume anything about the order of responses to RPC requests.
   RPCリクエストへの応答の順番を決め打ちしないでください。
--- imakoko
 - Clients should expect requests, which must be handled immediately because
   Nvim is blocked while waiting for the client response.
+  クライアントはリクエストを期待すべきであるが、Nvimをブロックしないので、
+  可能な限り速く操作できるようになります（即座にではありません）。
+-- imakoko
 - Clients should expect notifications, but these can be handled "ASAP" (rather
   than immediately) because they won't block Nvim.
 - For C/C++ projects, consider libmpack instead of the msgpack.org library.
