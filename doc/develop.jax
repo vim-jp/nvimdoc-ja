@@ -511,9 +511,11 @@ APIクライアントの実装ガイドライン
   Nvim is blocked while waiting for the client response.
   クライアントはリクエストを期待すべきであるが、Nvimをブロックしないので、
   可能な限り速く操作できるようになります（即座にではありません）。
--- imakoko
 - Clients should expect notifications, but these can be handled "ASAP" (rather
   than immediately) because they won't block Nvim.
+  クライアントは通知を期待すべきであるが、Nvimをブロックすることはないので、
+  即座にというよりは、できるだけ速く操作できるようになります。
+-- imakoko
 - For C/C++ projects, consider libmpack instead of the msgpack.org library.
     https://github.com/libmpack/libmpack/
   libmpack is small (no dependencies, can inline into your C/C++ project) and
