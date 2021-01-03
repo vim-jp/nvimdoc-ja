@@ -515,9 +515,11 @@ APIクライアントの実装ガイドライン
   than immediately) because they won't block Nvim.
   クライアントは通知を期待すべきであるが、Nvimをブロックすることはないので、
   即座にというよりは、できるだけ速く操作できるようになります。
--- imakoko
 - For C/C++ projects, consider libmpack instead of the msgpack.org library.
+  C/C++のプロジェクトにとって、msgpack.orgライブラリの代わりにlibmpackを考慮して
+  ください。
     https://github.com/libmpack/libmpack/
+-- imakoko
   libmpack is small (no dependencies, can inline into your C/C++ project) and
   efficient (no allocations). It also implements msgpack-RPC, the protocol
   required by Nvim.
