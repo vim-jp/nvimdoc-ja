@@ -519,14 +519,18 @@ APIクライアントの実装ガイドライン
   C/C++のプロジェクトにとって、msgpack.orgライブラリの代わりにlibmpackを考慮して
   ください。
     https://github.com/libmpack/libmpack/
--- imakoko
   libmpack is small (no dependencies, can inline into your C/C++ project) and
   efficient (no allocations). It also implements msgpack-RPC, the protocol
   required by Nvim.
+  libmpackは小さく（異存がなく、C/C++プロジェクトのなかでもインラインで動き）、
+  効果的（アロケーションがない）です。
+  libmpackもまた、Nvimによって要求されるmsppack-RPCプロトコルも実装します。
     https://github.com/msgpack-rpc/msgpack-rpc
 
 
 EXTERNAL UI 						*dev-ui*
+外部UI
+-- imakoko
 
 External UIs should be aware of the |api-contract|. In particular, future
 versions of Nvim may add new items to existing events. The API is strongly
