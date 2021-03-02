@@ -530,12 +530,13 @@ APIクライアントの実装ガイドライン
 
 EXTERNAL UI 						*dev-ui*
 外部UI
--- imakoko
 
 External UIs should be aware of the |api-contract|. In particular, future
 versions of Nvim may add new items to existing events. The API is strongly
 backwards-compatible, but clients must not break if new (optional) fields are
 added to existing events.
+外部UIは|api-contract|に気をつけるべきである。
+-- imakoko
 
 Standard Features ~
 
