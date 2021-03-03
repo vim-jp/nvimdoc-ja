@@ -536,10 +536,13 @@ versions of Nvim may add new items to existing events. The API is strongly
 backwards-compatible, but clients must not break if new (optional) fields are
 added to existing events.
 外部UIは|api-contract|に気をつけるべきである。特に、Nvimの将来的なバージョンが
-新しい項目やイベントの拡張をするかもしれません。
--- imakoko
+新しい項目やイベントの拡張をするかもしれません。APIには強い後方互換性がありますが、
+クライアントは、もし既存のイベントに新しい（オプションの）フィールドが追加されるならば、
+クライアントはそれを壊してはいけません。
 
 Standard Features ~
+標準機能
+-- imakoko
 
 External UIs are expected to implement these common features:
 
