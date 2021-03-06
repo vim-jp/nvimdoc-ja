@@ -13,12 +13,16 @@ Introduction						*lua-intro*
 
 The Lua 5.1 language is builtin and always available.  Try this command to get
 an idea of what lurks beneath: >
+Lua5.1はNvimにビルトインされており、いつでも利用可能です。
+以下のコマンドを実行してみることで、なにができるかのアイデアを得ることができます。
 
     :lua print(vim.inspect(package.loaded))
 
 Nvim includes a "standard library" |lua-stdlib| for Lua.  It complements the
 "editor stdlib" (|functions| and Ex commands) and the |API|, all of which can
 be used from Lua code.
+Nvimは、Luaのために、|lua-stdlib| "標準"ライブラリを含んでいます。
+-- imakoko
 
 Module conflicts are resolved by "last wins".  For example if both of these
 are on 'runtimepath':
