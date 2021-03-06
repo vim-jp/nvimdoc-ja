@@ -26,7 +26,7 @@ Design goals						*design-goals*
 
 Most important things come first (roughly).  Some items conflict; this is
 intentional.  A balance must be found.
-端的に、最も重要なことを最初に言うなら、いくつかの項目はの内容は衝突しますが、
+端的に、最も重要なことを最初に言うなら、いくつかの項目の内容は衝突しますが、
 これは意図的なものです。バランスを見極めなければなりません。
 
 
@@ -168,9 +168,10 @@ Examples:
 1. In the Vim source code, clipboard logic accounts for more than 1k lines of
    C source code (ui.c), to perform two tasks that are now accomplished with
    shell commands such as xclip or pbcopy/pbpaste.
-   ソースコードにおいて、クリップボードのロジックはui.cのC言語ソースコードのなかで
-   1000行以上を占めます。
-   xclipまたはpbcopy/pbpasteのようなシェルコマンドと連携して動かすようにするためです。
+   ソースコードにおいて、xclipまたはpbcopy/pbpasteのようなシェルコマンドで
+   できることを達成するために、クリップボードのロジックがui.cのC言語ソースコードの
+   なかで1000行以上を占めます。
+
 
 2. Python scripting support: Vim has three files dedicated to embedding the
    Python interpreter: if_python.c, if_python3.c and if_py_both.h. Together
@@ -537,8 +538,8 @@ backwards-compatible, but clients must not break if new (optional) fields are
 added to existing events.
 外部UIは|api-contract|に気をつけるべきである。特に、Nvimの将来的なバージョンが
 新しい項目やイベントの拡張をするかもしれません。APIには強い後方互換性がありますが、
-クライアントは、もし既存のイベントに新しい（オプションの）フィールドが追加されるならば、
-クライアントはそれを壊してはいけません。
+既存のイベントに新しい（オプションの）フィールドが追加されたときに、
+クライアントの機能が壊れないようにしてください。
 
 Standard Features ~
 標準機能
