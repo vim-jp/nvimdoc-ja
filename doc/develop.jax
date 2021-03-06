@@ -555,15 +555,23 @@ External UIs are expected to implement these common features:
   なるのを避けることができます。
 - Cursor style (shape, color) should conform to the 'guicursor' properties
   delivered with the mode_info_set UI event.
--- imakoko
 - Send the ALT/META ("Option" on macOS) key as a |<M-| chord.
+  ALT/META(macOSの"Option"キー)キーは、|<M-| コードとして送信してください。
 - Send the "super" key (Windows key, Apple key) as a |<D-| chord.
+  "super"キー(Windowsキー、Appleキー)は|<D-| コードとして送信してください。
 - Avoid mappings that conflict with the Nvim keymap-space; GUIs have many new
   chords (<C-,> <C-Enter> <C-S-x> <D-x>) and patterns ("shift shift") that do
   not potentially conflict with Nvim defaults, plugins, etc.
+  Nvimのキーマップ空間とのマッピングの衝突を避けてください。
+  GUIは、多くの新しいコード（<C-,> <C-Enter> <C-S-x> <D-x>）と
+  パターン("shift shift")を持ち、Nvimのデフォルトマッピングやプラグインの
+  マッピングと衝突する可能性はありません。
 - Consider the "option_set" |ui-global| event as a hint for other GUI
   behaviors. Various UI-related options ('guifont', 'ambiwidth', …) are
   published in this event. See also "mouse_on", "mouse_off".
+  他のGUIの振る舞いためのヒントとして、"option_set" |ui-global|イベントを考慮して
+  ください。複数のUIに関連したオプション('guifont', 'ambiwidth', …)は、
+  このために書かれています。"mouse_on"や"mouse_off"も確認してください。
 
 
  vim:tw=78:ts=8:noet:ft=help:norl:
