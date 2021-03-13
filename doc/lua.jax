@@ -13,21 +13,34 @@ Introduction						*lua-intro*
 
 The Lua 5.1 language is builtin and always available.  Try this command to get
 an idea of what lurks beneath: >
+Lua5.1はNvimにビルトインされており、いつでも利用可能です。
+以下のコマンドを実行してみることで、なにができるかのアイデアを得ることができます。
 
     :lua print(vim.inspect(package.loaded))
 
 Nvim includes a "standard library" |lua-stdlib| for Lua.  It complements the
 "editor stdlib" (|functions| and Ex commands) and the |API|, all of which can
 be used from Lua code.
+Nvimは、Luaのために、|lua-stdlib| "標準"ライブラリを含んでいます。
+これは、Luaから使用できるすべての"エディタ標準ライブラリ"(関数とExコマンド)、そして
+APIを構成しています。
 
 Module conflicts are resolved by "last wins".  For example if both of these
 are on 'runtimepath':
+モジュールの衝突は、"last wins"によって解決されます。
+例として、以下の'runtimepath'両方が衝突したなら、
     runtime/lua/foo.lua
     ~/.config/nvim/lua/foo.lua
 then `require('foo')` loads "~/.config/nvim/lua/foo.lua", and
 "runtime/lua/foo.lua" is not used.  See |lua-require| to understand how Nvim
 finds and loads Lua modules.  The conventions are similar to VimL plugins,
 with some extra features.  See |lua-require-example| for a walkthrough.
+`require('foo')`は、"~/.config/nvim/lua/foo.lua"をロードしますが、
+"runtime/lua/foo.lua"をロードしません。
+NvimがどのようにLuaモジュールをロードするかを理解するために、
+|lua-require|を確認してください。
+規約は、Vimスクリプトの規約に似ていますが、いくつかの追加機能があります。
+ガイドとしては、|lua-require-example|を確認してください。
 
 ==============================================================================
 Importing Lua modules					*lua-require*
@@ -38,6 +51,8 @@ effective 'runtimepath' value.  Adjustment happens whenever 'runtimepath' is
 changed.  `package.path` is adjusted by simply appending `/lua/?.lua` and
 `/lua/?/init.lua` to each directory from 'runtimepath' (`/` is actually the
 first character of `package.config`).
+Nvimは自動的に、
+-- imakoko
 
 Similarly to `package.path`, modified directories from 'runtimepath' are also
 added to `package.cpath`.  In this case, instead of appending `/lua/?.lua` and
