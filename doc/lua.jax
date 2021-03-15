@@ -51,7 +51,11 @@ effective 'runtimepath' value.  Adjustment happens whenever 'runtimepath' is
 changed.  `package.path` is adjusted by simply appending `/lua/?.lua` and
 `/lua/?/init.lua` to each directory from 'runtimepath' (`/` is actually the
 first character of `package.config`).
-Nvimは自動的に、
+Nvimは、効果的な'runtimepath'の値に従って、自動的に`package.path` と
+`package.cpath`を調整します。'runtimepath'が変更されたときはいつでも、
+調整が発生します。
+`package.path`は、'runtimepath'(`/`は、有効な`package.config`の最初の文字)の
+各ディレクトリに、単純な`/lua/?.lua`と`/lua/?/init.lua`の追加によって調整されます。
 -- imakoko
 
 Similarly to `package.path`, modified directories from 'runtimepath' are also
