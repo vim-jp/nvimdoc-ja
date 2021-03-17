@@ -56,12 +56,14 @@ Nvimは、効果的な'runtimepath'の値に従って、自動的に`package.pat
 調整が発生します。
 `package.path`は、'runtimepath'(`/`は、有効な`package.config`の最初の文字)の
 各ディレクトリに、単純な`/lua/?.lua`と`/lua/?/init.lua`の追加によって調整されます。
--- imakoko
 
 Similarly to `package.path`, modified directories from 'runtimepath' are also
 added to `package.cpath`.  In this case, instead of appending `/lua/?.lua` and
 `/lua/?/init.lua` to each runtimepath, all unique `?`-containing suffixes of
 the existing `package.cpath` are used.  Example:
+`package.path`に似て、'runtimepath'から修正されたディレクトリもまた、
+`package.cpath`に追加されます。この場合、
+-- imakoko
 
 1. Given that
    - 'runtimepath' contains `/foo/bar,/xxx;yyy/baz,/abc`;
