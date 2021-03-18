@@ -62,7 +62,10 @@ added to `package.cpath`.  In this case, instead of appending `/lua/?.lua` and
 `/lua/?/init.lua` to each runtimepath, all unique `?`-containing suffixes of
 the existing `package.cpath` are used.  Example:
 `package.path`に似て、'runtimepath'から修正されたディレクトリもまた、
-`package.cpath`に追加されます。この場合、
+`package.cpath`に追加されます。この場合、各ランタイムパスごとに`/lua/?.lua`と
+`/lua/?/init.lua` を追加する代わりに、既存の`package.cpath`を含むユニークな`?`
+サフィックスがすべて使用されます。
+例として、
 -- imakoko
 
 1. Given that
