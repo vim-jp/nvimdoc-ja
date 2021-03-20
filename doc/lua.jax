@@ -66,19 +66,25 @@ the existing `package.cpath` are used.  Example:
 `/lua/?/init.lua` を追加する代わりに、既存の`package.cpath`を含むユニークな`?`
 サフィックスがすべて使用されます。
 例として、
--- imakoko
 
 1. Given that
    - 'runtimepath' contains `/foo/bar,/xxx;yyy/baz,/abc`;
+     'runtimpath'は、`/foo/bar,/xxx;yyy/baz,/abc`を含みます
    - initial (defined at compile-time or derived from 
      `$LUA_CPATH`/`$LUA_INIT`) `package.cpath` contains 
      `./?.so;/def/ghi/a?d/j/g.elf;/def/?.so`.
+     初期（コンパイル時または`$LUA_CPATH`/`$LUA_INIT`由来）の`package.cpath`は、
+     `./?.so;/def/ghi/a?d/j/g.elf;/def/?.so`を含みます。
 2. It finds `?`-containing suffixes `/?.so`, `/a?d/j/g.elf` and `/?.so`, in 
    order: parts of the path starting from the first path component containing 
    question mark and preceding path separator.
+   クエスチョンマークと、先頭のパスセパレータを含む最初のパスコンポーネントから
+   始まるパスのパーツの順番に`/?.so`, `/a?d/j/g.elf` と `/?.so`のような
+   `?`を含むサフィックスを探索します。
 3. The suffix of `/def/?.so`, namely `/?.so` is not unique, as it’s the same 
    as the suffix of the first path from `package.path` (i.e. `./?.so`).  Which 
    leaves `/?.so` and `/a?d/j/g.elf`, in this order.
+-- imakoko
 4. 'runtimepath' has three paths: `/foo/bar`, `/xxx;yyy/baz` and `/abc`.  The 
    second one contains semicolon which is a paths separator so it is out, 
    leaving only `/foo/bar` and `/abc`, in order.
