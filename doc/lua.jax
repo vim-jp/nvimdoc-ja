@@ -84,10 +84,16 @@ the existing `package.cpath` are used.  Example:
 3. The suffix of `/def/?.so`, namely `/?.so` is not unique, as it’s the same 
    as the suffix of the first path from `package.path` (i.e. `./?.so`).  Which 
    leaves `/?.so` and `/a?d/j/g.elf`, in this order.
--- imakoko
+   `/def/?.so`のサフィックス、`/?.so`という名前は、
+   `package.path`(例. `./?.so`)からの最初のパスのサフィックスと同じなため、
+   同じではありません。
 4. 'runtimepath' has three paths: `/foo/bar`, `/xxx;yyy/baz` and `/abc`.  The 
    second one contains semicolon which is a paths separator so it is out, 
    leaving only `/foo/bar` and `/abc`, in order.
+   'runtimepath'は、3つのパスがあります: `/foo/bar`、`/xxx;yyy/baz`と`/abc`です。
+   2番目は、パスの区切り文字にセミコロンを含むため除外され、
+   `/foo/bar`と`/abc`のみが順番に残ります。
+-- imakoko
 5. The cartesian product of paths from 4. and suffixes from 3. is taken, 
    giving four variants. In each variant `/lua` path segment is inserted 
    between path and suffix, leaving
