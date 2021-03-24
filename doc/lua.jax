@@ -93,10 +93,12 @@ the existing `package.cpath` are used.  Example:
    'runtimepath'は、3つのパスがあります: `/foo/bar`、`/xxx;yyy/baz`と`/abc`です。
    2番目は、パスの区切り文字にセミコロンを含むため除外され、
    `/foo/bar`と`/abc`のみが順番に残ります。
--- imakoko
 5. The cartesian product of paths from 4. and suffixes from 3. is taken, 
    giving four variants. In each variant `/lua` path segment is inserted 
    between path and suffix, leaving
+   4.のパスと3.のサフィックスの直積をとり、4つのバリエーションを作ります。
+   各バリエーションは、   パスとサフィックスの間に`/lua`
+   のパスセグメントが挿入されます。
 
    - `/foo/bar/lua/?.so`
    - `/foo/bar/lua/a?d/j/g.elf`
@@ -104,8 +106,10 @@ the existing `package.cpath` are used.  Example:
    - `/abc/lua/a?d/j/g.elf`
 
 6. New paths are prepended to the original `package.cpath`.
+   新しいパスは、オリジナルの`package.cpath`に付加されます。
 
 The result will look like this:
+-- imakoko
 
     `/foo/bar,/xxx;yyy/baz,/abc` ('runtimepath')
     × `./?.so;/def/ghi/a?d/j/g.elf;/def/?.so` (`package.cpath`)
