@@ -109,7 +109,7 @@ the existing `package.cpath` are used.  Example:
    新しいパスは、オリジナルの`package.cpath`に付加されます。
 
 The result will look like this:
--- imakoko
+結果は以下のようになります
 
     `/foo/bar,/xxx;yyy/baz,/abc` ('runtimepath')
     × `./?.so;/def/ghi/a?d/j/g.elf;/def/?.so` (`package.cpath`)
@@ -124,6 +124,11 @@ Note:
   paths when path is removed from 'runtimepath', adding paths when they are
   added and reordering `package.path`/`package.cpath` content if 'runtimepath'
   was reordered.
+  'runtimepath'の更新を追跡するために、更新前に追加したパスは記憶され、
+  そして次の更新時に削除されます。そして新しい'runtimepath'に由来する
+  すべてのパスは上述のように付加されます。
+  このことは、
+-- imakoko
 
 - Although adjustments happen automatically, Nvim does not track current
   values of `package.path` or `package.cpath`.  If you happen to delete some
