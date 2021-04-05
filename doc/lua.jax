@@ -127,13 +127,15 @@ Note:
   'runtimepath'の更新を追跡するために、更新前に追加したパスは記憶され、
   そして次の更新時に削除されます。そして新しい'runtimepath'に由来する
   すべてのパスは上述のように付加されます。
-  このことは、
--- imakoko
+  これは、パスが'runtimepath'から削除されたとき削除を許可し、パスを追加
+  されたときはパスを追加し、'runtimepath'が再整理されたなら、
+  `package.path`/`package.cpath`を再整理します。
 
 - Although adjustments happen automatically, Nvim does not track current
   values of `package.path` or `package.cpath`.  If you happen to delete some
   paths from there you can set 'runtimepath' to trigger an update: >
       let &runtimepath = &runtimepath
+-- imakoko
 
 - Skipping paths from 'runtimepath' which contain semicolons applies both to
   `package.path` and `package.cpath`.  Given that there are some badly written
