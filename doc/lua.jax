@@ -143,7 +143,9 @@ Note:
   `package.path` and `package.cpath`.  Given that there are some badly written
   plugins using shell which will not work with paths containing semicolons it
   is better to not have them in 'runtimepath' at all.
-  'runtimepath'からパスをスキップする
+  'runtimepath'からセミコロンを含むパスをスキップすることは、
+  `package.path` と `package.cpath`の両方に適用されます。
+
 
 -- imakoko
 
