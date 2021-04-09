@@ -145,8 +145,8 @@ Note:
   is better to not have them in 'runtimepath' at all.
   'runtimepath'からセミコロンを含むパスをスキップすることは、
   `package.path` と `package.cpath`の両方に適用されます。
-
-
+  シェルで書かれた良くないプラグインのいくつかは、セミコロンを含むパスは動かない
+  かもしれないため、一切'runtimepath'に入れないほうが良いです。
 -- imakoko
 
 ------------------------------------------------------------------------------
