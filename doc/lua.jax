@@ -147,7 +147,6 @@ Note:
   `package.path` と `package.cpath`の両方に適用されます。
   シェルで書かれた良くないプラグインのいくつかは、セミコロンを含むパスは動かない
   かもしれないため、一切'runtimepath'に入れないほうが良いです。
--- imakoko
 
 ------------------------------------------------------------------------------
 LUA PLUGIN EXAMPLE					*lua-require-example*
@@ -158,6 +157,10 @@ function in a module `lua/charblob.lua` which is imported in
 `autoload/charblob.vim` (`require("charblob")`).  Example plugin is supposed 
 to be put into any directory from 'runtimepath', e.g. `~/.config/nvim` (in 
 this case `lua/charblob.lua` means `~/.config/nvim/lua/charblob.lua`).
+以下、例として現在のバッファをa long `unsigned char` 配列に変換するコマンド
+`:MakeCharBlob`を追加します。
+luaは、`lua/charblob.lua`モジュールに変換関数を含み、
+これは`autoload/charblob.vim` (`require("charblob")`)でインポートしています。
 
 autoload/charblob.vim: >
 
@@ -234,6 +237,9 @@ or a file (:luafile) on the given line [range]. As always in Lua, each chunk
 has its own scope (closure), so only global variables are shared between
 command calls. The |lua-stdlib| modules, user modules, and anything else on
 |lua-package-path| are available.
+これらのコマンドは、コマンドライン（:lua か :luado）またはファイル（:luafile）から
+与えられた行範囲にluaのチャンクを実行します。
+-- imakoko
 
 The Lua print() function redirects its output to the Nvim message area, with
 arguments separated by " " (space) instead of "\t" (tab).
