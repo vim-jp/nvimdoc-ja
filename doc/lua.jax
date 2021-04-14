@@ -240,7 +240,9 @@ command calls. The |lua-stdlib| modules, user modules, and anything else on
 これらのコマンドは、コマンドライン（:lua か :luado）またはファイル（:luafile）から
 与えられた行範囲にluaのチャンクを実行します。
 luaにおいてはいつも、各チャンクは、自身のスコープ（クロージャ）を持っており、
-そしてグローバル変数だけは、コマンドコール間で共有されます
+そしてグローバル変数だけは、コマンドコール間で共有されます。
+`lua-stdlib`モジュール、ユーザモジュール、その他|lua-package-path|にあるすべてが
+利用可能です。
 -- imakoko
 
 The Lua print() function redirects its output to the Nvim message area, with
