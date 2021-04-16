@@ -243,10 +243,12 @@ luaにおいてはいつも、各チャンクは、自身のスコープ（ク�
 そしてグローバル変数だけは、コマンドコール間で共有されます。
 `lua-stdlib`モジュール、ユーザモジュール、その他|lua-package-path|にあるすべてが
 利用可能です。
--- imakoko
 
 The Lua print() function redirects its output to the Nvim message area, with
 arguments separated by " " (space) instead of "\t" (tab).
+Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）で区切られた
+引数とともに、出力をNvimのメッセージエリアへリダイレクトします。
+-- imakoko
 
                                                         *:lua*
 :[range]lua {chunk}
