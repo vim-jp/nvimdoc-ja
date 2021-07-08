@@ -248,7 +248,6 @@ The Lua print() function redirects its output to the Nvim message area, with
 arguments separated by " " (space) instead of "\t" (tab).
 Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）で区切られた
 引数とともに、出力をNvimのメッセージエリアへリダイレクトします。
--- imakoko
 
                                                         *:lua*
 :[range]lua {chunk}
@@ -257,8 +256,10 @@ Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）�
                         Examples: >
                             :lua vim.api.nvim_command('echo "Hello, Nvim!"')
 <                        To see the Lua version: >
+                        Luaのバージョンを確認
                             :lua print(_VERSION)
 <                        To see the LuaJIT version: >
+                        LuaJITのバージョンを確認
                             :lua print(jit.version)
 <
                                                         *:lua-heredoc*
@@ -269,6 +270,7 @@ Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）�
                         {endmarker} must NOT be preceded by whitespace. You
                         can omit [endmarker] after the "<<" and use a dot "."
                         after {script} (similar to |:append|, |:insert|).
+-- imakoko
 
                         Example:
                         >
