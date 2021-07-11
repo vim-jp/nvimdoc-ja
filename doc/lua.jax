@@ -271,6 +271,7 @@ Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）�
                         can omit [endmarker] after the "<<" and use a dot "."
                         after {script} (similar to |:append|, |:insert|).
 			Vimscript内からLuaスクリプトを実行します。
+
 -- imakoko
 
                         Example:
