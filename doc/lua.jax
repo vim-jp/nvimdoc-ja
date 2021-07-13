@@ -271,8 +271,9 @@ Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）�
                         can omit [endmarker] after the "<<" and use a dot "."
                         after {script} (similar to |:append|, |:insert|).
 			Vimscript内からLuaスクリプトを実行します。
-			test
--- imakoko
+			{endmarker}はスペースを入れてはいけません。
+			"<<"のあとに[endmarker]を省くことができ、{script}のあとにドット"."
+			を使います（|:append|や|:insert|と類似しています）。
 
                         Example:
                         >
@@ -288,6 +289,7 @@ Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）�
 
 <                        Note that the `local` variables will disappear when
                         the block finishes. But not globals.
+-- imakoko
 
                                                         *:luado*
 :[range]luado {body}    Executes Lua chunk "function(line, linenr) {body} end"
