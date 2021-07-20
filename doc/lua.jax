@@ -289,7 +289,8 @@ Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）�
 
 <                        Note that the `local` variables will disappear when
                         the block finishes. But not globals.
--- imakoko
+                        Note ブロックの終了時にローカル変数は消えますが、
+                        グローバル変数ではありません。
 
                                                         *:luado*
 :[range]luado {body}    Executes Lua chunk "function(line, linenr) {body} end"
@@ -298,6 +299,9 @@ Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）�
                         current line number. If the function returns a string
                         that becomes the text of the corresponding buffer
                         line. Default [range] is the whole file: "1,$".
+			各バッファの[range]内の行の、"function(line, linenr) {body} end"の
+			Luaチャンクを実行します。
+-- imakoko
 
                         Examples:
                         >
