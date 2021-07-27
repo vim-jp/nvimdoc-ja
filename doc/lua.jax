@@ -302,9 +302,8 @@ Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）�
 			各バッファの[range]内の行の、"function(line, linenr) {body} end"の
 			Luaチャンクを実行します。`line`とは、<EOL>を除く現在行の
                         ことを指し、`linenr`とは、現在行の行番号を意味します。
-
-
--- imakoko
+                        もし関数が文字列を返却するなら、対応するバッファ行のテキストに
+                        なります。
 
                         Examples:
                         >
@@ -320,6 +319,7 @@ Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）�
 :[range]luafile {file}
 			Execute Lua script in {file}.
 			The whole argument is used as a single file name.
+-- imakoko
 
                         Examples:
                         >
