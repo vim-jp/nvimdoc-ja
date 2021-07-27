@@ -300,7 +300,10 @@ Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）�
                         that becomes the text of the corresponding buffer
                         line. Default [range] is the whole file: "1,$".
 			各バッファの[range]内の行の、"function(line, linenr) {body} end"の
-			Luaチャンクを実行します。
+			Luaチャンクを実行します。`line`とは、<EOL>を除く現在行の
+                        ことを指し、`linenr`とは、現在行の行番号を意味します。
+
+
 -- imakoko
 
                         Examples:
