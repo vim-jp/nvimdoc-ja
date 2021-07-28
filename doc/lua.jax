@@ -319,7 +319,8 @@ Luaのprint()関数は、"¥t"（タブ）の代わりに" "（スペース）�
 :[range]luafile {file}
 			Execute Lua script in {file}.
 			The whole argument is used as a single file name.
--- imakoko
+                        ファイルないのluaスクリプトを実行します。
+                        すべての引数は、1つのファイル名として使われます。
 
                         Examples:
                         >
@@ -334,6 +335,8 @@ The (dual) equivalent of "vim.eval" for passing Lua values to Nvim is
 "luaeval". "luaeval" takes an expression string and an optional argument used 
 for _A inside expression and returns the result of the expression. It is 
 semantically equivalent in Lua to:
+NvimにLuaの値を渡す "vim.eval"と同等なものが、"luaeval"です。
+-- imakoko
 >
     local chunkheader = "local _A = select(1, ...) return "
     function luaeval (expstr, arg)
