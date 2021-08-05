@@ -336,6 +336,8 @@ The (dual) equivalent of "vim.eval" for passing Lua values to Nvim is
 for _A inside expression and returns the result of the expression. It is 
 semantically equivalent in Lua to:
 NvimにLuaの値を渡す "vim.eval"と同等なものが、"luaeval"です。
+"luaeval" は式の文字列と式の中で_Aに使われるオプション引数を取得し、式の
+結果を返却します。
 -- imakoko
 >
     local chunkheader = "local _A = select(1, ...) return "
