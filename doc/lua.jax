@@ -338,7 +338,7 @@ semantically equivalent in Lua to:
 NvimにLuaの値を渡す "vim.eval"と同等なものが、"luaeval"です。
 "luaeval" は式の文字列と式の中で_Aに使われるオプション引数を取得し、式の
 結果を返却します。
--- imakoko
+意味的にはLuaにおいて、以下のものと同等です: 
 >
     local chunkheader = "local _A = select(1, ...) return "
     function luaeval (expstr, arg)
@@ -349,8 +349,11 @@ NvimにLuaの値を渡す "vim.eval"と同等なものが、"luaeval"です。
 Lua nils, numbers, strings, tables and booleans are converted to their
 respective VimL types. An error is thrown if conversion of any other Lua types
 is attempted.
+Luaのnils、数値、文字列、テーブルやブーリアンはそれぞれのVimLの型に変換されます。
+他のLuaの型の変換が試みられた場合、エラーが投げられます。
 
 The magic global "_A" contains the second argument to luaeval().
+-- imakoko
 
 Example: >
     :echo luaeval('_A[1] + _A[2]', [40, 2])
