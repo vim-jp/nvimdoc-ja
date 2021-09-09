@@ -353,7 +353,7 @@ Luaのnils、数値、文字列、テーブルやブーリアンはそれぞれ�
 他のLuaの型の変換が試みられた場合、エラーが投げられます。
 
 The magic global "_A" contains the second argument to luaeval().
--- imakoko
+グローバルなマジック変数 "_A" は、luaeval()の第二引数を含みます。
 
 Example: >
     :echo luaeval('_A[1] + _A[2]', [40, 2])
@@ -365,6 +365,7 @@ Lua tables are used as both dictionaries and lists, so it is impossible to
 determine whether empty table is meant to be empty list or empty dictionary.
 Additionally Lua does not have integer numbers. To distinguish between these
 cases there is the following agreement:
+-- imakoko
 
 0. Empty table is empty list.
 1. Table with N incrementally growing integral numbers, starting from 1 and 
