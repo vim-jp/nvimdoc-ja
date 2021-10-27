@@ -365,6 +365,8 @@ Lua tables are used as both dictionaries and lists, so it is impossible to
 determine whether empty table is meant to be empty list or empty dictionary.
 Additionally Lua does not have integer numbers. To distinguish between these
 cases there is the following agreement:
+Luaのテーブルは辞書とリスト両方として使われます、それで、空のテーブルは空の
+リストまたは空の辞書を意味するかどうかは決定できません。
 -- imakoko
 
 0. Empty table is empty list.
