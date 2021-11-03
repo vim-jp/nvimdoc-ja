@@ -367,13 +367,17 @@ Additionally Lua does not have integer numbers. To distinguish between these
 cases there is the following agreement:
 Luaのテーブルは辞書とリスト両方として使われます、それで、空のテーブルは空の
 リストまたは空の辞書を意味するかどうかは決定できません。
--- imakoko
+加えて、Luaは、整数値を持ちません。これらのケースを区別するためには、以下の合意が
+あります。
 
 0. Empty table is empty list.
+   空のテーブルは空のリストです。
 1. Table with N incrementally growing integral numbers, starting from 1 and 
    ending with N is considered to be a list.
+   1から始まり、Nで終わる整数を増やしていく、N個の増加する整数の表は、リストと見なされます。
 2. Table with string keys, none of which contains NUL byte, is considered to 
    be a dictionary.
+-- imakoko
 3. Table with string keys, at least one of which contains NUL byte, is also 
    considered to be a dictionary, but this time it is converted to 
    a |msgpack-special-map|.
