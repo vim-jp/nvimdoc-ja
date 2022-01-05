@@ -377,10 +377,11 @@ Luaのテーブルは辞書とリスト両方として使われます、それ�
    1から始まり、Nで終わる整数を増やしていく、N個の増加する整数の表は、リストと見なされます。
 2. Table with string keys, none of which contains NUL byte, is considered to 
    be a dictionary.
--- imakoko
+   NULバイトを含まない文字列のキーを持つテーブルは辞書と見なされます。
 3. Table with string keys, at least one of which contains NUL byte, is also 
    considered to be a dictionary, but this time it is converted to 
    a |msgpack-special-map|.
+-- imakoko
 							*lua-special-tbl*
 4. Table with `vim.type_idx` key may be a dictionary, a list or floating-point 
    value:
