@@ -381,10 +381,12 @@ Luaのテーブルは辞書とリスト両方として使われます、それ�
 3. Table with string keys, at least one of which contains NUL byte, is also 
    considered to be a dictionary, but this time it is converted to 
    a |msgpack-special-map|.
--- imakoko
+   少なくとも1つのNULバイトを含む文字列キーで始まるテーブルもまた、リストとして
+   見なされますが、このとき、|msgpack-special-map|に変換されます。
 							*lua-special-tbl*
 4. Table with `vim.type_idx` key may be a dictionary, a list or floating-point 
    value:
+-- imakoko
    - `{[vim.type_idx]=vim.types.float, [vim.val_idx]=1}` is converted to 
      a floating-point 1.0. Note that by default integral Lua numbers are 
      converted to |Number|s, non-integral are converted to |Float|s. This 
