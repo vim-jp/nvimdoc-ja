@@ -386,6 +386,7 @@ Luaのテーブルは辞書とリスト両方として使われます、それ�
 							*lua-special-tbl*
 4. Table with `vim.type_idx` key may be a dictionary, a list or floating-point 
    value:
+   `vim.type_idx`がつくテーブルは、辞書に違いありません
 -- imakoko
    - `{[vim.type_idx]=vim.types.float, [vim.val_idx]=1}` is converted to 
      a floating-point 1.0. Note that by default integral Lua numbers are 
