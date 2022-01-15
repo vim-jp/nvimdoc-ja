@@ -392,6 +392,10 @@ Luaのテーブルは辞書とリスト両方として使われます、それ�
      a floating-point 1.0. Note that by default integral Lua numbers are 
      converted to |Number|s, non-integral are converted to |Float|s. This 
      variant allows integral |Float|s.
+     `{[vim.type_idx]=vim.types.float,[vim.val_idx]=1}`は、浮動小数点に
+     変換されます。
+     注意: 標準では、Luaの整数は数値型に変換され、非整数は浮動小数型に
+     変換されます。これは異なる整数浮動小数点を許容します。
 -- imakoko
    - `{[vim.type_idx]=vim.types.dictionary}` is converted to an empty 
      dictionary, `{[vim.type_idx]=vim.types.dictionary, [42]=1, a=2}` is 
