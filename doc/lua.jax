@@ -96,8 +96,8 @@ the existing `package.cpath` are used.  Example:
 5. The cartesian product of paths from 4. and suffixes from 3. is taken, 
    giving four variants. In each variant `/lua` path segment is inserted 
    between path and suffix, leaving
-   4.のパスと3.のサフィックスの直積をとり、4つのバリエーションを作ります。
-   各バリエーションは、   パスとサフィックスの間に`/lua`
+   4.のパスと3.のサフィックスの直積をとり、4つの変数を作ります。
+   各変数は、パスとサフィックスの間に`/lua`
    のパスセグメントが挿入されます。
 
    - `/foo/bar/lua/?.so`
@@ -395,7 +395,7 @@ Luaのテーブルは辞書とリスト両方として使われます、それ�
      `{[vim.type_idx]=vim.types.float,[vim.val_idx]=1}`は、浮動小数点に
      変換されます。
      注意: 標準では、Luaの整数は数値型に変換され、非整数は浮動小数型に
-     変換されます。これは異なる整数浮動小数点を許容します。
+     変換されます。これは異なる整数浮動小数点を許可します。
 -- imakoko
    - `{[vim.type_idx]=vim.types.dictionary}` is converted to an empty 
      dictionary, `{[vim.type_idx]=vim.types.dictionary, [42]=1, a=2}` is 
