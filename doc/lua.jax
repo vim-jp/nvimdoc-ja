@@ -396,16 +396,22 @@ Luaのテーブルは辞書とリスト両方として使われます、それ�
      変換されます。
      注意: 標準では、Luaの整数は数値型に変換され、非整数は浮動小数型に
      変換されます。これは異なる整数浮動小数点を許可します。
--- imakoko
    - `{[vim.type_idx]=vim.types.dictionary}` is converted to an empty 
      dictionary, `{[vim.type_idx]=vim.types.dictionary, [42]=1, a=2}` is 
      converted to a dictionary `{'a': 42}`: non-string keys are ignored. 
      Without `vim.type_idx` key tables with keys not fitting in 1., 2. or 3. 
      are errors.
+     `{[vim.type_idx]=vim.types.dictionary}`は空の辞書に変換され、
+     `{[vim.type_idx]=vim.types.dictionary, [42]=1, a=2}`は`{'a':42}`
+     の辞書に変換され、文字列型でないキーは無視されます。
+     `vim.type_idx`キーがない場合、1, 2, 3にあてはまらないキーを持つ
+     テーブルはエラーとなります。
+
    - `{[vim.type_idx]=vim.types.list}` is converted to an empty list. As well 
      as `{[vim.type_idx]=vim.types.list, [42]=1}`: integral keys that do not 
      form a 1-step sequence from 1 to N are ignored, as well as all 
      non-integral keys.
+     -- imakoko
 
 Examples: >
 
