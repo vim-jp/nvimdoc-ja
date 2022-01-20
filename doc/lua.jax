@@ -411,6 +411,7 @@ Luaのテーブルは辞書とリスト両方として使われます、それ�
      as `{[vim.type_idx]=vim.types.list, [42]=1}`: integral keys that do not 
      form a 1-step sequence from 1 to N are ignored, as well as all 
      non-integral keys.
+     `{[vim.type_idx]=vim.types.list}`は空の配列に変換されます。
      -- imakoko
 
 Examples: >
