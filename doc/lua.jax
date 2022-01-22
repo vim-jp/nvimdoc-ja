@@ -412,7 +412,8 @@ Luaのテーブルは辞書とリスト両方として使われます、それ�
      form a 1-step sequence from 1 to N are ignored, as well as all 
      non-integral keys.
      `{[vim.type_idx]=vim.types.list}`は空の配列に変換されます。
-     -- imakoko
+     `{[vim.type_idx]=vim.types.list,[42]=1}`と同様に、1からNまでの1ステップの整数キーも無視されます。
+     これは非整数のキーと同様です。
 
 Examples: >
 
@@ -426,6 +427,11 @@ Note: second argument to `luaeval` undergoes VimL to Lua conversion
 ("marshalled"), so changes to Lua containers do not affect values in VimL.
 Return value is also always converted. When converting,
 |msgpack-special-dict|s are treated specially.
+注意: `luaeval`の2番目の引数は、VimLからLuaへ変換します（marshalledのため）。
+Luaコンテナへの変更は、VimL内の値へ影響しません。
+返却値もまた常に変換されます。変換時、|msgpack-special-dict|sは特別なものとして
+扱われます。
+-- imakoko
 
 ==============================================================================
 Vimscript v:lua interface				*v:lua-call*
