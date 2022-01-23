@@ -431,7 +431,6 @@ Return value is also always converted. When converting,
 Luaコンテナへの変更は、VimL内の値へ影響しません。
 返却値もまた常に変換されます。変換時、|msgpack-special-dict|sは特別なものとして
 扱われます。
--- imakoko
 
 ==============================================================================
 Vimscript v:lua interface				*v:lua-call*
@@ -439,6 +438,10 @@ Vimscript v:lua interface				*v:lua-call*
 From Vimscript the special `v:lua` prefix can be used to call Lua functions
 which are global or accessible from global tables. The expression >
     v:lua.func(arg1, arg2)
+特別な`v:lua`プレフィックスは、グローバルまたはグローバルからアクセスできるものとして、
+Luaの関数を呼ぶためにVimscriptから使われます。表現としては、以下のようになります。 >
+    v:lua.func(arg1, arg2)
+
 is equivalent to the Lua chunk >
     return func(...)
 where the args are converted to Lua values. The expression >
