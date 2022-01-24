@@ -444,8 +444,12 @@ Luaの関数を呼ぶためにVimscriptから使われます。表現として�
 
 is equivalent to the Lua chunk >
     return func(...)
+これは同等のLuaのチャンクだと、以下のようになります。 >
+    return func(...)
+
 where the args are converted to Lua values. The expression >
     v:lua.somemod.func(args)
+----- imakoko
 is equivalent to the Lua chunk >
     return somemod.func(...)
 
