@@ -449,12 +449,13 @@ is equivalent to the Lua chunk >
 
 where the args are converted to Lua values. The expression >
     v:lua.somemod.func(args)
------ imakoko
 is equivalent to the Lua chunk >
+引き数はLuaの値に変換されます。記述としては、Luaのチャンクと等価です。
     return somemod.func(...)
 
 You can use `v:lua` in "func" options like 'tagfunc', 'omnifunc', etc.
 For example consider the following Lua omnifunc handler: >
+----- imakoko
 
     function mymod.omnifunc(findstart, base)
       if findstart == 1 then
