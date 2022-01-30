@@ -455,7 +455,9 @@ is equivalent to the Lua chunk >
 
 You can use `v:lua` in "func" options like 'tagfunc', 'omnifunc', etc.
 For example consider the following Lua omnifunc handler: >
------ imakoko
+"func"オプション内で、'tagfunc','omnifunc'などのように、
+`v:lua`を使用できます。
+例として、Luaのオムニ補完ハンドラについて考えてみましょう。
 
     function mymod.omnifunc(findstart, base)
       if findstart == 1 then
@@ -467,6 +469,7 @@ For example consider the following Lua omnifunc handler: >
     vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.mymod.omnifunc')
 
 Note: the module ("mymod" in the above example) must be a Lua global.
+----- imakoko
 
 Note: `v:lua` without a call is not allowed in a Vimscript expression:
 |Funcref|s cannot represent Lua functions. The following are errors: >
