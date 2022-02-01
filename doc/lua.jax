@@ -469,10 +469,12 @@ For example consider the following Lua omnifunc handler: >
     vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.mymod.omnifunc')
 
 Note: the module ("mymod" in the above example) must be a Lua global.
------ imakoko
+注意: モジュール（上記例の"mymod"）は、グローバルのLuaである必要があります。
 
 Note: `v:lua` without a call is not allowed in a Vimscript expression:
 |Funcref|s cannot represent Lua functions. The following are errors: >
+注意: コールなしの`v:lua` Vimscriptの表現内で許可されません。
+|Funcref|はLuaの関数を表すことはきません。エラーは以下のようになります。
 
     let g:Myvar = v:lua.myfunc        " Error
     call SomeFunc(v:lua.mycallback)   " Error
@@ -482,6 +484,7 @@ Note: `v:lua` without a call is not allowed in a Vimscript expression:
 
 ==============================================================================
 Lua standard modules					*lua-stdlib*
+----- imakoko
 
 The Nvim Lua "standard library" (stdlib) is the `vim` module, which exposes
 various functions and sub-modules.  It is always loaded, thus require("vim")
