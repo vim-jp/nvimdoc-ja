@@ -484,11 +484,13 @@ Note: `v:lua` without a call is not allowed in a Vimscript expression:
 
 ==============================================================================
 Lua standard modules					*lua-stdlib*
------ imakoko
 
 The Nvim Lua "standard library" (stdlib) is the `vim` module, which exposes
 various functions and sub-modules.  It is always loaded, thus require("vim")
 is unnecessary.
+Nvimの標準ライブラリ（stdlib）は、各種機能とサブモジュールを持つ、vimのモジュールです。
+ライブラリは常にロードされており、そのため、 require("vim")は不要です。
+----- imakoko
 
 You can peek at the module properties: >
 
