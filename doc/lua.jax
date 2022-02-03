@@ -490,11 +490,11 @@ various functions and sub-modules.  It is always loaded, thus require("vim")
 is unnecessary.
 Nvimの標準ライブラリ（stdlib）は、各種機能とサブモジュールを持つ、vimのモジュールです。
 ライブラリは常にロードされており、そのため、 require("vim")は不要です。
------ imakoko
 
 You can peek at the module properties: >
 
     :lua print(vim.inspect(vim))
+あなたはモジュールのプロパティを確認できます。
 
 Result is something like this: >
 
@@ -511,6 +511,8 @@ Result is something like this: >
       gsplit = <function 107>,
       ...
     }
+結果は、以下のようになります。
+---- imakoko
 
 To find documentation on e.g. the "deepcopy" function: >
 
