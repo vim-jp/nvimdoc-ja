@@ -512,14 +512,17 @@ Result is something like this: >
       ...
     }
 結果は、以下のようになります。
----- imakoko
 
 To find documentation on e.g. the "deepcopy" function: >
+"deepcopy"をレイテとして、ドキュメントを見つけるためには、以下のように
+行います。
 
     :help vim.deepcopy()
 
 Note that underscore-prefixed functions (e.g. "_os_proc_children") are
 internal/private and must not be used by plugins.
+注意: "_os_proc_children"ような、アンダースコアをプリフィックスのついた
+関数は、内部関数またはprivateな関数であり、プラグインからは使用してはいけません。
 
 ------------------------------------------------------------------------------
 VIM.LOOP						*lua-loop* *vim.loop*
@@ -527,6 +530,7 @@ VIM.LOOP						*lua-loop* *vim.loop*
 `vim.loop` exposes all features of the Nvim event-loop.  This is a low-level
 API that provides functionality for networking, filesystem, and process
 management.  Try this command to see available functions: >
+---- imakoko
 
     :lua print(vim.inspect(vim.loop))
 
