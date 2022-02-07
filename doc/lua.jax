@@ -530,9 +530,12 @@ VIM.LOOP						*lua-loop* *vim.loop*
 `vim.loop` exposes all features of the Nvim event-loop.  This is a low-level
 API that provides functionality for networking, filesystem, and process
 management.  Try this command to see available functions: >
----- imakoko
 
     :lua print(vim.inspect(vim.loop))
+`vim.loop`は、Nvimのイベントループの全特徴を公開しています。
+これは、ネットワーク、ファイルシステムやプロセス管理用の機能を提供する、
+低レベルなAPIです。
+利用可能な関数を確認するため、以下のコマンドを試してみてください。
 
 Reference: http://docs.libuv.org
 Examples:  https://github.com/luvit/luv/tree/master/examples
@@ -540,6 +543,7 @@ Examples:  https://github.com/luvit/luv/tree/master/examples
 						*E5560* *lua-loop-callbacks*
 It is an error to directly invoke `vim.api` functions (except |api-fast|) in
 `vim.loop` callbacks.  For example, this is an error: >
+---- imakoko
 
     local timer = vim.loop.new_timer()
     timer:start(1000, 0, function()
