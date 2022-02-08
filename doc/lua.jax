@@ -543,12 +543,14 @@ Examples:  https://github.com/luvit/luv/tree/master/examples
 						*E5560* *lua-loop-callbacks*
 It is an error to directly invoke `vim.api` functions (except |api-fast|) in
 `vim.loop` callbacks.  For example, this is an error: >
----- imakoko
 
     local timer = vim.loop.new_timer()
     timer:start(1000, 0, function()
       vim.api.nvim_command('echomsg "test"')
     end)
+`vim.loop`コールバック内で`vim.api`関数（|api-fast|を除く）を直接呼び出すのは、
+エラーとなります。
+例として、これはエラーとなります。
 
 To avoid the error use |vim.schedule_wrap()| to defer the callback: >
 
@@ -556,6 +558,9 @@ To avoid the error use |vim.schedule_wrap()| to defer the callback: >
     timer:start(1000, 0, vim.schedule_wrap(function()
       vim.api.nvim_command('echomsg "test"')
     end))
+
+エラーを避けるために、コールバックの参照に|vim.schedule_wrap()|を
+使ってください。
 
 Example: repeating timer
     1. Save this code to a file.
@@ -576,6 +581,7 @@ Example: repeating timer
 
 
 Example: File-change detection				*watch-file*
+---- imakoko
     1. Save this code to a file.
     2. Execute it with ":luafile %".
     3. Use ":Watch %" to watch any file.
