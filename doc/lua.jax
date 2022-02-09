@@ -581,6 +581,7 @@ Example: repeating timer
 
 
 Example: File-change detection				*watch-file*
+例: ファイル変更検知
 ---- imakoko
     1. Save this code to a file.
     2. Execute it with ":luafile %".
