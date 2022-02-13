@@ -582,13 +582,19 @@ Example: repeating timer
 
 Example: File-change detection				*watch-file*
 例: ファイル変更検知
----- imakoko
     1. Save this code to a file.
     2. Execute it with ":luafile %".
     3. Use ":Watch %" to watch any file.
     4. Try editing the file from another text editor.
     5. Observe that the file reloads in Nvim (because on_change() calls
        |:checktime|). >
+
+    1. ファイルに以下のコードを保存してください
+    2. ":luafile %"で実行してください
+    3. 他のファイルを監視するために、":Watch %"を使ってください
+    4. 他のテキストエディタからファイルを編集してみてください
+    5. Nvim内でリロードされるのをを監視してください（on_change()は
+    　 `:checktime`を呼ぶためです）
 
     local w = vim.loop.new_fs_event()
     local function on_change(err, fname, status)
@@ -609,10 +615,16 @@ Example: File-change detection				*watch-file*
 
 
 Example: TCP echo-server				*tcp-server*
+例: TCPのエコーサーバ
     1. Save this code to a file.
     2. Execute it with ":luafile %".
     3. Note the port number.
     4. Connect from any TCP client (e.g. "nc 0.0.0.0 36795"): >
+
+    1. ファイルに以下のコードを保存してください
+    2. ":luafile %"で実行してください
+    3. ポート番号を記録してください
+    4. 他のTCPクライアントから接続してください（例. "nc 0.0.0.0 36795"）
 
     local function create_server(host, port, on_connect)
       local server = vim.loop.new_tcp()
@@ -641,10 +653,12 @@ Example: TCP echo-server				*tcp-server*
 VIM.TREESITTER						*lua-treesitter*
 
 Nvim integrates the tree-sitter library for incremental parsing of buffers.
+Nvimはバッファのパース増加のために、tree-sitterライブラリを統合します。
 
 Currently Nvim does not provide the tree-sitter parsers, instead these must
 be built separately, for instance using the tree-sitter utility.
 The parser is loaded into nvim using >
+----- imakoko
 
     vim.treesitter.add_language("/path/to/c_parser.so", "c")
 
