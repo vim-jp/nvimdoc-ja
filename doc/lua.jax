@@ -658,12 +658,14 @@ Nvimはバッファのパース増加のために、tree-sitterライブラリ�
 Currently Nvim does not provide the tree-sitter parsers, instead these must
 be built separately, for instance using the tree-sitter utility.
 The parser is loaded into nvim using >
------ imakoko
+現在Nvimは、tree-sitterパーサを提供していませんが、その代わりに、tree-sitter
+ユーティリティの仕様によって、別途ビルドする必要があります。 >
 
     vim.treesitter.add_language("/path/to/c_parser.so", "c")
 
 <Create a parser for a buffer and a given language (if another plugin uses the
 same buffer/language combination, it will be safely reused). Use >
+----- imakoko
 
     parser = vim.treesitter.get_parser(bufnr, lang)
 
