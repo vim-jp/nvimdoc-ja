@@ -665,7 +665,8 @@ The parser is loaded into nvim using >
 
 <Create a parser for a buffer and a given language (if another plugin uses the
 same buffer/language combination, it will be safely reused). Use >
------ imakoko
+バッファと与えられた言語（もし他のプラグインガ同じバッファと言語の組み合わせを
+使っているなら）のためのパーサを作って下さい。以下のように実行してください。 >
 
     parser = vim.treesitter.get_parser(bufnr, lang)
 
