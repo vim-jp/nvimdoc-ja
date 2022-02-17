@@ -675,6 +675,10 @@ doesn't work yet for some filetypes like "cpp") Currently, the parser will be
 retained for the lifetime of a buffer but this is subject to change. A plugin
 should keep a reference to the parser object as long as it wants incremental
 updates.
+`bufnr=0`は現在のバッファのために使われます。`lang`は標準で'filetype'に
+なります（これはまだ"cpp"のようないくつかのファイルタイプでは動作しません）。
+現在、
+----- imakoko
 
 Whenever you need to access the current syntax tree, parse the buffer: >
 
