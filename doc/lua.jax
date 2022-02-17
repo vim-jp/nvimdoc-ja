@@ -677,7 +677,9 @@ should keep a reference to the parser object as long as it wants incremental
 updates.
 `bufnr=0`は現在のバッファのために使われます。`lang`は標準で'filetype'に
 なります（これはまだ"cpp"のようないくつかのファイルタイプでは動作しません）。
-現在、
+現在、バッファの生存時間のあいだは保持されますが、変更される可能性があります。
+プラグインは、増分更新を必要とするあいだは、パーサオブジェクトへの参照を保持し続ける
+べきです。
 ----- imakoko
 
 Whenever you need to access the current syntax tree, parse the buffer: >
