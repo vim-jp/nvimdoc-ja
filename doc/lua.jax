@@ -693,6 +693,8 @@ it should call `parse()` again. If the buffer wasn't edited, the same tree will
 be returned again without extra work. If the buffer was parsed before,
 incremental parsing will be done of the changed parts.
 これで、バッファの現在の状態を表すイミュータブルなツリーを返却するでしょう。
+プラグインが編集後の状態にアクセスを要求するとき、再度`parse()`をコールすべきです。
+もし
 ----- imakoko
 
 NB: to use the parser directly inside a |nvim_buf_attach| Lua callback, you must
