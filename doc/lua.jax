@@ -694,14 +694,15 @@ be returned again without extra work. If the buffer was parsed before,
 incremental parsing will be done of the changed parts.
 これで、バッファの現在の状態を表すイミュータブルなツリーを返却するでしょう。
 プラグインが編集後の状態にアクセスを要求するとき、再度`parse()`をコールすべきです。
-もし
------ imakoko
+もしバッファが編集されていなかったら、追加の処理なしで、同じツリーが再度返却されます。
+もしバッファが事前に編集されていたら、変更完了された部分に、追加でパースされます。
 
 NB: to use the parser directly inside a |nvim_buf_attach| Lua callback, you must
 call `get_parser()` before you register your callback. But preferably parsing
 shouldn't be done directly in the change callback anyway as they will be very
 frequent. Rather a plugin that does any kind of analysis on a tree should use
 a timer to throttle too frequent updates.
+----- imakoko
 
 Tree methods						*lua-treesitter-tree*
 
