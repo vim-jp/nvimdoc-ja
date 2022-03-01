@@ -702,6 +702,8 @@ call `get_parser()` before you register your callback. But preferably parsing
 shouldn't be done directly in the change callback anyway as they will be very
 frequent. Rather a plugin that does any kind of analysis on a tree should use
 a timer to throttle too frequent updates.
+NB: `nvim_buf_attach`Luaコールバック内で直接パーサを使うためには、あなたのコールバックを
+登録する前に、`get_parser()`を呼ばなければなりません。
 ----- imakoko
 
 Tree methods						*lua-treesitter-tree*
