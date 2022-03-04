@@ -704,12 +704,14 @@ frequent. Rather a plugin that does any kind of analysis on a tree should use
 a timer to throttle too frequent updates.
 NB: `nvim_buf_attach`Luaコールバック内で直接パーサを使うためには、あなたのコールバックを
 登録する前に、`get_parser()`を呼ばなければなりません。
------ imakoko
+しかし、非常に頻繁に行われるため、変更コールバックで直接変更パースすべきではないでしょう。
+ツリーでなんらかの解析を行うプラグインは、頻繁すぎる更新を抑えるためにタイマーを使うべきです。
 
 Tree methods						*lua-treesitter-tree*
 
 tstree:root()						*tstree:root()*
 	Return the root node of this tree.
+----- imakoko
 
 
 Node methods						*lua-treesitter-node*
