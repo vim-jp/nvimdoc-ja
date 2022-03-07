@@ -711,16 +711,19 @@ Tree methods						*lua-treesitter-tree*
 
 tstree:root()						*tstree:root()*
 	Return the root node of this tree.
------ imakoko
+	ツリーのルートノードを返却します
 
 
 Node methods						*lua-treesitter-node*
 
 tsnode:parent()						*tsnode:parent()*
 	Get the node's immediate parent.
+	直接の親ノードを取得します
 
 tsnode:child_count()					*tsnode:child_count()*
 	Get the node's number of children.
+	子ノードの数を取得します
+----- imakoko
 
 tsnode:child(N)						*tsnode:child()*
 	Get the node's child at the given index, where zero represents the
