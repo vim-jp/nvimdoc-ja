@@ -723,22 +723,27 @@ tsnode:parent()						*tsnode:parent()*
 tsnode:child_count()					*tsnode:child_count()*
 	Get the node's number of children.
 	子ノードの数を取得します
------ imakoko
 
 tsnode:child(N)						*tsnode:child()*
 	Get the node's child at the given index, where zero represents the
 	first child.
+	与えられたインデックス位置の子ノードを取得します。
+	ゼロは最初の子ノードを表します。
 
 tsnode:named_child_count()			*tsnode:named_child_count()*
 	Get the node's number of named children.
+	名前付き子ノードの数を取得します。
 
 tsnode:named_child(N)					*tsnode:named_child()*
 	Get the node's named child at the given index, where zero represents
 	the first named child.
+	与えられたインデックス位置の、名前付き子ノードを取得します。
+	ゼロは最初の子ノードを表します。
 
 tsnode:start()						*tsnode:start()*
 	Get the node's start position. Return three values: the row, column
 	and total byte count (all zero-based).
+----- imakoko
 
 tsnode:end_()						*tsnode:end_()*
 	Get the node's end position. Return three values: the row, column
