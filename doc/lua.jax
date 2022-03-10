@@ -755,13 +755,16 @@ tsnode:end_()						*tsnode:end_()*
 tsnode:range()						*tsnode:range()*
 	Get the range of the node. Return four values: the row, column
 	of the start position, then the row, column of the end position.
-	-- imakoko
+        ノードの範囲を取得します。
+        行・列の始点位置の返却し、それから行・列の終端位置を返却します。
 
 tsnode:type()						*tsnode:type()*
 	Get the node's type as a string.
+        ノートの型を文字列として取得します。
 
 tsnode:symbol()						*tsnode:symbol()*
 	Get the node's type as a numerical id.
+	-- imakoko
 
 tsnode:named()						*tsnode:named()*
 	Check if the node is named. Named nodes correspond to named rules in
