@@ -764,6 +764,7 @@ tsnode:type()						*tsnode:type()*
 
 tsnode:symbol()						*tsnode:symbol()*
 	Get the node's type as a numerical id.
+        数値でノードの型を取得します。
 	-- imakoko
 
 tsnode:named()						*tsnode:named()*
