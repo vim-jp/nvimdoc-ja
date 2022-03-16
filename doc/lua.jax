@@ -765,19 +765,23 @@ tsnode:type()						*tsnode:type()*
 tsnode:symbol()						*tsnode:symbol()*
 	Get the node's type as a numerical id.
         数値でノードの型を取得します。
-	-- imakoko
 
 tsnode:named()						*tsnode:named()*
 	Check if the node is named. Named nodes correspond to named rules in
 	the  grammar, whereas anonymous nodes correspond to string literals
 	in the grammar.
+	ノードに名前があるかチェックします。
 
 tsnode:missing()					*tsnode:missing()*
 	Check if the node is missing. Missing nodes are inserted by the
 	parser in order to recover from certain kinds of syntax errors.
+	ノードがなくなったかをチェックします。
+        失われたノードは、ある種のシンタックスエラーからの復旧のために挿入
+        されます。
 
 tsnode:has_error()					*tsnode:has_error()*
 	Check if the node is a syntax error or contains any syntax errors.
+	-- imakoko
 
 tsnode:sexpr()						*tsnode:sexpr()*
 	Get an S-expression representing the node as a string.
