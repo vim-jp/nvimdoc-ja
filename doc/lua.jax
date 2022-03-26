@@ -781,15 +781,17 @@ tsnode:missing()					*tsnode:missing()*
 
 tsnode:has_error()					*tsnode:has_error()*
 	Check if the node is a syntax error or contains any syntax errors.
-	-- imakoko
+	ノードがシンタックスエラーか他のシンタックスエラーを含むかをチェックします。
 
 tsnode:sexpr()						*tsnode:sexpr()*
 	Get an S-expression representing the node as a string.
+	S式で表現したノードを、文字列として取得します。
 
 tsnode:descendant_for_range(start_row, start_col, end_row, end_col)
 						*tsnode:descendant_for_range()*
 	Get the smallest node within this node that spans the given range of
 	(row, column) positions
+	-- imakoko
 
 tsnode:named_descendant_for_range(start_row, start_col, end_row, end_col)
 					*tsnode:named_descendant_for_range()*
