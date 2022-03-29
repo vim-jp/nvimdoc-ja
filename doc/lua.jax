@@ -791,18 +791,21 @@ tsnode:descendant_for_range(start_row, start_col, end_row, end_col)
 						*tsnode:descendant_for_range()*
 	Get the smallest node within this node that spans the given range of
 	(row, column) positions
-	-- imakoko
+	与えられた範囲（行, 列）の範囲にまたがる、最小のノードを取得します。
 
 tsnode:named_descendant_for_range(start_row, start_col, end_row, end_col)
 					*tsnode:named_descendant_for_range()*
 	Get the smallest named node within this node that spans the given
 	range of (row, column) positions
+	与えられた範囲（行, 列）の範囲にまたがる、最小の名前付きノードを
+	取得します。
 
 ------------------------------------------------------------------------------
 VIM							*lua-builtin*
 
 vim.api.{func}({...})					*vim.api*
         Invokes Nvim |API| function {func} with arguments {...}.
+	Nvim |API| 関数{func}を 引数{...}つきで呼び出します。
         Example: call the "nvim_get_current_line()" API function: >
             print(tostring(vim.api.nvim_get_current_line()))
 
