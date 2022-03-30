@@ -811,7 +811,9 @@ vim.api.{func}({...})					*vim.api*
 
 vim.call({func}, {...})					*vim.call()*
         Invokes |vim-function| or |user-function| {func} with arguments {...}.
-        See also |vim.fn|. Equivalent to: >
+        See also |vim.fn|. Equivalent to:
+	|vim-function|または|user-function|関数{func}を、引数{...}つきで呼び出します
+	|vim.fn|も確認してください >
             vim.fn[func]({...})
 
 vim.in_fast_event()					*vim.in_fast_event()*
