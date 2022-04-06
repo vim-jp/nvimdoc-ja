@@ -822,6 +822,11 @@ vim.in_fast_event()					*vim.in_fast_event()*
         (e.g. |lua-loop-callbacks|) which can be invoked whenever Nvim polls
         for input.  When this is `false` most API functions are callable (but
         may be subject to other restrictions such as |textlock|).
+	APIのほとんどが無効化された"fast"イベントハンドラの1部が実行
+	されている場合、trueを返却します。
+	これらは、Nvimが入力をポーリングしているときはいつも呼び出される
+	低レベルイベントです（例. |lua-loop-callbacks|）。
+	----- imakoko
 
 vim.NIL								    *vim.NIL*
 	Special value used to represent NIL in msgpack-rpc and |v:null| in
