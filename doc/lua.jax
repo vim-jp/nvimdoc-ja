@@ -826,6 +826,8 @@ vim.in_fast_event()					*vim.in_fast_event()*
 	されている場合、trueを返却します。
 	これらは、Nvimが入力をポーリングしているときはいつも呼び出される
 	低レベルイベントです（例. |lua-loop-callbacks|）。
+	`false`にすると、大半のAPI関数を呼べるようになります（しかし、
+	|textlock|のように制限を受けるかもしれません）。
 	----- imakoko
 
 vim.NIL								    *vim.NIL*
