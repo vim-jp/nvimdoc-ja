@@ -828,7 +828,6 @@ vim.in_fast_event()					*vim.in_fast_event()*
 	低レベルイベントです（例. |lua-loop-callbacks|）。
 	`false`にすると、大半のAPI関数を呼べるようになります（しかし、
 	|textlock|のように制限を受けるかもしれません）。
-	----- imakoko
 
 vim.NIL								    *vim.NIL*
 	Special value used to represent NIL in msgpack-rpc and |v:null| in
@@ -836,6 +835,12 @@ vim.NIL								    *vim.NIL*
 	part of a lua table representing a Dictionary or Array, as it
 	is equivalent to a missing value: `{"foo", nil}` is the same as 
 	`{"foo"}`
+	msgpack-rpcとvimscript内のインタラクション内の|v:null|、そして類似のケースで
+	NILという表現で使われる特別な値です、
+	Luaの`nil`は、辞書または配列として表現されるLuaテーブルの一部として
+	使うことはできません。
+
+	----- imakoko
 
 vim.rpcnotify({channel}, {method}[, {args}...])		    *vim.rpcnotify()*
 	Sends {event} to {channel} via |RPC| and returns immediately.
