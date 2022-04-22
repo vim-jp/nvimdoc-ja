@@ -838,7 +838,7 @@ vim.NIL								    *vim.NIL*
 	msgpack-rpcとvimscript内のインタラクション内の|v:null|、そして類似のケースで
 	NILという表現で使われる特別な値です、
 	Luaの`nil`は、辞書または配列として表現されるLuaテーブルの一部として
-	使うことはできません。
+	使うことはできません。これは`{"foo", nil}``が `{"foo"}と等価です。`
 
 	----- imakoko
 
