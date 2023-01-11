@@ -845,9 +845,9 @@ vim.rpcnotify({channel}, {method}[, {args}...])		    *vim.rpcnotify()*
 	If {channel} is 0, the event is broadcast to all channels.
 	{channel}へ |RPC| 経由で{event}を送信し、直ちに返却します。
 	もし{channel}が0なら、イベントはすべてのチャンネルにブロードキャストされます。
-	----- imakoko
 
 	This function also works in a fast callback |lua-loop-callbacks|.
+        この関数も、|lua-loop-callbacks|コールバック内で高速に動作します。
 
 vim.rpcrequest({channel}, {method}[, {args}...])	    *vim.rpcrequest()*
 	Sends a request to {channel} to invoke {method} via
