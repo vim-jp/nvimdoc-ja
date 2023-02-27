@@ -852,9 +852,12 @@ vim.rpcnotify({channel}, {method}[, {args}...])		    *vim.rpcnotify()*
 vim.rpcrequest({channel}, {method}[, {args}...])	    *vim.rpcrequest()*
 	Sends a request to {channel} to invoke {method} via
 	|RPC| and blocks until a response is received.
+        {channel}へ |RPC|経由で{method}を呼び出すリクエストを送信し、
+        レスポンスが返却されるまでブロックします。
 
 	Note: NIL values as part of the return value is represented as
 	|vim.NIL| special value
+	注: 返り値の部分としてのNIL値は、|vimlNIL|の特殊な値として表現されます。
 
 vim.stricmp({a}, {b})					*vim.stricmp()*
         Compares strings case-insensitively.  Returns 0, 1 or -1 if strings
