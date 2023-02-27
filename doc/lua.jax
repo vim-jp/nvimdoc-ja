@@ -857,6 +857,7 @@ vim.rpcrequest({channel}, {method}[, {args}...])	    *vim.rpcrequest()*
 
 	Note: NIL values as part of the return value is represented as
 	|vim.NIL| special value
+	注: 返り値の部分としてのNIL値は、|vimlNIL|の特殊な値として表現されます。
 
 vim.stricmp({a}, {b})					*vim.stricmp()*
         Compares strings case-insensitively.  Returns 0, 1 or -1 if strings
