@@ -863,6 +863,8 @@ vim.stricmp({a}, {b})					*vim.stricmp()*
         Compares strings case-insensitively.  Returns 0, 1 or -1 if strings
         are equal, {a} is greater than {b} or {a} is lesser than {b},
         respectively.
+        文字列を区別せず比較します。それぞれ文字が等しい、{b}より{a}が大きい、
+        {b}より{a}が小さいなどを比較して、0, 1または-1を返却します。
 
 vim.str_utfindex({str}[, {index}])			*vim.str_utfindex()*
         Convert byte index to UTF-32 and UTF-16 indicies. If {index} is not
