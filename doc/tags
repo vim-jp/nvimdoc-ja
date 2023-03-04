@@ -3200,7 +3200,6 @@ Context	repeat.txt	/*Context*
 Cscope	if_cscop.txt	/*Cscope*
 CursorHold	autocmd.txt	/*CursorHold*
 CursorHold-example	windows.txt	/*CursorHold-example*
-CursorHoldI	autocmd.txt	/*CursorHoldI*
 CursorMoved	autocmd.txt	/*CursorMoved*
 CursorMovedI	autocmd.txt	/*CursorMovedI*
 D	change.txt	/*D*
@@ -3780,7 +3779,6 @@ E675	print.txt	/*E675*
 E676	options.txt	/*E676*
 E677	eval.txt	/*E677*
 E678	pattern.txt	/*E678*
-E679	syntax.txt	/*E679*
 E68	pattern.txt	/*E68*
 E680	autocmd.txt	/*E680*
 E681	quickfix.txt	/*E681*
@@ -4613,7 +4611,6 @@ buflisted()	eval.txt	/*buflisted()*
 bufload()	eval.txt	/*bufload()*
 bufloaded()	eval.txt	/*bufloaded()*
 bufname()	eval.txt	/*bufname()*
-bufnr()	eval.txt	/*bufnr()*
 bufwinid()	eval.txt	/*bufwinid()*
 bufwinnr()	eval.txt	/*bufwinnr()*
 bug-report	intro.txt	/*bug-report*
@@ -7765,16 +7762,12 @@ sponsor	intro.txt	/*sponsor*
 spup.vim	syntax.txt	/*spup.vim*
 sql-adding-dialects	ft_sql.txt	/*sql-adding-dialects*
 sql-completion	ft_sql.txt	/*sql-completion*
-sql-completion-columns	ft_sql.txt	/*sql-completion-columns*
 sql-completion-customization	ft_sql.txt	/*sql-completion-customization*
 sql-completion-dynamic	ft_sql.txt	/*sql-completion-dynamic*
 sql-completion-filetypes	ft_sql.txt	/*sql-completion-filetypes*
 sql-completion-maps	ft_sql.txt	/*sql-completion-maps*
-sql-completion-procedures	ft_sql.txt	/*sql-completion-procedures*
 sql-completion-static	ft_sql.txt	/*sql-completion-static*
-sql-completion-tables	ft_sql.txt	/*sql-completion-tables*
 sql-completion-tutorial	ft_sql.txt	/*sql-completion-tutorial*
-sql-completion-views	ft_sql.txt	/*sql-completion-views*
 sql-dialects	ft_sql.txt	/*sql-dialects*
 sql-macros	ft_sql.txt	/*sql-macros*
 sql-matchit	ft_sql.txt	/*sql-matchit*
@@ -8062,12 +8055,9 @@ tui-colors	term.txt	/*tui-colors*
 tui-cursor-shape	term.txt	/*tui-cursor-shape*
 tui-cursor-tmux	term.txt	/*tui-cursor-tmux*
 tutor	usr_01.txt	/*tutor*
-twice	if_cscop.txt	/*twice*
 two-engines	pattern.txt	/*two-engines*
 type()	eval.txt	/*type()*
 type-mistakes	tips.txt	/*type-mistakes*
-typecorr-settings	usr_41.txt	/*typecorr-settings*
-typecorr.txt	usr_41.txt	/*typecorr.txt*
 u	undo.txt	/*u*
 uganda	uganda.txt	/*uganda*
 uganda.txt	uganda.txt	/*uganda.txt*

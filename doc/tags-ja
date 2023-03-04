@@ -3200,7 +3200,6 @@ Context	repeat.jax	/*Context*
 Cscope	if_cscop.jax	/*Cscope*
 CursorHold	autocmd.jax	/*CursorHold*
 CursorHold-example	windows.jax	/*CursorHold-example*
-CursorHoldI	autocmd.jax	/*CursorHoldI*
 CursorMoved	autocmd.jax	/*CursorMoved*
 CursorMovedI	autocmd.jax	/*CursorMovedI*
 D	change.jax	/*D*
@@ -3780,7 +3779,6 @@ E675	print.jax	/*E675*
 E676	options.jax	/*E676*
 E677	eval.jax	/*E677*
 E678	pattern.jax	/*E678*
-E679	syntax.jax	/*E679*
 E68	pattern.jax	/*E68*
 E680	autocmd.jax	/*E680*
 E681	quickfix.jax	/*E681*
@@ -4613,7 +4611,6 @@ buflisted()	eval.jax	/*buflisted()*
 bufload()	eval.jax	/*bufload()*
 bufloaded()	eval.jax	/*bufloaded()*
 bufname()	eval.jax	/*bufname()*
-bufnr()	eval.jax	/*bufnr()*
 bufwinid()	eval.jax	/*bufwinid()*
 bufwinnr()	eval.jax	/*bufwinnr()*
 bug-report	intro.jax	/*bug-report*
@@ -7764,16 +7761,12 @@ sponsor	intro.jax	/*sponsor*
 spup.vim	syntax.jax	/*spup.vim*
 sql-adding-dialects	ft_sql.jax	/*sql-adding-dialects*
 sql-completion	ft_sql.jax	/*sql-completion*
-sql-completion-columns	ft_sql.jax	/*sql-completion-columns*
 sql-completion-customization	ft_sql.jax	/*sql-completion-customization*
 sql-completion-dynamic	ft_sql.jax	/*sql-completion-dynamic*
 sql-completion-filetypes	ft_sql.jax	/*sql-completion-filetypes*
 sql-completion-maps	ft_sql.jax	/*sql-completion-maps*
-sql-completion-procedures	ft_sql.jax	/*sql-completion-procedures*
 sql-completion-static	ft_sql.jax	/*sql-completion-static*
-sql-completion-tables	ft_sql.jax	/*sql-completion-tables*
 sql-completion-tutorial	ft_sql.jax	/*sql-completion-tutorial*
-sql-completion-views	ft_sql.jax	/*sql-completion-views*
 sql-dialects	ft_sql.jax	/*sql-dialects*
 sql-macros	ft_sql.jax	/*sql-macros*
 sql-matchit	ft_sql.jax	/*sql-matchit*
@@ -8061,12 +8054,9 @@ tui-colors	term.jax	/*tui-colors*
 tui-cursor-shape	term.jax	/*tui-cursor-shape*
 tui-cursor-tmux	term.jax	/*tui-cursor-tmux*
 tutor	usr_01.jax	/*tutor*
-twice	if_cscop.jax	/*twice*
 two-engines	pattern.jax	/*two-engines*
 type()	eval.jax	/*type()*
 type-mistakes	tips.jax	/*type-mistakes*
-typecorr-settings	usr_41.jax	/*typecorr-settings*
-typecorr.txt	usr_41.jax	/*typecorr.txt*
 u	undo.jax	/*u*
 uganda	uganda.jax	/*uganda*
 uganda.txt	uganda.jax	/*uganda.txt*
