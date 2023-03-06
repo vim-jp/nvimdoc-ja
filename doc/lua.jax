@@ -887,10 +887,15 @@ vim.str_utfindex({str}[, {index}])			*vim.str_utfindex()*
 vim.str_byteindex({str}, {index}[, {use_utf16}])	*vim.str_byteindex()*
         Convert UTF-32 or UTF-16 {index} to byte index. If {use_utf16} is not
         supplied, it defaults to false (use UTF-32). Returns the byte index.
+        UTF-32またはUTF-16の{index}をバイトインデックスに変換します。
+	{use_utf16}が引数にセットされていない場合、デフォルトでfalseと
+	なります（UTF-32を使用）
 
         Invalid UTF-8 and NUL is treated like by |vim.str_byteindex()|. An {index}
         in the middle of a UTF-16 sequence is rounded upwards to the end of that
         sequence.
+	無効なUTF-8とNULは|vim.str_byteindex()|として扱われます。
+	UTF-16シーケンスの内部の{index}は、シーケンスの終端へ切り上げで丸められます。
 
 vim.schedule({callback})				*vim.schedule()*
         Schedules {callback} to be invoked soon by the main event-loop. Useful
