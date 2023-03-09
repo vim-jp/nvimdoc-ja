@@ -900,6 +900,9 @@ vim.str_byteindex({str}, {index}[, {use_utf16}])	*vim.str_byteindex()*
 vim.schedule({callback})				*vim.schedule()*
         Schedules {callback} to be invoked soon by the main event-loop. Useful
         to avoid |textlock| or other temporary restrictions.
+	メインイベントループですぐ呼び出されるようにするため、{callback}を
+	スケジューリングします。
+	|textlock|または他の一時的な制限を避けるために有用です。
 
 vim.fn.{func}({...})					*vim.fn*
         Invokes |vim-function| or |user-function| {func} with arguments {...}.
