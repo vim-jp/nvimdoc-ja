@@ -908,17 +908,27 @@ vim.fn.{func}({...})					*vim.fn*
         Invokes |vim-function| or |user-function| {func} with arguments {...}.
         To call autoload functions, use the syntax: >
             vim.fn['some#function']({...})
-<
+<	|vim-funcrtion|または引数付き{...}|user-function|{func}を呼び出します。
+	autoload関数を呼ぶために、は以下のように使用します。
+
         Unlike vim.api.|nvim_call_function| this converts directly between Vim
         objects and Lua objects. If the Vim function returns a float, it will
         be represented directly as a Lua number. Empty lists and dictionaries
         both are represented by an empty table.
+	vim.api.|nvim_call_function|とはことなり、vim.fn.{func}({...})は、
+	VimオブジェクトとLuaオブジェクトを直接変換します。
+	Vimの関数が浮動小数値を返却する場合、Luaの数値として直接表現されます。
+	空のリストと辞書は両方とも空のテーブルとして表現されます。
 
         Note: |v:null| values as part of the return value is represented as
         |vim.NIL| special value
+	注意: 返却値の一部としての|v:null|の値は、特別な|vim.NIL|の値として
+	表現されます。
 
         Note: vim.fn keys are generated lazily, thus `pairs(vim.fn)` only
         enumerates functions that were called at least once.
+	注意: vim.fnのキーは、遅延して生成され、結果、`pairs(vimfn)`は
+	少なくとも1度呼び出された関数だけを列挙します。
 
 vim.type_idx						*vim.type_idx*
 	Type index for use in |lua-special-tbl|.  Specifying one of the 
