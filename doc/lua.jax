@@ -936,6 +936,10 @@ vim.type_idx						*vim.type_idx*
 	unclear whether empty Lua table represents empty list or empty array) 
 	and forcing integral numbers to be |Float|.  See |lua-special-tbl| for 
 	more details.
+	|lua-special-tbl| で使用するタイプインデックス。 |vim.types| のいずれかの
+	値を指定すると、空のテーブルを入力できます（空のLuaテーブルが空のリストか
+	空の配列かは不明です）および整数を |Float| に強制します。
+	詳細については、|lua-special-tbl| を参照してください。
 
 vim.val_idx						*vim.val_idx*
 	Value index for tables representing |Float|s.  A table representing 
