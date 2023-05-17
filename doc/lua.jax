@@ -944,11 +944,15 @@ vim.type_idx						*vim.type_idx*
 vim.val_idx						*vim.val_idx*
 	Value index for tables representing |Float|s.  A table representing 
 	floating-point value 1.0 looks like this: >
+
             {
               [vim.type_idx] = vim.types.float,
               [vim.val_idx] = 1.0,
             }
-<	See also |vim.type_idx| and |lua-special-tbl|.
+<	表の値インデックスは、|Float|を表しています。浮動小数点値1.0を表す表は次のようになります
+	
+	See also |vim.type_idx| and |lua-special-tbl|.
+	 |vim.type_idx| and |lua-special-tbl|もご確認ください。	
 
 vim.types						*vim.types*
 	Table with possible values for |vim.type_idx|.  Contains two sets 
