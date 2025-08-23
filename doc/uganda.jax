@@ -1,25 +1,25 @@
-*uganda.txt*    Nvim
+*uganda.txt*    Nvim 0.12        Last change: 2025-08-24
 
 
-		  VIM REFERENCE MANUAL    by Bram Moolenaar
+		  VIMリファレンスマニュアル	  by Bram Moolenaar
 
 
 			*uganda* *Uganda* *copying* *copyright* *license*
-SUMMARY
+☆要約
 								*iccf* *ICCF*
-Vim is Charityware.  You can use and copy it as much as you like, but you are
-encouraged to make a donation for needy children in Uganda.  Please see |kcc|
-below or visit the ICCF web site, available at these URLs:
+Vim はチャリティウェアです。好きなだけコピーして使うことができますが、ウガンダ
+の孤児院への寄付を推奨しています。下記の |kcc| を参照するか、ICCFのウェブサイ
+トを訪れてください。URLは以下のとおりです。
 
-	http://iccf-holland.org/
-	http://www.vim.org/iccf/
-	http://www.iccf.nl/
+	https://iccf-holland.org/
+	https://www.vim.org/iccf/
+	https://www.iccf.nl/
 
-You can also sponsor the development of Vim.  Vim sponsors can vote for
-features.  See |sponsor|.  The money goes to Uganda anyway.
+Vimの開発のスポンサーになることもできます。 |sponsor| をご覧ください。集めたお金
+はウガンダへ送金されます。
 
-The Open Publication License applies to the Vim documentation, see
-|manual-copyright|.
+Vimのドキュメントには Open Publication License が適用されています。
+|manual-copyright|をご覧ください。
 
 === begin of license ===
 
@@ -46,8 +46,8 @@ II) It is allowed to distribute a modified (or extended) version of Vim,
 	  maintainer will do with your changes and under what license they
 	  will be distributed is negotiable.  If there has been no negotiation
 	  then this license, or a later version, also applies to your changes.
-	  The current maintainer is Bram Moolenaar <Bram@vim.org>.  If this
-	  changes it will be announced in appropriate places (most likely
+	  The current maintainers are listed here: https://github.com/orgs/vim/people.
+	  If this changes it will be announced in appropriate places (most likely
 	  vim.sf.net, www.vim.org and/or comp.editors).  When it is completely
 	  impossible to contact the maintainer, the obligation to send him
 	  your changes ceases.  Once the maintainer has confirmed that he has
@@ -104,181 +104,223 @@ IV)  It is not allowed to remove this license from the distribution of the Vim
 
 === end of license ===
 
+=== ライセンス日本語訳 ここから ===
+
+{訳注: この日本語訳は参考のために示すものであり、法的効力を持ちません。
+       必ず上記の原文を参照してください。}
+
+VIM ライセンス
+
+I)  Vim のコピーを変更せずに配布することは、このライセンス文を含めなければな
+    らないこと以外に制限されません。また、変更を加えていない Vim の一部分だ
+    けを配布することも同様に、このライセンス文を含めなければならないこと以外
+    に制限されません。配布物には、変更を加えていない Vim のソースから作成し
+    た実行可能ファイルや、あなた独自の説明書や Vim script を含めることもできま
+    す。
+
+II) 以下の 4 つの条件を満たす場合に限り、Vim に変更 (または拡張) を加えた物
+    を、実行可能ファイルやソースコードも含めて配布することが認められています:
+    1) このライセンス文を変更せずに配布物に含めること。
+    2) 変更された Vim は以下の 5 つの方法のどれかで配布しなければならない。
+       a) Vim に独自の変更を加えた場合、配布物にあなたの連絡先を明確に示して
+	  ください。メンテナーがあなたが配布した変更された Vim のコピーについ
+	  て (何かを) 尋ねたときに、あなたが加えた変更を、ソースコードも含め
+	  て、無償で、メンテナーが利用できるようにしなければなりません。メン
+	  テナーは公式なバージョンの Vim にあなたの変更を取り込むための権利を
+	  保有します。メンテナーがあなたの変更をどのようにし、どういったライ
+	  センスで配布するかを交渉することができます。交渉が行われなければ、
+	  このライセンス、もしくはこれの新しいバージョンのライセンスがあなた
+	  の変更に適用されます。現在のメンテナーはここにリストされています:
+	  https://github.com/orgs/vim/people
+	  これが変更されるときは適切な場所で告知されます(おそらく vim.sf.net
+	  や www.vim.org そして comp.editors)。もし本当にメンテナーと連絡が取
+	  れない場合には、あなたの変更を提出する義務はありません。一旦、メンテ
+	  ナーがあなたの変更を受け取ったことを確認できたなら、再度提出する必要
+	  はありません。
+       b) a) に基づいて配布された変更された Vim を受け取った場合、それを変更
+	  することなしに、I) に基づいて再配布できます。さらなる変更を加えた
+	  場合、その変更には a) が適用されます。
+       c) 変更された Vim の配布物全てに、ソースコードも含めて、全ての変更点を
+	  提供してください。これは context diff の形式で行うことができます。
+	  あなたは、あなたが加えた新しいコードに対してどのライセンスを適用す
+	  るか選択できます。その変更とライセンスは、公式なバージョンの Vim
+	  に取り込むことで、他のものを制限してはいけません。
+       d) c) に基づいて配布された変更された Vim があるとき、次の条件を満たす
+	  場合に限り、そのソースコードを含めずに配布することができます:
+	  - その変更に適用されているライセンスが、その変更を無償で制限なしに
+	    Vim のメンテナーに提供することを認め、そして、Vim のメンテナーが
+	    その変更を公式なバージョンの Vim に取り込むことを無償で制限なしに
+	    認めている。
+	  - その変更された Vim の変更点を、最後に配布したときから少なくとも
+	    3 年は保持してください。その期間内に、メンテナーや誰かがその変更
+	    について (何かを) 尋ねた場合、彼らがその変更を利用できるようにし
+	    なければなりません。
+	  - その配布物にあなたの連絡先を明確に示してください。その連絡方法は、
+	    その変更された Vim に相当する配布物が最後に提供されてから、少なく
+	    とも 3 年、そして可能な限り長く、有効でなければなりません。
+       e) その変更に GNU General Public License (GPL) が適用されている場合、
+	  GNU GPL バージョン 2、またはそれより新しいバージョンに基づいて、その
+	  変更された Vim を配布することができます。
+    3) その変更された Vim を利用しているユーザーが、それが変更されていると確
+       認できるように、少なくとも、":version" コマンドや起動時の挨拶メッセー
+       ジに、変更されている旨を表示しなければなりません。その配布物が 2)e)
+       によるものである場合、そのライセンスが変更前のものと矛盾していない、
+       という旨のメッセージだけが必要です。
+    4) 2)a) と 2)d) により要求されている連絡方法を、その本人が訂正する以外
+       に、変更したり削除してはいけません。
+
+III) 変更された Vim を配布する場合、あなたの変更に Vim のライセンスを使い、
+     その変更を、ソースコードも含めて、メンテナーが利用できるようにすることが
+     奨励されています。そのためには電子メールで送るか、サーバーにアップロード
+     してその URL を電子メールで知らせるのが望ましいです。少しの変更なら (例え
+     ば Makefile の変更など) context diff を電子メールで送るのがいいでしょう。
+     電子メールの送り先は <maintainer@vim.org> です。
+
+IV)  Vim のソースや、その一部、または変更された Vim、の配布物からこのライセン
+     スを削除することは認められていません。望むなら、以前の Vim リリースに、
+     その時点のライセンスではなく、このライセンスを適用することができます。
+
+=== ライセンス日本語訳 ここまで ===
+
 Note:
 
-- If you are happy with Vim, please express that by reading the rest of this
-  file and consider helping needy children in Uganda.
+- Vim に満足していただけたのなら、このファイルをさらに読み進め、ウガンダの貧し
+  い子供たちへの援助を検討してください。
 
-- If you want to support further Vim development consider becoming a
-  |sponsor|.  The money goes to Uganda anyway.
+- Vimの開発に協力したいとお考えなら、スポンサーになることを検討してください
+  |sponsor|。集めたお金はウガンダへ送金されます。
 
-- According to Richard Stallman the Vim license is GNU GPL compatible.
-  A few minor changes have been made since he checked it, but that should not
-  make a difference.
+- Richard Stallman によれば Vim のライセンスは GNU GPL 互換です。彼がそれを確
+  認してから多少の変更が加えられましたが、違いはないでしょう。
 
-- If you link Vim with a library that goes under the GNU GPL, this limits
-  further distribution to the GNU GPL.  Also when you didn't actually change
-  anything in Vim.
+- Vimに GNU GPL のライブラリをリンクした場合、配布形態が GNU GPL に制限されま
+  す。あなたがVimに何の変更も加えていなくてもです。
 
-- Once a change is included that goes under the GNU GPL, this forces all
-  further changes to also be made under the GNU GPL or a compatible license.
+- 一度でも GNU GPL を含む変更を加えた場合、それ以降の変更は GNU GPL 互換のライ
+  センスを使わなければいけません。
 
 ==============================================================================
 Kibaale Children's Centre		*kcc* *Kibaale*  *charity*
 
-Kibaale Children's Centre (KCC) is located in Kibaale, a small town in the
-south of Uganda, near Tanzania, in East Africa.  The area is known as Rakai
-District.  The population is mostly farmers.  Although people are poor, there
-is enough food.  But this district is suffering from AIDS more than any other
-part of the world.  Some say that it started there.  Estimations are that 10
-to 30% of the Ugandans are infected with HIV.  Because parents die, there are
-many orphans.  In this district about 60,000 children have lost one or both
-parents, out of a population of 350,000.  And this is still continuing.
+Kibaale Children's Centre (KCC) はウガンダの南部にある小さな町 Kibaale にあり
+ます。ウガンダは東アフリカのタンザニアの近くに位置しています。その地域はRakai
+地区として知られています。人口の大部分は農民で、貧乏ではありますが通常食料は十
+分にあります。しかしこの地域は世界のほかの場所よりも AIDS で苦しんでいます。
+AIDS はここから始まったという人もいます。過去の推定ではウガンダ人の 10-30% が
+HIV に感染しているとされています。両親が死んでしまうので孤児がたくさんいます。
+この地域では人口 350,000 人のうちの 60,000 人の子供が親をどちらか、または両方
+をなくしています。AIDS は現在おおむね管理下にはありますが、問題はまだ続いてい
+ます。
 
-The children need a lot of help.  The KCC is working hard to provide the needy
-with food, medical care and education.  Food and medical care to keep them
-healthy now, and education so that they can take care of themselves in the
-future.  KCC works on a Christian base, but help is given to children of any
-religion.
+子供たちは多くの援助を必要としています。KCC は食料、医療、教育を彼らに提供する
+ために懸命に働いています。食料と医療は彼らの健康を保つために、そして教育は彼ら
+の将来を手助けするためです。KCC はキリスト教の教えに基づいて活動していますが、
+子供たちの宗教にかかわらず援助が行われています。
 
-The key to solving the problems in this area is education.  This has been
-neglected in the past years with president Idi Amin and the following civil
-wars.  Now that the government is stable again, the children and parents have
-to learn how to take care of themselves and how to avoid infections.  There is
-also help for people who are ill and hungry, but the primary goal is to
-prevent people from getting ill and to teach them how to grow healthy food.
+この地域の問題を解決する鍵は教育です。過去数年にわたる Idi Amin 大統領の時代と
+それに続く市民戦争により、教育は軽視されてきました。今は政府が再び安定しました
+し、子供と親は自分自身の健康をどうやって保つか、そしてどうすれば感染を避けられ
+るかを学ぶ必要があります。病気にかかっている人々や空腹を抱えている人々への援助
+もなされていますが、第一の目標は人々を病気から遠ざけることであり、そして体によ
+い食料を育てる方法を彼らに教えることです。
 
-Most of the orphans are living in an extended family.  An uncle or older
-sister is taking care of them.  Because these families are big and the income
-(if any) is low, a child is lucky if it gets healthy food.  Clothes, medical
-care and schooling is beyond its reach.  To help these needy children, a
-sponsorship program was put into place.  A child can be financially adopted.
-For a few dollars a month KCC sees to it that the child gets indispensable
-items, is healthy, goes to school and KCC takes care of anything else that
-needs to be done for the child and the family that supports it.
+ほとんどの孤児は拡大家族の中で生活しています。叔父や姉が彼らの世話をしていま
+す。このような家庭は大家族でありながら収入は少ないので、子供が体によい食料を得
+られるのは希です。まして衣類、医療、学校に通うことなどは無理なのです。このよう
+な貧しい子供たちを助けるために資金援助制度が設けられました。子供は経済的に養子
+になるのです。KCC は、月に数ドルのお金で、子供たちに必要なもの、健康や学校に通
+うことなどを手配します。また KCC はその他にも、子供とその世話をしている家族が
+必要とするものの面倒を見ています。
 
-Besides helping the child directly, the environment where the child grows up
-needs to be improved.  KCC helps schools to improve their teaching methods.
-There is a demonstration school at the centre and teacher trainings are given.
-Health workers are being trained, hygiene education is carried out and
-households are stimulated to build a proper latrine.  I helped setting up a
-production site for cement slabs.  These are used to build a good latrine.
-They are sold below cost price.
+子供を直接援助するほかに、子供が育つ環境を改善する必要があります。KCC は学校の
+教育方法が改善されるよう援助を行っています。センターには実地教育をする学校
+(demonstration school) があり、教師を指導しています。保健に従事する人の育成も
+されており、衛生教育も行われています。そして、各家庭が適切なトイレを作れるよう
+に支援しています。私はセメントの厚い板を作る現場を設立する手伝いをしました。そ
+の板はよいトイレを作るのに使われ、そしてコスト以下の値段で売られています。
 
-There is a small clinic at the project, which provides children and their
-family with medical help.  When needed, transport to a hospital is offered.
-Immunization programs are carried out and help is provided when an epidemic is
-breaking out (measles and cholera have been a problem).
+プロジェクトには診療所があり、子供たちとその家族が医療を受けられるようにしてい
+ます。2020年以降、産科病棟が追加され、24時間年中無休のサービスが可能になりまし
+た。そして必要あれば病院へ移ることが提供されます。病気の予防プログラムが実行さ
+れており、伝染病 (風疹とコレラは悩みの種です) が発生した場合は援助が行われます。
 							*donate*
-Summer 1994 to summer 1995 I spent a whole year at the centre, working as a
-volunteer.  I have helped to expand the centre and worked in the area of water
-and sanitation.  I learned that the help that the KCC provides really helps.
-When I came back to Holland, I wanted to continue supporting KCC.  To do this
-I'm raising funds and organizing the sponsorship program.  Please consider one
-of these possibilities:
+私は1994年の夏から1995年の夏までの丸1年間をボランティアとしてセンターで過ごし
+ました。センターを拡大するための手助けを行い、そして飲料水の改善を行う地区と衛
+生設備の改善を行う地区で働いていました。そして KCC が提供している援助が本当に
+役に立っていることを学んできました。オランダへ戻ったとき、KCC のサポートを続け
+たいと思いました。それを実行するために私は基金を設立し、そしてスポンサーシップ・
+プログラムを組織化しました。次のどれかが可能かどうか検討してみてください:
 
-1.  Sponsor a child in primary school: 17 euro a month (or more).
-2.  Sponsor a child in secondary school: 25 euro a month (or more).
-3.  Sponsor the clinic: Any amount a month or quarter
-4.  A one-time donation
+1.  1人の小学生のスポンサーになる: 月に17ユーロ(か、もっと)
+2.  1人の中学生のスポンサーになる: 月に25ユーロ(か、もっと)
+3.  診療所のスポンサーになる: 月もしくは4半期ごとにいくらでも
+4.  1度に限定した寄付(A one-time donation)
 
-Compared with other organizations that do child sponsorship the amounts are
-very low.  This is because the money goes directly to the centre.  Less than
-5% is used for administration.  This is possible because this is a small
-organization that works with volunteers.  If you would like to sponsor a
-child, you should have the intention to do this for at least one year.
+他の組織に比べると子供のスポンサーシップの料金はかなり低いです。これはお金が直
+接センターに届くようになっているからです。5%以下しか運営には使われていません。
+それが可能なのはこの組織が小さく、そしてボランティアで運営されているからです。
+子供のスポンサーになるのなら、少なくとも1年は続ける心構えを持ってください。
 
-How do you know that the money will be spent right?  First of all you have my
-personal guarantee as the author of Vim.  I trust the people that are working
-at the centre, I know them personally.  Furthermore, the centre has been
-co-sponsored and inspected by World Vision, Save the Children Fund and is now
-under the supervision of Pacific Academy Outreach Society.  The centre is
-visited about once a year to check the progress (at our own cost).  I have
-visited the centre myself many times, starting in 1993.  The visit reports are
-on the ICCF web site.
+しかしお金が適切に使われていることを信用できるでしょうか? まず、私は Vim の作
+者として個人的に信用されています。そして私はセンターで働いている人々を信用して
+いますし、彼らを個人的に知ってもいます。さらには、このセンターはかつては World
+Vision と Save the Children Fund によって共同運営・監督され、今は Pacific
+Academy Outreach Society の監督下にあります。センターは約 1 年に 1 回は視察を
+受けて進行をチェックしてもらっています (自費で)。私自身 1993 年から何度も視察
+をしています。ICCF のウェブサイトに視察レポートがあります。
 
-If you have any further questions, send me e-mail: <Bram@vim.org>.
+もし他に質問がありましたら、メールを送ってください: <Bram@vim.org>
 
-The address of the centre is:
+センターの住所:
 			Kibaale Children's Centre
 			p.o. box 1658
 			Masaka, Uganda, East Africa
 
-Sending money:						*iccf-donations*
+送金:							*iccf-donations*
 
-Check the ICCF web site for the latest information!  See |iccf| for the URL.
+最新の情報はICCFのウェブサイトをご覧ください。ICCFのURLは|iccf|をご覧ください。
 
+アメリカ:	下記で説明する方法が使えます。
+		小切手を送る必要がある場合はカナダのパートナーに送付してくださ
+		い:
+		https://www.kuwasha.net/
 
-USA:		The methods mentioned below can be used.
-		Sending a check to the Nehemiah Group Outreach Society (NGOS)
-		is no longer possible, unfortunately. We are looking for
-		another way to get you an IRS tax receipt. 
-		For sponsoring a child contact KCF in Canada (see below). US
-		checks can be sent to them to lower banking costs.
+カナダ:		カナダの Surrey にある Kuwasha に連絡してください。彼らは
+		Kibaale の子供たちのために、カナダのスポンサーを世話していま
+		す。
+		Kuwasha が集めたお金は100%、ウガンダのプロジェクトに送金されま
+		す。1度に限定した寄付の場合は、そこに直接送ることができます。
+		スポンサーシップに関する情報については、彼らのサイトをご覧くだ
+		さい:
+		https://www.kuwasha.net/
+		Kuwasha に寄付をすると、税領収書を受け取れるので、確定申告で提
+		出できます。
 
-Canada:		Contact Kibaale Children's Fund (KCF) in Surrey, Canada.  They
-		take care of the Canadian sponsors for the children in
-		Kibaale.  KCF forwards 100% of the money to the project in
-		Uganda.  You can send them a one time donation directly.
-		Please send me a note so that I know what has been donated
-		because of Vim.  Ask KCF for information about sponsorship.
-			Kibaale Children's Fund c/o Pacific Academy
-			10238-168 Street
-			Surrey, B.C. V4N 1Z4
-			Canada
-			Phone: 604-581-5353
-		If you make a donation to Kibaale Children's Fund (KCF) you
-		will receive a tax receipt which can be submitted with your
-		tax return.
+オランダ:	Amersfoort の "Stichting ICCF Holland" の口座に振り替えてくだ
+		さい。オランダ在住の方は税金が控除されます。ING bank, IBAN:
+		NL95 INGB 0004 5487 74
 
-Holland:	Transfer to the account of "Stichting ICCF Holland" in Lisse.
-		This will allow for tax deduction if you live in Holland.
-			Postbank, nr. 4548774
-			IBAN: NL95 INGB 0004 5487 74
+ドイツ:		寄付により、確定申告で税金が控除されます。
+		最新の情報は ICCF のウェブサイトを御覧下さい:
+			https://iccf-holland.org/germany.html
 
-Germany:	It is possible to make donations that allow for a tax return.
-		Check the ICCF web site for the latest information:
-			http://iccf-holland.org/germany.html
+ヨーロッパ:	可能なら銀行振り込みを使ってください。swift codeとIBAN number
+		は下記の "その他" の項を参照してください。
+		他の方法も使えると思います。スポンサーシップについてはお問い合
+		わせください。
 
-World:		Use a postal money order.  That should be possible from any
-		country, mostly from the post office.  Use this name (which is
-		in my passport): "Abraham Moolenaar".  Use Euro for the
-		currency if possible.
-
-Europe:		Use a bank transfer if possible.  Your bank should have a form
-		that you can use for this.  See "Others" below for the swift
-		code and IBAN number.
-		Any other method should work.  Ask for information about
-		sponsorship.
-
-Credit Card:	You can use PayPal to send money with a Credit card.  This is
-		the most widely used Internet based payment system.  It's
-		really simple to use.  Use this link to find more info:
+クレジットカード: クレジットカードでの送金には PayPal が使えます。これはイン
+		ターネットでの決算で最も広く使われているシステムです。これは本
+		当に簡単です。詳細はこのリンク先を見てください:
 		    https://www.paypal.com/en_US/mrb/pal=XAC62PML3GF8Q
-		The e-mail address for sending the money to is:
+		送金のための e-mail アドレスは:
 		    Bram@iccf-holland.org
-		For amounts above 400 Euro ($500) sending a check is
-		preferred.
 
-Others:		Transfer to one of these accounts if possible:
-		    Postbank, account 4548774
-				Swift code: INGB NL 2A
-				IBAN: NL95 INGB 0004 5487 74
-			under the name "stichting ICCF Holland", Lisse
-		    If that doesn't work:
-		    Rabobank Lisse, account 3765.05.117
-				Swift code: RABO NL 2U
-			under the name "Bram Moolenaar", Lisse
-		Otherwise, send a check in euro or US dollars to the address
-		below.  Minimal amount: $70 (my bank does not accept smaller
-		amounts for foreign check, sorry)
+その他:		可能であればこの口座に振り替えてください:
+		    ING bank:	IBAN: NL95 INGB 0004 5487 74
+				Swift code: INGBNL2A
+		    under the name "stichting ICCF Holland", Amersfoort
+		小切手は受け付けていないです。
 
-Address to send checks to:
-			Bram Moolenaar
-			Finsterruetihof 1
-			8134 Adliswil
-			Switzerland
-
-This address is expected to be valid for a long time.
 
  vim:tw=78:ts=8:noet:ft=help:norl:

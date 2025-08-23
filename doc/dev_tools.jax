@@ -1,0 +1,206 @@
+*dev_tools.txt*          Nvim 0.12        Last change: 2025-08-24
+
+
+                         NVIMリファレンスマニュアル
+
+
+Nvim の開発のためのツールと技術                                 *dev-tools*
+
+次のアドバイスは、Nvim 自体の問題に対処したりデバッグするときに役立ちます。
+
+TODO: merge |debug.txt| into here.
+
+                                            目次を確認するには |gO| をタイプ。
+
+==============================================================================
+バックトレース                                        *dev-tools-backtrace*
+
+LINUX
+
+Ubuntu や CentOS 等ではデフォルトでコアダンプは無効化されています。
+コアダンプを有効化するには:
+>bash
+    ulimit -c unlimited
+<
+systemd ベースのシステムでは次のように簡単にバックトレースを取得できます:
+>bash
+    coredumpctl -1 gdb
+<
+`coredumpctl` はオプションのツールなので、任意でインストールする必要があります。
+>bash
+    sudo apt install systemd-coredump
+<
+
+完全なバックトレースが最も役に立ちます。クラッシュに関連するバグを報告する際は
+`backtrace.txt` ファイルを送ってください。
+>bash
+    2>&1 coredumpctl -1 gdb | tee -a backtrace.txt
+    (gdb) thread apply all bt full
+<
+
+`coredumpctl` がインストールされていないシステムでは、 `core` ダンプファイルがカレ
+ントディレクトリまたは他の場所に保存される場合があります。 `apport` がインストー
+ルされている Linux システム (Ubuntu など) におけるコアダンプファイルの保存先は
+システム設定に応じて `/var/lib/apport/coredump` などにになります。こちらも参照し
+てください: https://stackoverflow.com/a/18368068
+
+`./core` ダンプファイルからバックトレースを取得するには:
+>bash
+    gdb build/bin/nvim ./core 2>&1 | tee backtrace.txt
+    (gdb) thread apply all bt full
+<
+
+MACOS
+
+もし `nvim` がクラッシュした場合、 `Console.app` (「クラッシュレポート」または古い
+バージョンの macOS の場合「ユーザー診断レポート」から) でバックトレースを確認
+できます。
+>bash
+    open -a Console
+<
+macOS でもコアダンプを有効にすることができます。それにはまず `/cores/` ディレク
+トリが存在し、書き込み可能であることを確認してください。
+>bash
+    sudo mkdir /cores
+    sudo chown root:admin /cores
+    sudo chmod 1775 /cores
+<
+次に、コアサイズの制限を `unlimited` に設定します:
+>bash
+    ulimit -c unlimited
+<
+これはシェルのプロセス毎に実行されることに注意してください。これを全てのシェル
+のデフォルトに設定したい場合は、上記のコードをシェルの init ファイル
+(例: `~/.bashrc`) に追加してください。
+
+最後に、 `lldb` でコアファイルを開くことができます。
+>bash
+    lldb -c /cores/core.12345
+<
+Apple のドキュメントには他にも役立つ情報が掲載されています。
+https://developer.apple.com/library/archive/technotes/tn2124/_index.html#//apple_ref/doc/uid/DTS10003391-CH1-SECCOREDUMPS,
+ただし、このページの情報の一部は古くなっていることに注意してください(例えば
+`/etc/launchd.conf` でコアダンプを有効にする方法など)。
+
+==============================================================================
+Gdb                                                          *dev-tools-gdb*
+
+☆GDB を使用して機能テストをステップ実行する
+
+`TEST_TAG` を使用して、壊れたタグ (形式 `#foo`、例: `it("test #foo ...", ...)`)に
+一致するテストを実行します。
+>bash
+    GDB=1 TEST_TAG=foo make functionaltest
+<
+次に、別の端末で以下を実行します:
+>bash
+    gdb build/bin/nvim
+    (gdb) target remote localhost:7777
+
+-- https://github.com/neovim/neovim/blob/master/test/functional/testnvim.lua.
+   の `nvim_argv` を参照してください。
+
+☆LLDB を使用してユニットテストをステップ実行する
+
+>
+    lldb .deps/usr/bin/luajit -- .deps/usr/bin/busted --lpath="./build/?.lua" test/unit/
+<
+☆GDB を使う
+
+pid 1234 で実行中の `nvim` プロセスにアタッチするには (ヒント: 実行中の Nvim
+インスタンスの pid は |getpid()| を呼び出すことで取得できます)、次のようにしま
+す:
+>bash
+    gdb -tui -p 1234 build/bin/nvim
+<
+`gdb` の対話型プロンプトが表示されます。以下の操作が利用可能です:
+
+- `break foo` で `foo()` 関数にブレークポイントを設定する
+- `n` で次の文にステップオーバー
+    - `<Enter>` で最後のコマンドを繰り返す
+- `s` で次の文にステップイン
+
+- `c` で続行する
+- `finish` で現在の関数でステップアウト
+- `p zub` で `zub` の値を表示する
+- `bt` で現在の位置からのバックトレース（コールスタック）を表示する
+- `CTRL-x CTRL-a` or `tui enable` to show a TUI view of the source file in the
+  current debugging context. This can be extremely useful as it avoids the
+  need for a gdb "frontend".
+- `CTRL-x CTRL-a` または `tui enable` で現在のデバッグコンテキストでソースファイル
+  の TUI ビューを表示する。これは、gdb のフロントエンドを必要としないため、非
+  常に便利である
+- `<up>` と `<down>` でソースファイルをスクロールする
+
+☆GDB リバースデバッグ
+
+- `set record full insn-number-max unlimited` を実行する
+- しばらく `continue` を実行する (少なくとも `main()` が実行するまで)
+- `record` を実行する
+- バグを誘発させた後、 `revert-next` や `reverse-step` を使用してデバッガーを巻き
+  戻す
+
+☆GDBSERVER を使う
+
+複数の `gdb` クライアントを実行中の同じ `nvim` プロセスに接続したり、ローカルの
+`gdb` を使ってリモートの `nvim` プロセスに接続したい場合、 `gdbserver` を利用するこ
+とで単一のプロセスにアタッチし、複数の `gdb` クライアントからそのプロセスを制
+御できます。
+
+端末を開き、次のように `nvim` にアタッチされた `gdbserver` を起動します:
+>bash
+    gdbserver :6666 build/bin/nvim 2> gdbserver.log
+<
+`gebserver` がポート 6666 でリッスンします。 次に、別の端末でこのセッションに
+アタッチします:
+>bash
+    gdb build/bin/nvim
+<
+`gdb` に入ったら、リモートセッションに接続する必要があります:
+
+>
+    (gdb) target remote localhost:6666
+<
+もし gdbserver が TUI をバックグラウンドプロセスとして実行した場合、TUI は pty
+からの入力 (また SIGTTIN シグナルの受信) や出力データ (SIGTTOU シグナル) の読
+み取りができなくなる可能性があります。TUI をフォアグラウンドプロセスとして強制
+的に実行するには、以下を
+>c
+    signal (SIGTTOU, SIG_IGN);
+    if (!tcsetpgrp(data->input.in_fd, getpid())) {
+        perror("tcsetpgrp failed");
+    }
+<
+`tui.c:terminfo_start` に追加します。
+
+
+☆TMUX で GDBSERVER を使う
+
+https://github.com/neovim/neovim/blob/master/BUILD.md#custom-makefile のカスタ
+ムされた makefile を利用することで、先述した `gdbserver` を利用したデバッグセッ
+ションを素早く始めることができます。
+この `local.mk` の例では、 `make debug` と入力するとデバッグセッションを作成しま
+す。
+>make
+    .PHONY: dbg-start dbg-attach debug build
+
+    build:
+        @$(MAKE) nvim
+
+    dbg-start: build
+        @tmux new-window -n 'dbg-neovim' 'gdbserver :6666 ./build/bin/nvim -D'
+
+    dbg-attach:
+        @tmux new-window -n 'dbg-cgdb' 'cgdb -x gdb_start.sh ./build/bin/nvim'
+
+    debug: dbg-start dbg-attach
+<
+こちらの `gdb_start.sh` にはデバッガーの起動時に呼び出される `gdb` コマンドが含ま
+れています。これは `dbg-start` ルールによって起動されたサーバーにアタッチする
+必要があります。例:
+>
+    (gdb) target remote localhost:6666
+    (gdb) br main
+<
+
+vim:tw=78:ts=8:et:ft=help:norl:

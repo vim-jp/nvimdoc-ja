@@ -1,239 +1,502 @@
-*ft_rust.txt*	For Vim version 8.1.  Last change: 2017 Nov 02
-
-This is documentation for the Rust filetype plugin.
+*ft_rust.txt*      Filetype plugin for Rust
 
 ==============================================================================
-CONTENTS                                                      *rust*
+内容                                                         *rust*
 
-1. Introduction                                                   |rust-intro|
-2. Settings                                                    |rust-settings|
-3. Commands                                                    |rust-commands|
-4. Mappings                                                    |rust-mappings|
-
-==============================================================================
-INTRODUCTION                                                      *rust-intro*
-
-This plugin provides syntax and supporting functionality for the Rust
-filetype.
+1. 前書き                                                         |rust-intro|
+2. 設定                                                        |rust-settings|
+3. コマンド                                                    |rust-commands|
+4. マッピング                                                  |rust-mappings|
 
 ==============================================================================
-SETTINGS                                                       *rust-settings*
+前書き                                                            *rust-intro*
 
-This plugin has a few variables you can define in your vimrc that change the
-behavior of the plugin.
+このプラグインは、Rust ファイルタイプの構文とサポート機能を提供します。完全な
+機能を使用するには、Vim 8 以降が必要です。一部のコマンドは、それ以前のバージョ
+ンでは動作しません。
+
+==============================================================================
+設定                                                           *rust-settings*
+
+このプラグインには、プラグインの動作を変更するために vimrc で定義できる変数が
+いくつかあります。
+
+一部の変数はバッファローカル (`:b` プリフィックス) に設定でき、バッファローカ
+ルはグローバルの `g:` よりも優先されます。
 
                                                                 *g:rustc_path*
-g:rustc_path~
-	Set this option to the path to rustc for use in the |:RustRun| and
-	|:RustExpand| commands. If unset, "rustc" will be located in $PATH: >
+g:rustc_path ~
+	このオプションを |:RustRun| と |:RustExpand| の中で使う `rustc` へのパス
+	に設定します。未設定なら、"rustc" は $PATH の中で見つけられるでしょう:
+	 >vim
 	    let g:rustc_path = $HOME."/bin/rustc"
 <
 
                                                   *g:rustc_makeprg_no_percent*
-g:rustc_makeprg_no_percent~
-	Set this option to 1 to have 'makeprg' default to "rustc" instead of
-	"rustc %": >
+g:rustc_makeprg_no_percent ~
+	'makeprg' の初期値を `rustc %` の代わりに `rustc` に保つためにこのオプ
+	ションを 1 に設定します: >vim
 	    let g:rustc_makeprg_no_percent = 1
 <
 
                                                               *g:rust_conceal*
-g:rust_conceal~
-	Set this option to turn on the basic |conceal| support: >
+g:rust_conceal ~
+	基本的な |conceal| サポートを有効にするにはこのオプションを設定します:
+	 >vim
 	    let g:rust_conceal = 1
 <
 
                                                      *g:rust_conceal_mod_path*
-g:rust_conceal_mod_path~
-	Set this option to turn on |conceal| for the path connecting token
-	"::": >
+g:rust_conceal_mod_path ~
+	パスをつなげるトークン "::" の |conceal| を有効にするにはこのオプショ
+	ンを設定します: >vim
 	    let g:rust_conceal_mod_path = 1
 <
 
                                                           *g:rust_conceal_pub*
-g:rust_conceal_pub~
-	Set this option to turn on |conceal| for the "pub" token: >
+g:rust_conceal_pub ~
+	"pub" トークンの |conceal| を有効にするにはこのオプションを設定します:
+	 >vim
 	    let g:rust_conceal_pub = 1
 <
 
                                                      *g:rust_recommended_style*
-g:rust_recommended_style~
-        Set this option to enable vim indentation and textwidth settings to
-        conform to style conventions of the rust standard library (i.e. use 4
-        spaces for indents and sets 'textwidth' to 99). This option is enabled
-	by default. To disable it: >
+g:rust_recommended_style ~
+        rust 標準ライブラリのスタイル慣習 (すなわち、インデントに 4 つスペース
+        を使い 'textwidth' に 99 を設定します) に従うインデントと textwidth の
+        設定を有効にするためにはこのオプションを設定します。デフォルトではこの
+	オプションは有効です。無効にするには: >vim
 	    let g:rust_recommended_style = 0
 <
 
                                                                  *g:rust_fold*
-g:rust_fold~
-	Set this option to turn on |folding|: >
+g:rust_fold ~
+	|folding| を有効にするにはこのオプションを設定します: >
 	    let g:rust_fold = 1
 <
-	Value		Effect ~
-	0		No folding
-	1		Braced blocks are folded. All folds are open by
-			default.
-	2		Braced blocks are folded. 'foldlevel' is left at the
-			global value (all folds are closed by default).
+	値		効果 ~
+	0		折り畳みなし
+	1		中括弧ブロックは折り畳まれます。デフォルトではすべての
+			折り畳みは開かれます。
+	2		中括弧ブロックは折り畳まれます。'foldlevel' はグローバ
+			ル値のままです (デフォルトではすべての折り畳みは閉じら
+			れます)。
 
                                                   *g:rust_bang_comment_leader*
-g:rust_bang_comment_leader~
-	Set this option to 1 to preserve the leader on multi-line doc comments
-	using the /*! syntax: >
+g:rust_bang_comment_leader ~
+	`/*!` シンタックスを使った複数行 doc コメントの先頭を保つためにこのオプ
+	ションを 1 に設定します: >vim
 	    let g:rust_bang_comment_leader = 1
 <
 
+                                                *g:rust_use_custom_ctags_defs*
+g:rust_use_custom_ctags_defs ~
+        Rust 用にカスタマイズされた ctags 定義があって、rust.vim に含まれてい
+        る定義を使用しない場合は、このオプションを 1 に設定します: >vim
+	    let g:rust_use_custom_ctags_defs = 1
+<
+
+        NOTE: rust.vim の組み込み定義は、Tagbar Vim プラグインがインストールさ
+        れていて、Universal Ctags が検出されない場合にのみ使用されます。これ
+        は、Universal Ctags が Tagbar と併用される場合、すでに Rust の組み込み
+        サポートを備えているためです。
+
+        Note また、Universal Ctags 以外の ctags を使用する場合、Vim が異なる
+        ソースファイルの定義に移動するために使用できる |tags| ファイルを生成す
+        るときに自動的には使用されないことに注意してください。 |tags| ファイル
+        を生成したい場合は、`rust.vim/ctags/rust.ctags` を自分の `~/.ctags` に
+        自由にコピーしてください。
+
+
                                                  *g:ftplugin_rust_source_path*
-g:ftplugin_rust_source_path~
-	Set this option to a path that should be prepended to 'path' for Rust
-	source files: >
+g:ftplugin_rust_source_path ~
+	このオプションを Rust ソースファイルの 'path' に前置されるべきパスに設
+	定します: >vim
 	    let g:ftplugin_rust_source_path = $HOME.'/dev/rust'
 <
 
                                                        *g:rustfmt_command*
-g:rustfmt_command~
-	Set this option to the name of the 'rustfmt' executable in your $PATH. If
-	not specified it defaults to 'rustfmt' : >
+g:rustfmt_command ~
+	このオプションを $PATH の中の "rustfmt" 実行可能ファイルの名前に設定し
+	ます。指定されないなら "rustfmt" になります: >vim
 	    let g:rustfmt_command = 'rustfmt'
 <
                                                        *g:rustfmt_autosave*
-g:rustfmt_autosave~
-	Set this option to 1 to run |:RustFmt| automatically when saving a
-	buffer. If not specified it defaults to 0 : >
+g:rustfmt_autosave ~
+	バッファを保存したときに自動的に |:RustFmt| を実行するためにこのオプ
+	ションを 1 に設定します。指定されないなら 0 になります: >vim
 	    let g:rustfmt_autosave = 0
 <
+        同じ目的で設定でき、グローバル設定をオーバーライドできるバッファローカ
+        ルの b:rustfmt_autosave もあります。
+
+                                        *g:rustfmt_autosave_if_config_present*
+g:rustfmt_autosave_if_config_present ~
+        このオプションを 1 に設定すると、編集中のファイルに直接つながる親に
+        `rustfmt.toml` ファイルが存在する場合に *b:rustfmt_autosave* が自動的
+        に設定されます。設定されていない場合は、デフォルトで 0 になります:
+        >vim
+	    let g:rustfmt_autosave_if_config_present = 0
+<
+        これは、 `rustfmt.toml` 構成を持つプロジェクトで、保存時にのみ
+        `rustfmt` を実行する場合に便利です。
+
+        同じ目的で設定できるバッファローカルの
+        b:rustfmt_autosave_if_config_present もあり、グローバル設定をオーバー
+        ライドできます。
                                                        *g:rustfmt_fail_silently*
-g:rustfmt_fail_silently~
-	Set this option to 1 to prevent 'rustfmt' from populating the
-	|location-list| with errors. If not specified it defaults to 0: >
+g:rustfmt_fail_silently ~
+	"rustfmt" がエラーを |location-list| に入力するのを妨げるためにこのオ
+	プションを 1 に設定します。指定されないなら 0 になります: >vim
 	    let g:rustfmt_fail_silently = 0
 <
                                                        *g:rustfmt_options*
-g:rustfmt_options~
-	Set this option to a string of options to pass to 'rustfmt'. The
-	write-mode is already set to 'overwrite'. If not specified it
-	defaults to '' : >
+g:rustfmt_options ~
+	このオプションを "rustfmt" に渡すためのオプションの文字列に設定します。
+	write-mode はすでに "overwrite" に設定されています。指定されないなら
+	'' になります: >vim
 	    let g:rustfmt_options = ''
 <
-
+                                                       *g:rustfmt_emit_files*
+g:rustfmt_emit_files ~
+	指定されていない場合、rust.vim は報告されたバージョンに基づいて
+	rustfmt に渡す適切なパラメータを検出しようとします。それ以外の場合は、
+	rustfmt を '--write-mode=overwrite' ではなく '--emit=files' (1 が指定
+	されている場合) で実行するかどうかを決定します。 >vim
+	    let g:rustfmt_emit_files = 0
+<
+                                                       *g:rustfmt_detect_version*
+g:rustfmt_detect_version ~
+	1 に設定すると、"rustfmt" からのバージョン出力を解析しようとします。パ
+	フォーマンス上の理由から、デフォルトでは無効になっています。
+>vim
+	    let g:rustfmt_detect_version = 1
+<
+                                                       *g:rustfmt_find_toml*
+g:rustfmt_find_toml ~
+	1 に設定すると、現在のパスから上方向に "rustfmt.toml" ファイルを検索し
+	ます。パフォーマンス上の理由から、デフォルトでは無効になっています。
+>vim
+	    let g:rustfmt_find_toml = 1
+<
                                                           *g:rust_playpen_url*
-g:rust_playpen_url~
-	Set this option to override the URL for the playpen to use: >
+g:rust_playpen_url ~
+	使用する playpen の URL を上書きするためにこのオプションを設定します:
+	 >vim
 	    let g:rust_playpen_url = 'https://play.rust-lang.org/'
 <
 
                                                         *g:rust_shortener_url*
-g:rust_shortener_url~
-	Set this option to override the URL for the URL shortener: >
+g:rust_shortener_url ~
+	短縮 URL サービスの URL を上書きするためにこのオプションを設定します:
+	 >vim
 	    let g:rust_shortener_url = 'https://is.gd/'
 <
 
+                                                        *g:rust_clip_command*
+g:rust_clip_command ~
+	このオプションを、Rust Play の URL をクリップボードにコピーするために
+	OS で使用されるコマンドに設定します: >vim
+	    let g:rust_clip_command = 'xclip -selection clipboard'
+<
+
+                                                       *g:cargo_makeprg_params*
+g:cargo_makeprg_params ~
+	このオプションを cargo に渡すパラメータの文字列に設定します。指定しな
+	い場合はデフォルトで '$*' になります: >vim
+	    let g:cargo_makeprg_params = 'build'
+<
+
+                                                  *g:cargo_shell_command_runner*
+g:cargo_shell_command_runner ~
+	このオプションを設定すると、cargo コマンド |:Cargo|、 |:Cbuild|、
+	|:Crun| 等のシェルコマンドの実行方法が変更されます。
+	デフォルトでは、 |:terminal| はターミナルウィンドウでシェルコマンドを非
+	同期的に実行するために使用されます。ただし、コマンドの実行に |:!| を使
+	用する場合は、以下のように指定できます: >vim
+	    let g:cargo_shell_command_runner = '!'
+<
+
+------------------------------------------------------------------------------
+Syntastic との統合                                            *rust-syntastic*
+
+このプラグインは、Syntastic チェッカーと自動的に統合されます。提供されるチェッ
+カーは、 `rustc` と `cargo` の 2 つです。後者はコードをビルドするために `Cargo`
+を呼び出し、前者は編集された単一の '.rs' ファイルをコンパイル対象として Rust
+コンパイラ `rustc` に直接渡します。
+
+最近では、Rust コードの構築に Cargo がほぼ独占的に使用されているため、`cargo`
+がデフォルトのチェッカーになっています。 >vim
+
+    let g:syntastic_rust_checkers = ['cargo']
+<
+変更したい場合は、`g:syntastic_rust_checkers` を別の値に設定できます。
+                                          *g:rust_cargo_avoid_whole_workspace*
+                                          *b:rust_cargo_avoid_whole_workspace*
+g:rust_cargo_avoid_whole_workspace ~
+	Cargo ワークスペースの一部であるクレートを編集する場合、このオプション
+	が 1 (デフォルト) に設定されていれば、`cargo` はワークスペースディレク
+	トリではなく、そのクレートディレクトリで直接実行されます。0 に設定する
+	と、この動作は回避されます。ただし、大きなワークスペースで作業している
+	場合、Cargo コマンドに時間がかかることがあり、また Syntastic エラーリ
+	ストにワークスペース内のすべてのクレートが含まれる場合があることに注意
+	してください。 >vim
+            let g:rust_cargo_avoid_whole_workspace = 0
+<
+                                              *g:rust_cargo_check_all_targets*
+                                              *b:rust_cargo_check_all_targets*
+g:rust_cargo_check_all_targets ~
+	1 に設定すると、Syntastic が cargo を実行する時に `--all-targets` オプ
+	ションが cargo に渡され、パッケージ内のすべての対象の lint が可能にな
+	ります。
+	デフォルトは 0 です。
+
+                                              *g:rust_cargo_check_all_features*
+                                              *b:rust_cargo_check_all_features*
+g:rust_cargo_check_all_features ~
+	1 に設定すると、Syntastic が cargo を実行する時に `--all-features` オ
+	プションが cargo に渡され、パッケージのすべての機能の lint が可能にな
+	ります。
+	デフォルトは 0 です。
+
+                                                 *g:rust_cargo_check_examples*
+                                                 *b:rust_cargo_check_examples*
+g:rust_cargo_check_examples ~
+	1 に設定すると、Syntastic が cargo を実行する時に `--examples` オプショ
+	ンが cargo に渡され、サンプルが lint から除外されるのを防ぎます。サン
+	プルは通常、クレートの `examples/` ディレクトリ下にあります。
+	デフォルトは 0 です。
+
+                                                    *g:rust_cargo_check_tests*
+                                                    *b:rust_cargo_check_tests*
+g:rust_cargo_check_tests ~
+	1 に設定すると、Syntastic が cargo を実行する時に `--tests` オプション
+	が cargo に渡され、テストが lint から除外されるのを防ぎます。テストは
+	通常、クレートの `tests/` ディレクトリ下にあります。
+	デフォルトは 0 です。
+
+                                                  *g:rust_cargo_check_benches*
+                                                  *b:rust_cargo_check_benches*
+g:rust_cargo_check_benches ~
+	1 に設定すると、Syntastic が cargo を実行する時に `--benches` オプショ
+	ンが cargo に渡されます。ベンチは通常、クレートの `benches/` ディレク
+	トリ下にあります。
+	デフォルトは 0 です。
+
+------------------------------------------------------------------------------
+auto-pairs との統合                                            *rust-auto-pairs*
+
+このプラグインは、単一文字リテラルよりもライフタイム注釈で頻繁に使用される単一
+引用符が重複しないように、auto-pairs プラグインを自動的に構成します。
+                                                  *g:rust_keep_autopairs_default*
+g:rust_keep_autopairs_default ~
+
+	Rust ファイルタイプの auto-pairs のデフォルトを上書きしません。デフォ
+	ルトは 0 です。
 
 ==============================================================================
-COMMANDS                                                       *rust-commands*
+コマンド                                                     *rust-commands*
+
+Cargo の呼び出し ~
+
+このプラグインは、Vim から Cargo を呼び出すための非常にシンプルなショートカッ
+トを定義します。
+
+:Cargo <args>                                                       *:Cargo*
+		指定された引数を使用して `cargo` を実行します。
+
+:Cbuild <args>                                                     *:Cbuild*
+                `cargo build` のショートカット。
+
+:Cclean <args>                                                     *:Cclean*
+                `cargo clean` のショートカット。
+
+:Cdoc <args>                                                         *:Cdoc*
+                `cargo doc` のショートカット。
+
+:Cinit <args>                                                       *:Cinit*
+                `cargo init` のショートカット。
+
+:Crun <args>                                                         *:Crun*
+                `cargo run` のショートカット。
+
+:Ctest <args>                                                       *:Ctest*
+                `cargo test` のショートカット。
+
+:Cupdate <args>                                                   *:Cupdate*
+                `cargo update` のショートカット。
+
+:Cbench <args>                                                     *:Cbench*
+                `cargo bench` のショートカット。
+
+:Csearch <args>                                                   *:Csearch*
+                `cargo search` のショートカット。
+
+:Cpublish <args>                                                 *:Cpublish*
+                `cargo publish` のショートカット。
+
+:Cinstall <args>                                                 *:Cinstall*
+                `cargo install` のショートカット。
+
+:Cruntarget <args>                                                 *:Cruntarget*
+		現在開いているバッファに応じて、 `cargo run --bin` または
+		`cargo run --example` のショートカット。
+
+フォーマット ~
+
+:RustFmt						       *:RustFmt*
+		カレントバッファで |g:rustfmt_command| を実行します。
+		|g:rustfmt_options| が設定されているなら、それらは実行可能ファ
+		イルに渡されるでしょう。
+
+		|g:rustfmt_fail_silently| が 0 (デフォルト) なら
+		|g:rustfmt_command| で得たエラーを |location-list| に入力する
+		でしょう。 |g:rustfmt_fail_silently| が 1 に設定されるなら
+		|location-list| に入力しないでしょう。
+
+:RustFmtRange						       *:RustFmtRange*
+		選択された範囲で |g:rustfmt_command| を実行します。その他の情
+		報は |:RustFmt| を参照してください。
+
+
+Playpen の統合 ~
+
+:RustPlay                                                          *:RustPlay*
+		このコマンドは web-api.vim
+		(https://github.com/mattn/webapi-vim で得ることができます) を
+		インストールしている場合にだけ機能するでしょう。選択範囲、また
+		は何も選択されていないなら、カレントバッファの全体を Rust
+		playpen に送信して、playpen への短縮 URL とメッセージを出力し
+		ます。
+
+		|g:rust_playpen_url| は playpen へのベース URL で、デフォルト
+		では "https://play.rust-lang.org/" です。
+
+		|g:rust_shortener_url| は短縮サービスのベース URL で、デフォル
+		トでは "https://is.gd/" です。
+
+		|g:rust_clip_command| は、playpen の URL をシステムのクリップ
+		ボードにコピーするために実行するコマンドです。
+
+
+単一の Rust ファイルの評価 ~
+
+NOTE: これらのコマンドは、スタンドアロンの Rust ファイルで作業する場合にのみ役
+立ちますが、これは一般的な Rust 開発では通常当てはまりません。Vim を使用して
+Rust クレートをビルドする場合は、Vim の make、Syntastic、または他のプラグイン
+の機能を使用する必要があります。
+
 
 :RustRun  [args]                                                    *:RustRun*
 :RustRun! [rustc-args] [--] [args]
-		Compiles and runs the current file. If it has unsaved changes,
-		it will be saved first using |:update|. If the current file is
-		an unnamed buffer, it will be written to a temporary file
-		first. The compiled binary is always placed in a temporary
-		directory, but is run from the current directory.
+		カレントファイルをコンパイルして実行します。カレントファイルの
+		変更が保存されていないなら、|:update| を使って最初に保存される
+		でしょう。カレントファイルが無名バッファなら、最初に一時ファイ
+		ルに書き込まれるでしょう。コンパイルされたバイナリはいつも一時
+		ディレクトリに置かれますが、カレントディレクトリから実行されま
+		す。
 
-		The arguments given to |:RustRun| will be passed to the
-		compiled binary.
+		|:RustRun| に与えられた引数はコンパイルされたバイナリに渡され
+		るでしょう。
 
-		If ! is specified, the arguments are passed to rustc instead.
-		A "--" argument will separate the rustc arguments from the
-		arguments passed to the binary.
+		! が指定されるなら、代わりに引数は rustc に渡されます。"--" 引
+		数はバイナリに渡される引数から rustc の引数を分けるでしょう。
 
-		If |g:rustc_path| is defined, it is used as the path to rustc.
-		Otherwise it is assumed rustc can be found in $PATH.
+		|g:rustc_path| が定義されるなら、rustc へのパスのように使われ
+		ます。それ以外の場合は rustc が $PATH の中で見つけられうると見
+		なされます。
 
 :RustExpand  [args]                                              *:RustExpand*
 :RustExpand! [TYPE] [args]
-		Expands the current file using --pretty and displays the
-		results in a new split. If the current file has unsaved
-		changes, it will be saved first using |:update|. If the
-		current file is an unnamed buffer, it will be written to a
-		temporary file first.
+		`--pretty` を使ってカレントファイルを展開して新しいウィンドウに
+		その結果を表示します。カレントファイルの変更が保存されていない
+		なら、|:update| を使って最初に保存されるでしょう。カレントファ
+		イルが無名バッファなら、最初に一時ファイルに書き込まれるでしょ
+		う。
 
-		The arguments given to |:RustExpand| will be passed to rustc.
-		This is largely intended for specifying various --cfg
-		configurations.
+		|:RustExpand| に与えられた引数は rustc に渡されるでしょう。こ
+		れは様々な `--cfg` 設定を指定するのに大いに向いています。
 
-		If ! is specified, the first argument is the expansion type to
-		pass to rustc --pretty. Otherwise it will default to
-		"expanded".
+		! が指定されるなら、最初の引数は `rustc --pretty` に渡すための展
+		開種類です。それ以外の場合は "expanded" になるでしょう。
 
-		If |g:rustc_path| is defined, it is used as the path to rustc.
-		Otherwise it is assumed rustc can be found in $PATH.
+		|g:rustc_path| が定義されるなら、rustc へのパスのように使われ
+		ます。それ以外の場合は rustc が $PATH の中で見つけられうると見
+		なされます。
 
 :RustEmitIr [args]                                               *:RustEmitIr*
-		Compiles the current file to LLVM IR and displays the results
-		in a new split. If the current file has unsaved changes, it
-		will be saved first using |:update|. If the current file is an
-		unnamed buffer, it will be written to a temporary file first.
+		カレントファイルを LLVM IR にコンパイルして新しいウィンドウに
+		その結果を表示します。カレントファイルの変更が保存されていない
+		なら、|:update| を使って最初に保存されるでしょう。カレントファ
+		イルが無名バッファなら、最初に一時ファイルに書き込まれるでしょ
+		う。
 
-		The arguments given to |:RustEmitIr| will be passed to rustc.
+		|:RustEmitIr| に与えられた引数は rustc に渡されるでしょう。
 
-		If |g:rustc_path| is defined, it is used as the path to rustc.
-		Otherwise it is assumed rustc can be found in $PATH.
+		|g:rustc_path| が定義されるなら、rustc へのパスのように使われ
+		ます。それ以外の場合は rustc が $PATH の中で見つけられうると見
+		なされます。
 
 :RustEmitAsm [args]                                             *:RustEmitAsm*
-		Compiles the current file to assembly and displays the results
-		in a new split. If the current file has unsaved changes, it
-		will be saved first using |:update|. If the current file is an
-		unnamed buffer, it will be written to a temporary file first.
+		カレントファイルをアセンブリにコンパイルして新しいウィンドウに
+		その結果を表示します。カレントファイルの変更が保存されていない
+		なら、|:update| を使って最初に保存されるでしょう。カレントファ
+		イルが無名バッファなら、最初に一時ファイルに書き込まれるでしょ
+		う。
 
-		The arguments given to |:RustEmitAsm| will be passed to rustc.
+		|:RustEmitAsm| に与えられた引数は rustc に渡されるでしょう。
 
-		If |g:rustc_path| is defined, it is used as the path to rustc.
-		Otherwise it is assumed rustc can be found in $PATH.
+		|g:rustc_path| が定義されるなら、rustc へのパスのように使われ
+		ます。それ以外の場合は rustc が $PATH の中で見つけられうると見
+		なされます。
 
-:RustPlay                                                          *:RustPlay*
-		This command will only work if you have web-api.vim installed
-		(available at https://github.com/mattn/webapi-vim).  It sends the
-		current selection, or if nothing is selected, the entirety of the
-		current buffer to the Rust playpen, and emits a message with the
-		shortened URL to the playpen.
 
-		|g:rust_playpen_url| is the base URL to the playpen, by default
-		"https://play.rust-lang.org/".
+テスト(群) の実行 ~
 
-		|g:rust_shortener_url| is the base URL for the shortener, by
-		default "https://is.gd/"
+:[N]RustTest[!] [options]                                       *:RustTest*
+		カレントバッファが "cargo test" コマンドで cargo プロジェクト
+		内にある場合、カーソル下のテストを実行します。コマンドがカーソ
+		ル下のテスト関数を見つけられなかった場合、エラーメッセージを表
+		示して停止します。
 
-:RustFmt                                                       *:RustFmt*
-		Runs |g:rustfmt_command| on the current buffer. If
-		|g:rustfmt_options| is set then those will be passed to the
-		executable.
+		N が指定された場合、新しいウィンドウのサイズが N 行または N 桁
+		に調整されます。
 
-		If |g:rustfmt_fail_silently| is 0 (the default) then it
-		will populate the |location-list| with the errors from
-		|g:rustfmt_command|. If |g:rustfmt_fail_silently| is set to 1
-		then it will not populate the |location-list|.
+		! が指定された場合、現在のカーソル位置に関係なくすべてのテスト
+		が実行されます。
 
-:RustFmtRange                                                  *:RustFmtRange*
-		Runs |g:rustfmt_command| with selected range. See
-		|:RustFmt| for any other information.
+		[options] が指定された場合、"cargo" コマンドの引数に渡されま
+		す。
+
+		カレントバッファが cargo プロジェクトの外にある場合、コマンド
+		はフォールバックとして "cargo test" の代わりに `rustc --test`
+		コマンドを実行します。rustc では特定のテスト関数を実行する方法
+		がないため、! の追加に関係なくすべてのテストが実行されます。こ
+		の場合、[options] は `rustc` コマンドの引数に渡されます。
+
+		オプションの修飾子を受け取ります (|<mods>| を参照): >
+		    :tab RustTest
+		    :belowright 16RustTest
+		    :leftabove vert 80RustTest
+<
+rust.vim のデバッグ ~
+
+:RustInfo                                                          *:RustInfo*
+		Vim Rust プラグインのデバッグ情報を出力します。
+
+:RustInfoToClipboard                                      *:RustInfoClipboard*
+		Vim Rust プラグインのデバッグ情報をデフォルトのレジスタに保存
+		します。
+
+:RustInfoToFile [filename]                                   *:RustInfoToFile*
+		Vim Rust プラグインのデバッグ情報を指定されたファイルに保存し、
+		上書きします。
 
 ==============================================================================
-MAPPINGS                                                       *rust-mappings*
+マッピング                                                     *rust-mappings*
 
-This plugin defines mappings for |[[| and |]]| to support hanging indents.
+このプラグインはぶら下がりインデントを支援するような |[[| と |]]| のマッピング
+を定義します。
 
-It also has a few other mappings:
 
-							*rust_<D-r>*
-<D-r>			Executes |:RustRun| with no arguments.
-			Note: This binding is only available in MacVim.
-
-							*rust_<D-R>*
-<D-R>			Populates the command line with |:RustRun|! using the
-			arguments given to the last invocation, but does not
-			execute it.
-			Note: This binding is only available in MacVim.
-
-==============================================================================
- vim:tw=78:sw=4:ts=8:noet:ft=help:norl:
+ vim:tw=78:sw=4:noet:ts=8:ft=help:norl:

@@ -1,176 +1,190 @@
-*recover.txt*   Nvim
+*recover.txt*   Nvim 0.12        Last change: 2025-08-24
 
 
-		  VIM REFERENCE MANUAL    by Bram Moolenaar
+		  VIMリファレンスマニュアル    by Bram Moolenaar
 
 
-Recovery after a crash					*crash-recovery*
+クラッシュ後のリカバリー				*crash-recovery*
 
-You have spent several hours typing in that text that has to be finished
-next morning, and then disaster strikes: Your computer crashes.
+あなたが明日の朝までに終わらせなければならない文書のタイピングに数時間を費や
+していたとき、悲劇があなたを襲う。コンピュータがクラッシュした。
 
-			DON'T PANIC!
+			慌てないで!
 
-You can recover most of your changes from the files that Vim uses to store
-the contents of the file.  Mostly you can recover your work with one command:
+あなたはVimがファイルの内容を蓄えていたファイルから、ほとんどの変更を回復でき
+る。たいていの場合、あなたの仕事は1コマンドで回復できる。
 	vim -r filename
 
-                                      Type |gO| to see the table of contents.
+                                            目次を確認するには |gO| をタイプ。
 
 ==============================================================================
-1. The swap file					*swap-file*
+1. スワップファイル					*swap-file*
 
-Vim stores the things you changed in a swap file.  Using the original file
-you started from plus the swap file you can mostly recover your work.
+Vimは変更した箇所をスワップファイルに蓄える。編集を開始したオリジナルのファイ
+ルとスワップファイルから、あなたのした作業は回復することができる。
 
-You can see the name of the current swap file being used with the command:
+現在使用しているスワップファイルの名前は、次のコマンドで確認できる:
 
 	:sw[apname]					*:sw* *:swapname*
 
-Or you can use the |swapname()| function, which also allows for seeing the
-swap file name of other buffers.
+または、 |swapname()| を使うことができる。他のバッファのスワップファイル名も確
+認できる。
 
-The name of the swap file is normally the same as the file you are editing,
-with the extension ".swp".
-- On Unix, a '.' is prepended to swap file names in the same directory as the
-  edited file.  This avoids that the swap file shows up in a directory
-  listing.
-- If this file already exists (e.g., when you are recovering from a crash) a
-  warning is given and another extension is used, ".swo", ".swn", etc.
-- An existing file will never be overwritten.
-- The swap file is deleted as soon as Vim stops editing the file.
+スワップファイルの名前は、普通は編集中のファイルと同じで、拡張子が ".swp" のも
+のになる。
+- UNIXでは、スワップファイルは編集中のファイルと同じディレクトリ内に作られ、
+  '.' が名前の前につけられる。これはディレクトリ表示からスワップファイルを隠す
+  ためである。
+- このファイルがすでに存在すると(例えば、クラッシュから復帰した場合)、注意が表
+  示され、違った拡張子、".swo"、".swn"、などが用いられる。
+- 存在しているファイルは決して上書きされない。
+- スワップファイルはVimが編集を終えるとすぐに削除される。
 
 							*E326*
-Technical: If the ".swp" file name already exists, the last character is
-	   decremented until there is no file with that name or ".saa" is
-	   reached.  In the last case, no swap file is created.
+技術情報:  もし ".swp" ファイルがすでに存在すると、同名のファイルが存在しなく
+	   なるか、".saa" となるまで最後の文字をひとつ前の文字に戻す。".saa"
+	   まで存在するときは、スワップファイルは作られない。
 
-By setting the 'directory' option you can place the swap file in another place
-than where the edited file is.
-Advantages:
-- You will not pollute the directories with ".swp" files.
-- When the 'directory' is on another partition, reduce the risk of damaging
-  the file system where the file is (in a crash).
-Disadvantages:
-- You can get name collisions from files with the same name but in different
-  directories (although Vim tries to avoid that by comparing the path name).
-  This will result in bogus ATTENTION warning messages.
-- When you use your home directory, and somebody else tries to edit the same
-  file, he will not see your swap file and will not get the ATTENTION warning
-  message.
+'directory' オプションを設定することによって、スワップファイルを、編集している
+ファイルとは別の場所に置くこともできる。
+利点:
+- ディレクトリが ".swp" ファイルで汚染されることがない。
+- 'directory' が別パーティションにある場合、ファイルのあるファイルシステムが
+  (クラッシュで)損傷を受けるリスクが減る。
+欠点:
+- 別ディレクトリの同一名のファイルで名前の衝突を生じうる(Vimはパス名の比較でそ
+  れを避けようとするが)。
+  これによって偽の注意メッセージが表示される。
+- あなたがホームディレクトリで作業をしていて、他の誰かが同じファイルを編集しよ
+  うとしたとき、そのユーザーはあなたのスワップファイルに気づかないし、注意の
+  メッセージも表示されない。
 
-If you want to put swap files in a fixed place, put a command resembling the
-following ones in your vimrc:
-	:set dir=~/tmp		(for Unix)
-	:set dir=c:\\tmp	(for Windows)
-This is also very handy when editing files on floppy.  Of course you will have
-to create that "tmp" directory for this to work!
+スワップファイルを固定ディスクに置きたいときは、あなたのvimrcファイルに次に示
+す様なコマンドを入れる:
+	:set dir=dh2:tmp	(Amigaの場合)
+	:set dir=~/tmp		(Unixの場合)
+	:set dir=c:\\tmp	(Win32の場合)
+これはフロッピー上のファイルを編集するときにもとても便利である。もちろん、この
+様な設定で作業をするならば、"tmp" ディレクトリを作らねばならない。
 
-For read-only files, a swap file is not used right away. The swap file is
-created only when making changes.
+読取専用属性のファイルに対しては、スワップファイルはすぐには使用されない。ス
+ワップファイルは何らかの変更が加えられた時のみ作成される。
 
-The 'swapfile' option can be reset to avoid creating a swapfile.  And the
-|:noswapfile| modifier can be used to not create a swapfile for a new buffer.
+スワップファイルの作成を避けるために 'swapfile' オプションをリセットできる。そ
+して新しいバッファでスワップファイルを作成しないようにするのに |:noswapfile|
+修飾子を使うことができる。
 
 :nos[wapfile]   {command}			*:nos* *:noswapfile*
-		Execute {command}. If it contains a command that loads a new
-		buffer, it will be loaded without creating a swapfile and the
-		'swapfile' option will be reset.  If a buffer already had a
-		swapfile it is not removed and 'swapfile' is not reset.
+		{command} を実行する。それが新しいバッファを読み込むコマンドを
+		含んでいる場合は、スワップファイルは作成されずに読み込まれ、
+		'swapfile' オプションはリセットされる。バッファが既にスワップ
+		ファイルを持っていた場合は、スワップファイルは削除されず、
+		'swapfile' はリセットされない。
 
 
-Detecting an existing swap file ~
+既存のスワップファイルを削除する ~
 
-You can find this in the user manual, section |11.3|.
+ユーザーマニュアルの|11.3|を参照すること。
+
+									*W325*
+デフォルトの |SwapExists| ハンドラ (|default-autocmds|) はスワップファイルの所
+有者プロセスがまだ実行中で、所有者が現在のユーザーの場合、 |E325| プロンプトを
+スキップする(そして自動的に "(E)dit" を選択する)。これは通常、複数の Nvim イン
+スタンスから同じファイルを編集したという理由で |ATTENTION| メッセージが表示さ
+れることは望まれないためである。最悪の場合(システムクラッシュなど)、一つのファ
+イルに対して複数のスワップファイルが存在する可能性がある。すべてのスワップファ
+イルを確認するには |:recover| コマンドを使用する。
 
 
-Updating the swapfile ~
+スワップファイルの更新 ~
 
-The swap file is updated after typing 200 characters or when you have not
-typed anything for four seconds.  This only happens if the buffer was
-changed, not when you only moved around.  The reason why it is not kept up to
-date all the time is that this would slow down normal work too much.  You can
-change the 200 character count with the 'updatecount' option.  You can set
-the time with the 'updatetime' option.  The time is given in milliseconds.
-After writing to the swap file Vim syncs the file to disk.
+スワップファイルは200文字を打ち込むか、4秒間何もしなかったときに更新される。こ
+れはバッファが変更されたときのみ行われ、動き回っているだけでは行われない。なぜ
+常に更新が行われないかといえば、それは通常の作業が大幅に遅くなるからである。
+200文字の設定は 'updatecount' で、時間の設定は 'updatetime' で変更できる。時間
+はミリ秒単位で与えられる。スワップファイルに書き込んだ後で、Vimはファイルとディ
+スクの同期を取る。
 
-If the writing to the swap file is not wanted, it can be switched off by
-setting the 'updatecount' option to 0.  The same is done when starting Vim
-with the "-n" option.  Writing can be switched back on by setting the
-'updatecount' option to non-zero.  Swap files will be created for all buffers
-when doing this.  But when setting 'updatecount' to zero, the existing swap
-files will not be removed, it will only affect files that will be opened
-after this.
+スワップファイルへの書き込みを望まないなら、 'updatecount' を0に設定することで
+行われなくなる。Vimを "-n" オプションで起動することで、同じ結果が得られる。書
+き込みは 'updatecount' を非0にすることでまた行われるようになる。これを行ったと
+きはスワップファイルが全てのバッファに対して作られる。しかし、 'updatecount' 
+を0に設定したときは、存在しているスワップファイルは消されることはなく、次に開
+かれたファイルから有効になる。
 
-If you want to make sure that your changes are in the swap file use this
-command:
+行った編集がスワップファイルに書きこまれたかを確認するには、次のコマンドを使用
+する:
 
 					*:pre* *:preserve* *E313* *E314*
-:pre[serve]		Write all text for all buffers into swap file.  The
-			original file is no longer needed for recovery.
+:pre[serve]		現在のバッファの全てのテキストをそのスワップファイルに
+			書き込む。回復のためにオリジナルが必要とされることは
+			なくなる。
 
-A Vim swap file can be recognized by the first six characters: "b0VIM ".
-After that comes the version number, e.g., "3.0".
+Vimのスワップファイルは最初の6文字で認識される: "b0VIM "。
+この後に "3.0" などのバージョン番号が続く。
 
 
-Links and symbolic links ~
+リンクとシンボリックリンク~
 
-On Unix it is possible to have two names for the same file.  This can be done
-with hard links and with symbolic links (symlinks).
+Unix では同一のファイルに2つの名前をつけることができる。それはハードリンクまた
+はシンボリックリンク(symlink)を使って行う。
 
-For hard links Vim does not know the other name of the file.  Therefore, the
-name of the swapfile will be based on the name you used to edit the file.
-There is no check for editing the same file by the other name too, because Vim
-cannot find the other swapfile (except for searching all of your harddisk,
-which would be very slow).
+ハードリンクの場合、Vim はそのファイルにつけられた他の名前を知ることができな
+い。そのため、スワップファイルの名前は、そのファイルを開くときに使った名前に基
+づいてつけられる。
+そのファイルが別の名前でも開かれているかどうかのチェックは行わない。他のスワッ
+プファイルを検出することはできないからである(ハードディスク全てを検索するとい
+う方法は除く。それはとても遅くなるから)。
 
-For symbolic links Vim resolves the links to find the name of the actual file.
-The swap file name is based on that name.  Thus it doesn't matter by what name
-you edit the file, the swap file name will normally be the same.  However,
-there are exceptions:
-- When the directory of the actual file is not writable the swapfile is put
-  elsewhere.
-- When the symbolic links somehow create a loop you get an *E773* error
-  message and the unmodified file name will be used.  You won't be able to
-  save your file normally.
+シンボリックリンクの場合、Vim はそのリンクが指す実際のファイルを見つけられる。
+スワップファイルの名前は実際の名前に基づいてつけられる。よって、ユーザーがどん
+な名前でそのファイルを開いたかは関係なく、スワップファイル名は同一になる。しか
+し次のような例外がある:
+- 実際のファイルのディレクトリが書き込み不可ならば、スワップファイルは別の場所
+  に置かれる。
+- シンボリックリンクがなんらかの形でループになっているとき、エラーメッセージ
+  *E773* が表示され、変更されていないファイル名が使われる。普通にファイルを保
+  存することはできない。
 
 ==============================================================================
-2. Recovery					*recovery* *E308* *E311*
+2. リカバリー					*recovery* *E308* *E311*
 
-Basic file recovery is explained in the user manual: |usr_11.txt|.
+基本的なファイルの回復方法はユーザーマニュアルの|usr_11.txt|を参照すること。
 
-Another way to do recovery is to start Vim and use the ":recover" command.
-This is easy when you start Vim to edit a file and you get the "ATTENTION:
-Found a swap file ..." message.  In this case the single command ":recover"
-will do the work.  You can also give the name of the file or the swap file to
-the recover command:
+ファイルを回復するためのもうひとつの方法は、Vimを起動して ":recover" コマンド
+を使うことである。
+これはVimを起動したときに "ATTENTION: Found a swap file ..." というメッセージ
+を受け取ったときには便利である。その場合には ":recover" というコマンドひとつで
+全てが済む。
+recoverコマンドにはファイル名かスワップファイル名を渡すことができる:
+
 					*:rec* *:recover* *E305* *E306* *E307*
-:rec[over] [file]	Try to recover [file] from the swap file.  If [file]
-			is not given use the file name for the current
-			buffer.  The current contents of the buffer are lost.
-			This command fails if the buffer was modified.
+:rec[over] [file]	スワップファイルから[file]を回復するよう試みる。もし
+			[file]が与えられていない場合は、現在のバッファの名前が
+			用いられる。現在のバッファの内容は失われる。このコマン
+			ドはバッファが修正を加えられている場合に失敗する。
 
-:rec[over]! [file]	Like ":recover", but any changes in the current
-			buffer are lost.
+:rec[over]! [file]	":recover" と同じだが、現在のバッファに対するどんな変
+			更も失われる。
 
-							*E312* *E309* *E310*
-Vim has some intelligence about what to do if the swap file is corrupt in
-some way.  If Vim has doubt about what it found, it will give an error
-message and insert lines with "???" in the text.  If you see an error message
-while recovering, search in the file for "???" to see what is wrong.  You may
-want to cut and paste to get the text you need.
+						*E312* *E309* *E310* *E1364*
+Vimはスワップファイルが何らかの理由で壊れているときに、いくつかの対処を提供す
+る。Vimが見つかったものに疑問を持った場合、エラーメッセージが与えられ、"???"
+というテキストが一緒に行に挿入される。回復中にエラーメッセージを受け取ったら、
+"???" を検索することによってどこに問題があったかを知ることができる。必要なテキ
+ストを得るためには、カットやペーストを必要とするかもしれない。
 
-The most common remark is "???LINES MISSING".  This means that Vim cannot read
-the text from the original file.  This can happen if the system crashed and
-parts of the original file were not written to disk.
+ほとんどは "???LINES MISSING" のようなものである。これはVimがそのテキストをオ
+リジナルのファイルから読み込めないことを示す。これはシステムがクラッシュした時
+にファイルが正しくディスクに書き込まれなかったときに起こる。
 
-Be sure that the recovery was successful before overwriting the original
-file or deleting the swap file.  It is good practice to write the recovered
-file elsewhere and run 'diff' to find out if the changes you want are in the
-recovered file.  Or use |:DiffOrig|.
+オリジナルを上書きしたり、スワップファイルを削除する前に、回復が成功したことを
+確認すること。回復されたファイルをどこか別の場所に保存して、'diff' によって変
+更を加えた箇所が、ちゃんと回復されたファイルに入っているか調べてみるとよい。ま
+たは |:DiffOrig| を使う。
 
-Once you are sure the recovery is ok delete the swap file.  Otherwise, you
-will continue to get warning messages that the ".swp" file already exists.
+回復が成功したと確信したら、スワップファイルを削除する。そうしないと、".swp"
+が存在するというメッセージが表示されつづけることになる。
 
 
  vim:tw=78:ts=8:noet:ft=help:norl:

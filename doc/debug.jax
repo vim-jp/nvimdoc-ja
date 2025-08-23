@@ -1,164 +1,164 @@
-*debug.txt*     Nvim
+*debug.txt*     Nvim 0.12        Last change: 2025-08-24
 
 
-		  VIM REFERENCE MANUAL    by Bram Moolenaar
+		  VIMリファレンスマニュアル    by Bram Moolenaar
 
 
-Debugging Vim						*debug-vim*
+Vim のデバッグ						*debug-vim*
 
-This is for debugging Vim itself, when it doesn't work properly.
-For debugging Vim scripts, functions, etc. see |debug-scripts|
+これは、Vim 自体が正しく動作しない場合にデバッグするためのものである。
+Vim script や関数などのデバッグについては、 |debug-scripts| を参照。
 
-                                      Type |gO| to see the table of contents.
+                                            目次を確認するには |gO| をタイプ。
 
 ==============================================================================
 
-1. Location of a crash, using gcc and gdb		*debug-gcc* *gdb*
+1. gcc と gdb を使ってクラッシュの場所を特定する	*debug-gcc* *gdb*
 
-When Vim crashes in one of the test files, and you are using gcc for
-compilation, here is what you can do to find out exactly where Vim crashes.
-This also applies when using the MingW tools.
+Vim がテストファイルの 1 つでクラッシュし、コンパイルに gcc を使用している場
+合、Vim がどこでクラッシュするかを正確に見つけるためにできることがある。これは
+MingW ツールを使用している場合にも当てはまる。
 
-1. Compile Vim with the "-g" option (there is a line in the src/Makefile for
-   this, which you can uncomment).  Also make sure "strip" is disabled (do not
-   install it, or use the line "STRIP = /bin/true").
+1. "-g" オプション付きで Vim をコンパイル (src/Makefile にそのための行があるの
+   で、それをコメントアウトする)。さらに "strip" を無効化する (strip をインス
+   トールしないか、"STRIP = /bin/true" の行を使う)。
 
-2. Execute these commands (replace "11" with the test that fails): >
+2. 次のコマンドを実行する ("11" の所を失敗したテストの番号に変える): >
 	cd testdir
 	gdb ../vim
 	run -u unix.vim -U NONE -s dotest.in test11.in
 
-3. Check where Vim crashes, gdb should give a message for this.
+3. Vim のクラッシュを確認する。gdb は関連するメッセージを表示するはずである。
 
-4. Get a stack trace from gdb with this command: >
+4. 次のコマンドでスタックトレースを表示できる: >
 	where
-<  You can check out different places in the stack trace with: >
+<  次のコマンドで別の場所のスタックトレースを表示できる: >
 	frame 3
-<  Replace "3" with one of the numbers in the stack trace.
+<  "3" をスタックトレース内の番号の 1 つに置き換える。
 
 ==============================================================================
 
-2. Locating memory leaks			*debug-leaks* *valgrind*
+2. メモリリークの特定				*debug-leaks* *valgrind*
 
-If you suspect Vim is leaking memory and you are using Linux, the valgrind
-tool is very useful to pinpoint memory leaks.
+Linux を使っていて Vim がメモリリークしていると思われる場合は、メモリリークを
+正確に特定するのに valgrind ツールが非常に役立つ。
 
-First of all, build Vim with EXITFREE defined.  Search for this in MAKEFILE
-and uncomment the line.
+まず、EXITFREE を定義して Vim をビルドする。MAKEFILE でこれを検索して、行のコ
+メントを外す。
 
-Use this command to start Vim:
+次のコマンドで Vim を起動する:
 >
 	valgrind --log-file=valgrind.log --leak-check=full ./vim
 
-Note: Vim will run much slower.  If your vimrc is big or you have several
-plugins you need to be patient for startup, or run with the "-u NONE"
-argument.
+Note: Vim の実行はとても遅くなる。vimrc が大きかったり多くのプラグインを入れ
+ていたりすると起動にとても時間がかかるので、その場合は "-u NONE" 引数を指定し
+て起動する。
 
-There are often a few leaks from libraries, such as getpwuid() and
-XtVaAppCreateShell().  Those are unavoidable.  The number of bytes should be
-very small a Kbyte or less.
+ライブラリがメモリリークを起こしている場合もよくある。例えば getpwuid() や
+XtVaAppCreateShell() など。それらを避けることはできない。リークしているバイト
+数は数キロバイト以下のはずである。
 
 ==============================================================================
 
-3. Windows Bug Reporting				*debug-win32*
+3. Windows でのバグレポート				*debug-win32*
 
-If the Windows version of Vim crashes in a reproducible manner, you can take
-some steps to provide a useful bug report.
+Windows版の Vim が再現可能な手段でクラッシュした場合、次の方法で有用なバグレ
+ポートを作成できる。
 
+3.1 一般事項 ~
 
-3.1 GENERIC ~
+実行可能ファイルに対応したデバッグシンボルファイル (PDB) を取得する必要がある。
+gvim.exe には gvim.pdb、vim.exe には vim.pdb が必要である。あなたが実行可能ファ
+イルを入手したのと同じ場所に用意されているはずである。EXE に対応した (同じ日付
+の) PDB でなければならない。
 
-You must obtain the debugger symbols (PDB) file for your executable: gvim.pdb
-for gvim.exe, or vim.pdb for vim.exe. The PDB should be available from the
-same place that you obtained the executable. Be sure to use the PDB that
-matches the EXE (same date).
+Microsoft Visual C++ コンパイラを使って自分で実行可能ファイルを作成した場合は、
+PDB は EXE と一緒に作成されている。
 
-If you built the executable yourself with the Microsoft Visual C++ compiler,
-then the PDB was built with the EXE.
+Visual Studio を持っている場合、VC Toolkit と WinDbg の代わりにそれを使用する。
 
-If you have Visual Studio, use that instead of the VC Toolkit and WinDbg.
-
-For other compilers, you should always use the corresponding debugger: gdb
-(see above |debug-gcc|) for the Cygwin and MinGW compilers.
+他のコンパイラを使っている場合は、それぞれ適切なデバッガを使用する必要がある。
+Cygwin または MinGW のコンパイラ用の gdb (上記参照 |debug-gcc|) など。
 
 
 								*debug-vs2005*
-3.2 Debugging Vim crashes with Visual Studio 2005/Visual C++ 2005 Express ~
+3.2 Visual Studio 2005/Visual C++ 2005 Express で Vim をデバッグする ~
 
-First launch vim.exe or gvim.exe and then launch Visual Studio.  (If you don't
-have Visual Studio, follow the instructions at |get-ms-debuggers| to obtain a
-free copy of Visual C++ 2005 Express Edition.)
+最初に、vim.exe か gvim.exe を起動し、Visual Studio を起動する。(Visual Studio
+を持っていない場合は、 |get-ms-debuggers| の説明に従って、無料の Visual C++
+2005 Express Edition を入手する。)
 
-On the Tools menu, click Attach to Process.  Choose the Vim process.
+メニューから「ツール/プロセスにアタッチ」を選択し、Vim のプロセスを選択する。
 
-In Vim, reproduce the crash.  A dialog will appear in Visual Studio, telling
-you about the unhandled exception in the Vim process.  Click Break to break
-into the process.
+そして、Vim を操作してクラッシュを再現する。「ハンドルされていない例外が発生し
+ました」という Visual Studio のダイアログが表示されるので、中断ボタンをクリッ
+クしてプロセスを中断する。
 
-Visual Studio will pop up another dialog, telling you that no symbols are
-loaded and that the source code cannot be displayed.  Click OK.
+シンボルが読み込めず、ソースコードを表示できなかったときは、もう 1 つダイアロ
+グが表示される。OK をクリックする。
 
-Several windows will open.  Right-click in the Call Stack window.  Choose Load
-Symbols.  The Find Symbols dialog will open, looking for (g)vim.pdb.  Navigate
-to the directory where you have the PDB file and click Open.
+ウィンドウがいくつか開く。呼び出し履歴ウィンドウの右クリックメニューから「シン
+ボルの読み込み」を選択する。シンボル検索ダイアログが開くので、(g)vim.pdb のあ
+るディレクトリを選択する。
 
-At this point, you should have a full call stack with vim function names and
-line numbers.  Double-click one of the lines and the Find Source dialog will
-appear.  Navigate to the directory where the Vim source is (if you have it.)
+このとき、呼び出し履歴ウィンドウには Vim の関数名や行番号が表示されているはず
+である。どれかをダブルクリックするとソースの検索ダイアログが表示される。Vim の
+ソースがあるディレクトリを選択する (ソースがあれば)。
 
-If you don't know how to debug this any further, follow the instructions
-at ":help bug-report".  Paste the call stack into the bug report.
+さらに詳しくデバッグする方法が分からないときは、":help bug-report" の説明に従
+う。バグレポートに呼び出し履歴を貼り付ける。
 
-If you have a non-free version of Visual Studio, you can save a minidump via
-the Debug menu and send it with the bug report.  A minidump is a small file
-(<100KB), which contains information about the state of your process.
-Visual C++ 2005 Express Edition cannot save minidumps and it cannot be
-installed as a just-in-time debugger. Use WinDbg, |debug-windbg|, if you
-need to save minidumps or you want a just-in-time (postmortem) debugger.
+有料版の Visual Studio を使っている場合は、デバッグメニューから minidump を保
+存できるので、それをバグレポートに添付する。minidump は 100KB 以下の小さなファ
+イルで、Vim のプロセスに関する情報が入っている。
+Visual C++ 2005 Express Edition では minidump を保存できない。just-in-time デ
+バッガ (クラッシュを検出して自動的に起動されるデバッガ) もインストールされな
+い。それらが必要なときは WinDbg (|debug-windbg|) を使う。
 
 								*debug-windbg*
-3.3 Debugging Vim crashes with WinDbg ~
+3.3 WinDbg を使って Vim をデバッグする ~
 
-See |get-ms-debuggers| to obtain a copy of WinDbg.
+WinDbg の入手方法は |get-ms-debuggers| を参照。
 
-As with the Visual Studio IDE, you can attach WinDbg to a running Vim process.
-You can also have your system automatically invoke WinDbg as a postmortem
-debugger. To set WinDbg as your postmortem debugger, run "windbg -I".
+Visual Studio IDE を使うのと同じように、WinDbg から Vim のプロセスにアタッチで
+きる。プログラムがクラッシュしたときに、事後分析デバッガ (postmortem debugger)
+として、WinDebug を自動的に起動することができる。事後分析デバッガとして WinDeb
+を設定するには "windbg -I" を実行する。
 
-To attach WinDbg to a running Vim process, launch WinDbg. On the File menu,
-choose Attach to a Process. Select the Vim process and click OK.
+WinDbg から、実行中の Vim のプロセスにアタッチするには、WinDeb を起動し、File
+メニューから「プロセスにアタッチ」を選択し、Vim のプロセスを選択して OK をク
+リックする。
 
-At this point, choose Symbol File Path on the File menu, and add the folder
-containing your Vim PDB to the sympath. If you have Vim source available,
-use Source File Path on the File menu. You can now open source files in WinDbg
-and set breakpoints, if you like. Reproduce your crash. WinDbg should open the
-source file at the point of the crash. Using the View menu, you can examine
-the call stack, local variables, watch windows, and so on.
+メニューから「File->Symbol File Path」を選択し、Vim PDB の入っているフォルダを
+symbolpath に追加する。Vim のソースファイルもある場合は、File メニューの
+Source File Path を使う。WinDbg でソースファイルを開いたり、ブレークポイントを
+設定したりできる。Vim をクラッシュさせると、クラッシュした場所のソースファイル
+が WinDbg で開かれる。View メニューを使って、コールスタック、ローカル変数、
+ウォッチウィンドウなどを見ることができる。
 
-If WinDbg is your postmortem debugger, you do not need to attach WinDbg to
-your Vim process. Simply reproduce the crash and WinDbg will launch
-automatically. As above, set the Symbol File Path and the Source File Path.
+事後分析デバッガとして WinDbg を使っている場合、WinDbg から Vim のプロセスにア
+タッチする必要はない。Vim をクラッシュさせるだけで WinDbg が自動的に起動する。
+上述のように、シンボルファイルパスとソースファイルパスを設定する。
 
-To save a minidump, type the following at the WinDbg command line: >
+minidump を保存するには、WinDbg コマンドラインで次のコマンドを入力する: >
         .dump vim.dmp
 <
 							*debug-minidump*
-3.4 Opening a Minidump ~
+3.4 Minidump を開く ~
 
-If you have a minidump file, you can open it in Visual Studio or in WinDbg.
+Visual Studio か WinDbg を使って minidump を開くことができる。
 
-In Visual Studio 2005: on the File menu, choose Open, then Project/Solution.
-Navigate to the .dmp file and open it. Now press F5 to invoke the debugger.
-Follow the instructions in |debug-vs2005| to set the Symbol File Path.
+Visual Studio 2005 の場合: メニューから「ファイル->開く->プロジェクト/ソリュー
+ション」選択し、.dmp ファイルを開く。F5 キーを押してデバッガを起動する。
+|debug-vs2005| の指示に従って Symbol File Path を設定する。
 
-In WinDbg: choose Open Crash Dump on the File menu. Follow the instructions in
-|debug-windbg| to set the Symbol File Path.
+WinDbg の場合: メニューから「File->Open Crash Dump」を選択する。|debug-windbg|
+の指示に従って Symbol File Path を設定する。
 
 							*get-ms-debuggers*
-3.5 Obtaining Microsoft Debugging Tools ~
+3.5 Microsoft デバッグツールの入手方法 ~
 
-Visual Studio 2017 Community Edition can be downloaded for free from:
+Visual Studio 2017 Community Edition は次の場所から無料でダウンロードできる。
     https://visualstudio.microsoft.com/downloads/
 
-=========================================================================
  vim:tw=78:ts=8:noet:ft=help:norl:

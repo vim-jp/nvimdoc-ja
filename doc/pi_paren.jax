@@ -1,59 +1,70 @@
-*pi_paren.txt*  Nvim
+*pi_paren.txt*  Nvim 0.12        Last change: 2025-08-24
 
 
-		  VIM REFERENCE MANUAL    by Bram Moolenaar
+		  VIMリファレンスマニュアル    by Bram Moolenaar
 
 
-Highlighting matching parens			*matchparen*
+対応するカッコの強調表示			*matchparen*
 
-The functionality mentioned here is a |standard-plugin|.
-This plugin is only available if 'compatible' is not set.
+このプラグインは標準プラグイン |standard-plugin| である。
+'compatible' がオフのときだけ使用できる。
 
-You can avoid loading this plugin by setting the "loaded_matchparen" variable: >
+"loaded_matchparen" 変数を設定することで、このプラグインの読み込みを回避でき
+る: >
+
 	:let loaded_matchparen = 1
 
-The plugin installs CursorMoved, CursorMovedI and WinEnter autocommands to
-redefine the match highlighting.
+このプラグインは自動コマンドイベントの CursorMoved、CursorMovedI、WinEnter を
+使って強調表示を再設定する。
 
 					*:NoMatchParen* *:DoMatchParen*
-To disable the plugin after it was loaded use this command: >
+このプラグインの機能を無効にするには次のコマンドを使う: >
 
 	:NoMatchParen
 
-And to enable it again: >
+機能を有効に戻すには次のコマンドを使う: >
 
 	:DoMatchParen
 
-The highlighting used is MatchParen.  You can specify different colors with
-the ":highlight" command.  Example: >
+強調表示には MatchParen が使われる。":highlight" コマンドを使って好きな色を設
+定できる。例: >
 
 	:hi MatchParen ctermbg=blue guibg=lightblue
 
-The characters to be matched come from the 'matchpairs' option.  You can
-change the value to highlight different matches.  Note that not everything is
-possible.  For example, you can't highlight single or double quotes, because
-the start and end are equal.
+デフォルトでは、プラグインはカーソルの下の括弧とマッチする括弧の両方を、
+|hl-MatchParen| ハイライトグループを使用してハイライトする。これにより、カーソ
+ルのハイライトが MatchParen の色に置き換えられるため、カーソルが一時的に画面か
+ら消える場合がある。これを防ぎ、プラグインがマッチする括弧のみをハイライトし、
+(実質的にカーソルのスタイルを変更せずに) カーソルの下の括弧をハイライトしない
+ようにするには、"matchparen_disable_cursor_hl" 変数を設定する: >
 
-The syntax highlighting attributes are used.  When the cursor currently is not
-in a string or comment syntax item, then matches inside string and comment
-syntax items are ignored.  Any syntax items with "string" or "comment"
-somewhere in their name are considered string or comment items.
+	:let matchparen_disable_cursor_hl = 1
 
-The search is limited to avoid a delay when moving the cursor.  The limits
-are:
-- What is visible in the window.
-- 100 lines above or below the cursor to avoid a long delay when there are
-  closed folds.
-- 'synmaxcol' times 2 bytes before or after the cursor to avoid a delay
-  in a long line with syntax highlighting.
-- A timeout of 300 msec (60 msec in Insert mode). This can be changed with the
-  g:matchparen_timeout and g:matchparen_insert_timeout variables and their
-  buffer-local equivalents b:matchparen_timeout and
-  b:matchparen_insert_timeout.
+オプション 'matchpairs' に設定されている文字が強調表示される。このオプションを
+設定することで好きな文字を強調表示できる。Note 設定しても機能しない文字もある。
+例えば、シングルクォートやダブルクォートのペアなどは、始点と終点が同じなので強
+調表示できない。
 
-If you would like the |%| command to work better, the |matchit| plugin can be
-used.  This plugin also helps to skip matches in comments.  This is unrelated
-to the matchparen highlighting, they use a different mechanism.
+対応するカッコを探すときには構文強調の属性が使われる。カーソル位置の文字が、文
+字列やコメント以外のときは、文字列やコメントの中は無視される。名前に "string"
+や "comment" が含まれている構文強調アイテムはすべて、文字列やコメントとして扱
+われる。
+
+カーソルの移動が遅くならないように、対応するカッコの検索には次の制限がある:
+- ウィンドウに表示されている範囲だけ検索する。
+- 閉じた折り畳みがあると処理に時間がかかるので、カーソル位置から 100 行以内の
+  範囲だけ検索する。
+- 長い行が構文強調表示されていると処理に時間がかかるので、カーソル位置から
+  'synmaxcol' の二倍の範囲の文字だけ検索する。
+- 300 ミリ秒でタイムアウト (挿入モードでは 60 ミリ秒)。これは変数の
+  "g:matchparen_timeout" と "g:matchparen_insert_timeout" を設定することで変更
+  できる。バッファ毎に設定する場合は "b:matchparen_timeout" と
+  "b:matchparen_insert_timeout" を設定する。
+
+|%| コマンドの動作を改善したい場合は |matchit| プラグインが使用できる。このプラグ
+インを使うとコメント内のカッコをスキップすることもできる。これは matchparen プ
+ラグインとの関連性はない。matchit プラグインは matchparen とは別のメカニズムを
+使っている。
 
 ==============================================================================
  vim:tw=78:ts=8:noet:ft=help:norl:
