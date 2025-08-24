@@ -1,41 +1,51 @@
-*pi_gzip.txt*   Nvim
+*pi_gzip.txt*   Nvim 0.12        Last change: 2025-08-24
 
 
-		  VIM REFERENCE MANUAL    by Bram Moolenaar
+		VIMリファレンスマニュアル    by Bram Moolenaar
 
 
-Editing compressed files with Vim		*gzip* *bzip2* *compress*
+圧縮されたファイルをVimで編集する		*gzip* *bzip2* *compress*
 
-1. Autocommands			|gzip-autocmd|
+1. 自動実行コマンド		|gzip-autocmd|
 
-The functionality mentioned here is a |standard-plugin|.
-This plugin is only available if 'compatible' is not set.
-You can avoid loading this plugin by setting the "loaded_gzip" variable: >
+ここで説明されているのは |standard-plugin| {訳注: 標準プラグイン} である。
+このプラグインは 'compatible' がオフのときだけ使用できる。
+変数 "loaded_gzip" を設定することでプラグインが読み込まれないようにできる: >
 	:let loaded_gzip = 1
+<
+							*g:gzip_exec*
+
+セキュリティ上の理由から、バッファを開くときに Vim が実行可能ファイルを自動的
+に実行しないようにすることもできる。このオプション (デフォルト: "1") を "0" に
+設定すると、実行可能コマンドの実行を防止するために使用できる: >
+	:let g:gzip_exec = 0
+<
 
 ==============================================================================
-1. Autocommands						*gzip-autocmd*
+1. 自動実行コマンド					*gzip-autocmd*
 
-The plugin installs autocommands to intercept reading and writing of files
-with these extensions:
+このプラグインは自動実行コマンドをインストールして、以下の拡張子を持つファイル
+の読み書きを処理する:
 
-	extension	compression ~
-	*.Z		compress (Lempel-Ziv)
-	*.gz		gzip
+	拡張子		圧縮方法(コマンド) >
 	*.bz2		bzip2
+	*.bz3		bzip3
+	*.gz		gzip
+	*.lz		lzip
+	*.lz4		lz4
 	*.lzma		lzma
 	*.xz		xz
-	*.lz		lzip
+	*.Z		compress (Lempel-Ziv)
 	*.zst		zstd
 
-That's actually the only thing you need to know.  There are no options.
+あなたが知るべきことはこれだけである。オプションはない。
 
-After decompressing a file, the filetype will be detected again.  This will
-make a file like "foo.c.gz" get the "c" filetype.
+ファイルが伸長された後、再びファイル形式の判定処理が実行される。それにより
+"foo.c.gz" のようなファイルが "c" 形式のファイルとして判定される。
 
-If you have 'patchmode' set, it will be appended after the extension for
-compression.  Thus editing the patchmode file will not give you the automatic
-decompression.  You have to rename the file if you want this.
+'patchmode' を設定している場合、設定された値は圧縮を示す拡張子の後に付けられ
+る。したがって、パッチモードで作成されたファイルを開くときは自動的には伸長され
+ない。そのファイルを伸長するにはファイル名を変更する必要があるだろう。
 
 ==============================================================================
  vim:tw=78:ts=8:noet:ft=help:norl:

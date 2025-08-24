@@ -1,16 +1,16 @@
-*pi_zip.txt*	Nvim
+*pi_zip.txt*	Nvim 0.12        Last change: 2025-08-24
 
 				+====================+
 				| Zip File Interface |
 				+====================+
 
-Author:  Charles E. Campbell  <NdrOchip@ScampbellPfamily.AbizM>
+Author:  Charles E. Campbell  <NcampObell@SdrPchip.AorgM-NOSPAM>
 	  (remove NOSPAM from Campbell's email first)
 Copyright: Copyright (C) 2005-2015 Charles E Campbell	 *zip-copyright*
 	The VIM LICENSE (see |copyright|) applies to the files in this
 	package, including zipPlugin.vim, zip.vim, and pi_zip.vim.  except use
 	"zip.vim" instead of "VIM".  Like anything else that's free, zip.vim
-	and its associated files are provided *as is* and comes with no
+	and its associated files are provided as is and comes with no
 	warranty of any kind, either expressed or implied.  No guarantees of
 	merchantability.  No guarantees of suitability for any purpose.  By
 	using this plugin, you agree that in no event will the copyright
@@ -18,95 +18,122 @@ Copyright: Copyright (C) 2005-2015 Charles E Campbell	 *zip-copyright*
 	software. Use at your own risk!
 
 ==============================================================================
-1. Contents						*zip* *zip-contents*
-   1. Contents................................................|zip-contents|
-   2. Usage...................................................|zip-usage|
-   3. Additional Extensions...................................|zip-extension|
-   4. History.................................................|zip-history|
+1. 目次							*zip* *zip-contents*
+   1. 目次....................................................|zip-contents|
+   2. 使い方..................................................|zip-usage|
+   3. zip以外の拡張子.........................................|zip-extension|
+   4. 開発履歴................................................|zip-history|
 
 ==============================================================================
-2. Usage						*zip-usage* *zip-manual*
+2. 使い方						*zip-usage* *zip-manual*
 
-   When one edits a *.zip file, this plugin will handle displaying a
-   contents page.  Select a file to edit by moving the cursor atop
-   the desired file, then hit the <return> key.  After editing, one may
-   also write to the file.  Currently, one may not make a new file in
-   zip archives via the plugin.
+   `*.zip` ファイルを編集する場合、このプラグインは内容ページの表示処理を行う。
+   編集するファイルを選択するには、カーソルを目的のファイルの上に移動して、
+   <return> キーを押す。編集後、ファイルに書き込むこともできる。現在、このプラ
+   グインを使用して zip アーカイブに新しいファイルを作成することはできない。
 
+   コマンド~
 								*zip-x*
-   x : may extract a listed file when the cursor is atop it
+   x : カーソル上にある一覧のファイルを解凍する
 
-   OPTIONS
+   オプション~
 
-   							*g:zip_nomax*
+							*g:zip_nomax*
 
-   If this variable exists and is true, the file window will not be
-   automatically maximized when opened.
+   この変数が存在し、かつ真である場合、ファイルウィンドウは開かれたときに自動
+   的に最大化されない。
 
 							*g:zip_shq*
-   Different operating systems may use one or more shells to execute
-   commands.  Zip will try to guess the correct quoting mechanism to
-   allow spaces and whatnot in filenames; however, if it is incorrectly
-   guessing the quote to use for your setup, you may use >
+   オペレーティングシステムによっては、コマンドを実行するために 1 つ以上のシェ
+   ルを使用する場合がある。Zip は、ファイル名にスペースなどを含めることができ
+   るように、正しいクォートのメカニズムを推測しようとする。ただし、設定で使用
+   するクォートを誤推測した場合は以下を使用する >
 	g:zip_shq
-<  which by default is a single quote under Unix (') and a double quote
-   under Windows (").  If you'd rather have no quotes, simply set
-   g:zip_shq to the empty string (let g:zip_shq= "") in your <.vimrc>.
+<  デフォルトでは、Unix ではシングルクォート (')、Windows ではダブルクォート
+   (")である。クォート自体をしたくない場合は <.vimrc> の中で g:zip_shq に空文
+   字を設定する (let g:zip_shq = "") だけである。
 
-   							*g:zip_unzipcmd*
-   Use this option to specify the program which does the duty of "unzip".
-   It's used during browsing. By default: >
-   	let g:zip_unzipcmd= "unzip"
+							*g:zip_unzipcmd*
+   このオプションを使用して、"unzip" の役割を果たすプログラムを指定する。これ
+   はブラウジングに使用される。デフォルトでは: >
+	let g:zip_unzipcmd= "unzip"
 <
 							*g:zip_zipcmd*
-   Use this option to specify the program which does the duty of "zip".
-   It's used during the writing (updating) of a file already in a zip
-   file; by default: >
-   	let g:zip_zipcmd= "zip"
+   このオプションを使用して、"zip" の役割を果たすプログラムを指定する。これは、
+   すでに zip ファイル内にあるファイルの書き込み (更新) に使用される。デフォル
+   トでは: >
+	let g:zip_zipcmd= "zip"
 <
 							*g:zip_extractcmd*
-   This option specifies the program (and any options needed) used to
-   extract a file from a zip archive.  By default, >
-   	let g:zip_extractcmd= g:zip_unzipcmd
+   このオプションは、zip アーカイブからファイルを抽出する為に使用するプログラ
+   ム（および必要なオプション）を指定する。デフォルトでは, >
+	let g:zip_extractcmd= g:zip_unzipcmd
 <
-   PREVENTING LOADING~
+							*g:zip_exec*
+   セキュリティ上の理由から、バッファを開いた時に Vim が実行可能ファイルを自動
+   的に実行しないようにすることができる。このオプション (デフォルト: "1") を
+   "0" に設定すると、"unzip" コマンドの実行を防ぐことができる: >
+	let g:zip_exec=0
+<
+   読み込みの無効化~
 
-   If for some reason you do not wish to use vim to examine zipped files,
-   you may put the following two variables into your <.vimrc> to prevent
-   the zip plugin from loading: >
+   何らかの理由で vim を使用して zip ファイルを検査したくない場合は、次の 2 つ
+   の変数を <.vimrc> に追加して、zip プラグインが読み込まれないようにすること
+   ができる: >
 
 	let g:loaded_zipPlugin= 1
 	let g:loaded_zip      = 1
 <
 
 ==============================================================================
-3. Additional Extensions					*zip-extension*
+3. zip 以外の拡張子						*zip-extension*
 
-   Apparently there are a number of archivers which generate zip files that
-   don't use the .zip extension (.jar, .xpi, etc).  To handle such files,
-   place a line in your <.vimrc> file: >
+   zip ファイルを zip 以外の拡張子 (.jar や .xpi など) で生成するアーカイバが
+   あるようだ。そのようなファイルを扱いたい場合は、<.vimrc> ファイルに以下の
+   行を追加する: >
 
 	au BufReadCmd *.jar,*.xpi call zip#Browse(expand("<amatch>"))
 <
-   One can simply extend this line to accommodate additional extensions that
-   should be treated as zip files.
+   この行に拡張子を追加していけば対応する拡張子を増やすことができる。
 
-   Alternatively, one may change *g:zipPlugin_ext* in one's .vimrc.
-   Currently (11/30/15) it holds: >
+   代わりに .vimrc で *g:zipPlugin_ext* を使って変更する方法もある。現時点
+   (2025年4月現在) は以下が含まれる: >
 
-	let g:zipPlugin_ext= '*.zip,*.jar,*.xpi,*.ja,*.war,*.ear,*.celzip,
-       \ *.oxt,*.kmz,*.wsz,*.xap,*.docx,*.docm,*.dotx,*.dotm,*.potx,*.potm,
-       \ *.ppsx,*.ppsm,*.pptx,*.pptm,*.ppam,*.sldx,*.thmx,*.xlam,*.xlsx,*.xlsm,
-       \ *.xlsb,*.xltx,*.xltm,*.xlam,*.crtx,*.vdw,*.glox,*.gcsx,*.gqsx,*.epub'
+        let g:zipPlugin_ext='*.aar,*.apk,*.celzip,*.crtx,*.docm,*.docx,
+       \ *.dotm,*.dotx,*.ear,*.epub,*.gcsx,*.glox,*.gqsx,*.ja,*.jar,*.kmz,
+       \ *.odb,*.odc,*.odf,*.odg,*.odi,*.odm,*.odp,*.ods,*.odt,*.otc,*.otf,
+       \ *.otg,*.oth,*.oti,*.otp,*.ots,*.ott,*.oxt,*.potm,*.potx,*.ppam,
+       \ *.ppsm,*.ppsx,*.pptm,*.pptx,*.sldx,*.thmx,*.vdw,*.war,*.whl,*.wsz,
+       \ *.xap,*.xlam,*.xlsb,*.xlsm,*.xlsx,*.xltm,*.xltx,*.xpi,*.zip'
 
 ==============================================================================
-4. History							*zip-history* {{{1
+4. 開発履歴							*zip-history* {{{1
+   unreleased:
+       Jul 12, 2025 * drop ../ on write to prevent path traversal attacks
+       Mar 11, 2025 * handle filenames with leading '-' correctly
+       Aug 21, 2024 * simplify condition to detect MS-Windows
+       Aug 18, 2024 * correctly handle special globbing chars
+       Aug 05, 2024 * clean-up and make it work with shellslash on Windows
+       Aug 05, 2024 * workaround for the FreeBSD's unzip
+       Aug 04, 2024 * escape '[' in name of file to be extracted
+       Jul 30, 2024 * fix opening remote zipfile
+       Jul 24, 2024 * use delete() function
+       Jul 23, 2024 * fix 'x' command
+       Jun 16, 2024 * handle whitespace on Windows properly (#14998)
+   v33 Dec 07, 2021 * `*.xlam` mentioned twice in zipPlugin
+   v32 Oct 22, 2021 * to avoid an issue with a vim 8.2 patch, zipfile: has
+		      been changed to zipfile:// . This often shows up
+		      as zipfile:/// with zipped files that are root-based.
+   v29 Apr 02, 2017 * (Klartext) reported that an encrypted zip file could
+		      opened but the swapfile held unencrypted contents.
+		      The solution is to edit the contents of a zip file
+		      using the |:noswapfile| modifier.
    v28 Oct 08, 2014 * changed the sanity checks for executables to reflect
-   		      the command actually to be attempted in zip#Read()
+		      the command actually to be attempted in zip#Read()
 		      and zip#Write()
 		    * added the extraction of a file capability
-       Nov 30, 2015 * added *.epub to the |g:zipPlugin_ext| list
-       Sep 13, 2016 * added *.apk to the |g:zipPlugin_ext| list and
+       Nov 30, 2015 * added `*.epub` to the |g:zipPlugin_ext| list
+       Sep 13, 2016 * added `*.apk` to the |g:zipPlugin_ext| list and
 		      sorted the suffices.
    v27 Jul 02, 2013 * sanity check: zipfile must have "PK" as its first
 		      two bytes.
@@ -149,4 +176,4 @@ Copyright: Copyright (C) 2005-2015 Charles E Campbell	 *zip-copyright*
    v1 Sep 15, 2005 * Initial release, had browsing, reading, and writing
 
 ==============================================================================
-vim:tw=78:ts=8:noet:ft=help:fdm=marker
+vim:tw=78:ts=8:ft=help:noet:norl:fdm=marker

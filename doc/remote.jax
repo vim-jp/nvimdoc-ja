@@ -1,189 +1,134 @@
-*remote.txt*    Nvim
+*remote.txt*    Nvim 0.12        Last change: 2025-08-24
 
 
-		  VIM REFERENCE MANUAL    by Bram Moolenaar
+		VIMリファレンスマニュアル    by Bram Moolenaar
 
 
-Vim client-server communication				*client-server*
+Vimクライアントサーバー通信				*client-server*
 
-                                      Type |gO| to see the table of contents.
+                                            目次を確認するには |gO| をタイプ。
 
 ==============================================================================
-1. Common functionality					*clientserver*
+1. 共通機能						*clientserver*
 
-When compiled with the |+clientserver| option, Vim can act as a command
-server.  It accepts messages from a client and executes them.  At the same
-time, Vim can function as a client and send commands to a Vim server.
+Nvim の |RPC| 機能により、クライアントは Nvim をプログラム制御できます。Nvim 自
+体がコマンドライン引数を受け取り、サーバーとして動作している別の Nvim のクライ
+アントになります。これらの引数は、Vim の clientserver オプションで提供されるも
+のと同じです。
 
-The following command line arguments are available:
+以下のコマンドライン引数が利用できる:
 
-    argument			meaning	~
+    引数			意味 ~
 
    --remote [+{cmd}] {file} ...					*--remote*
-				Open the file list in a remote Vim.  When
-				there is no Vim server, execute locally.
-				There is one optional init command: +{cmd}.
-				This must be an Ex command that can be
-				followed by "|".
-				The rest of the command line is taken as the
-				file list.  Thus any non-file arguments must
-				come before this.
-				You cannot edit stdin this way |--|.
-				The remote Vim is raised.  If you don't want
-				this use >
-				 vim --remote-send "<C-\><C-N>:n filename<CR>"
+				ファイルをリモートのVimで開く。Vimサーバーが無
+				い時には、ローカルで実行される。Vim は +{cmd}
+				に一つだけExコマンドを指定できる。コマンドは
+				"|" でつなげて複数指定できる。この機能は Nvim
+				ではサポートされていない。コマンドラインの残り
+				の部分はファイルのリストとして扱われる。だから
+				ファイルではない引数はこれよりも前に書かなけれ
+				ばならない。この方法で標準入力を開くことはでき
+				ない|--|。次のようにしなければリモートの Vimが
+				問題を起こすかもしれない。 >
+				nvim --remote-send "<C-\><C-N>:n filename<CR>"
 <
    --remote-silent [+{cmd}] {file} ...			*--remote-silent*
-				As above, but don't complain if there is no
-				server and the file is edited locally.
-   --remote-wait [+{cmd}] {file} ...				*--remote-wait*
-				As --remote, but wait for files to complete
-				(unload) in remote Vim.
-   --remote-wait-silent [+{cmd}] {file} ...		*--remote-wait-silent*
-				As --remote-wait, but don't complain if there
-				is no server.
+				上と同様、しかしサーバーが存在しなくてもエラー
+				を報告しない。指定したファイルがすでにローカル
+				で編集中であっても同様。
 							*--remote-tab*
-   --remote-tab			Like --remote but open each file in a new
-				tabpage.
+   --remote-tab			--remote と同様、しかし各ファイルを新しいタブ
+				ページで開く。
 							*--remote-tab-silent*
-   --remote-tab-silent		Like --remote-silent but open each file in a
-				new tabpage.
-							*--remote-tab-wait*
-   --remote-tab-wait		Like --remote-wait but open each file in a new
-				tabpage.
-
-						*--remote-tab-wait-silent*
-   --remote-tab-wait-silent	Like --remote-wait-silent but open each file
-				in a new tabpage.
+   --remote-tab-silent		--remote-silent と同様、しかし各ファイルを新し
+				いタブページで開く。
 								*--remote-send*
-   --remote-send {keys}		Send {keys} to server and exit.  The {keys}
-   				are not mapped.  Special key names are
-				recognized, e.g., "<CR>" results in a CR
-				character.
+   --remote-send {keys}		サーバーに{keys}を送信して終了する。{keys} に
+				マップは適用されない。特殊キー名が使用できる。
+				例: "<CR>" は CR 文字になる。
 								*--remote-expr*
-   --remote-expr {expr}		Evaluate {expr} in server and print the result
-				on stdout.
+   --remote-expr {expr}		サーバーに{expr}を実行評価させ、その結果を標準
+				出力に印刷する。
+								*--remote-ui*
+   --remote-ui			サーバーの UI を端末に表示する。完全にインタラ
+                                クティブであり、キーボード及びマウスの入力は
+                                サーバーに転送される。
+								*--server*
+   --server {addr}		リモートコマンドを実行するために、指定された名
+                                前付きパイプまたはソケットに接続する。サーバー
+                                の起動時にアドレスを指定するには |--listen| を
+                                参照。
 
-Examples ~
+使用例 ~
 
-Edit "file.txt" in an already running GVIM server: >
-    gvim --remote file.txt
+'~/.cache/nvim/server.pipe' にある名前付きパイプをリッスンする Nvim サーバーを
+起動: >
+    nvim --listen ~/.cache/nvim/server.pipe
 
-Edit "file.txt" in an already running server called FOOBAR: >
-    gvim --servername FOOBAR --remote file.txt
+'~/.cache/nvim/server.pipe' をリッスンしている Nvim サーバーで "file.txt" を編
+集: >
+    nvim --server ~/.cache/nvim/server.pipe --remote file.txt
 
-Edit "file.txt" in server "FILES" if it exists, become server "FILES"
-otherwise: >
-    gvim --servername FILES --remote-silent file.txt
+--remoteの後の全ての引数がファイル名として解釈されるので動作しない: >
+    nvim --remote --server ~/.cache/nvim/server.pipe file.txt
 
-This doesn't work, all arguments after --remote will be used as file names: >
-    gvim --remote --servername FOOBAR file.txt
-
-Edit file "+foo" in a remote server (note the use of "./" to avoid the special
-meaning of the leading plus): >
-    vim --remote ./+foo
-
-Tell the remote server "BLA" to write all files and exit: >
-    vim --servername BLA --remote-send '<C-\><C-N>:wqa<CR>'
-
-
-SERVER NAME						*client-server-name*
-
-By default Vim will try to register the name under which it was invoked (gvim,
-egvim ...).  This can be overridden with the --servername argument.  If the
-specified name is not available, a postfix is applied until a free name is
-encountered, i.e. "gvim1" for the second invocation of gvim on a particular
-X-server.  The resulting name is available in the servername builtin variable
-|v:servername|.  The case of the server name is ignored, thus "gvim" and
-"GVIM" are considered equal.
-
-When Vim is invoked with --remote, --remote-wait or --remote-send it will try
-to locate the server name determined by the invocation name and --servername
-argument as described above.  If an exact match is not available, the first
-server with the number postfix will be used.  If a name with the number
-postfix is specified with the --servername argument, it must match exactly.
-
-If no server can be located and --remote or --remote-wait was used, Vim will
-start up according to the rest of the command line and do the editing by
-itself.  This way it is not necessary to know whether gvim is already started
-when sending command to it.
-
-The --serverlist argument will cause Vim to print a list of registered command
-servers on the standard output (stdout) and exit.
-
-Win32 Note: Making the Vim server go to the foreground doesn't always work,
-because MS-Windows doesn't allow it.  The client will move the server to the
-foreground when using the --remote or --remote-wait argument and the server
-name starts with "g".
+リモートサーバーで編集中の全てのファイルを保存して終了する: >
+    nvim --server ~/.cache/nvim/server.pipe --remote-send '<C-\><C-N>:wqa<CR>'
 
 
-REMOTE EDITING
+☆リモート編集
 
-The --remote argument will cause a |:drop| command to be constructed from the
-rest of the command line and sent as described above.
-The --remote-wait argument does the same thing and additionally sets up to
-wait for each of the files to have been edited.  This uses the BufUnload
-event, thus as soon as a file has been unloaded, Vim assumes you are done
-editing it.
-Note that the --remote and --remote-wait arguments will consume the rest of
-the command line.  I.e. all remaining arguments will be regarded as filenames.
-You can not put options there!
+引数 --argument は残りのコマンドラインから |:drop| コマンドを構成することを引き
+起こし、それを上記の方法で送信する。
+引数 --remote と --remote-wait は残りのコマンドライン全てを自分のものとして扱
+うことに注意。言い換えれば残り全ての引数はファイル名とみなされる。そこにオプ
+ションを置くことはできない!
 
-
-FUNCTIONS
-								*E240* *E573*
-There are a number of Vim functions for scripting the command server.  See
-the description in |eval.txt| or use CTRL-] on the function name to jump to
-the full explanation.
-
-    synopsis				     explanation ~
-    remote_startserver( name)		     run a server
-    remote_expr( server, string, idvar)      send expression
-    remote_send( server, string, idvar)      send key sequence
-    serverlist()			     get a list of available servers
-    remote_peek( serverid, retvar)	     check for reply string
-    remote_read( serverid)		     read reply string
-    server2client( serverid, string)	     send reply string
-    remote_foreground( server)		     bring server to the front
-
-See also the explanation of |CTRL-\_CTRL-N|.  Very useful as a leading key
-sequence.
-The {serverid} for server2client() can be obtained with expand("<client>")
 
 ==============================================================================
-2. X11 specific items					*x11-clientserver*
-				    *E247* *E248* *E251* *E258* *E277*
+2. 未実装の機能    				*E5600* *clientserver-missing*
 
-The communication between client and server goes through the X server.  The
-display of the Vim server must be specified.  The usual protection of the X
-server is used, you must be able to open a window on the X server for the
-communication to work.  It is possible to communicate between different
-systems.
+Vim の clientserver は Nvim にはまだ実装されていない追加の機能をサポートしてい
+ます。特に、"wait" 系の機能は未だサポートされていません。
+以下のコマンドライン引数は利用できません:
 
-By default, a GUI Vim will register a name on the X-server by which it can be
-addressed for subsequent execution of injected strings.  Vim can also act as
-a client and send strings to other instances of Vim on the same X11 display.
+    引数			意味 ~
 
-When an X11 GUI Vim (gvim) is started, it will try to register a send-server
-name on the 'VimRegistry' property on the root window.
+   --remote-wait [+{cmd}] {file} ...				*--remote-wait*
+				Nvim ではまだサポートされていない。
+				--remoteと 同様、しかしリモートVimでファイルが
+				完了(解放)されるまで待つ。
+   --remote-wait-silent [+{cmd}] {file} ...		*--remote-wait-silent*
+				Nvim ではまだサポートされていない。
+				--remote-wait と同様、しかしサーバーが存在しな
+				くてもエラーを報告しない。
+							*--remote-tab-wait*
+   --remote-tab-wait		Nvim ではまだサポートされていない。
+				--remote-wait と同様、しかし各ファイルを新しい
+				タブページで開く。
+						*--remote-tab-wait-silent*
+   --remote-tab-wait-silent	Nvim ではまだサポートされていない。
+				--remote-wait-silent と同様、しかし各ファイル
+				を新しいタブページで開く。
+							    *--servername*
+   --servername {name}		Nvim ではまだサポートされていない。
+				サーバー名{name}になる。--remote コマンドのど
+				れか1つと併用すると、デフォルトのサーバーでは
+				なく{name}で指定されるサーバーに接続する(下を
+				参照)。使用される名前は大文字になる。
 
-An empty --servername argument will cause the command server to be disabled.
+								*--serverlist*
+   --serverlist			Nvim ではまだサポートされていない。
+				サーバー名のリストを表示する。
 
-To send commands to a Vim server from another application, read the source
-file src/if_xcmdsrv.c, it contains some hints about the protocol used.
 
-==============================================================================
-3. Win32 specific items					*w32-clientserver*
 
-Every Win32 Vim can work as a server, also in the console.  You do not need a
-version compiled with OLE.  Windows messages are used, this works on any
-version of MS-Windows.  But only communication within one system is possible.
 
-Since MS-Windows messages are used, any other application should be able to
-communicate with a Vim server.
+☆サーバー名						*client-server-name*
 
-When using gvim, the --remote-wait only works properly this way: >
+デフォルトではVimは自分が起動された時の名前(gvim, egvim ...)のサーバーになろう
+とする。これは引数 --servername で変更できる。Nvim は名前付きパイプまたはソケッ
+トをリッスンしますが、この --servername 機能はまだサポートしていません。
 
-	start /w gvim --remote-wait file.txt
-<
  vim:tw=78:sw=4:ts=8:noet:ft=help:norl:

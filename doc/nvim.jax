@@ -1,69 +1,105 @@
-*nvim.txt*	Nvim
+*nvim.txt*	Nvim 0.12        Last change: 2025-08-24
 
 
-			    NVIM REFERENCE MANUAL
+                         NVIMリファレンスマニュアル
 
 
-Nvim							   *nvim* *nvim-intro*
+Nvim                                              *nvim* *neovim* *nvim-intro*
 
-Nvim is based on Vim by Bram Moolenaar.
+Nvim は Bram Moolenaar の Vim をベースにしています。Nvim はあくまでも Vim の
+フォークであり、クローンではありません: Vim との互換性(特にエディタと
+Vimscript の機能、ただし |Vim9script| を除く)は可能な限り維持されています。詳細
+については |vim-differences| を参照してください。
 
-If you already use Vim see |nvim-from-vim| for a quickstart.
-If you are new to Vim, try the 30-minute tutorial: >
+- もし既に Vim を利用しているのであれば、 |nvim-from-vim| を参照してください。
+- もし Vim や Nvim のいずれも利用したことがなければ、以下をご覧ください。
 
-    :Tutor<Enter>
-
-Nvim is emphatically a fork of Vim, not a clone: compatibility with Vim
-(especially editor and VimL features) is maintained where possible. See
-|vim-differences| for the complete reference of differences from Vim.
-
-				      Type |gO| to see the table of contents.
+                                            目次を確認するには |gO| をタイプ。
 
 ==============================================================================
-Transitioning from Vim				*nvim-from-vim*
+What now?                                                    *nvim-quickstart*
 
-1. To start the transition, create your |init.vim| (user config) file: >
+Vim の使い方を 30分で学ぶには、チュートリアルをお試しください: >vim
 
-    :call mkdir(stdpath('config'), 'p')
+    :Tutor<Enter>
+<
+もしくは、こちらの10分の動画をご覧ください: https://youtu.be/TQn2hJeHQbM
+
+Nvim をカスタマイズするには、設定ファイルが必要です。"example_init.lua" をコ
+ピーして、 |init.lua| ファイルを作成してください: >vim
+
+    :exe 'edit' stdpath('config') .. '/init.lua'
+    :read $VIMRUNTIME/example_init.lua
+<
+Nvim を Lua で構成する際の実用的なノートについては、 |lua-guide| を参照してくだ
+さい。
+
+Nvim における "IDE" 機能は |LSP| によって提供されます。
+
+Nvim を少し試してみて、その極限の可能性を知りたい場合は、以下の人気の「拡張パ
+ック」または「ディストリビューション」をお試しください(Note: Nvim はこれらの
+プロジェクトと提携しておらず、サポートもしていません)。
+
+- *lazyvim* https://www.lazyvim.org/
+- *nvchad* https://nvchad.com/
+- *kickstart* https://github.com/nvim-lua/kickstart.nvim
+  - こちらは推奨されません。代わりに `$VIMRUNTIME/example_init.lua` を使用してく
+    ださい。
+
+ただし、最終的には時間をかけて Nvim の標準設定を学び、必要に応じてオプションを
+段階的に設定したり、プラグインを |config| に追加することをお勧めします。
+
+==============================================================================
+Vim からの移行                                                 *nvim-from-vim*
+
+1. 移行を始めるには、まず |init.vim| (ユーザー設定) を作成します: >vim
+
     :exe 'edit '.stdpath('config').'/init.vim'
+    :write ++p
 
-2. Add these contents to the file: >
+2. 以下の項目をファイルに追加します: >vim
 
     set runtimepath^=~/.vim runtimepath+=~/.vim/after
     let &packpath = &runtimepath
     source ~/.vimrc
 
-3. Restart Nvim, your existing Vim config will be loaded.
+3. Nvim を再起動すると、既存の Vim 設定が読み込まれます。 >vim
 
-See |provider-python| and |provider-clipboard| for additional software you
-might need to use some features.
+    :restart
 
-Your Vim configuration might not be entirely Nvim-compatible.
-See |vim-differences| for the full list of changes.
+一部の機能を利用する際に追加のソフトウェアが必要になる場合があります。
+|provider-python| と |provider-clipboard| を参照してください。
 
-The |'ttymouse'| option, for example, was removed from Nvim (mouse support
-should work without it). If you use the same |vimrc| for Vim and Nvim,
-consider guarding |'ttymouse'| in your configuration like so:
->
+既存の Vim の設定は Nvim とは完全な互換性がない可能性があります
+(|vim-difference| を参照)。例えば、Nvim では可能な限りマウスを常に有効化するため
+に 'ttymouse' オプションが削除されています。もし Vim と Nvim で共通の |vimrc| を
+使用するために 'ttymouse' 設定を保持したい場合は、次のように設定します:
+>vim
     if !has('nvim')
         set ttymouse=xterm2
     endif
-<
-Conversely, if you have Nvim specific configuration items, you could do
-this:
->
+
+Nvim 専用の設定については、次のようにします:
+>vim
     if has('nvim')
         tnoremap <Esc> <C-\><C-n>
     endif
-<
-For a more granular approach use |exists()|:
->
+
+より詳細なアプローチには |exists()| を使用します:
+>vim
     if exists(':tnoremap')
         tnoremap <Esc> <C-\><C-n>
     endif
-<
-Now you should be able to explore Nvim more comfortably. Check |nvim-features|
-for more information.
+
+これで Nvim をより快適に使いこなせるようになるはずです。詳しくは |nvim-features|
+をご覧ください。
+
+                                                        *portable-config*
+Nvim は XDG |base-directories| に従うため、Windows における設定ファイルは
+~/.config ではなく ~/Appdata に保存されます。もし全てのマシンで共通のファイル
+パスを利用したい場合は、~/AppData/Local/nvim/init.vim に次のコードを追加してく
+ださい: >vim
+    source ~/.config/nvim/init.vim
 
 ==============================================================================
- vim:tw=78:ts=8:noet:ft=help:norl:
+ vim:tw=78:ts=8:et:ft=help:norl:

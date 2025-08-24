@@ -1,50 +1,47 @@
 *pi_tutor.txt* Interactive tutorials.
 *vim-tutor-mode*
 
-vim-tutor-mode provides a system to follow and create interactive tutorials
-for vim and third party plugins. It replaces the venerable `vimtutor` system.
+vim-tutor-mode は、vim およびサードパーティのプラグインの対話的なチュートリア
+ルを実行および作成するためのシステムを提供する。これは、古くからある
+`vimtutor` システムに代わるものである。
+
+原作者: Felipe Morales <https://github.com/fmoralesc>
 
 ==============================================================================
-1. Usage                                                      *vim-tutor-usage*
+1. 使用法                                                     *vim-tutor-usage*
 
-vim-tutor-mode tutorials are hypertext documents, they have rich text and
-contain links. To stand out from the rest of the text, links are underlined.
-You can follow them by placing the cursor over them and pressing <Enter>, or
-by double-clicking them.
+vim-tutor-mode チュートリアルはハイパーテキストドキュメントで、リッチテキスト
+とリンクが含まれている。テキストの残りの部分と区別するために、リンクには下線が
+引かれている。
+カーソルをリンクの上に置いて <Enter> キーを押すか、リンクをダブルクリックする
+と、リンクをたどることができる。
 
-1.1 Commands
+1.1 コマンド
 ------------
 								      *:Tutor*
-:Tutor {tutorial}	Opens a tutorial. Command-line completion for
-			{tutorial} is provided, the candidates are a list of
-			'.tutor' files found in the 'tutor/'  folder in
-			the 'runtimepath'. Tutorials prefixed with 'vim-' will
-			always be shown first.
+:Tutor [tutorial]	チュートリアルを開く。[tutorial] のコマンドライン補完
+			が提供されており、候補は 'runtimepath' の
+			"tutor/<lang>" フォルダにある ".tutor" ファイルのリス
+			トである。"vim-" で始まるチュートリアルは常に最初に表
+			示される。
 
-			If no {tutorial} is provided, the command starts the
-			'vim-01-beginner' tutorial, which is equivalent to
-			Vim's `vimtutor`.
+			[tutorial] が指定されていない場合、コマンドは Vim の
+			`vimtutor` チャプター 1 に相当する "vim-01-beginner"
+			チュートリアルを開始する。
 
 =============================================================================
-2. Creating tutorials                                        *vim-tutor-create*
+2. チュートリアルの作成                                      *vim-tutor-create*
 
-Writing vim-tutor-mode tutorials is easy. For an overview of the format used,
-please consult the 'tutor.tutor' file: >
+vim-tutor-mode チュートリアルの作成は簡単である。使用される形式の概要について
+は、"tutor.tutor" ファイルを参照: >
 
     :Tutor tutor
 <
-New tutorials must be placed in the 'tutor/' folder in the 'runtimepath'
-to be detected by the :Tutor command.
+新しいチュートリアルは、:Tutor コマンドで検出されるように、'runtimepath' の
+'tutor/' フォルダに配置する必要がある。
 
-It is recommended to use a less formal style when writing tutorials than in
-regular documentation (unless the content requires it).
+チュートリアルを書くときは、通常のドキュメントよりもカジュアルなスタイルを使用
+することをお勧めする (コンテンツで必要な場合を除く)。
 
-============================================================================
-3. Contributing
-
-Development of the plugin is done over at github [1].  Feel free to report
-issues and make suggestions.
-
-[1]: https://github.com/fmoralesc/vim-tutor-mode
-
-" vim: set ft=help :
+=============================================================================
+  vim:tw=78:ts=8:noet:ft=help:norl:

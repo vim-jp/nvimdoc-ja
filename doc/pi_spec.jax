@@ -1,111 +1,109 @@
-*pi_spec.txt*   Nvim
+*pi_spec.txt*   Nvim 0.12        Last change: 2025-08-24
 
 by Gustavo Niemeyer ~
 
-This is a filetype plugin to work with rpm spec files.
+ここではRPMのspecファイル用のプラグインについて解説する。
 
-Currently, this Vim plugin allows you to easily update the %changelog
-section in RPM spec files.  It will even create a section for you if it
-doesn't exist yet.  If you've already inserted an entry today, it will
-give you the opportunity to just add a new item in today's entry.  If you
-don't provide a format string (|spec_chglog_format|), it'll ask you an
-email address and build a format string by itself.
+このプラグインを使用することでRPMのspecファイルの%changelogセクションを簡単に
+更新することができる。まだセクションが存在していないならば、プラグインが作成し
+てくれる。既に本日分のエントリがあるのならば、プラグインは本日のエントリに新し
+い項目を追加する機会を与えてくれる。書式設定文字列(|spec_chglog_format|)を準備
+していないならば、プラグインはemailアドレスをユーザーに問い合わせ、そこから書
+式文字列を構築する。
 
-1. How to use it	|spec-how-to-use-it|
-2. Customizing		|spec-customizing|
+1. 使い方		|spec-how-to-use-it|
+2. カスタマイズ		|spec-customizing|
 
 ==============================================================================
-1. How to use it				*spec-how-to-use-it*
+1. 使い方					*spec-how-to-use-it*
 
-The spec_chglog plugin provides a map like the following:
+spec_chglogプラグインは以下のようなキーマップを提供する: >
 
 	:map <buffer> <LocalLeader>c <Plug>SpecChangelog
+<
+これはspecファイルではマップローカルリーダー(デフォルトは'\')に続いて'c'を押す
+ことでプラグインが起動することを意味している。 |spec_chglog_format| を設定してい
+ない場合には、プラグインはユーザーにemailアドレスを問い合わせこの編集セッション
+で使用する。
 
-It means that you may run the plugin inside a spec file by pressing
-your maplocalleader key (default is '\') plus 'c'.  If you do not have
-|spec_chglog_format| set, the plugin will ask you for an email address
-to use in this edit session.
+プラグインを起動するたびに、changelogに本日分の項目が既に書かれているかを
+チェックする。そのようなエントリが存在すれば、新しいchangelog項目が追加され、
+存在しない場合には新しいchangelogエントリが作成される。
+|spec_chglog_release_info|を有効化して実行した場合には、名前とバージョンとリ
+リースも一致するかが確認される。プラグインは充分に賢いので、パッケージリリース
+がアップデートされるべき時にはその旨を訊ねてくるから、ユーザーはわざわざそれを
+する必要はない。
 
-Every time you run the plugin, it will check to see if the last entry in the
-changelog has been written today and by you.  If the entry matches, it will
-just insert a new changelog item, otherwise it will create a new changelog
-entry.  If you are running with |spec_chglog_release_info| enabled, it will
-also check if the name, version and release matches.  The plugin is smart
-enough to ask you if it should update the package release, if you have not
-done so.
+------------------------------------------------------------------------------
+キーマップ定義					*spec-setting-a-map*
 
-Setting a map					*spec-setting-a-map*
--------------
-
-As you should know, you can easily set a map to access any Vim command (or
-anything, for that matter).  If you don't like the default map of
-<LocalLeader>c, you may just set up your own key.  The following line
-shows you how you could do this in your vimrc file, mapping the plugin to
-the <F5> key:
-
+既に知っているように、あらゆるVimコマンド(その意味ではあらゆる事が可能)を実行
+するためのキーマップは簡単に定義できる。デフォルトのキーマップ<LocalLeader>cが
+気に入らないならば、独自のキーを設定するのも良いだろう。次はそれをファイル
+vimrcで行う例で、プラグインを<F5>キーに割り当てている:
+>
 	au FileType spec map <buffer> <F5> <Plug>SpecChangelog
+<
+NOTE: プラグインはユーザーのマッピング変更の要望を尊重するので、再設定は行わな
+      い。
 
-Note: the plugin will respect your desire to change the default mapping
-      and won't set it.
-
-This command will add a map only in the spec file buffers.
+このコマンドはspecファイルのバッファにのみ適用される。
 
 
 ==============================================================================
-2. Customizing					*spec-customizing*
+2. カスタマイズ					*spec-customizing*
 
-The format string				*spec_chglog_format*
------------------
+------------------------------------------------------------------------------
+書式設定文字列					*spec_chglog_format*
 
-You can easily customize how your spec file entry will look like.  To do
-this just set the variable "spec_chglog_format" in your vimrc file like
-this: >
+specファイルがどのように表示されるかは簡単にカスタマイズできる。これを行うには
+ファイルvimrcで次のように変数 "spec_chglog_format" を設定する: >
 
 	let spec_chglog_format = "%a %b %d %Y My Name <my@email.com>"
 
-Note that "%a %b %d %Y" is the most used time format.  If you don't provide
-a format string, when you run the SpecChangelog command for the first
-time, it will ask you an email address and build the |spec_chglog_format|
-variable for you.  This way, you will only need to provide your email
-address once.
+"%a %b %d %Y"はもっとも頻繁に使用される時刻の書式であることに注意。書式文字列
+を準備していなければ、SpecChangelogコマンドを最初に実行した時に、ユーザーに
+emailアドレスを問い合わせアドレスから自動的に |spec_chglog_format| を構築する。
+この方法でユーザーは一度emailアドレスを設定するだけで済む。
 
-To discover which format options you can use, take a look at the strftime()
-function man page.
+どのような書式を使うことができるのかを知るには、strftime()関数のマニュアルペー
+ジを参照する。
+{訳注: |strftime()|も参照}
 
-Where to insert new items			*spec_chglog_prepend*
--------------------------
+------------------------------------------------------------------------------
+新規項目の挿入箇所				*spec_chglog_prepend*
 
-The plugin will usually insert new %changelog entry items (note that it's
-not the entry itself) after the existing ones.  If you set the
-spec_chglog_prepend variable >
+プラグインは通常新しい%changelogエントリの項目(エントリそのものではないこと
+に注意)を、既に存在するものの後に挿入しようとする。変数spec_chglog_prependを設
+定すれば: >
 
 	let spec_chglog_prepend = 1
 
-it will insert new items before the existing ones.
+既に存在するものの前に新規項目を挿入するようになる。
 
-Inserting release info				*spec_chglog_release_info*
-----------------------
+------------------------------------------------------------------------------
+リリース情報の挿入				*spec_chglog_release_info*
 
-If you want, the plugin may automatically insert release information
-on each changelog entry.  One advantage of turning this feature on is
-that it may control if the release has been updated after the last
-change in the package or not.  If you have not updated the package
-version or release, it will ask you if it should update the package
-release for you.  To turn this feature on, just insert the following
-code in your vimrc: >
+望むのならば、プラグインはchangelogエントリごとのリリース情報を自動的に挿入す
+ることができる。この機能を利用することの利点の1つは、最後の変更の後にリリース
+を更新すべきかそうでないかをコントロールできることである。パッケージのバージョ
+ンかリリースを更新していない時には、パッケージリリースを更新すべきならばその旨
+をユーザーに問い合わせてくれる。この機能を利用するには、vimrcに次のコードを書
+き加える: >
 
 	let spec_chglog_release_info = 1
 
-Then, the first item in your changelog entry will be something like: >
+こうすれば、changelogエントリの最初の項目が次のようなものの場合に問い合わせが
+発生する: >
 
 	+ name-1.0-1cl
 
-If you don't like the release updating feature and don't want to answer
-"No" each time it detects an old release, you may disable it with >
+リリース更新機能が気に入らず、古いリリースを検出するたびに毎回"No"と答えるのに
+嫌気が差したならば、次のようにして無効化できる: >
 
 	let spec_chglog_never_increase_release = 1
 
 
-Good luck!!
+幸運を!!
 
 vim:tw=78:ts=8:noet:ft=help:norl:

@@ -1,36 +1,37 @@
-*job_control.txt*    Nvim
+*job_control.txt*    Nvim 0.12        Last change: 2025-08-24
 
 
-		 NVIM REFERENCE MANUAL    by Thiago de Arruda
+                NVIMリファレンスマニュアル    by Thiago de Arruda
 
 
-Nvim job control					*job* *job-control*
+Nvim ジョブ制御			  			*job* *job-control*
 
-Job control is a way to perform multitasking in Nvim, so scripts can spawn and
-control multiple processes without blocking the current Nvim instance.
+ジョブ制御は Nvim でマルチタスクを実現する方法であり、スクリプトが現在の Nvim
+インスタンスをブロックすることなく複数のプロセスを生成して制御できます。
 
-				      Type |gO| to see the table of contents.
-
-==============================================================================
-Concepts
-
-Job Id							*job-id*
-
-Each job is identified by an integer id, unique for the life of the current
-Nvim session. Each job-id is a valid |channel-id|: they share the same "key
-space". Functions like |jobstart()| return job ids; functions like
-|jobsend()|, |jobstop()|, |rpcnotify()|, and |rpcrequest()| take job ids.
-
-Job stdio streams form a |channel| which can send and receive raw bytes or
-|msgpack-rpc| messages.
+                                            目次を確認するには |gO| をタイプ。
 
 ==============================================================================
-Usage							*job-control-usage*
+コンセプト
 
-To control jobs, use the "job…" family of functions: |jobstart()|,
-|jobsend()|, |jobstop()|.
+ジョブ ID     						*job-id*
 
-Example: >
+各ジョブは整数の ID で識別され、現在の Nvim セッションの間は一意です。各ジョブ
+ID は有効な |channel-id| であり、同じ "キー空間" を共有します。 |jobstart()|のよう
+な関数はジョブ ID を返します。 |jobstop()|、 |chansend()|、 |rpcnotify()|や
+|rpcrequest()| などの関数はジョブ ID を受け取ります。
+
+ジョブの標準入出力ストリームは、生のバイトや |msgpack-rpc| メッセージを送受信
+できる |channel| を形成します。
+
+==============================================================================
+使い方							*job-control-usage*
+
+ジョブを制御するには、"job…" ファミリーの関数を使用します。例えば:
+|jobstart()|、 |jobstop()| 等。
+
+例: >vim
+
 
     function! s:OnEvent(job_id, data, event) dict
       if a:event == 'stdout'
@@ -51,31 +52,35 @@ Example: >
     let job1 = jobstart(['bash'], extend({'shell': 'shell 1'}, s:callbacks))
     let job2 = jobstart(['bash', '-c', 'for i in {1..10}; do echo hello $i!; sleep 1; done'], extend({'shell': 'shell 2'}, s:callbacks))
 
-To test the above script, copy it to a file ~/foo.vim and run it: >
+上記のスクリプトを試すには、~/foo.vim にコピーした後、次のコードを実行します:
+>bash
     nvim -u ~/foo.vim
 <
-Description of what happens:
-  - Two bash shells are spawned by |jobstart()| with their stdin/stdout/stderr
-    streams connected to nvim.
-  - The first shell is idle, waiting to read commands from its stdin.
-  - The second shell is started with -c which executes the command (a for-loop
-    printing 0 through 9) and then exits.
-  - `OnEvent()` callback is passed to |jobstart()| to handle various job
-    events. It displays stdout/stderr data received from the shells.
+挙動の解説:
+  - |jobstart()| 関数によって、標準ストリームが nvim に接続された二つの bash
+    シェルを生成する。
+  - 最初のシェルはアイドル状態であり、標準入力からコマンドを読み込むために待機
+    する。
+  - もう一つのシェルは -c オプションで開始しており、コマンド(0から9までを表示
+    する for ループ)を実行した後、終了する。
+  - 様々なジョブイベントを処理するために `OnEvent()` コールバックが |jobstart()|に
+    渡される。これはシェルから受け取った標準出力や標準エラー出力を表示する。
 
-For |on_stdout| and |on_stderr| see |channel-callback|.
+|on_stdout| と |on_stderr| については |channel-callback| を参照。
 							*on_exit*
-Arguments passed to on_exit callback:
+on_exit コールバックに渡される引数:
   0: |job-id|
-  1: Exit-code of the process, or 128+SIGNUM if by signal (e.g. 143 on SIGTERM).
-  2: Event type: "exit"
+  1: プロセスの終了ステータス、またはシグナルによる場合は 128+SIGNUM (例:
+     SIGTERM の場合は 143)。
+  2: イベントタイプ: "exit"
 
 
-  Note: Buffered stdout/stderr data which has not been flushed by the sender
-	will not trigger the on_stdout/on_stderr callback (but if the process
-	ends, the on_exit callback will be invoked).
-        For example, "ruby -e" buffers output, so small strings will be
-        buffered unless "auto-flushing" ($stdout.sync=true) is enabled. >
+  Note: 送信側によってフラッシュされていないバッファリングされた標準出力及びエ
+        ラー出力は on_stdout 及び on_stderr コールバックをトリガーしません(た
+        だし、プロセスが終了した場合、on_exit コールバックが呼ばれます)。
+        例えば、"ruby -e" は出力をバッファリングするため、「自動フラッシュ」
+        ($stdout.sync=true)が有効になっていない限り、短い文字列はバッファリン
+        グされます。 >vim
           function! Receive(job_id, data, event)
             echom printf('%s: %s',a:event,string(a:data))
           endfunction
@@ -85,14 +90,14 @@ Arguments passed to on_exit callback:
 <       https://github.com/neovim/neovim/issues/1592
 
   Note 2:
-	Job event handlers may receive partial (incomplete) lines. For a given
-	invocation of on_stdout/on_stderr, `a:data` is not guaranteed to end
-	with a newline.
-	  - `abcdefg` may arrive as `['abc']`, `['defg']`.
-	  - `abc\nefg` may arrive as `['abc', '']`, `['efg']` or `['abc']`,
-	    `['','efg']`, or even `['ab']`, `['c','efg']`.
-	Easy way to deal with this: initialize a list as `['']`, then append
-	to it as follows: >
+	ジョブイベントハンドラは、部分的な(不完全な)行を受け取る場合がありま
+	す。on_stdout 及び on_stderr の特定の呼び出しにおいて、 `a:data` が改
+	行で終わるかは保証されません。
+	  - `abcdefg` は `['abc']`、 `['defg']` として受け取る可能性があります。
+	  - `abc\nefg` は `['abc', '']`、 `['efg']` や `['abc']`、 `['','efg']` 更には
+            `['ab']`、 `['c','efg']` として受け取る可能性があります。
+	最も簡単な対処法は、リストを `['']` として初期化し、次の様に追加するこ
+	とです: >vim
 	  let s:chunks = ['']
 	  func! s:on_stdout(job_id, data, event) dict
 	    let s:chunks[-1] .= a:data[0]
@@ -100,8 +105,8 @@ Arguments passed to on_exit callback:
 	  endf
 <
 
-The |jobstart-options| dictionary is passed as |self| to the callback.
-The above example could be written in this "object-oriented" style: >
+|jobstart-options| 辞書は |self| としてコールバックに渡されます。
+上記の例は次のように「オブジェクト指向」な形で記述できます: >vim
 
     let Shell = {}
 
@@ -129,19 +134,16 @@ The above example could be written in this "object-oriented" style: >
     let instance = Shell.new('bomb',
           \ 'for i in $(seq 9 -1 1); do echo $i 1>&$((i % 2 + 1)); sleep 1; done')
 <
-To send data to the job's stdin, use |chansend()|: >
+ジョブの標準入力にデータを送るには、 |chansend()| を使用します: >vim
     :call chansend(job1, "ls\n")
     :call chansend(job1, "invalid-command\n")
     :call chansend(job1, "exit\n")
 <
-A job may be killed with |jobstop()|: >
+ジョブは |jobstop()| によっていつでも強制終了できます:
+>vim
     :call jobstop(job1)
 <
-A job may be killed at any time with the |jobstop()| function:
->
-    :call jobstop(job1)
-<
-Individual streams can be closed without killing the job, see |chanclose()|.
+ジョブを強制終了せずに各ストリームを閉じることも可能です。 |chanclose()| を参照
+してください。
 
-==============================================================================
  vim:tw=78:ts=8:noet:ft=help:norl:

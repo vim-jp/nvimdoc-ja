@@ -1,53 +1,53 @@
-*ft_sql.txt*	Nvim
+*ft_sql.txt*	Nvim 0.12        Last change: 2025-08-24
 
 by David Fishburn
 
-This is a filetype plugin to work with SQL files.
+これは SQL ファイルを編集するためのファイルタイププラグインです。
 
-The Structured Query Language (SQL) is a standard which specifies statements
-that allow a user to interact with a relational database.  Vim includes
-features for navigation, indentation and syntax highlighting.
+Structured Query Language (SQL) はリレーショナルデータベースと対話するための文
+を規定した規格です。Vim には SQL 内を移動、インデント、構文ハイライトする機能
+が備わっています。
 
-1. Navigation					|sql-navigation|
+1. 移動						|sql-navigation|
     1.1 Matchit					|sql-matchit|
-    1.2 Text Object Motions			|sql-object-motions|
-    1.3 Predefined Object Motions		|sql-predefined-objects|
-    1.4 Macros					|sql-macros|
-2. SQL Dialects					|sql-dialects|
+    1.2 オブジェクト単位の移動			|sql-object-motions|
+    1.3 SQL 独自のオブジェクト単位移動		|sql-predefined-objects|
+    1.4 マクロ					|sql-macros|
+2. SQL の方言					|sql-dialects|
     2.1 SQLSetType				|SQLSetType|
     2.2 SQLGetType				|SQLGetType|
-    2.3 SQL Dialect Default			|sql-type-default|
-3. Adding new SQL Dialects			|sql-adding-dialects|
-4. OMNI SQL Completion				|sql-completion|
-    4.1 Static mode				|sql-completion-static|
-    4.2 Dynamic mode				|sql-completion-dynamic|
-    4.3 Tutorial				|sql-completion-tutorial|
-	4.3.1 Complete Tables			|sql-completion-tables|
-	4.3.2 Complete Columns			|sql-completion-columns|
-	4.3.3 Complete Procedures		|sql-completion-procedures|
-	4.3.4 Complete Views			|sql-completion-views|
-    4.4 Completion Customization		|sql-completion-customization|
-    4.5 SQL Maps				|sql-completion-maps|
-    4.6 Using with other filetypes		|sql-completion-filetypes|
+    2.3 SQL 方言の既定値			|sql-type-default|
+3. SQL 方言を追加する				|sql-adding-dialects|
+4. SQL オムニ補完				|sql-completion|
+    4.1 static モード				|sql-completion-static|
+    4.2 dynamic モード				|sql-completion-dynamic|
+    4.3 SQL 補完のチュートリアル		|sql-completion-tutorial|
+	4.3.1 テーブル補完			|sql-completion-tables|
+	4.3.2 カラム補完			|sql-completion-columns|
+	4.3.3 プロシージャ補完			|sql-completion-procedures|
+	4.3.4 ビュー補完			|sql-completion-views|
+    4.4 補完のカスタマイズ			|sql-completion-customization|
+    4.5 SQL 関連のマップ			|sql-completion-maps|
+    4.6 他のファイルタイプのファイル内で使うには|sql-completion-filetypes|
 
 ==============================================================================
-1. Navigation					*sql-navigation*
+1. 移動						*sql-navigation*
 
-The SQL ftplugin provides a number of options to assist with file
-navigation.
+SQL ファイルタイププラグインはファイル内の移動を支援するためのオプションを多数
+備えています。
 
 
+------------------------------------------------------------------------------
 1.1 Matchit					*sql-matchit*
------------
-The matchit plugin (http://www.vim.org/scripts/script.php?script_id=39)
-provides many additional features and can be customized for different
-languages.  The matchit plugin is configured by defining a local
-buffer variable, b:match_words.  Pressing the % key while on various
-keywords will move the cursor to its match.  For example, if the cursor
-is on an "if", pressing % will cycle between the "else", "elseif" and
-"end if" keywords.
 
-The following keywords are supported: >
+matchit プラグイン(https://www.vim.org/scripts/script.php?script_id=39)はたくさ
+んの機能を備えており、異なる言語に対応するためにカスタマイズすることができます。
+matchit プラグインはローカル変数 b:match_words を定義することで設定します。様
+々なキーワードの上で % キーを押すと、それに対応する位置へカーソルを移動します。
+例えばカーソルが "if" の上にあるとき % を押すと "else", "elseif", "end if" の
+間を循環して移動します。
+
+以下のキーワードがサポートされています: >
     if
     elseif | elsif
     else [if]
@@ -85,40 +85,42 @@ The following keywords are supported: >
     returns
 
 
-1.2 Text Object Motions				*sql-object-motions*
------------------------
-Vim has a number of predefined keys for working with text |object-motions|.
-This filetype plugin attempts to translate these keys to maps which make sense
-for the SQL language.
+------------------------------------------------------------------------------
+1.2 オブジェクト単位で移動			*sql-object-motions*
 
-The following |Normal| mode and |Visual| mode maps exist (when you edit a SQL
-file): >
-    ]]		    move forward to the next 'begin'
-    [[		    move backwards to the previous 'begin'
-    ][		    move forward to the next 'end'
-    []		    move backwards to the previous 'end'
+Vim には既定でテキストオブジェクトを操作するキーがたくさん定義されています
+|object-motions|。このファイルタイププラグインはこれらのキーの一部を SQL 用に
+再定義します。
+
+SQL ファイルを編集するとき、以下のノーマルモード |Normal| とビジュアルモード
+|Visual|のマップが定義されます: >
+    ]]		    次の 'begin' へ移動する
+    [[		    前の 'begin' へ移動する
+    ][		    次の 'end' へ移動する
+    []		    前の 'end' へ移動する
 
 
-1.3 Predefined Object Motions			*sql-predefined-objects*
------------------------------
-Most relational databases support various standard features, tables, indices,
-triggers and stored procedures.  Each vendor also has a variety of proprietary
-objects.  The next set of maps have been created to help move between these
-objects.  Depends on which database vendor you are using, the list of objects
-must be configurable.  The filetype plugin attempts to define many of the
-standard objects, plus many additional ones.  In order to make this as
-flexible as possible, you can override the list of objects from within your
-|vimrc| with the following: >
-    let g:ftplugin_sql_objects = 'function,procedure,event,table,trigger' .
-		\ ',schema,service,publication,database,datatype,domain' .
+------------------------------------------------------------------------------
+1.3 SQL 独自のオブジェクト単位移動		*sql-predefined-objects*
+
+ほとんどのリレーショナルデータベースはテーブル、インデックス、トリガー、ストア
+ドプロシージャなど様々な標準的な機能を備えています。また、ベンダーごとに様々な
+独自オブジェクトがあります。次のマップたちはこれらのオブジェクト間を移動するた
+めに作られています。お使いのデータベースによってオブジェクトのリストを調整でき
+るようでなればなりません。このファイルタイププラグインは標準オブジェクトのほと
+んどと、多くの追加的なオブジェクトを定義しています。これを可能な限りフレキシブ
+ルにするために、 |vimrc| でオブジェクトのリストを上書きできるようになっています。
+次のようにします: >
+    let g:ftplugin_sql_objects = 'function,procedure,event,table,trigger' ..
+		\ ',schema,service,publication,database,datatype,domain' ..
 		\ ',index,subscription,synchronization,view,variable'
 
-The following |Normal| mode and |Visual| mode maps have been created which use
-the above list: >
-    ]}		    move forward to the next 'create <object name>'
-    [{		    move backward to the previous 'create <object name>'
+上記のリストを対象として、以下のノーマルモード |Normal| とビジュアルモード
+|Visual| のマップが定義されています: >
+    ]}		    次の 'create <オブジェクト名>' へ移動する
+    [{		    前の 'create <オブジェクト名>' へ移動する
 
-Repeatedly pressing ]} will cycle through each of these create statements: >
+繰り返し ]} を押すとこれらの create 文の間を循環して移動します: >
     create table t1 (
 	...
     );
@@ -130,14 +132,14 @@ Repeatedly pressing ]} will cycle through each of these create statements: >
 
     create index i1 on t1 (c1);
 
-The default setting for g:ftplugin_sql_objects is: >
-    let g:ftplugin_sql_objects = 'function,procedure,event,' .
-		\ '\\(existing\\\\|global\\s\\+temporary\\s\\+\\)\\\{,1}' .
-		\ 'table,trigger' .
-		\ ',schema,service,publication,database,datatype,domain' .
+g:ftplugin_sql_objects の既定値は以下の通りです: >
+    let g:ftplugin_sql_objects = 'function,procedure,event,' ..
+		\ '\\(existing\\\\|global\\s\\+temporary\\s\\+\\)\\\{,1}' ..
+		\ 'table,trigger' ..
+		\ ',schema,service,publication,database,datatype,domain' ..
 		\ ',index,subscription,synchronization,view,variable'
 
-The above will also handle these cases: >
+上記の設定は以下の場合にも対応しています: >
     create table t1 (
 	...
     );
@@ -148,31 +150,32 @@ The above will also handle these cases: >
 	...
     );
 
-By default, the ftplugin only searches for CREATE statements.  You can also
-override this via your |init.vim| with the following: >
+既定では CREATE 文だけを検索します。 |init.vim| に以下を書くと、他の文も対象にする
+ことができます: >
     let g:ftplugin_sql_statements = 'create,alter'
 
-The filetype plugin defines three types of comments: >
+このファイルタイププラグインは以下の3種類のコメントを定義しています: >
     1.  --
     2.  //
     3.  /*
 	 *
 	 */
 
-The following |Normal| mode and |Visual| mode maps have been created to work
-with comments: >
-    ]"		    move forward to the beginning of a comment
-    ["		    move forward to the end of a comment
+コメントを対象として、以下のノーマルモード |Normal| とビジュアルモード |Visual|
+でのマップが定義されています: >
+    ]"		    次のコメントの開始位置へ移動
+    ["		    前のコメントの終了位置へ移動
 
 
 
-1.4 Macros					   *sql-macros*
-----------
-Vim's feature to find macro definitions, |'define'|, is supported using this
-regular expression: >
+------------------------------------------------------------------------------
+1.4 マクロ					   *sql-macros*
+
+'define' に以下の正規表現を設定することにより、マクロ定義を見つけるための Vim
+の機能に対応しています: >
     \c\<\(VARIABLE\|DECLARE\|IN\|OUT\|INOUT\)\>
 
-This addresses the following code: >
+この正規表現は以下のようなコードに対応しています: >
     CREATE VARIABLE myVar1 INTEGER;
 
     CREATE PROCEDURE sp_test(
@@ -189,18 +192,18 @@ This addresses the following code: >
 	 WHERE c4 = myVar1;
     END;
 
-Place your cursor on "myVar1" on this line: >
+以下の行の "myVar1" の上にカーソルを置いて、: >
 	 WHERE c4 = myVar1;
 		     ^
 
-Press any of the following keys: >
+以下のキーのどれかを押してみてください: >
     [d
     [D
     [CTRL-D
 
 
 ==============================================================================
-2. SQL Dialects					*sql-dialects* *sql-types*
+2. SQL の方言					*sql-dialects* *sql-types*
 						*sybase* *TSQL* *Transact-SQL*
 						*sqlanywhere*
 						*oracle* *plsql* *sqlj*
@@ -208,129 +211,128 @@ Press any of the following keys: >
 						*mysql* *postgresql* *psql*
 						*informix*
 
-All relational databases support SQL.  There is a portion of SQL that is
-portable across vendors (ex. CREATE TABLE, CREATE INDEX), but there is a
-great deal of vendor specific extensions to SQL.  Oracle supports the
-"CREATE OR REPLACE" syntax, column defaults specified in the CREATE TABLE
-statement and the procedural language (for stored procedures and triggers).
+すべてのリレーショナルデータベースは SQL に対応しています。SQL の一部分はベン
+ダー間で移植可能です(例: CREATE TABLE, CREATE INDEX)が、ベンダー固有の拡張が大
+量にあります。Oracle は "CREATE OR REPLACE" 構文、CREATE TABLE 文でのカラム既
+定値の指定、プロシージャ言語(ストアドプロシージャとトリガー)を備えています。
 
-The default Vim distribution ships with syntax highlighting based on Oracle's
-PL/SQL.  The default SQL indent script works for Oracle and SQL Anywhere.
-The default filetype plugin works for all vendors and should remain vendor
-neutral, but extendable.
+標準の Vim ディストリビューションには Oracle の PL/SQL に基づいた構文ハイライ
+トが付属しています。SQL インデントスクリプトは Oracle と SQL Anywhere 用に動作
+します。ファイルタイププラグインはすべてのベンダー用に動作し、ベンダー中立を保
+ちつつも拡張可能であるべきです。
 
-Vim currently has support for a variety of different vendors, currently this
-is via syntax scripts. Unfortunately, to flip between different syntax rules
-you must either create:
-    1.  New filetypes
-    2.  Custom autocmds
-    3.  Manual steps / commands
+現在様々なベンダーに対応しています。これは構文スクリプトを通して実現しています。
+残念なことに、複数の構文ルールを切り替えるには以下のどれかを作成しなければなり
+ません:
+    1.  新しいファイルタイプ
+    2.  独自の自動コマンド
+    3.  コマンド手動実行
 
-The majority of people work with only one vendor's database product, it would
-be nice to specify a default in your |init.vim|.
+大多数の人は1つのベンダーのデータベース製品しか扱わないため、 |init.vim| で既定値
+を設定しておくとよいでしょう。
 
 
+------------------------------------------------------------------------------
 2.1 SQLSetType					*sqlsettype* *SQLSetType*
---------------
-For the people that work with many different databases, it is nice to be
-able to flip between the various vendors rules (indent, syntax) on a per
-buffer basis, at any time.  The ftplugin/sql.vim file defines this function: >
+
+複数のデータベースを扱っている人々にとっては、バッファごとまたは任意のタイミン
+グでベンダーのルール(インデント、構文)を切り替えられるとよいでしょう。
+ftplugin/sql.vim では次のコマンドが定義されています: >
     SQLSetType
 
-Executing this function without any parameters will set the indent and syntax
-scripts back to their defaults, see |sql-type-default|.  You can use the <Tab>
-key to complete the optional parameter.
+このコマンドを引数なしで実行すると、インデントと構文スクリプトが既定値に戻りま
+す。既定値は |sql-type-default| を参照してください。 <Tab> キーで引数を補完でき
+ます。
 
-After typing the function name and a space, you can use the completion to
-supply a parameter.  The function takes the name of the Vim script you want to
-source.  Using the |cmdline-completion| feature, the SQLSetType function will
-search the |'runtimepath'| for all Vim scripts with a name containing 'sql'.
-This takes the guess work out of the spelling of the names.  The following are
-examples: >
+コマンド名とスペースをタイプした後、引数を指定するために補完を利用できます。こ
+のコマンドは source したい Vim scriptの名前を受け取ります。
+|cmdline-completion| 機能により、SQLSetType コマンドは 'runtimepath' から名前
+に "sql" を含む Vim script を検索します。これは名前のスペルから推測を取り出し
+ます。以下が例です: >
     :SQLSetType
     :SQLSetType sqloracle
     :SQLSetType sqlanywhere
     :SQLSetType sqlinformix
     :SQLSetType mysql
 
-The easiest approach is to the use <Tab> character which will first complete
-the command name (SQLSetType), after a space and another <Tab>, display a list
-of available Vim script names: >
+もっとも簡単な方法は、 <Tab> を使ってまずコマンド名(SQLSetType)を補完し、スペ
+ースに続いてもう一度 <Tab> を押すと利用可能な Vim script の名前のリストが表示
+されます: >
     :SQL<Tab><space><Tab>
 
 
+------------------------------------------------------------------------------
 2.2 SQLGetType					*sqlgettype* *SQLGetType*
---------------
-At anytime you can determine which SQL dialect you are using by calling the
-SQLGetType command.  The ftplugin/sql.vim file defines this function: >
+
+現在、どのSQL の方言が使われているかを調べるには、コマンド SQLGetType を使いま
+す。ftplugin/sql.vim で次のコマンドが定義されています: >
     SQLGetType
 
-This will echo: >
+このコマンドを使うと、以下のような文字列がエコー表示されます: >
     Current SQL dialect in use:sqlanywhere
 
 
-2.3 SQL Dialect Default				*sql-type-default*
------------------------
-As mentioned earlier, the default syntax rules for Vim is based on Oracle
-(PL/SQL).  You can override this default by placing one of the following in
-your |init.vim|: >
+------------------------------------------------------------------------------
+2.3 SQL 方言の既定値				*sql-type-default*
+
+すでに述べたように、Vim の既定の構文ルールは Oracle (PL/SQL) に基づいています。
+これを上書きするには、次のうちどれかを |init.vim| に書きます: >
     let g:sql_type_default = 'sqlanywhere'
     let g:sql_type_default = 'sqlinformix'
     let g:sql_type_default = 'mysql'
 
-If you added the following to your |init.vim|: >
+次を |init.vim| に書くと: >
     let g:sql_type_default = 'sqlinformix'
 
-The next time edit a SQL file the following scripts will be automatically
-loaded by Vim: >
+次回 SQL ファイルを編集するときには以下のスクリプトが自動的に読み込まれます: >
     ftplugin/sql.vim
     syntax/sqlinformix.vim
     indent/sql.vim
->
-Notice indent/sqlinformix.sql was not loaded.  There is no indent file
-for Informix, Vim loads the default files if the specified files does not
-exist.
+<
+indent/sqlinformix.sql は読み込まれていないことに注意してください。Informix 用
+のインデントファイルは存在しないため、既定のインデントファイルが読み込まれてい
+ます。
 
 
 ==============================================================================
-3. Adding new SQL Dialects			*sql-adding-dialects*
+3. SQL 方言を追加する			*sql-adding-dialects*
 
-If you begin working with a SQL dialect which does not have any customizations
-available with the default Vim distribution you can check http://www.vim.org
-to see if any customization currently exist.  If not, you can begin by cloning
-an existing script.  Read |filetype-plugins| for more details.
+Vim の標準ディストリビューションにスクリプトが含まれていない SQL 方言を扱うと
+きは、対応するスクリプトが投稿されていないか https://www.vim.org をチェックして
+みてください。もしなければ既存のスクリプトをコピーしてカスタマイズしましょう。
+詳しくは |filetype-plugins| を参照してください。
 
-To help identify these scripts, try to create the files with a "sql" prefix.
-If you decide you wish to create customizations for the SQLite database, you
-can create any of the following: >
+スクリプトを識別しやすくするために、ファイル名の先頭に "sql" という接頭辞をつ
+けてください。例えば SQLite データベース用のカスタマイズを作りたい場合は、以下
+のファイルを作成します: >
     Unix
 	~/.config/nvim/syntax/sqlite.vim
 	~/.config/nvim/indent/sqlite.vim
 
-No changes are necessary to the SQLSetType function.  It will automatically
-pickup the new SQL files and load them when you issue the SQLSetType command.
+SQLSetType コマンドには変更を加える必要はありません。SQLSetType コマンドを実行
+すると自動的に新しい SQL ファイルが選ばれ、読み込まれます。
 
 
 ==============================================================================
-4. OMNI SQL Completion				*sql-completion*
+4. SQL オムニ補完				*sql-completion*
 						*omni-sql-completion*
 
-Vim 7 includes a code completion interface and functions which allows plugin
-developers to build in code completion for any language.  Vim 7 includes
-code completion for the SQL language.
+Vim 7 にはプラグイン開発者が任意の言語用のコード補完を作るためのインターフェイ
+スと関数が備わっています。Vim 7 には SQL 言語用のコード補完が含まれています。
 
-There are two modes to the SQL completion plugin, static and dynamic.  The
-static mode populates the popups with the data generated from current syntax
-highlight rules.  The dynamic mode populates the popups with data retrieved
-directly from a database.  This includes, table lists, column lists,
-procedures names and more.
+SQL 補完プラグインには static と dynamic という2つのモードがあります。static
+モードは 現在の構文強調ルールから生成されたデータをもとにポップアップを表示し
+ます。dynamic モードはデータベースから直接抽出したデータをもとにポップアップを
+表示します。このデータにはテーブルのリスト、カラムのリスト、プロシージャ名など
+が含まれます。
 
-4.1 Static Mode					*sql-completion-static*
----------------
-The static popups created contain items defined by the active syntax rules
-while editing a file with a filetype of SQL.  The plugin defines (by default)
-various maps to help the user refine the list of items to be displayed.
-The defaults static maps are: >
+------------------------------------------------------------------------------
+4.1 static モード				*sql-completion-static*
+
+static ポップアップはファイルタイプが SQL のファイルを編集しているときに、使用
+中の構文ルールで定義された項目を含んで表示されます。プラグインは、表示される項
+目のリストを絞り込むための様々なマップを用意しています。
+既定の static マップは次の通りです: >
     imap <buffer> <C-C>a <C-\><C-O>:call sqlcomplete#Map('syntax')<CR><C-X><C-O>
     imap <buffer> <C-C>k <C-\><C-O>:call sqlcomplete#Map('sqlKeyword')<CR><C-X><C-O>
     imap <buffer> <C-C>f <C-\><C-O>:call sqlcomplete#Map('sqlFunction')<CR><C-X><C-O>
@@ -338,237 +340,226 @@ The defaults static maps are: >
     imap <buffer> <C-C>T <C-\><C-O>:call sqlcomplete#Map('sqlType')<CR><C-X><C-O>
     imap <buffer> <C-C>s <C-\><C-O>:call sqlcomplete#Map('sqlStatement')<CR><C-X><C-O>
 
-The use of "<C-C>" can be user chosen by using the following in your 
-|init.vim| as it may not work properly on all platforms: >
+"<C-C>" のキーは環境によっては動作しないかもしれません。そこで、以下の行を
+|init.vim| に書くことで "<C-C>" を他のキーに変更できます: >
     let g:ftplugin_sql_omni_key = '<C-C>'
 >
-The static maps (which are based on the syntax highlight groups) follow this
-format: >
+
+static マップ(構文ハイライトグループに基づいている)は以下の形式で定義されています: >
     imap <buffer> <C-C>k <C-\><C-O>:call sqlcomplete#Map('sqlKeyword')<CR><C-X><C-O>
     imap <buffer> <C-C>k <C-\><C-O>:call sqlcomplete#Map('sqlKeyword\w*')<CR><C-X><C-O>
 
-This command breaks down as: >
-    imap		   - Create an insert map
-    <buffer>		   - Only for this buffer
-    <C-C>k		   - Your choice of key map
-    <C-\><C-O>		   - Execute one command, return to Insert mode
-    :call sqlcomplete#Map( - Allows the SQL completion plugin to perform some
-			     housekeeping functions to allow it to be used in
-			     conjunction with other completion plugins.
-			     Indicate which item you want the SQL completion
-			     plugin to complete.
-			     In this case we are asking the plugin to display
-			     items from the syntax highlight group
-			     'sqlKeyword'.
-			     You can view a list of highlight group names to
-			     choose from by executing the
+このコマンドは次のように分解できます: >
+    imap		   - 挿入モードでのマップを作成する
+    <buffer>		   - このバッファに対してのみ
+    <C-C>k		   - マップするキー
+    <C-\><C-O>		   - コマンドを1個実行し、挿入モードに戻る
+    :call sqlcomplete#Map( - 他の補完プラグインと組み合わせて使えるようにする
+			     ために、いくつかのな関数を実行します。
+			     どの項目を補完して欲しいかを SQL 補完プラグインに
+			     指示します。
+			     この場合は構文ハイライトグループ 'sqlKeyword' の
+			     項目を表示するよう指定しています。
+			     選択可能な構文ハイライトグループ名のリストは、SQL
+			     ファイルを編集中に次のコマンドで表示できます。
 				 :syntax list
-			     command while editing a SQL file.
-    'sqlKeyword'	   - Display the items for the sqlKeyword highlight
-			     group
-    'sqlKeyword\w*'	   - A second option available with Vim 7.4 which
-                             uses a regular expression to determine which
-			     syntax groups to use
-    )<CR>		   - Execute the :let command
-    <C-X><C-O>		   - Trigger the standard omni completion key stroke.
-			     Passing in 'sqlKeyword' instructs the SQL
-			     completion plugin to populate the popup with
-			     items from the sqlKeyword highlight group.  The
-			     plugin will also cache this result until Vim is
-			     restarted.  The syntax list is retrieved using
-			     the syntaxcomplete plugin.
+    'sqlKeyword'	   - 構文ハイライトグループ sqlKeyword の項目を表示します。
+    'sqlKeyword\w*'	   - Vim 7.4 からは、正規表現を使って構文ハイライトグ
+			     ループを選択できます。
+    )<CR>		   - :let コマンドを実行します。
+    <C-X><C-O>		   - 標準のオムニ補完のキーストロークを実行します。
+			    sqlcomplete#Map 関数の引数に 'sqlKeyword' を渡して
+			    あるので、SQL 補完プラグインは構文ハイライトグルー
+			    プ sqlKeyword の項目をポップアップするようになって
+			    います。プラグインは Vim が再起動するまでこの結果
+			    をキャッシュします。構文のリストはsyntaxcomplete
+			    プラグインを使って抽出されます。
 
-Using the 'syntax' keyword is a special case.  This instructs the
-syntaxcomplete plugin to retrieve all syntax items.  So this will effectively
-work for any of Vim's SQL syntax files.  At the time of writing this includes
-10 different syntax files for the different dialects of SQL (see section 3
-above, |sql-dialects|).
+'syntax' キーワードを使うのは特別な場合です。これは syntaxcomplete プラグイン
+にすべての構文アイテムを抽出するよう指示します。そのためこれは Vim のどの SQL
+構文ファイルに対しても有効です。これを書いている時点でこれは SQL 方言用の10
+個の構文ファイルを含んでいます(上の セクション3 |sql-dialects| を参照)。
 
-Here are some examples of the entries which are pulled from the syntax files: >
-     All
-	 - Contains the contents of all syntax highlight groups
-     Statements
+構文ファイルから抽出される項目の例を以下に示します: >
+     全部
+	 - 全構文ハイライトグループの中身
+     文
 	 - Select, Insert, Update, Delete, Create, Alter, ...
-     Functions
+     関数
 	 - Min, Max, Trim, Round, Date, ...
-     Keywords
+     キーワード
 	 - Index, Database, Having, Group, With
-     Options
+     オプション
 	 - Isolation_level, On_error, Qualify_owners, Fire_triggers, ...
-     Types
+     型
 	 - Integer, Char, Varchar, Date, DateTime, Timestamp, ...
 
 
-4.2 Dynamic Mode				*sql-completion-dynamic*
-----------------
-Dynamic mode populates the popups with data directly from a database.  In
-order for the dynamic feature to be enabled you must have the dbext.vim
-plugin installed, (http://vim.sourceforge.net/script.php?script_id=356).
+------------------------------------------------------------------------------
+4.2 dynamic モード				*sql-completion-dynamic*
 
-Dynamic mode is used by several features of the SQL completion plugin.
-After installing the dbext plugin see the dbext-tutorial for additional
-configuration and usage.  The dbext plugin allows the SQL completion plugin
-to display a list of tables, procedures, views and columns. >
-     Table List
-	 - All tables for all schema owners
-     Procedure List
-	 - All stored procedures for all schema owners
-     View List
-	 - All stored procedures for all schema owners
-     Column List
-	 - For the selected table, the columns that are part of the table
+dynamic モードではデータベースから直接抽出したデータを元にポップアップを表示し
+ます。dynamic 機能を有効にするためには dbext.vim をインストールしなければなり
+ません(https://www.vim.org/scripts/script.php?script_id=356)。
 
-To enable the popup, while in INSERT mode, use the following key combinations
-for each group (where <C-C> means hold the CTRL key down while pressing
-the space bar):
-     Table List		   - <C-C>t
-			   - <C-X><C-O> (the default map assumes tables)
-     Stored Procedure List - <C-C>p
-     View List		   - <C-C>v
-     Column List	   - <C-C>c
+dynamic モードは SQL 補完プラグインのいくつかの機能から使われています。dbext
+プラグインをインストールしたら dbext-tutorial の設定と使い方を読んでください。
+dbext を使うと SQL 補完プラグインがテーブル、プロシージャ、ビュー、カラムのリ
+ストを表示できるようになります。 >
+     テーブルリスト
+	 - 全スキーマ所有者の全テーブル
+     プロシージャリスト
+	 - 全スキーマ所有者の全ストアドプロシージャ
+     ビューリスト
+	 - 全スキーマ所有者の全ビュー
+     カラムリスト
+	 - 選択したテーブル内のカラム
 
-     Drilling In / Out     - When viewing a popup window displaying the list
-			     of tables, you can press <Right>, this will
-			     replace the table currently highlighted with
-			     the column list for that table.
-			   - When viewing a popup window displaying the list
-			     of columns, you can press <Left>, this will
-			     replace the column list with the list of tables.
-			   - This allows you to quickly drill down into a
-			     table to view its columns and back again.
-			   - <Right> and <Left> can be also be chosen via
-			     your |init.vim| >
+これらのリストをポップアップを表示するには、挿入モードで以下のキーを使います
+(ここで <C-C> は CTRL キーを押しながら C キーを押すという意味です):
+     テーブルリスト	    - <C-C>t
+			    - <C-X><C-O> (既定のマップはテーブルリスト)
+     ストアドプロシージャリスト  - <C-C>p
+     ビューリスト	    - <C-C>v
+     カラムリスト	    - <C-C>c
+
+     ドリルイン／アウト     - テーブルリストのポップアップウィンドウを表示中に
+			      <Right> を押すと現在選択されているテーブルのカラ
+			      ムリストの表示に切り替わります。
+			    - カラムリストのポップアップウィンドウを表示中に
+			      <Left> を押すとテーブルリスト表示に切り替わりま
+			      す。
+			    - これを使えばテーブルリストとカラムリストの表示を
+			      素早く切り替えることができます。
+			    - <Right> と <Left> のキーも |.vimrc| により変更で
+			      きます >
                                 let g:ftplugin_sql_omni_key_right = '<Right>'
                                 let g:ftplugin_sql_omni_key_left  = '<Left>'
 
-The SQL completion plugin caches various lists that are displayed in
-the popup window.  This makes the re-displaying of these lists very
-fast.  If new tables or columns are added to the database it may become
-necessary to clear the plugins cache.  The default map for this is: >
+SQL 補完プラグインはポップアップウィンドウに表示されるリストをキャッシュしてお
+きます。これによってリストの再表示がとても高速になります。データベースに新しい
+テーブルやカラムが追加されたときはプラグインのキャッシュをクリアする必要が出て
+くるかもしれません。キャッシュをクリアするための既定のマップは次の通りです: >
     imap <buffer> <C-C>R <C-\><C-O>:call sqlcomplete#Map('ResetCache')<CR><C-X><C-O>
 
 
-4.3 SQL Tutorial				*sql-completion-tutorial*
-----------------
+------------------------------------------------------------------------------
+4.3 SQL 補完のチュートリアル			*sql-completion-tutorial*
 
-This tutorial is designed to take you through the common features of the SQL
-completion plugin so that: >
-     a) You gain familiarity with the plugin
-     b) You are introduced to some of the more common features
-     c) Show how to customize it to your preferences
-     d) Demonstrate "Best of Use" of the plugin (easiest way to configure).
+このチュートリアルは SQL 補完プラグインの主な機能を一通り紹介することを意図し
+て次のことが書かれています: >
+     a) プラグインに慣れる
+     b) 主な機能を紹介する
+     c) カスタマイズする方法を示す
+     d) 「ベストな使い方」をデモする(一番簡単な設定方法)
 
-First, create a new buffer: >
+まず、新規バッファを作成しましょう: >
      :e tutorial.sql
 
 
-Static features
----------------
-To take you through the various lists, simply enter insert mode, hit:
-    <C-C>s   (show SQL statements)
-At this point, you can page down through the list until you find "select".
-If you are familiar with the item you are looking for, for example you know
-the statement begins with the letter "s".  You can type ahead (without the
-quotes) "se" then press:
+static な機能 ~
+
+各種のリストを表示するには、単に挿入モードで次をタイプします:
+    <C-C>s   (SQL 文を表示する)
+そしてリストの中を "select" まで下に移動していきます。探している項目をよく知っ
+ている場合、例えばそれが "s" という文字で始まることを知っている場合は、その文
+字を続けてタイプできます。"se" とタイプしてから(引用符はタイプしません):
     <C-Space>t
-Assuming "select" is highlighted in the popup list press <Enter> to choose
-the entry.  Now type:
-    * fr<C-C>a (show all syntax items)
-choose "from" from the popup list.
+を押してみてください。
+"select" が選択されたところで <Enter> を押すとその項目を確定します。次に
+    * fr<C-C>a (すべての構文アイテムを表示する)
+とタイプしてみてください。"from" が候補に現れるでしょう。
 
-When writing stored procedures using the "type" list is useful.  It contains
-a list of all the database supported types.  This may or may not be true
-depending on the syntax file you are using.  The SQL Anywhere syntax file
-(sqlanywhere.vim) has support for this: >
+ストアドプロシージャを書くときには型リストが便利です。型リストはそのデータベー
+スがサポートしているすべての型を含んでいます。ただしこれはお使いの構文ファイル
+に依存します。SQL Anywhere 構文ファイル(sqlanywhere.vim)は以下のような場合に対
+応しています : >
      BEGIN
-	DECLARE customer_id <C-C>T <-- Choose a type from the list
+	DECLARE customer_id <C-C>T <-- リストから型を選ぶ
 
 
-Dynamic features
-----------------
-To take advantage of the dynamic features you must first install the
-dbext.vim plugin (http://vim.sourceforge.net/script.php?script_id=356).  It
-also comes with a tutorial.  From the SQL completion plugin's perspective,
-the main feature dbext provides is a connection to a database.  dbext
-connection profiles are the most efficient mechanism to define connection
-information.  Once connections have been setup, the SQL completion plugin
-uses the features of dbext in the background to populate the popups.
+dynamic な機能 ~
 
-What follows assumes dbext.vim has been correctly configured, a simple test
-is to run the command, :DBListTable.  If a list of tables is shown, you know
-dbext.vim is working as expected.  If not, please consult the dbext.txt
-documentation.
+dynamic な機能を使うにはまず dbext.vim
+(https://www.vim.org/scripts/script.php?script_id=356) をインストールしなけれ
+ばなりません。このプラグインにはチュートリアルが付属しています。SQL 補完プラグ
+インの観点からすると、dbext の主な機能はデータベースへの接続です。dbext の接続
+プロファイルは接続情報を定義するためのもっとも効果的なメカニズムです。一度接続
+が確立されていれば、SQL 補完プラグインはポップアップを表示する際にバックグラウ
+ンドで dbext の機能を利用します。
 
-Assuming you have followed the dbext-tutorial you can press <C-C>t to
-display a list of tables.  There is a delay while dbext is creating the table
-list.  After the list is displayed press <C-W>.  This will remove both the
-popup window and the table name already chosen when the list became active. >
+dbext.vim を正しく設定したら、テストするためにコマンド :DBListTable を実行しま
+す。テーブルのリストが表示されれば dbext.vim が正常に動作しています。表示され
+ない場合は dbext.txt を読んで調べてください。
 
- 4.3.1 Table Completion:			*sql-completion-tables*
+既に dbext のチュートリアルをやっていれば、<C-C>t でテーブルのリストを表示でき
+ることをご存知でしょう。dbext がテーブルリストを作成する間、少々時間がかかりま
+す。リストが表示されたら <C-W> を押してください。するとポップアップウィンドウ
+と既に選択されたテーブル名の両方が消えます。
 
-Press <C-C>t to display a list of tables from within the database you
-have connected via the dbext plugin.
-NOTE: All of the SQL completion popups support typing a prefix before pressing
-the key map.  This will limit the contents of the popup window to just items
-beginning with those characters.  >
+ 4.3.1 テーブル補完				*sql-completion-tables*
 
- 4.3.2 Column Completion:			*sql-completion-columns*
+dbext により接続したデータベース内のテーブルのリストを表示するには <C-C>t を押
+します。
+NOTE: SQL 補完ポップアップはすべてキーマップの前のプリフィックスに対応していま
+す。プリフィックスを指定すると、ポップアップウィンドウの内容がその文字列で始ま
+るものだけに制限されます。
 
-The SQL completion plugin can also display a list of columns for particular
-tables.  The column completion is trigger via <C-C>c.
+ 4.3.2 カラム補完				*sql-completion-columns*
 
-NOTE: The following example uses <Right> to trigger a column list while
-      the popup window is active.  
+SQL 補完プラグインは特定のテーブルのカラムのリストを表示することもできます。
+このカラム補完は <C-C>c で起動できます。
 
-Example of using column completion:
-     - Press <C-C>t again to display the list of tables.
-     - When the list is displayed in the completion window, press <Right>,
-       this will replace the list of tables, with a list of columns for the
-       table highlighted (after the same short delay).
-     - If you press <Left>, this will again replace the column list with the
-       list of tables.  This allows you to drill into tables and column lists
-       very quickly.
-     - Press <Right> again while the same table is highlighted.  You will
-       notice there is no delay since the column list has been cached.  If you
-       change the schema of a cached table you can press <C-C>R, which
-       clears the SQL completion cache.
-     - NOTE: <Right> and <Left> have been designed to work while the
-       completion window is active.  If the completion popup window is
-       not active, a normal <Right> or <Left> will be executed.
+NOTE: 以下の例ではポップアップウィンドウの表示中に <Right> でカラムリストを
+表示しています。
 
-Let's look at how we can build a SQL statement dynamically.  A select statement
-requires a list of columns.  There are two ways to build a column list using
-the SQL completion plugin. >
-    One column at a time:
-<       1. After typing SELECT press <C-C>t to display a list of tables.
-	2. Choose a table from the list.
-	3. Press <Right> to display a list of columns.
-	4. Choose the column from the list and press enter.
-	5. Enter a "," and press <C-C>c.  Generating a column list
-	   generally requires having the cursor on a table name.  The plugin
-	   uses this name to determine what table to retrieve the column list.
-	   In this step, since we are pressing <C-C>c without the cursor
-	   on a table name the column list displayed will be for the previous
-	   table.  Choose a different column and move on.
-	6. Repeat step 5 as often as necessary. >
-    All columns for a table:
-<	1. After typing SELECT press <C-C>t to display a list of tables.
-	2. Highlight the table you need the column list for.
-	3. Press <Enter> to choose the table from the list.
-	4. Press <C-C>l to request a comma separated list of all columns
-	   for this table.
-	5. Based on the table name chosen in step 3, the plugin attempts to
-	   decide on a reasonable table alias.	You are then prompted to
-	   either accept of change the alias.  Press OK.
-	6. The table name is replaced with the column list of the table is
-	   replaced with the comma separate list of columns with the alias
-	   prepended to each of the columns.
-	7. Step 3 and 4 can be replaced by pressing <C-C>L, which has
-	   a <C-Y> embedded in the map to choose the currently highlighted
-	   table in the list.
+カラム補完を使用している様子の例:
+     - もう一度 <C-C>t を押すとテーブルのリストが表示されます。
+     - 補完ウィンドウにリストが表示されているとき <Right> を押すとテーブルのリ
+       ストが消え、途中まで 入力されたテーブルに含まれるカラムのリスト表示に切
+       り替わります(すこし時間がかかります)。
+     - <Left> を押すとカラムリストからテーブルリストに切り替わります。これに
+       よってテーブルリストとカラムリストをとても素早く切り替えられます。
+     - 同じテーブルに対してもう一度 <Right> を押すと、今度はカラムリストが
+       キャッシュされているため時間がかからないことに気づくでしょう。キャッシュ
+       しているテーブルのスキーマが変更されたときは <C-C>R を押します。すると
+       SQL 補完のキャッシュがクリアされます。
+     - NOTE: <Right> と <Left> は補完ウィンドウがアクティブな状態で動作するよ
+       う設計されています。補完のポップアップウィンドウがアクティブでない場合
+       はノーマルモードでの <Right> と <Left> の動作になります。
 
-There is a special provision when writing select statements.  Consider the
-following statement: >
+SQL 文を動的に組み立てる方法を見ていきましょう。select 文にはカラムのリストが
+必要です。SQL 補完プラグインを使ってカラムのリストを組み立てる方法は 2 通りあ
+ります。 >
+    一度に 1 カラムを挿入する方法:
+<        1. SELECT を入力した後に <C-C>t を押してテーブルリストを表示します。
+	2. リストからテーブルを選択します。
+	3. <Right> を押してカラムリストを表示します。
+	4. リストからカラムを選択してエンターを押します。
+	5. "," を入力して <C-C>c を押します。通常、カラムリストを生成するには
+	   カーソルをテーブル名の上に置かねばなりません。プラグインはその名前
+	   を使ってどのテーブルからカラム リストを抽出するか決定します。このス
+	   テップではカーソルをテーブル名の上に置かずに <C-C>c を押したため、
+	   表示されるカラムリストは前に使ったテーブルが対象となります。そして
+	   カラムを選択して続けます。
+	6. ステップ 5 を必要なだけ繰り返します。 >
+    テーブルの全カラムを挿入する方法:
+<	1. SELECT と入力してから <C-C>t を押すとテーブルのリストが表示されます。
+	2. カラムリストを表示したいテーブルにカーソルを合わせます。
+	3. <Enter> を押してテーブルを選択します。
+	4. <C-C>l を押してそのテーブル内の全カラムのコンマ区切りのリストを表示
+	   させます。
+	5. ステップ 3 で選んだテーブル名に基づいてプラグインは妥当なテーブルエ
+	   イリアスを決定します。ここでそのエイリアスを受け入れるかどうかプロ
+	   ンプトが表示されます。OK を押してください。
+	6. するとテーブル名が消え、代わりにそのテーブルのカラムリスト(各カラム
+	   名の前にエイリアスがつき、コンマ区切りになったもの)が挿入されます。
+	7. <C-C>L を押すとステップ 3 と 4 を同時に実行できます。これは、リス
+	   トの中で現在選ばれているテーブルで決定するためにマップの中に <C-Y>
+	   を埋め込んでいます。
+
+select 文を書くための特別な機能があります。次の文を書く場合を考えてください:
+>
      select *
        from customer c,
 	    contact cn,
@@ -577,200 +568,191 @@ following statement: >
 	    site_options so
       where c.
 
-In INSERT mode after typing the final "c." which is an alias for the
-"customer" table, you can press either <C-C>c or <C-X><C-O>.  This will
-popup a list of columns for the customer table.  It does this by looking back
-to the beginning of the select statement and finding a list of the tables
-specified in the FROM clause.  In this case it notes that in the string
-"customer c", "c" is an alias for the customer table.  The optional "AS"
-keyword is also supported, "customer AS c". >
+挿入モードで "customer" テーブルのエイリアスである最後の "c." を入力した後、
+<C-C>c または <C-X><C-O> を押してみてください。すると customer テーブルのカラ
+ムのリストがポップアップ表示します。これは、select 文の開始位置を見て FROM 句
+で指定されたテーブルのリストを探しています。この場合は文字列 "customer c"
+("c" は customer テーブルのエイリアス)が発見されます。省略可能なキーワード
+"AS" にも対応しています。例: "customer AS c"
 
 
- 4.3.3 Procedure Completion:			*sql-completion-procedures*
+ 4.3.3 プロシージャ補完:			*sql-completion-procedures*
 
-Similar to the table list, <C-C>p, will display a list of stored
-procedures stored within the database. >
+テーブルリストと同様に、<C-C>p でデータベースに登録されているストアドプロシー
+ジャのリストを表示できます。
 
- 4.3.4 View Completion:				*sql-completion-views*
+ 4.3.4 ビュー補完:				*sql-completion-views*
 
-Similar to the table list, <C-C>v, will display a list of views in the
-database.
+テーブルリストと同様に、<C-C>v でデータベースに登録されているビューのリストを
+表示できます。
 
 
-4.4 Completion Customization			*sql-completion-customization*
-----------------------------
+------------------------------------------------------------------------------
+4.4 補完のカスタマイズ				*sql-completion-customization*
 
-The SQL completion plugin can be customized through various options set in
-your |init.vim|: >
+|init.vim| でオプションをセットすることによって SQL 補完プラグインをカスタマイズ
+できます: >
     omni_sql_no_default_maps
-<       - Default: This variable is not defined
-	- If this variable is defined, no maps are created for OMNI
-	  completion.  See |sql-completion-maps| for further discussion.
+<       - 既定値: この変数は定義されていない
+	- この変数が定義されている場合はオムニ補完用のマップが作られません。よ
+	  り詳しくは |sql-completion-maps| を参照。
 >
     omni_sql_use_tbl_alias
-<	- Default: a
-	- This setting is only used when generating a comma separated
-	  column list.	By default the map is <C-C>l.  When generating
-	  a column list, an alias can be prepended to the beginning of each
-	  column, for example:	e.emp_id, e.emp_name.  This option has three
-	  settings: >
-		n - do not use an alias
-		d - use the default (calculated) alias
-		a - ask to confirm the alias name
+<	- 既定値: a
+	- この設定はコンマ区切りのカラムリストを生成するときに参照されます。
+	  既定ではカラムリストを生成するマップは <C-C>l です。カラムリストを
+	  生成するときに各カラムの前にエイリアスがつきます。例えば:
+	  e.emp_id, e.emp_name。このオプションには 3 種類の値を設定できます: >
+		n - エイリアスを使わない
+		d - 既定のエイリアス(自動的に決定されたもの)を使う
+		a - エイリアス名を問い合わせる
 <
-	  An alias is determined following a few rules:
-	       1.  If the table name has an '_', then use it as a separator: >
+	  エイリアスは以下の規則によって決定されます:
+	       1.  テーブル名が '_' を含んでいれば、それを区切り文字に使いま
+		   す: >
 		   MY_TABLE_NAME --> MTN
 		   my_table_name --> mtn
 		   My_table_NAME --> MtN
-<	       2.  If the table name does NOT contain an '_', but DOES use
-		   mixed case then the case is used as a separator: >
+<	       2.  テーブル名が '_' を含んでいないが大文字・小文字が混在してい
+		   れば、それを区切り文字に使います: >
 		   MyTableName --> MTN
-<	       3.  If the table name does NOT contain an '_', and does NOT
-		   use mixed case then the first letter of the table is used: >
+<	       3.  テーブル名が '_' を含んでいなく、大文字・小文字も混在してい
+		   なければテーブル名の最初の文字を使います: >
 		   mytablename --> m
 		   MYTABLENAME --> M
 
     omni_sql_ignorecase
-<	- Default: Current setting for 'ignorecase'
-	- Valid settings are 0 or 1.
-	- When entering a few letters before initiating completion, the list
-	  will be filtered to display only the entries which begin with the
-	  list of characters.  When this option is set to 0, the list will be
-	  filtered using case sensitivity. >
+<	- 既定値: 'ignorecase' の現在値
+	- 有効な値は 0 または 1。
+	- 数文字を入力してから補完を開始すると、リストの要素がその文字列で始ま
+	  るものだけにフィルタされます。このオプションが 0 の場合は、そのフィ
+	  ルタが大文字・小文字を区別します。 >
 
     omni_sql_include_owner
-<	- Default: 0, unless dbext.vim 3.00 has been installed
-	- Valid settings are 0 or 1.
-	- When completing tables, procedure or views and using dbext.vim 3.00
-	  or higher the list of objects will also include the owner name.
-	  When completing these objects and omni_sql_include_owner is enabled
-	  the owner name will be replaced. >
+<	- 既定値: dbext.vim 3.00 がインストールされていなければ 0
+	- 有効な値は 0 または 1。
+	- テーブル、プロシージャ、ビューのリストを補完するとき、dbext.vim 3.00
+	  以上を使っていればオブジェクトのリストにその所有者名がつきます。
+	  これらのオブジェクトを補完するとき omni_sql_include_owner が有効に
+	  なっていればその所有者名も置き換えられます。 >
 
     omni_sql_precache_syntax_groups
-<	- Default:
+<	- 既定値:
 	  ['syntax','sqlKeyword','sqlFunction','sqlOption','sqlType','sqlStatement']
-	- sqlcomplete can be used in conjunction with other completion
-	  plugins.  This is outlined at |sql-completion-filetypes|.  When the
-	  filetype is changed temporarily to SQL, the sqlcompletion plugin
-	  will cache the syntax groups listed in the List specified in this
-	  option.
+	- sqlcomplete は他のプラグインと組み合わせて使うことができます。その方
+	  法の概略は |sql-completion-filetypes| で説明されています。一時的に
+	  ファイルタイプが SQL に変更されたとき、SQL 補完プラグインはこのオプ
+	  ションで指定されたリスト内の構文グループをキャッシュします。
 >
 
-4.5 SQL Maps					*sql-completion-maps*
-------------
+------------------------------------------------------------------------------
+4.5 SQL 関連のマップ				*sql-completion-maps*
 
-The default SQL maps have been described in other sections of this document in
-greater detail.  Here is a list of the maps with a brief description of each.
+既定の SQL 関連のマップはこのドキュメントの他の節で詳しく説明しました。ここで
+は簡潔な説明つきのマップのリストを示します。
 
-Static Maps
------------
-These are maps which use populate the completion list using Vim's syntax
-highlighting rules. >
+static モードのマップ ~
+
+以下は Vim の構文強調ルールを使って補完リストを作成するマップです。 >
     <C-C>a
-<       - Displays all SQL syntax items. >
+<       - SQL 構文アイテムを全て表示します。 >
     <C-C>k
-<       - Displays all SQL syntax items defined as 'sqlKeyword'. >
+<       - 'sqlKeyword' と定義された構文アイテムを全て表示します。 >
     <C-C>f
-<       - Displays all SQL syntax items defined as 'sqlFunction. >
+<       - 'sqlFunction' と定義された構文アイテムを全て表示します。 >
     <C-C>o
-<       - Displays all SQL syntax items defined as 'sqlOption'. >
+<       - 'sqlOption' と定義された構文アイテムを全て表示します。 >
     <C-C>T
-<       - Displays all SQL syntax items defined as 'sqlType'. >
+<       - 'sqlType' と定義された構文アイテムを全て表示します。 >
     <C-C>s
-<       - Displays all SQL syntax items defined as 'sqlStatement'. >
+<       - 'sqlStatement' と定義された構文アイテムを全て表示します。 >
 
-Dynamic Maps
-------------
-These are maps which use populate the completion list using the dbext.vim
-plugin. >
+dynamic モードのマップ ~
+
+以下は dbext.vim プラグインを使用して補完リストを作成するマップです。 >
     <C-C>t
-<       - Displays a list of tables. >
+<       - テーブルのリストを表示します。 >
     <C-C>p
-<       - Displays a list of procedures. >
+<       - プロシージャのリストを表示します。 >
     <C-C>v
-<       - Displays a list of views. >
+<       - ビューのリストを表示します。 >
     <C-C>c
-<       - Displays a list of columns for a specific table. >
+<       - 指定テーブルのカラムのリストを表示します。 >
     <C-C>l
-<       - Displays a comma separated list of columns for a specific table. >
+<       - 指定テーブルのカラムのリストをコンマ区切りで表示します。 >
     <C-C>L
-<       - Displays a comma separated list of columns for a specific table.
-	  This should only be used when the completion window is active. >
+<       - 指定テーブルのカラムのリストをコンマ区切りで表示します。
+	  補完ウィンドウがアクティブなときだけ使用できます。 >
     <Right>
-<	- Displays a list of columns for the table currently highlighted in
-	  the completion window.  <Right> is not recognized on most Unix
-	  systems, so this maps is only created on the Windows platform.
-	  If you would like the same feature on Unix, choose a different key
-	  and make the same map in your vimrc. >
+<	- 現在補完リストでカーソルが指しているテーブルのカラムリストを表示しま
+	  す。ほとんどの Unix システムでは <Right> を認識できないため、このマッ
+	  プは Windows でのみ定義されます。同じ機能を Unix でも利用するには他
+	  のキーを選んで自分の vimrc で同じマップを定義してください。 >
     <Left>
-<	- Displays the list of tables.
-	  <Left> is not recognized on most Unix systems, so this maps is
-	  only created on the Windows platform.  If you would like the same
-	  feature on Unix, choose a different key and make the same map in
-	  your vimrc. >
+<	- テーブルのリストを表示します。ほとんどの Unix システムでは <Left> を
+	  認識できないため、このマップは Windows でのみ定義されます。同じ機能
+	  を Unix でも利用するには他のキーを選んで自分の vimrc で同じマップを
+	  定義してください。
+>
     <C-C>R
-<	- This maps removes all cached items and forces the SQL completion
-	  to regenerate the list of items.
+<	- キャッシュされた項目を全て削除し、項目のリストを再生成するよう強制し
+	  ます。
 
-Customizing Maps
-----------------
-You can create as many additional key maps as you like.  Generally, the maps
-will be specifying different syntax highlight groups.
+マップのカスタマイズ ~
 
-If you do not wish the default maps created or the key choices do not work on
-your platform (often a case on *nix) you define the following variable in
-your |init.vim|: >
+好みに応じてマップを作成できます。一般的に、これらのマップは構文ハイライトグ
+ループを定義します。
+
+デフォルトで作成されるマップが好みでなかったり、そのキーがお使いのプラット
+フォームでは動作しない場合、次の変数を |init.vim| で定義してください: >
     let g:omni_sql_no_default_maps = 1
 
-Do no edit ftplugin/sql.vim directly!  If you change this file your changes
-will be over written on future updates.  Vim has a special directory structure
-which allows you to make customizations without changing the files that are
-included with the Vim distribution.  If you wish to customize the maps
-create an after/ftplugin/sql.vim (see |after-directory|) and place the same
-maps from the ftplugin/sql.vim in it using your own key strokes.  <C-C> was
-chosen since it will work on both Windows and *nix platforms.  On the windows
-platform you can also use <C-Space> or ALT keys.
+ftplugin/sql.vimを直接編集しないでください! このファイルを変更しても、将来アッ
+プデートしたときその変更は上書きされてしまいます。Vim は、ディストリビューショ
+ンに含まれているファイルを変更することなくカスタマイズを行うために after とい
+うディレクトリ構造を備えています。マップをカスタマイズするには
+after/ftplugin/sql.vim を作成します(|after-directory|を参照)。そしてその中で
+ftplugin/sql.vim に書かれているのと同じマップを、好みのキーストロークに対して
+定義します。<C-C> が選ばれたのは、それが Windows、unix のどちらでも動作するか
+らです。Windows では <C-Space> やALT キーを使うこともできます。
 
 
-4.6 Using with other filetypes			*sql-completion-filetypes*
-------------------------------
+------------------------------------------------------------------------------
+4.6 他のファイルタイプのファイル内で使うには	*sql-completion-filetypes*
 
-Many times SQL can be used with different filetypes.  For example Perl, Java,
-PHP, Javascript can all interact with a database.  Often you need both the SQL
-completion and the completion capabilities for the current language you are
-editing.
+SQL を他のファイルタイプのファイル内で使う機会はよくあります。例えば Perl,
+Java, PHP, Javascript はどれもデータベースと対話できます。編集中の言語の補完機
+能に加えて SQL 補完も使いたいという状況はよくあります。
 
-This can be enabled easily with the following steps (assuming a Perl file): >
+そんな場合は、以下のステップによって簡単に実現できます(Perlの例です): >
     1.  :e test.pl
     2.  :set filetype=sql
     3.  :set ft=perl
 
-Step 1
-------
-Begins by editing a Perl file.  Vim automatically sets the filetype to
-"perl".  By default, Vim runs the appropriate filetype file
-ftplugin/perl.vim.  If you are using the syntax completion plugin by following
-the directions at |ft-syntax-omni| then the |'omnifunc'| option has been set to
-"syntax#Complete".  Pressing <C-X><C-O> will display the omni popup containing
-the syntax items for Perl.
+ステップ 1 ~
 
-Step 2
-------
-Manually setting the filetype to 'sql' will also fire the appropriate filetype
-files ftplugin/sql.vim.  This file will define a number of buffer specific
-maps for SQL completion, see |sql-completion-maps|.  Now these maps have
-been created and the SQL completion plugin has been initialized.  All SQL
-syntax items have been cached in preparation.  The SQL filetype script detects
-we are attempting to use two different completion plugins.  Since the SQL maps
-begin with <C-C>, the maps will toggle the |'omnifunc'| when in use.  So you
-can use <C-X><C-O> to continue using the completion for Perl (using the syntax
-completion plugin) and <C-C> to use the SQL completion features.
+Perl ファイルの編集を始めます。自動的にファイルタイプが "perl" になります。デ
+フォルトで、ファイルタイプ・ファイルの ftplugin/perl.vim が読み込まれます。
+|ft-syntax-omni| に書かれているコマンドによって構文補完プラグインを使っている
+場合は、オプション 'omnifunc' が "syntax#Complete" にセットされます。
+<C-X><C-O> を押すと Perl の構文アイテムを含むオムニポップアップが表示されます。
 
-Step 3
-------
-Setting the filetype back to Perl sets all the usual "perl" related items back
-as they were.
+ステップ 2 ~
+
+手動でファイルタイプを "sql" にセットすると、やはり対応するファイルタイプ・
+ファイルの ftplugin/sql.vim が読み込まれます。このファイルは、SQL 補完用に多数
+のバッファ固有のマップを定義します(|sql-completion-maps| を参照)。こうしてマッ
+プが作成され、SQL 補完プラグインが初期化されます。全ての SQL 構文アイテムが準
+備的にキャッシュされます。SQL ファイルタイプ・スクリプトは2種類の補完プラグイ
+ンを使おうとしていることを検出します。<C-C> で始まる SQL 用のマップが呼び出さ
+れると、その実行中だけ 'omnifunc' を切り替えます。そのため、<C-X><C-O> は (構
+文補完プラグインによる) Perl 用の補完のために使用し、<C-C> は SQL 補完機能のた
+めに使用できます。
+
+ステップ 3 ~
+
+ファイルタイプを Perl に戻すと、"perl" に関連する全ての構文要素が元通りになり
+ます。
 
 
 vim:tw=78:ts=8:noet:ft=help:norl:

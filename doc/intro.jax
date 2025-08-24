@@ -1,807 +1,701 @@
-*intro.txt*     Nvim
+*intro.txt*     Nvim 0.12        Last change: 2025-08-24
 
 
-			    NVIM REFERENCE MANUAL
+                         NVIMリファレンスマニュアル
 
 
-Introduction to Vim					*ref* *reference*
+Nvim                                                    *ref* *reference*
 
-                                      Type |gO| to see the table of contents.
-
-==============================================================================
-Introduction						*intro*
-
-Vim stands for Vi IMproved.  It used to be Vi IMitation, but there are so many
-improvements that a name change was appropriate.  Vim is a text editor which
-includes almost all the commands from the Unix program "Vi" and a lot of new
-ones.  It is very useful for editing programs and other plain text.
-   All commands are given with the keyboard.  This has the advantage that you
-can keep your fingers on the keyboard and your eyes on the screen.  For those
-who want it, there is mouse support and a GUI version with scrollbars and
-menus (see |gui.txt|).
-
-An overview of this manual can be found in the file "help.txt", |help.txt|.
-It can be accessed from within Vim with the <Help> or <F1> key and with the
-|:help| command (just type ":help", without the bars or quotes).
-   The 'helpfile' option can be set to the name of the help file, in case it
-is not located in the default place.  You can jump to subjects like with tags:
-Use CTRL-] to jump to a subject under the cursor, use CTRL-T to jump back.
-
-							*pronounce*
-Vim is pronounced as one word, like Jim.  Nvim is pronounced as N-vim, or,
-continuing with the Jim simile, N-Jim, which sounds like Ninja.
-
-This manual is a reference for all the Vim commands and options.  This is not
-an introduction to the use of Vi or Vim, it gets a bit complicated here and
-there.  For beginners, there is a hands-on |tutor|.  To learn using Vim, read
-the user manual |usr_toc.txt|.
-
-							*book*
-There are many books on Vi and Vim.  We recommend these books:
-
-	"Practical Vim" by Drew Neil
-	"Modern Vim" by Drew Neil
-	https://vimcasts.org/publications/
-
-"Practical Vim" is acclaimed for its focus on quickly learning common editing
-tasks with Vim.  "Modern Vim" explores new features in Nvim and Vim 8.
-
-	"Vim - Vi Improved" by Steve Oualline
-
-This is the first book dedicated to Vim.  Parts of it were included in the
-user manual. |frombook|  ISBN: 0735710015
-For more information try one of these:
-	https://iccf-holland.org/click5.html
-	https://www.vim.org/iccf/click5.html
+                                            目次を確認するには |gO| をタイプ。
 
 ==============================================================================
-Nvim on the interwebs					*internet*
+はじめに						*intro*
 
-			*www* *faq* *distribution* *download*
+Vim はテキストエディタです。Unix のプログラム "Vi" のほとんどのコマンドと、さ
+らに多くの新しいコマンドを備えています。
 
-	Nvim home page:	  https://neovim.io/
-	Nvim FAQ:	  https://github.com/neovim/neovim/wiki/FAQ
-	Downloads:	  https://github.com/neovim/neovim/releases
-	Vim FAQ:	  https://vimhelp.appspot.com/vim_faq.txt.html
-	Vim home page:	  https://www.vim.org/
+このマニュアルの概要は |help.txt| にあります。Vim から <Help> や <F1> キー、
+|:help| コマンドで開くことができます (単に :help と入力してください。引用符も
+バーも必要ありません)。
+ヘルプファイルが標準の位置にインストールされていない場合は、ヘルプファイルの名
+前をオプション 'helpfile' に設定してください。タグでジャンプするのと同じように
+ヘルプの項目へジャンプできます。ジャンプしたい項目にカーソルを合わせて CTRL-]
+でジャンプできます。 CTRL-T で元の場所に戻れます。
 
+                                                        *pronounce*
+Vim は Jim のように一語として発音します。なので、Nvim は 二音節で "En-Vim" と
+発音します。
 
-			*bugs* *bug-report* *bugreport.vim* *feature-request* 
+このマニュアルは全ての Nvim エディタと API 機能のリファレンスです。入門書では
+ありません。初心者は、実習 |tutor| や |lua-guide|、 |user-manual| をご覧ください。
 
-Report bugs and request features here:
-https://github.com/neovim/neovim/issues
+------------------------------------------------------------------------------
+リソース                                                *resources*
 
-Be brief, yet complete.  Always give a reproducible example and try to find
-out which settings or other things trigger the bug.
+                                                *internet* *www* *distribution*
+Nvim の公式サイトはこちら:
 
-If Nvim crashes, try to get a backtrace.  See |debug.txt|.
+        https://neovim.io/
 
-==============================================================================
-Sponsor Vim/Nvim development				*sponsor* *register*
+                                                *book*
+Vi や Vim、Nvim を学ぶためのたくさんの資料が存在します。こちらがおすすめです:
 
-Fixing bugs and adding new features takes a lot of time and effort.  To show
-your appreciation for the work and motivate Bram and others to continue
-working on Vim please send a donation.
+- Drew Neil 著 "Practical Vim"。Vim における一般的な編集タスクを素早く習得する
+  ことに重視した本であり、高い評価を受けています。
+  {訳注: 邦題: 実践Vim 思考のスピードで編集しよう!}
+- Drew Neil 著 "Modern Vim"。Nvim と Vim 8 の新機能について解説しています。
+- https://vimcasts.org/publications/
+- Steve Oualline 著 "Vim - Vi Improved"。これは Vim を題材にした初めての本で
+  す。本書の一部は Vim ユーザーマニュアルに含まれています: |frombook|
+  {訳注: 邦題: Vi IMproved-Vim完全バイブル}
+- こちらからも更なる情報を得ることができます:
+  - https://iccf-holland.org/click5.html
+  - https://www.vim.org/iccf/click5.html
+- Vim FAQ: https://vimhelp.org/vim_faq.txt.html
 
-Since Bram is back to a paid job the money will now be used to help children
-in Uganda.  See |uganda|.  But at the same time donations increase Bram's
-motivation to keep working on Vim!
-
-For the most recent information about sponsoring look on the Vim web site:
-
-	https://www.vim.org/sponsor/
-
-
-Neovim development is funded separately from Vim:
-
-	https://neovim.io/#sponsor
-
-==============================================================================
-Credits				*credits* *author* *Bram* *Moolenaar*
-
-Most of Vim was written by Bram Moolenaar <Bram@vim.org>.
-
-Parts of the documentation come from several Vi manuals, written by:
-	W.N. Joy
-	Alan P.W. Hewett
-	Mark Horton
-
-The Vim editor is based on Stevie and includes (ideas from) other software,
-worked on by the people mentioned here.  Other people helped by sending me
-patches, suggestions and giving feedback about what is good and bad in Vim.
-
-Vim would never have become what it is now, without the help of these people!
-
-	Ron Aaron		Win32 GUI changes
-	Mohsin Ahmed		encryption
-	Zoltan Arpadffy		work on VMS port
-	Tony Andrews		Stevie
-	Gert van Antwerpen	changes for DJGPP on MS-DOS
-	Berkeley DB(3)		ideas for swap file implementation
-	Keith Bostic		Nvi
-	Walter Briscoe		Makefile updates, various patches
-	Ralf Brown		SPAWNO library for MS-DOS
-	Robert Colon		many useful remarks
-	Marcin Dalecki		GTK+ GUI port, toolbar icons, gettext()
-	Kayhan Demirel		sent me news in Uganda
-	Chris & John Downey	xvi (ideas for multi-windows version)
-	Henk Elbers		first VMS port
-	Daniel Elstner		GTK+ 2 port
-	Eric Fischer		Mac port, 'cindent', and other improvements
-	Benji Fisher		Answering lots of user questions
-	Bill Foster		Athena GUI port
-	Google			Lets me work on Vim one day a week
-	Loic Grenie		xvim (ideas for multi windows version)
-	Sven Guckes		Vim promoter and previous WWW page maintainer
-	Darren Hiebert		Exuberant ctags
-	Jason Hildebrand	GTK+ 2 port
-	Bruce Hunsaker		improvements for VMS port
-	Andy Kahn		Cscope support, GTK+ GUI port
-	Oezguer Kesim		Maintainer of Vim Mailing Lists
-	Axel Kielhorn		work on the Macintosh port
-	Steve Kirkendall	Elvis
-	Roger Knobbe		original port to Windows NT
-	Sergey Laskavy		Vim's help from Moscow
-	Felix von Leitner	Previous maintainer of Vim Mailing Lists
-	David Leonard		Port of Python extensions to Unix
-	Avner Lottem		Edit in right-to-left windows
-	Flemming Madsen		X11 client-server, various features and patches
-	Tony Mechelynck		answers many user questions
-	Paul Moore		Python interface extensions, many patches
-	Katsuhito Nagano	Work on multi-byte versions
-	Sung-Hyun Nam		Work on multi-byte versions
-	Vince Negri		Win32 GUI and generic console enhancements
-	Steve Oualline		Author of the first Vim book |frombook|
-	Dominique Pelle		valgrind reports and many fixes
-	A.Politz		Many bug reports and some fixes
-	George V. Reilly	Win32 port, Win32 GUI start-off
-	Stephen Riehm		bug collector
-	Stefan Roemer		various patches and help to users
-	Ralf Schandl		IBM OS/390 port
-	Olaf Seibert		DICE and BeBox version, regexp improvements
-	Mortaza Shiran		Farsi patches
-	Peter da Silva		termlib
-	Paul Slootman		OS/2 port
-	Henry Spencer		regular expressions
-	Dany St-Amant		Macintosh port
-	Tim Thompson		Stevie
-	G. R. (Fred) Walter	Stevie
-	Sven Verdoolaege	Perl interface
-	Robert Webb		Command-line completion, GUI versions, and
-				lots of patches
-	Ingo Wilken		Tcl interface
-	Mike Williams		PostScript printing
-	Juergen Weigert		Lattice version, AUX improvements, Unix and
-				MS-DOS ports, autoconf
-	Stefan 'Sec' Zehl	Maintainer of vim.org
-	Yasuhiro Matsumoto	many MS-Windows improvements
-	Ken Takata		fixes and features
-	Kazunobu Kuriyama	GTK 3
-	Christian Brabandt	many fixes, features, user support, etc.
-
-I wish to thank all the people that sent me bug reports and suggestions.  The
-list is too long to mention them all here.  Vim would not be the same without
-the ideas from all these people: They keep Vim alive!
-*love* *peace* *friendship* *gross-national-happiness*
-
-
-In this documentation there are several references to other versions of Vi:
-							*Vi* *vi*
-Vi	"the original".  Without further remarks this is the version
-	of Vi that appeared in Sun OS 4.x.  ":version" returns
-	"Version 3.7, 6/7/85".  Sometimes other versions are referred
-	to.  Only runs under Unix.  Source code only available with a
-	license.
-							*Nvi*
-Nvi	The "New" Vi.  The version of Vi that comes with BSD 4.4 and FreeBSD.
-	Very good compatibility with the original Vi, with a few extensions.
-	The version used is 1.79.  ":version" returns "Version 1.79
-	(10/23/96)".  There has been no release the last few years, although
-	there is a development version 1.81.
-	Source code is freely available.
-							*Elvis*
-Elvis	Another Vi clone, made by Steve Kirkendall.  Very compact but isn't
-	as flexible as Vim.
-	The version used is 2.1.  It is still being developed.  Source code is
-	freely available.
+                                                *bugs* *bug-report* *feature-request*
+バグ報告や新機能のリクエストはこちら: https://github.com/neovim/neovim/issues
+メッセージは簡潔かつ完全なものにしてください。常に再現可能な例をつけてくださ
+い。そして、バグを引き起こす設定やその他のものを探してください。もし Nvim がク
+ラッシュした場合、バックトレースを試してください。(|dev-tools-backtrace| を参照)
 
 ==============================================================================
-Notation						*notation*
+Nvim のインストール                                     *install*
 
-When syntax highlighting is used to read this, text that is not typed
-literally is often highlighted with the Special group.  These are items in [],
-{} and <>, and CTRL-X.
+                                                *download* *upgrade* *ubuntu*
+Nvim をインストールするにはいくつかの方法があります...
+- ビルド済みのアーカイブをダウンロードする:
+  https://github.com/neovim/neovim/releases
+- お使いのシステムのパッケージマネージャーを利用する:
+  https://github.com/neovim/neovim/blob/master/INSTALL.md#install-from-package
+- ソースからビルドする:
+  https://github.com/neovim/neovim/blob/master/INSTALL.md#install-from-source
 
-Note that Vim uses all possible characters in commands.  Sometimes the [], {}
-and <> are part of what you type, the context should make this clear.
+------------------------------------------------------------------------------
+Nvim のアンインストール                                 *uninstall*
+
+Nvim をアンインストールするには:
+- ビルド済みアーカイブやソースからビルドした場合(例: `make install`)、ファイル
+  を直接削除してください。主に次の場所に存在します: >
+  /usr/local/bin/nvim
+  /usr/local/share/nvim
+<
+  - Nvim のインストール先を見つけるには、以下のコマンドを実行します: >
+    :echo v:progpath
+    :echo $VIMRUNTIME
+<
+- パッケージマネージャーからインストールした場合、それらのドキュメントを参照し
+  てください。主要なものはこちら:
+  - APT (Debian, Ubuntu, …): `apt-get remove neovim`
+  - Homebrew (macOS): `brew uninstall neovim`
+  - Scoop (Windows): `scoop uninstall neovim`
+
+==============================================================================
+Vim や Nvim の開発を支援する                            *sponsor*
+
+バグ修正や新機能の追加には多くの時間と労力がかかります。感謝の意を表明し、Vim
+の開発を続ける開発者たちを励ますために、ぜひ寄付をお願いします。
+
+寄付金は主にウガンダの子どもたちへの支援のために使われます。詳しくは |uganda|を
+ご覧ください。寄付は同時に、開発チームが Vim の開発を継続するためのモチベーショ
+ンを高めてくれます!
+スポンサーに関する最新情報は Vim のWebサイトをご確認ください。
+
+        https://www.vim.org/sponsor/
 
 
-[]		Characters in square brackets are optional.
+Nvim の開発は Vim とは別途の資金提供によって成り立っています:
+
+        https://neovim.io/#sponsor
+
+==============================================================================
+Bram Moolenaar                  *Bram* *Moolenaar* *Bram-Moolenaar* *brammool*
+
+Nvim は Bram Moolenaar によって開発された Vim ("Vi IMproved") のフォークです。
+Nvim のソースコードの中で彼の名前を検索すると、彼の功績の多くが Nvim の中に残っ
+ているか確認できます。
+2023年8月3日、彼は62歳で亡くなりました。Vim や Nvim があなたの人生で役に立った
+のであれば、是非 |Uganda| を読んで、彼の思い出を偲んでください。
+
+- 訃報: https://github.com/vim/vim/discussions/12742
+- 別れを告ぐ: https://github.com/vim/vim/discussions/12737
+
+==============================================================================
+4. ヘルプの表記法					*notation*
+
+この文章を構文強調を使って表示すると、見たままの意味ではないテキストは特別に強
+調表示されます。[]、{}、<>、で囲まれた項目や CTRL-X などです。
+
+Note: Vim は入力可能な文字はすべてコマンドで使います。実際に、[]、{}、<> を入
+力する場合もあります。それは文脈によって判断できるでしょう。
+
+
+[]		角カッコで囲まれた文字は省略可能。
 
 						    *count* *[count]*
-[count]		An optional number that may precede the command to multiply
-		or iterate the command.  If no number is given, a count of one
-		is used, unless otherwise noted.  Note that in this manual the
-		[count] is not mentioned in the description of the command,
-		but only in the explanation.  This was done to make the
-		commands easier to look up.  If the 'showcmd' option is on,
-		the (partially) entered count is shown at the bottom of the
-		window.  You can use <Del> to erase the last digit (|N<Del>|).
+[count]		コマンドに前置して、そのコマンドを繰り返したり、反復したりする
+		ための省略可能な数字。省略した場合、特に注意が無ければ 1 を指
+		定したのと同じになります。Note: このマニュアルでは、[count] は
+		コマンドの説明では言及されません。解説する場合だけ説明します。
+                これはコマンドを調べ易くするためです。 'showcmd' オプションが
+                有効だと、(部分的に) 入力されたカウントがウィンドウの下の方に
+                表示されます。<Del> を使って末尾の数字を削除できます(|N<Del>|)。
 
 							*[quotex]*
-["x]		An optional register designation where text can be stored.
-		See |registers|.  The x is a single character between 'a' and
-		'z' or 'A' and 'Z' or '"', and in some cases (with the put
-		command) between '0' and '9', '%', '#', or others.  The
-		uppercase and lowercase letter designate the same register,
-		but the lowercase letter is used to overwrite the previous
-		register contents, while the uppercase letter is used to
-		append to the previous register contents.  Without the ""x" or
-		with """" the stored text is put into the unnamed register.
+["x]		テキストの保管場所として、任意のレジスタを指定できることを示す。
+		|registers| を参照。x は 'a' から 'z'、'A' から 'Z'、'"'、のど
+		れか一文字です。場合によっては (put コマンドで使うときなど)、
+		'0' から '9'、'%'、'#'、その他の文字も使えます。大文字でも小文
+		字でも同じレジスタを指しますが、小文字を使ったときはレジスタの
+		内容が上書きされ、大文字を使ったときはレジスタの内容に追加され
+		ます。"x を指定しなかった場合や、"" を指定した場合は、無名レジ
+		スタが使われます。
 
 							*{}*
-{}		Curly braces denote parts of the command which must appear,
-		but which can take a number of different values.  The
-		differences between Vim and Vi are also given in curly braces
-		(this will be clear from the context).
+{}		中括弧の表記は、コマンドの一部として入力する必要があって、そこ
+		には、いろいろな値を入力することができるときに使われます。Vim
+		と Vi の違いを示す場合も中括弧で表記されます (これは文脈から区
+		別できます)。
 
 							*{char1-char2}*
-{char1-char2}	A single character from the range char1 to char2.  For
-		example: {a-z} is a lowercase letter.  Multiple ranges may be
-		concatenated.  For example, {a-zA-Z0-9} is any alphanumeric
-		character.
+{char1-char2}	char1 から char2 の範囲のどれか一文字。例えば、{a-z} は小文字
+		一文字。複数の範囲が指定される場合もあります。例えば、
+		{a-zA-Z0-9} は英数字のどれか一文字です。
 
 						*{motion}* *movement*
-{motion}	A command that moves the cursor.  These are explained in
-		|motion.txt|.  Examples:
-			w		to start of next word
-			b		to begin of current word
-			4j		four lines down
-			/The<CR>	to next occurrence of "The"
-		This is used after an |operator| command to move over the text
-		that is to be operated upon.
-		- If the motion includes a count and the operator also has a
-		  count, the two counts are multiplied.  For example: "2d3w"
-		  deletes six words.
-		- The motion can be backwards, e.g. "db" to delete to the
-		  start of the word.
-		- The motion can also be a mouse click.  The mouse is not
-		  supported in every terminal though.
-		- The ":omap" command can be used to map characters while an
-		  operator is pending.
-		- Ex commands can be used to move the cursor.  This can be
-		  used to call a function that does some complicated motion.
-		  The motion is always charwise exclusive, no matter
-		  what ":" command is used.  This means it's impossible to
-		  include the last character of a line without the line break
-		  (unless 'virtualedit' is set).
-		  If the Ex command changes the text before where the operator
-		  starts or jumps to another buffer the result is
-		  unpredictable.  It is possible to change the text further
-		  down.  Jumping to another buffer is possible if the current
-		  buffer is not unloaded.
+{motion}	カーソル移動コマンド。これらは、 |motion.txt| で説明されていま
+		す。例:
+			w		次の単語の最初に移動
+			b		現在の単語の最初へ
+			4j		4行下に移動
+			/The<CR>	つぎの "The" が、ある場所に移動
+		オペレータコマンド (|operator|) を入力した後で、対象のテキスト
+		を選択するため使われます。
+		- 移動コマンドがカウントを含み、オペレータコマンドもカウントを
+		  含むときは、二つのカウントが掛け合わされる。例えば、"2d3w"
+		  は 6 単語を削除する。
+		- 移動はバックもできる。例えば、"db" は単語の最初までを削除す
+		  る。
+		- 移動はマウスのクリックでもできる。ただし、マウスをサポートし
+		  ていない端末もあります。
+		- ":omap" コマンドを使って、オペレータコマンドに対して移動コマ
+		  ンドを入力しているときに働くマップを定義できます。
+		- Ex コマンドを使ってカーソルを移動できます。関数を使って複雑
+		  な移動をすることもできます。どの ":" コマンドが使われても、
+		  移動は常に文字単位で排他的です。そのため、改行を含めずに行末
+		  の文字を選択することはできません ('virtualedit' を設定すれば
+		  可能)。
+		  Ex コマンドで、オペレータコマンドを使った場所より前にあるテ
+		  キストを変更したり、他のバッファに移動した場合、結果は予測で
+		  きません。オペレータコマンドを使った場所以降のテキストなら変
+		  更できます。カレントバッファがアンロードされないなら、他の
+		  バッファにジャンプすることも可能です。
 
 							*{Visual}*
-{Visual}	A selected text area.  It is started with the "v", "V", or
-		CTRL-V command, then any cursor movement command can be used
-		to change the end of the selected text.
-		This is used before an |operator| command to highlight the
-		text that is to be operated upon.
-		See |Visual-mode|.
+{Visual}	選択されたテキストの範囲。"v"、"V"、 CTRL-V コマンドで選択を開
+		始し、カーソル移動コマンドで選択範囲を変更できます。
+		オペレータコマンド (|operator|) を実行する前に使って、対象のテ
+		キストを選択することができます。 |Visual-mode| を参照。
 
 							*<character>*
-<character>	A special character from the table below, optionally with
-		modifiers, or a single ASCII character with modifiers.
+<character>	下記の表に示した特殊文字。修飾キーが付くこともあります。修飾
+		キーと ASCII 文字の組合せもこのように表記されます。
 
 							*'character'*
-'c'		A single ASCII character.
+'c'		ASCII 文字 1 文字。
 
 							*CTRL-{char}*
-CTRL-{char}	{char} typed as a control character; that is, typing {char}
-		while holding the CTRL key down.  The case of {char} does not
-		matter; thus CTRL-A and CTRL-a are equivalent.  But on some
-		terminals, using the SHIFT key will produce another code,
-		don't use it then.
+CTRL-{char}	制御文字として入力された文字 {char}。CTRL キーを押しながら
+		{char} を押す場合です。{char} は大文字でも小文字でも区別されま
+		せん。 CTRL-A と CTRL-a は同じです。SHIFT キーを使うと別のコー
+		ド(CTRL-SHIFT-a 等)を生成する端末や環境もあるため、シフトキー
+                は使わないでください。これらの環境では SHIFTキーは CTRL-A のよ
+                うなコマンドをトリガーしません。
 
 							*'option'*
-'option'	An option, or parameter, that can be set to a value, is
-		enclosed in single quotes.  See |options|.
+'option'	オプション (設定) はシングルクォートで囲んで表記されます。オプ
+		ションは設定値を変更できます。 |options| を参照。
 
 							*quotecommandquote*
-"command"	A reference to a command that you can type is enclosed in
-		double quotes.
-`command`	New style command, this distinguishes it from other quoted
-		text and strings.
+"command"	説明の中にでてくる入力可能なコマンドは、ダブルクォートで囲んで
+		表記されます。
+`command`	コマンドの新しい表記法です。他のクォート表記のテキストや文字列
+		と区別するために使われます。
 
-					*key-notation* *key-codes* *keycodes*
-These names for keys are used in the documentation.  They can also be used
-with the ":map" command.
+                                        *key-notation* *key-codes* *keycodes*
+このドキュメントでは、キーの名前として以下のものが使われます。これらは ":map"
+コマンドでも使うことができます。
 
-notation	meaning		    equivalent	decimal value(s)	~
------------------------------------------------------------------------
-<Nul>		zero			CTRL-@	  0 (stored as 10) *<Nul>*
-<BS>		backspace		CTRL-H	  8	*backspace*
-<Tab>		tab			CTRL-I	  9	*tab* *Tab*
+表記		意味		      等価表現	10進数値	~
+<Nul>		ゼロ			CTRL-@	  0 (10として保存) *<Nul>*
+<BS>		バックスペース		CTRL-H	  8	*backspace*
+<Tab>		タブ			CTRL-I	  9	*tab* *Tab*
 							*linefeed*
-<NL>		linefeed		CTRL-J	 10 (used for <Nul>)
-<FF>		formfeed		CTRL-L	 12	*formfeed*
-<CR>		carriage return		CTRL-M	 13	*carriage-return*
-<Return>	same as <CR>				*<Return>*
-<Enter>		same as <CR>				*<Enter>*
-<Esc>		escape			CTRL-[	 27	*escape* *<Esc>*
-<Space>		space				 32	*space*
-<lt>		less-than		<	 60	*<lt>*
-<Bslash>	backslash		\	 92	*backslash* *<Bslash>*
-<Bar>		vertical bar		|	124	*<Bar>*
-<Del>		delete				127
-<CSI>		command sequence intro  ALT-Esc 155	*<CSI>*
-<xCSI>		CSI when typed in the GUI		*<xCSI>*
+<NL>		ラインフィード		CTRL-J	 10 (<Nul>に使用)
+<CR>		キャリッジリターン	CTRL-M	 13	*carriage-return*
+<Return>	<CR>と同じ				*<Return>*
+<Enter>		<CR>と同じ				*<Enter>*
+<Esc>		エスケープ		CTRL-[	 27	*escape* *<Esc>*
+<Space>		スペース			 32	*space*
+<lt>		小なり(less-than)	<	 60	*<lt>*
+<Bslash>	バックスラッシュ	\	 92	*backslash* *<Bslash>*
+<Bar>		垂直バー		|	124	*<Bar>*
+<Del>		デリート			127
+<CSI>		コマンドの開始バイト	ALT-Esc 155	*<CSI>*
 
-<EOL>		end-of-line (can be <CR>, <LF> or <CR><LF>,
-		depends on system and 'fileformat')	*<EOL>*
+<EOL>		行の終端 (<CR>、<NL>、<CR><NL> のどれかで、
+		システムと 'fileformat' に依存)	*<EOL>*
+<Ignore>        入力待機文字を無視                      *<Ignore>*
+<NOP>           no-op: なにもしない (キーマップに有用)  *<Nop>*
 
-<Up>		cursor-up			*cursor-up* *cursor_up*
-<Down>		cursor-down			*cursor-down* *cursor_down*
-<Left>		cursor-left			*cursor-left* *cursor_left*
-<Right>		cursor-right			*cursor-right* *cursor_right*
-<S-Up>		shift-cursor-up
-<S-Down>	shift-cursor-down
-<S-Left>	shift-cursor-left
-<S-Right>	shift-cursor-right
-<C-Left>	control-cursor-left
-<C-Right>	control-cursor-right
-<F1> - <F12>	function keys 1 to 12		*function_key* *function-key*
-<S-F1> - <S-F12> shift-function keys 1 to 12	*<S-F1>*
-<Help>		help key
-<Undo>		undo key
-<Insert>	insert key
-<Home>		home				*home*
-<End>		end				*end*
-<PageUp>	page-up				*page_up* *page-up*
-<PageDown>	page-down			*page_down* *page-down*
-<kUp>		keypad cursor-up		*keypad-cursor-up*
-<kDown>		keypad cursor-down		*keypad-cursor-down*
-<kLeft>		keypad cursor-left		*keypad-cursor-left*
-<kRight>	keypad cursor-right		*keypad-cursor-right*
-<kHome>		keypad home (upper left)	*keypad-home*
-<kEnd>		keypad end (lower left)		*keypad-end*
-<kOrigin>	keypad origin (middle)		*keypad-origin*
-<kPageUp>	keypad page-up (upper right)	*keypad-page-up*
-<kPageDown>	keypad page-down (lower right)	*keypad-page-down*
-<kDel>		keypad delete 			*keypad-delete*
-<kPlus>		keypad +			*keypad-plus*
-<kMinus>	keypad -			*keypad-minus*
-<kMultiply>	keypad *			*keypad-multiply*
-<kDivide>	keypad /			*keypad-divide*
-<kPoint>	keypad .			*keypad-point*
-<kComma>	keypad ,			*keypad-comma*
-<kEqual>	keypad =			*keypad-equal*
-<kEnter>	keypad Enter			*keypad-enter*
-<k0> - <k9>	keypad 0 to 9			*keypad-0* *keypad-9*
-<S-…>		shift-key			*shift* *<S-*
-<C-…>		control-key			*control* *ctrl* *<C-*
-<M-…>		alt-key or meta-key		*META* *ALT* *<M-*
-<A-…>		same as <M-…>			*<A-*
-<D-…>		command-key or "super" key	*<D-*
------------------------------------------------------------------------
+<Up>		上カーソル			*cursor-up* *cursor_up*
+<Down>		下カーソル			*cursor-down* *cursor_down*
+<Left>		左カーソル			*cursor-left* *cursor_left*
+<Right>		右カーソル			*cursor-right* *cursor_right*
+<S-Up>		シフト + 上カーソル
+<S-Down>	シフト + 下カーソル
+<S-Left>	シフト + 左カーソル
+<S-Right>	シフト + 右カーソル
+<C-Left>	コントロール + 上カーソル
+<C-Right>	コントロール + 上カーソル
+<F1> - <F12>	ファンクションキー1から12	*function_key* *function-key*
+<S-F1> - <S-F12> シフト + ファンクションキー1から12 *<S-F1>*
+<Help>		ヘルプキー
+<Undo>		アンドゥキー
+<Find>          Find キー
+<Select>        Select キー
+<Insert>	挿入キー
+<Home>		ホーム				*home*
+<End>		エンド				*end*
+<PageUp>	ページアップ			*page_up* *page-up*
+<PageDown>	ページダウン			*page_down* *page-down*
+<kUp>           テンキーの上カーソル            *keypad-cursor-up*
+<kDown>         テンキーの下カーソル            *keypad-cursor-down*
+<kLeft>         テンキーの左カーソル            *keypad-cursor-left*
+<kRight>        テンキーの右カーソル            *keypad-cursor-right*
+<kHome>		テンキーのホーム(左上)		*keypad-home*
+<kEnd>		テンキーのエンド(左下)		*keypad-end*
+<kOrigin>       テンキーの origin (中央)        *keypad-origin*
+<kPageUp>	テンキーのページアップ(右上)	*keypad-page-up*
+<kPageDown>	テンキーのページダウン(右下)	*keypad-page-down*
+<kDel>          テンキーの削除キー              *keypad-delete*
+<kPlus>		テンキーの+			*keypad-plus*
+<kMinus>	テンキーの-			*keypad-minus*
+<kMultiply>	テンキーの *			*keypad-multiply*
+<kDivide>	テンキーの /			*keypad-divide*
+<kPoint>        テンキーの .                    *keypad-point*
+<kComma>        テンキーの ,                    *keypad-comma*
+<kEqual>        テンキーの =                    *keypad-equal*
+<kEnter>	テンキーのEnter			*keypad-enter*
+<k0> - <k9>	テンキーの0から9		*keypad-0* *keypad-9*
+<S-…>		シフトキー			*shift* *<S-*
+<C-…>		コントロールキー		*control* *ctrl* *<C-*
+<M-…>		altまたはmetaキー		*meta* *alt* *<M-*
+<A-…>		<M-...>と同じ			*<A-*
+<T-…>           altでないときのmetaキー         *<T-*
+<D-…>		コマンドキー (Mac) / super (GTK)  *<D-*
 
-Note: The shifted cursor keys, the help key, and the undo key are only
-available on a few terminals.
 
-Note: There are two codes for the delete key.  127 is the decimal ASCII value
-for the delete key, which is always recognized.  Some delete keys send another
-value, in which case this value is obtained from the |terminfo| entry "key_dc".
-Both values have the same effect.
+Note:
 
-Note: The keypad keys are used in the same way as the corresponding "normal"
-keys.  For example, <kHome> has the same effect as <Home>.  If a keypad key
-sends the same raw key code as its non-keypad equivalent, it will be
-recognized as the non-keypad code.  For example, when <kHome> sends the same
-code as <Home>, when pressing <kHome> Vim will think <Home> was pressed.
-Mapping <kHome> will not work then.
+- 一部のキー(<Help、 <S-Right> など) の使用可否は UI やホスト端末に依存します。
+- Numlock がオンになっている場合、 |TUI| は素の ASCII 信号を受け取るため、
+  <k0>、 <k1> ~ <k9> および <kPoint> のマッピングは機能しません。
+- Nvim は `<M-ä>` のような修飾子を用いるマルチバイト文字のマッピングをサポート
+  しています。どの組み合わせが機能するかは、UI または ホスト端末に依存します。
+- metaキーやaltキーを使用してキーが押され、それに対するマッピングが存在しない
+  場合、Nvim はそのキーの前に <Esc> が押されたかのように振る舞うことがありま
+  す。
+- 複合修飾子(例: <M-C-T>、つまり CTRL-ALT-T)を表記することも可能です。ただし、
+  端末側で入力をエンコードする必要があります。
 
-Note: If numlock is on, the |TUI| receives plain ASCII values, so
-mappings to <k0> - <k9> and <kPoint> will not work.
-
-Note: Nvim supports mapping multibyte chars with modifiers such as `<M-ä>`.
-Which combinations actually are usable depends on the terminal emulator or GUI.
-
-								*<>*
-Examples are often given in the <> notation.  Sometimes this is just to make
-clear what you need to type, but often it can be typed literally, e.g., with
-the ":map" command.  The rules are:
- 1.  Any printable characters are typed directly, except backslash and '<'
- 2.  A backslash is represented with "\\", double backslash, or "<Bslash>".
- 3.  A real '<' is represented with "\<" or "<lt>".  When there is no
-     confusion possible, a '<' can be used directly.
- 4.  "<key>" means the special key typed.  This is the notation explained in
-     the table above.  A few examples:
-	   <Esc>		Escape key
+                                                                *<>*
+例ではよく <> 表記が使われます。これは、何を入力すべきかを明確に表記するために
+使われますが、文字どおりに入力する必要がある場合もあります。例えば、":map" コ
+マンドで使う場合など。規則は以下のとおりです:
+1.  バックスラッシュと "<" 以外の印字可能文字はそのまま表記される。
+2.  バックスラッシュは "\\" (ダブルバックスラッシュ)、または "<Bslash>" と表記
+    される。
+3.  実際の "<" は "\<"、または "<lt>" と表記される。混乱を招く恐れがなければ、
+    "<" はそのまま使われる。
+4.  "<key>" means the special key typed (see the table above).  Examples:
+4.  "<key>" は特殊キーを打つことを示す(上記の表を参照)。いくつか例を挙げます:
+	   <Esc>		エスケープキー
 	   <C-G>		CTRL-G
-	   <Up>			cursor up key
-	   <C-LeftMouse>	Control- left mouse click
-	   <S-F11>		Shifted function key 11
-	   <M-a>		Meta- a  ('a' with bit 8 set)
-	   <M-A>		Meta- A  ('A' with bit 8 set)
+	   <Up>			上カーソルキー
+	   <C-LeftMouse>	コントロール + 左マウスクリック
+	   <S-F11>		シフト + ファンクションキー11
+	   <M-a>		Meta + a  ('a' with bit 8 set)
+	   <M-A>		Meta + A  ('A' with bit 8 set)
 
-The <> notation uses <lt> to escape the special meaning of key names.  Using a
-backslash also works, but only when 'cpoptions' does not include the 'B' flag.
+<> 表記の特別な意味をなくすには <lt> を使います。バックスラッシュを使う方法も
+機能しますが、それは 'cpoptions' が 'B' フラグを含んでいないときだけです。
 
-Examples for mapping CTRL-H to the six characters "<Home>": >
-	:imap <C-H> \<Home>
-	:imap <C-H> <lt>Home>
-The first one only works when the 'B' flag is not in 'cpoptions'.  The second
-one always works.
-To get a literal "<lt>" in a mapping: >
-	:map <C-L> <lt>lt>
+CTRL-H を "<Home>" の 6 文字にマップする例: >vim
+        :imap <C-H> \<Home>
+        :imap <C-H> <lt>Home>
+最初の例は 'cpoptions' に 'B' フラグが含まれていない場合のみ機能します。2 番目
+の例は常に機能します。
+マップで "<lt>" を文字どおりに使うには 次のようにします: >vim
+        :map <C-L> <lt>lt>
 
-For mapping, abbreviation and menu commands you can then copy-paste the
-examples and use them directly.  Or type them literally, including the '<' and
-'>' characters.  This does NOT work for other commands, like ":set" and
-":autocmd"!
+この表記は、ダブルクォートで囲んだ文字列の先頭に "\<" を付けて使用することがで
+きます。例えば "\<C-Space>"。この結果、特殊なキーコードが生成されます。これを
+読みやすいテキストに戻す変換には、 `keytrans()` を使用します。
 
 ==============================================================================
-Modes, introduction				*vim-modes-intro* *vim-modes*
+モードの紹介					*vim-modes-intro* *vim-modes*
 
 Vim has seven BASIC modes:
 
-					*Normal* *Normal-mode* *command-mode*
-Normal mode		In Normal mode you can enter all the normal editor
-			commands.  If you start the editor you are in this
-			mode (unless you have set the 'insertmode' option,
-			see below).  This is also known as command mode.
+                                        *Normal* *Normal-mode* *command-mode*
+- ノーマルモード	ノーマルモードでは普通の編集コマンドを全て入力できま
+                        す。エディタをスタートするとこのモードに入ります 。こ
+                        れはコマンドモードとも呼ばれます。
 
-Visual mode		This is like Normal mode, but the movement commands
-			extend a highlighted area.  When a non-movement
-			command is used, it is executed for the highlighted
-			area.  See |Visual-mode|.
-			If the 'showmode' option is on "-- VISUAL --" is shown
-			at the bottom of the window.
+- ビジュアルモード	ノーマルモードに似ていますが、移動コマンドで選択領域が
+			拡大されます。移動コマンド以外のコマンドを使うと、選択
+			領域に対してそのコマンドが実行されます。 |Visual-mode|
+			を参照。
+			オプション 'showmode' がオンなら、"-- VISUAL --" が
+			ウィンドウの最下部に表示されます。
 
-Select mode		This looks most like the MS-Windows selection mode.
-			Typing a printable character deletes the selection
-			and starts Insert mode.  See |Select-mode|.
-			If the 'showmode' option is on "-- SELECT --" is shown
-			at the bottom of the window.
+- 選択モード		これは、MS-Windows でテキストを選択するときの動作に似
+			ています。印字可能文字が入力されると、選択範囲を削除
+			し、挿入モードに入ります。|Select-mode|を参照。
+			オプション 'showmode' がオンなら、"-- SELECT --" が
+			ウィンドウの最下部に表示されます。
 
-Insert mode		In Insert mode the text you type is inserted into the
-			buffer.  See |Insert-mode|.
-			If the 'showmode' option is on "-- INSERT --" is shown
-			at the bottom of the window.
+- 挿入モード		挿入モードでは、タイプされたテキストはバッファに挿入
+			されます。|Insert-mode|を参照。
+			オプション 'showmode' がオンなら、"-- INSERT --" が
+			ウィンドウの最下部に表示されます。
 
-Command-line mode	In Command-line mode (also called Cmdline mode) you
-Cmdline mode		can enter one line of text at the bottom of the
-			window.  This is for the Ex commands, ":", the pattern
-			search commands, "?" and "/", and the filter command,
-			"!".  |Cmdline-mode|
+- コマンドラインモード	コマンドラインモードでは、ウィンドウの下部に 1 行のテ
+			キストを入力できます。これは Ex コマンド、":"、パター
+			ン検索コマンド、"?"、"/"、そしてフィルタコマンド、"!"
+			で使用します。 |Cmdline-mode| を参照。
 
-Ex mode			Like Command-line mode, but after entering a command
-			you remain in Ex mode.  Very limited editing of the
-			command line.  |Ex-mode|
+- Ex モード		コマンドラインモードに似てますが、コマンド入力後も Ex
+			モードに留まります。コマンドライン編集は、かなり制限さ
+			れます。 |Ex-mode| を参照。
 
-							*Terminal-mode*
-Terminal mode		In Terminal mode all input (except |c_CTRL-\_CTRL-N|)
-			is sent to the process running in the current
-			|terminal| buffer.
-			If the 'showmode' option is on "-- TERMINAL --" is shown
-			at the bottom of the window.
+                                                        *Terminal-mode*
+- ターミナルモード      ターミナルモードでは、すべての入力 (CTRL-\ を除く)が現
+                        在の |terminal| バッファで実行中のプロセスに送信されま
+                        す。 CTRL-\ が押された場合は、その次のキーが送信されま
+                        す。ただし、それが CTRL-N (|CTRL-\_CTRL-N|) または
+                        CTRL-O (|t_CTRL-\_CTRL-O|) の場合を除く。オプション
+                        'showmode' がオンなら、"-- TERMINAL --" がウィンドウの
+                        最下部に表示されます。
 
-There are six ADDITIONAL modes.  These are variants of the BASIC modes:
+加えて、6 つのモードがあります。これらは基本モードの変種です。
 
-				*Operator-pending* *Operator-pending-mode*
-Operator-pending mode	This is like Normal mode, but after an operator
-			command has started, and Vim is waiting for a {motion}
-			to specify the text that the operator will work on.
+                                *Operator-pending* *Operator-pending-mode*
+- オペレータ待機モード	ノーマルモードに似てますが、オペレータコマンドが実行さ
+			れた後で、その適用範囲を決定するための移動コマンド
+			({motion}) を得るために、Vim が待機している状態です。
 
-Replace mode		Replace mode is a special case of Insert mode.  You
-			can do the same things as in Insert mode, but for
-			each character you enter, one character of the existing
-			text is deleted.  See |Replace-mode|.
-			If the 'showmode' option is on "-- REPLACE --" is
-			shown at the bottom of the window.
+- 置換モード		置換モードは挿入モードの特別版です。挿入モードと同様の
+			ことができますが、一文字入力するごとに、その場所にある
+			文字が一つ削除されます。 |Replace-mode| を参照。
+			オプション 'showmode' がオンなら、"-- REPLACE --" が
+			ウィンドウの最下部に表示されます。
 
-Virtual Replace mode	Virtual Replace mode is similar to Replace mode, but
-			instead of file characters you are replacing screen
-			real estate.  See |Virtual-Replace-mode|.
-			If the 'showmode' option is on "-- VREPLACE --" is
-			shown at the bottom of the window.
+- 仮想置換モード	仮想置換モードは置換モードに似ていますが、ファイルの文
+			字の上ではなく、画面上の任意の位置を置換できます。
+			|Virtual-Replace-mode| を参照。 'showmode' がオンなら、
+			"-- VREPLACE --" がウィンドウの最下部に表示されます。
 
-Insert Normal mode	Entered when CTRL-O is typed in Insert mode (see
-			|i_CTRL-O|).  This is like Normal mode, but after
-			executing one command Vim returns to Insert mode.
-			If the 'showmode' option is on "-- (insert) --" is
-			shown at the bottom of the window.
+- 挿入ノーマルモード	挿入モードで CTRL-O を入力したときにこのモードに入りま
+			す (|i_CTRL-O| を参照)。ノーマルモードに似ていますが、
+			1つのコマンドを実行した後、Vimは挿入モードに戻ります。
+			オプション 'showmode' がオンなら、"-- (insert) --" が
+			ウィンドウの最下部に表示されます。
 
-Insert Visual mode	Entered when starting a Visual selection from Insert
-			mode, e.g., by using CTRL-O and then "v", "V" or
-			CTRL-V.  When the Visual selection ends, Vim returns
-			to Insert mode.
-			If the 'showmode' option is on "-- (insert) VISUAL --"
-			is shown at the bottom of the window.
+- 挿入ビジュアルモード	挿入モードでビジュアル選択を開始すると、このモードに入
+			ります。例えば、 CTRL-O を使い, その後 "v"、"V"、
+			CTRL-V を使ったときです。
+			ビジュアル選択が終了すると、挿入モードに戻ります。
+			オプション 'showmode' がオンなら、
+			"-- (insert) VISUAL --" がウィンドウの最下部に表示され
+			ます。
 
-Insert Select mode	Entered when starting Select mode from Insert mode.
-			E.g., by dragging the mouse or <S-Right>.
-			When the Select mode ends, Vim returns to Insert mode.
-			If the 'showmode' option is on "-- (insert) SELECT --"
-			is shown at the bottom of the window.
+- 挿入選択モード	挿入モードで選択モードを開始すると、このモードに入りま
+			す。例えば、マウスをドラッグしたり、 <S-Right> を押し
+			たときです。
+			選択モードが終了すると、挿入モードに戻ります。オプショ
+			ン 'showmode' がオンなら、"-- (insert) SELECT --" が
+			ウィンドウの最下部に表示されます。
 
 ==============================================================================
-Switching from mode to mode				*mode-switching*
+モードの切り替え					*mode-switching*
 
-If for any reason you do not know which mode you are in, you can always get
-back to Normal mode by typing <Esc> twice.  This doesn't work for Ex mode
-though, use ":visual".
-You will know you are back in Normal mode when you see the screen flash or
-hear the bell after you type <Esc>.  However, when pressing <Esc> after using
-CTRL-O in Insert mode you get a beep but you are still in Insert mode, type
-<Esc> again.
+何らかの理由で、現在のモードがわからなくなったときは、 <Esc> を 2 度押すことで
+常にノーマルモードに戻ることができます。Ex モードでは機能しないので、その場合
+は ":visual" を使ってください。
+<Esc> を押したとき、スクリーンフラッシュや、ベルの音で、ノーマルモードに戻った
+ことを知ることができます。挿入モードで CTRL-O の後に <Esc> を押した場合、ビー
+プ音は鳴りますが、まだ挿入モードの中なので、もう一度 <Esc> を押してください。
 
 							*i_esc*
-		TO mode						    ~
+		移動先のモード					    ~
 		Normal	Visual	Select	Insert	  Replace   Cmd-line  Ex ~
-FROM mode								 ~
-Normal			v V ^V	  *4	 *1	   R gR     : / ? !   Q
-Visual		 *2		  ^G	 c C	    --	      :       --
-Select		 *5	^O ^G		 *6	    --	      --      --
-Insert		 <Esc>	  --	  --		  <Insert>    --      --
-Replace		 <Esc>	  --	  --	<Insert>	      --      --
-Command-line	 *3	  --	  --	 :start	    --		      --
+現在のモード								 ~
+ノーマル		v V ^V	  *4	 *1	   R gR     : / ? !   Q
+ビジュアル	 *2		  ^G	 c C	    --	      :       --
+選択		 *5	^O ^G		 *6	    --	      --      --
+挿入		 <Esc>	  --	  --		  <Insert>    --      --
+置換		 <Esc>	  --	  --	<Insert>	      --      --
+コマンドライン	 *3	  --	  --	 :start	    --		      --
 Ex		 :vi	  --	  --	 --	    --	      --
 
--- not possible
+-- 不可
 
-*1 Go from Normal mode to Insert mode by giving the command "i", "I", "a",
-   "A", "o", "O", "c", "C", "s" or S".
-*2 Go from Visual mode to Normal mode by giving a non-movement command, which
-   causes the command to be executed, or by hitting <Esc> "v", "V" or "CTRL-V"
-   (see |v_v|), which just stops Visual mode without side effects.
-*3 Go from Command-line mode to Normal mode by:
-   - Hitting <CR> or <NL>, which causes the entered command to be executed.
-   - Deleting the complete line (e.g., with CTRL-U) and giving a final <BS>.
-   - Hitting CTRL-C or <Esc>, which quits the command-line without executing
-     the command.
-   In the last case <Esc> may be the character defined with the 'wildchar'
-   option, in which case it will start command-line completion.  You can
-   ignore that and type <Esc> again.
-*4 Go from Normal to Select mode by:
-   - use the mouse to select text while 'selectmode' contains "mouse"
-   - use a non-printable command to move the cursor while keeping the Shift
-     key pressed, and the 'selectmode' option contains "key"
-   - use "v", "V" or "CTRL-V" while 'selectmode' contains "cmd"
-   - use "gh", "gH" or "g CTRL-H"  |g_CTRL-H|
-*5 Go from Select mode to Normal mode by using a non-printable command to move
-   the cursor, without keeping the Shift key pressed.
-*6 Go from Select mode to Insert mode by typing a printable character.  The
-   selection is deleted and the character is inserted.
+- 1 ノーマルモードから挿入モードへは、コマンド "i"、"I"、"a"、"A"、"o"、"O"、
+    "c"、"C"、"s"、"S" で入ります。
+- 2 ビジュアルモードからノーマルモードへは非移動コマンドで入れますが、そのコマ
+    ンドは実行されてしまいます。 <Esc>、"v"、"V"、"CTRL-V" (|v_v|を参照) を入力
+    すれば、副作用なしにビジュアルモードから出られます。
+- 3 コマンドラインモードからノーマルモードへ移行するには次のようにします:
+    - <CR> か <NL> を入力する。入力途中のコマンドは実行されます。
+    - 行の全てを削除し (例、 CTRL-U を使う)、そして、 <BS> を入力する。
+    - CTRL-C または <Esc> を入力する、入力途中のコマンドを実行せずに終了できま
+     す。
+    最後の方法ですが、 <Esc> が 'wildchar' に設定されている場合があります。そ
+    の場合、コマンドライン補完が実行されますが、それを無視して、再び <Esc> を
+    入力してください。
+- 4 ノーマルモードから選択モードに移行するには次のようにします:
+    - 'selectmode' が "mouse" を含んでいるときは、マウスでテキストを選択する。
+    - 'selectmode' が "key" を含んでいるときは、シフトキーを押しながら、特殊
+      キーでカーソルを動かします。(:set keymodel+=startsel が必要)
+    - 'selectmode' が "cmd" を含んでいるときは、"v"、"V"、"CTRL-V" を使う。
+    - "gh"、"gH"、"g CTRL-H" を使う。 |g_CTRL-H|
+- 5 選択モードからノーマルモードに移行するには、シフトキーを押さずに特殊キーで
+    カーソルを動かします。(:set keymodel+=stopsel が必要)
+- 6 選択モードから挿入モードへ移行するには、印字可能文字 (普通の文字) を入力し
+    ます。選択範囲は削除され、入力した文字が挿入されます。
 
-If the 'insertmode' option is on, editing a file will start in Insert mode.
+                        *CTRL-\_CTRL-N* *i_CTRL-\_CTRL-N* *c_CTRL-\_CTRL-N*
+                                      *v_CTRL-\_CTRL-N* *t_CTRL-\_CTRL-N*
+CTRL-\ CTRL-N と <C-\><C-N> を使って、どのモードからでもノーマルモードに移行で
+きます。このコマンドを使えば、確実にノーマルモードになることができます。 <Esc>
+のときのようにビープ音はなりません。ただし、Ex モードでは機能しません。 |f| や|m|
+のように引数をとるコマンドの後で使われたときは、 'ttimeoutlen' で設定されたタ
+イムアウトが適用されます。
 
-	*CTRL-\_CTRL-N* *i_CTRL-\_CTRL-N* *c_CTRL-\_CTRL-N* *v_CTRL-\_CTRL-N*
-Additionally the command CTRL-\ CTRL-N or <C-\><C-N> can be used to go to
-Normal mode from any other mode.  This can be used to make sure Vim is in
-Normal mode, without causing a beep like <Esc> would.  However, this does not
-work in Ex mode.  When used after a command that takes an argument, such as
-|f| or |m|, the timeout set with 'ttimeoutlen' applies.
-
-	*CTRL-\_CTRL-G* *i_CTRL-\_CTRL-G* *c_CTRL-\_CTRL-G* *v_CTRL-\_CTRL-G*
-The command CTRL-\ CTRL-G or <C-\><C-G> can be used to go to Insert mode when
-'insertmode' is set.  Otherwise it goes to Normal mode.  This can be used to
-make sure Vim is in the mode indicated by 'insertmode', without knowing in
-what mode Vim currently is.
-
-				*gQ* *Q* *mode-Ex* *Ex-mode* *Ex* *EX* *E501*
-Q or gQ			Switch to Ex mode.  This is like typing ":" commands
-			one after another, except:
-			- You don't have to keep pressing ":".
-			- The screen doesn't get updated after each command.
-			Use the ":vi" command |:visual| to exit this mode.
+        *CTRL-\_CTRL-G* *i_CTRL-\_CTRL-G* *c_CTRL-\_CTRL-G* *v_CTRL-\_CTRL-G*
+CTRL-\ CTRL-G は、後方互換性のために、 |CTRL-\_CTRL-N| と同じ様に機能します。
+                                *gQ* *mode-Ex* *Ex-mode* *Ex* *EX* *E501*
+gQ			"Ex" モードに切り替えます。このモードは ":" コマンドを
+			続けて入力するようなものですが、次の点が違います:
+			- 毎回 ":" を押す必要がない。
+			- コマンドを実行するごとに画面が更新されない。
+			"Ex" モードを抜けるには、 `:vi` コマンド (|:visual|) を使
+			います。
 
 ==============================================================================
-The window contents					*window-contents*
+ウィンドウに表示される内容				*window-contents*
 
-In Normal mode and Insert/Replace mode the screen window will show the current
-contents of the buffer: What You See Is What You Get.  There are two
-exceptions:
-- When the 'cpoptions' option contains '$', and the change is within one line,
-  the text is not directly deleted, but a '$' is put at the last deleted
-  character.
-- When inserting text in one window, other windows on the same text are not
-  updated until the insert is finished.
+ノーマルモードと挿入/置換モードでは、スクリーンに現在のバッファの内容が表示さ
+れます。つまり、見ているものが得られるもの (WYSIWYG) です。しかし、例外が二つ
+があります:
+- オプション 'cpoptions' が '$' を含んでいて、一行に収まる範囲を変更 (|c|) す
+  るときは、テキストはすぐに削除されず、削除される文字の最後の位置に '$' が表
+  示されます。
+- あるウィンドウでテキストを挿入していて、別のウィンドウでも同じテキストを表示
+  しているとき、挿入を完了するまでそのウィンドウの表示は更新されません。
+  {訳注: 確認できず}
 
-Lines longer than the window width will wrap, unless the 'wrap' option is off
-(see below).  The 'linebreak' option can be set to wrap at a blank character.
+ウィンドウの幅より長い行は、折り返して表示されます。'wrap' がオフのときは折り
+返されません (下記参照)。'linebreak' を設定すると空白文字で折り返すことができ
+ます。
 
-If the window has room after the last line of the buffer, Vim will show '~' in
-the first column of the last lines in the window, like this:
-
+ウィンドウ内でバッファの最終行より下に表示領域がある場合、以下のように、それら
+の行の始めに '~' が表示されます:
+>
 	+-----------------------+
 	|some line		|
 	|last line		|
 	|~			|
 	|~			|
 	+-----------------------+
+<
+このように、'~' はバッファの最後に到達したことを示します。
 
-Thus the '~' lines indicate that the end of the buffer was reached.
-
-If the last line in a window doesn't fit, Vim will indicate this with a '@' in
-the first column of the last lines in the window, like this:
-
+ウィンドウに表示されている最後の行が表示しきれない場合、以下のように、最終行の
+場所に '@' が表示されます:
+>
 	+-----------------------+
 	|first line		|
 	|second line		|
 	|@			|
 	|@			|
 	+-----------------------+
+<
+このように、'@' はウィンドウに収まりきらない行があることを示します。
 
-Thus the '@' lines indicate that there is a line that doesn't fit in the
-window.
-
-When the "lastline" flag is present in the 'display' option, you will not see
-'@' characters at the left side of window.  If the last line doesn't fit
-completely, only the part that fits is shown, and the last three characters of
-the last line are replaced with "@@@", like this:
-
+'display' に "lastline" フラグが含まれている場合、'@' はウィンドウの左側に表示
+されません。最終行がウィンドウに完全に収まらない場合は、収まる部分のみが表示さ
+れ、最後の 3 文字が次のように "@@@" で置き換えられます:
+>
 	+-----------------------+
 	|first line		|
 	|second line		|
 	|a very long line that d|
 	|oesn't fit in the wi@@@|
 	+-----------------------+
+<
+長すぎてウィンドウに収まりきらない単一の行があるときは、特別な場合として扱われ
+ます。Vim はカーソルのある場所付近のみを表示します。特殊記号は表示されません。
+その行のどの部分でも編集できます。
 
-If there is a single line that is too long to fit in the window, this is a
-special situation.  Vim will show only part of the line, around where the
-cursor is.  There are no special characters shown, so that you can edit all
-parts of this line.
+'@' と '~' の強調表示を設定するには、オプション ハイライトグループの
+|hl-NonText| を設定します。それらの文字と、バッファの中の本物の文字を区別するこ
+とができます。
 
-The |hl-NonText| highlight group can be used to set special highlighting
-for the '@' and '~' characters.  This makes it possible to distinguish them
-from real characters in the buffer.
+折り返された行の先頭には 'showbreak' に設定した文字が表示されます。
 
-The 'showbreak' option contains the string to put in front of wrapped lines.
+                                                        *wrap-off*
+'wrap' がオフの場合、長い行は折り返されません。スクリーンに収まる分だけ表示さ
+れます。カーソルが表示されていない部分に移動すると、スクリーンは水平方向にスク
+ロールします。この方法の利点は、縦の列がありのままに表示されること、スクリーン
+に収まらない行も編集できることです。欠点としては、一行の全ての文字を一度に見る
+ことができないことが挙げられます。'sidescroll' にはスクロールする最小の列(カラ
+ム)数を設定します。
 
-							*wrap-off*
-If the 'wrap' option is off, long lines will not wrap.  Only the part that
-fits on the screen is shown.  If the cursor is moved to a part of the line
-that is not shown, the screen is scrolled horizontally.  The advantage of
-this method is that columns are shown as they are and lines that cannot fit
-on the screen can be edited.  The disadvantage is that you cannot see all the
-characters of a line at once.  The 'sidescroll' option can be set to the
-minimal number of columns to scroll.
+全ての普通のASCII文字はスクリーンに直接表示されます。<Tab> は、それが表現する
+数のスペースに置き換えられます。他の非表示文字は、"^{char}" に置き換えられま
+す、このとき {char} には、その非表示文字に 64 を足した文字が入ります。つまり、
+文字 7 (ベル文字) は "^G" と表示されます。127 から 160 までの文字は "~{char}"
+で置き換えられます、このとき {char} には、その文字から 64 を引いた文字が入りま
+す。これらの文字はスクリーン上では複数幅で表示されます。カーソルはその複数幅の
+先頭にのみ移動させることができます
 
-All normal ASCII characters are displayed directly on the screen.  The <Tab>
-is replaced with the number of spaces that it represents.  Other non-printing
-characters are replaced with "^{char}", where {char} is the non-printing
-character with 64 added.  Thus character 7 (bell) will be shown as "^G".
-Characters between 127 and 160 are replaced with "~{char}", where {char} is
-the character with 64 subtracted.  These characters occupy more than one
-position on the screen.  The cursor can only be positioned on the first one.
-
-If you set the 'number' option, all lines will be preceded with their
-number.  Tip: If you don't like wrapping lines to mix with the line numbers,
-set the 'showbreak' option to eight spaces:
+'number' がオンの場合、全ての行の先頭に行番号が表示されます。
+Tip: 行を折り返したときに、行番号と行の表示を混ぜたくないときは、'showbreak'
+に 8 つのスペースをセットします: >
 	":set showbreak=\ \ \ \ \ \ \ \ "
 
-If you set the 'list' option, <Tab> characters will not be shown as several
-spaces, but as "^I".  A '$' will be placed at the end of the line, so you can
-find trailing blanks.
+'list' がオンの場合、<Tab> 文字はいくつかのスペースとしてではなく、"^I" として
+表示されます。'$' が行末に表示されるので、行の最後についた空白を見つけることが
+できます。
 
-In Command-line mode only the command-line itself is shown correctly.  The
-display of the buffer contents is updated as soon as you go back to Command
-mode.
+コマンドラインモードでは、コマンドラインのみが正しく表示されます。バッファの
+内容の表示は、コマンドラインモードから抜けたときに更新されます。
 
-The last line of the window is used for status and other messages.  The
-status messages will only be used if an option is on:
+ウィンドウの最下行はステータスやその他のメッセージのために使われます。ステータ
+スメッセージが使われるのは、オプションがオンのときのみです:
 
-status message			option	     default	Unix default	~
-current mode			'showmode'	on	    on
-command characters		'showcmd'	on	    off
-cursor position			'ruler'		off	    off
+ステータスメッセージ		オプション     初期設定	 Unixの初期設定	~
+現在のモード			'showmode'	on	    on
+コマンドの文字			'showcmd'	on	    off
+カーソルの位置			'ruler'		off	    off
 
-The current mode is "-- INSERT --" or "-- REPLACE --", see |'showmode'|.  The
-command characters are those that you typed but were not used yet.
+現在のモードとは、"-- INSERT --" や "-- REPLACE --" のことです、'showmode' を
+参照。コマンドの文字とは、入力されて、まだ実行されていないコマンドのことです。
 
-If you have a slow terminal you can switch off the status messages to speed
-up editing:
+遅い端末を使っている場合は、ステータスメッセージをオフにすることで編集のスピー
+ドを上げることができます: >
 	:set nosc noru nosm
 
-If there is an error, an error message will be shown for at least one second
-(in reverse video).
+エラーが起きたとき、エラーメッセージは少なくとも一秒間は表示されます(反転表示
+で)。
 
-Some commands show how many lines were affected.  Above which threshold this
-happens can be controlled with the 'report' option (default 2).
+いくつかのコマンドでは、そのコマンドが作用する行数が表示されます。何行以上でそ
+の表示をするかは、'report' で設定できます (初期設定は 2)。
 
-The name Vim and the full name of the current file name will be shown in the
-title bar.  When the window is resized, Vim will automatically redraw the
-window.  You may make the window as small as you like, but if it gets too
-small not a single line will fit in it.  Make it at least 40 characters wide
-to be able to read most messages on the last line.
-
-==============================================================================
-Definitions						*definitions* *jargon*
-
-  buffer		Contains lines of text, usually from a file.
-  screen		The whole area that Nvim uses to display things.
-  window		A view on a buffer.  There can be multiple windows for
-			one buffer.
-  frame			Windows are kept in a tree of frames.  Each frame
-			contains a column, row, or window ("leaf" frame).
-
-A screen contains one or more windows, separated by status lines and with the
-command line at the bottom.
-
-	+-------------------------------+
-screen	| window 1	| window 2	|
-	|		|		|
-	|		|		|
-	|= status line =|= status line =|
-	| window 3			|
-	|				|
-	|				|
-	|==== status line ==============|
-	|command line			|
-	+-------------------------------+
-
-The command line is also used for messages.  It scrolls up the screen when
-there is not enough room in the command line.
-
-A difference is made between four types of lines:
-
-  buffer lines		The lines in the buffer.  This is the same as the
-			lines as they are read from/written to a file.  They
-			can be thousands of characters long.
-  logical lines		The buffer lines with folding applied.  Buffer lines
-			in a closed fold are changed to a single logical line:
-			"+-- 99 lines folded".  They can be thousands of
-			characters long.
-  window lines		The lines displayed in a window: A range of logical
-			lines with wrapping, line breaks, etc.  applied.  They
-			can only be as long as the width of the window allows,
-			longer lines are wrapped or truncated.
-  screen lines		The lines of the screen that Nvim uses.  Consists of
-			the window lines of all windows, with status lines
-			and the command line added.  They can only be as long
-			as the width of the screen allows.  When the command
-			line gets longer it wraps and lines are scrolled to
-			make room.
-
-buffer lines	logical lines	window lines	screen lines ~
-
-1. one		1. one		1. +-- folded   1.  +-- folded
-2. two		2. +-- folded	2. five		2.  five
-3. three	3. five		3. six		3.  six
-4. four		4. six		4. seven	4.  seven
-5. five		5. seven			5.  === status line ===
-6. six						6.  aaa
-7. seven					7.  bbb
-						8.  ccc ccc c
-1. aaa		1. aaa		1. aaa		9.  cc
-2. bbb		2. bbb		2. bbb		10. ddd
-3. ccc ccc ccc	3. ccc ccc ccc	3. ccc ccc c	11. ~ 
-4. ddd		4. ddd		4. cc		12. === status line ===
-				5. ddd		13. (command line)
-				6. ~ 
-
-
-API client ~
-All external UIs and remote plugins (as opposed to regular Vim plugins) are
-"clients" in general; but we call something an "API client" if its purpose is
-to abstract or wrap the RPC API for the convenience of other applications
-(just like a REST client or SDK such as boto3 for AWS: you can speak AWS REST
-using an HTTP client like curl, but boto3 wraps that in a convenient python
-interface). For example, the Nvim lua-client is an API client:
-    https://github.com/neovim/lua-client
-
-
-Host ~
-A plugin "host" is both a client (of the Nvim API) and a server (of an
-external platform, e.g. python). It is a remote plugin that hosts other
-plugins.
-
-
-Remote plugin ~
-Arbitrary code registered via |:UpdateRemotePlugins|, that runs in a separate
-process and communicates with Nvim via the |api|.
-
+Vim の名前と現在のファイル名の絶対パスがタイトルバーに表示されます。ウィンドウ
+がリサイズされると、Vim は自動的にウィンドウを再描画します。ウィンドウは好きな
+だけ小さくできますが、小さすぎると1行のみで収まりきらなくなります。最下行に表
+示されるメッセージが読めるように、最低でも40文字の幅を取ってください。
 
 ==============================================================================
- vim:tw=78:ts=8:noet:ft=help:norl:
+用語の定義						*definitions* *jargon*
+
+- バッファ		テキスト行が入っている。一般にファイルから読み込む。
+- スクリーン		Nvim が描画に使う領域全体。
+- ウィンドウ		バッファが表示される場所。1 つのバッファが複数のウィ
+			ンドウを持つことが可能。
+- frame: Windows are kept in a tree of frames.  Each frame contains a column,
+  row, or window ("leaf" frame).
+- フレーム              ウィンドウはフレームのツリー内に保持される。各フレーム
+                        は行、列、ウィンドウを持つ("leaf" フレーム)。
+
+一つのスクリーンは一つ以上のウィンドウを内包し、それらはステータスラインで区切
+られ、最下行にはコマンドラインが表示されます。
+>
+        +-------------------------------+
+ screen | window 1      | window 2      |
+        |               |               |
+        |               |               |
+        |= status line =|= status line =|
+        | window 3                      |
+        |                               |
+        |                               |
+        |==== status line ==============|
+        |command line                   |
+        +-------------------------------+
+<
+コマンドラインはメッセージを表示するためにも使われます。コマンドラインに十分な
+表示領域がない場合はスクリーンがスクロールします。
+
+行には 4 種類あり、次の違いがあります:
+
+- バッファ行		バッファ内の行。ファイルに読み書きする行のこと。
+			行の長さは制限なし。
+- 論理行		折り畳みが適用されたバッファ行。複数のバッファ行が折り
+			畳まれ論理行 1 行となり、次のように表示される:
+			"+-- 99 lines folded"。
+			行の長さは制限なし。
+- ウィンドウ行		ウィンドウに表示される行: 折り返し、ラインブレークなど
+			が適用された後の論理行の一部。長さはウィンドウの幅以
+			下。それ以上長い行は折り返されるか切り詰められる。
+- スクリーン行		Nvim が使うスクリーンの行。全てのウィンドウのウィンド
+                        ウ行とステータスライン、コマンドラインからなる。長さは
+                        スクリーンの幅以下。コマンドラインがそれ以上長くなった
+                        ときは折り返して表示され、表示領域を作るために行がスク
+                        ロールされる。
+
+>
+  バッファ行	  論理行	  ウィンドウ行	  スクリーン行
+  -----------------------------------------------------------------------
+  1. one          1. one          1. +-- folded   1.  +-- folded
+  2. two          2. +-- folded   2. five         2.  five
+  3. three        3. five         3. six          3.  six
+  4. four         4. six          4. seven        4.  seven
+  5. five         5. seven                        5.  === status line ===
+  6. six                                          6.  aaa
+  7. seven                                        7.  bbb
+                                                  8.  ccc ccc c
+  1. aaa          1. aaa          1. aaa          9.  cc
+  2. bbb          2. bbb          2. bbb          10. ddd
+  3. ccc ccc ccc  3. ccc ccc ccc  3. ccc ccc c    11. ~
+  4. ddd          4. ddd          4. cc           12. === status line ===
+                                  5. ddd          13. (command line)
+                                  6. ~
+<
+
+API クライアント ~
+すべての外部UI及びリモートプラグイン(通常のプラグインとは異なる)は、一般的には
+「クライアント」です。しかし、他のアプリケーションの利便性のために、RPC API を
+抽象化したりラップすることを目的としている場合は、「API クライアント」と呼びま
+す(AWS の boto3 などの REST クライアントや SDK と同様です: 通常 AWS REST を
+curl のような HTTPクライアントを通じて記述しますが、boto3 はそれを利便な
+Python インターフェイスでラップします)。例を挙げると、Nvim Node クライアント
+は、API クライアントです:
+    https://github.com/neovim/node-client
+
+
+ホスト ~
+プラグイン「ホスト」は、(Nvim API の)クライアントとサーバー(外部プラットフォー
+ム、例えば Python など)の両方の機能を持ちます。これはつまり、他のプラグインを
+ホストするリモートプラグインということになります。
+
+
+リモートプラグイン ~
+リモートプラグインは、 |:UpdateRemotePlugins| 経由で登録された任意のコードです。
+別のプロセスで実行され、 |api| 経由で Nvim と通信します。
+
+
+ vim:tw=78:ts=8:et:sw=4:ft=help:norl:

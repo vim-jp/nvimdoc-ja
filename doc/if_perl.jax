@@ -1,0 +1,272 @@
+*if_perl.txt*   Nvim 0.12        Last change: 2025-08-24
+
+
+		  VIMリファレンスマニュアル    by Jacques Germishuys
+
+Vimのperlインターフェイス				*if_perl* *perl*
+
+|provider-perl| で更なる情報を確認してください。
+
+                                            目次を確認するには |gO| をタイプ。
+
+==============================================================================
+コマンド						*perl-commands*
+
+							*:perl*
+:[range]perl {stmt}
+			perl文 {stmt} を実行します。現在のパッケージは "main"
+			です。 `:perl` コマンドが機能するか簡単に確認するには:
+			>vim
+				:perl print "Hello"
+
+:[range]perl << [trim] [{endmarker}]
+{script}
+{endmarker}
+			Perlスクリプト {script} を実行します。
+			{script} の後ろの {endmarker} の前に空白を置いてはいけ
+			ません。
+
+			[endmarker] を省略した時は |:append| や |:insert| のよ
+			うにドット '.' が使われます。
+
+			Vim スクリプトに perl のコードを含めるのに便利です。
+			perl が必須です、 |script-here| を参照してください。
+
+例: >vim
+	function! MyVimMethod()
+	perl << EOF
+	sub my_vim_method
+	{
+		print "Hello World!\n";
+	}
+	EOF
+	endfunction
+
+使っている Perl のバージョンを見るには: >vim
+
+	:perl print $^V
+<
+							*:perldo*
+:[range]perld[o] {cmd}	Perl コマンド {cmd} を {range} のそれぞれの行に対して
+			実行します。$_ はテキスト中のそれぞれの行のテキストに、
+			余計な <EOL> なしでセットされます。$_ をセットすること
+			でテキストを変更しますが、このコマンドを使って行を挿入
+			したり、削除したりすることはできないということに注意し
+			てください。
+			デフォルトの [range] はすべての行です: "1,$"。
+
+いくつかの例をあげますと: >vim
+
+	:perldo $_ = reverse($_);
+	:perldo $_ = "".$linenr." => $line";
+
+One can use `:perldo` in conjunction with `:perl` to filter a range using
+perl. For example: >
+
+	:perl << EOF
+	sub perl_vim_string_replace
+	{
+	    my $line = shift;
+	    my $needle = $vim->eval('@a');
+	    my $replacement = $vim->eval('@b');
+	    $line =~ s/$needle/$replacement/g;
+	    return $line;
+	}
+	EOF
+	:let @a='somevalue'
+	:let @b='newvalue'
+	:'<,'>perldo $_ = perl_vim_string_replace($_)
+<
+							*:perlfile*
+:[range]perlfile {file}
+			{file} 内の perl スクリプトを実行する。引数全体が一つ
+			のファイル名として扱われる。
+
+これらのコマンドは本質に同じものです - 指定された行範囲に「現在の範囲」を設定
+して、perl コードを実行します。
+
+:perl の場合、実行されるコードはコマンドライン内のものです。。
+:perlfile の場合、実行されるコードは渡されたファイルです。
+
+|sandbox| 内では perl コマンドは使用できません。
+
+引数を渡すには、@ARGV を明示的に設定しなければなりません。例: >vim
+
+	:perl @ARGV = ("foo", "bar");
+	:perlfile myscript.pl
+
+いくつかの例をあげます:					*perl-examples*  >vim
+
+	:perl print "Hello"
+	:perl $current->line (uc ($current->line))
+	:perl my $str = $current->buffer->[42]; print "Set \$str to: $str"
+
+変更内容("use"ステートメントなど)は、コマンド間で保持されることに注意してくだ
+さい。
+
+==============================================================================
+2. VIM モジュール					*perl-vim*
+
+perl コードは、"VIM" モジュールを介して Nvim のすべてへアクセスできます。
+
+概要: >
+	print "Hello"				# メッセージを表示します
+	VIM::Msg("Hello")			# メッセージを表示します
+	VIM::SetOption("ai")			# Vim のオプションをセットする
+	$nbuf = VIM::Buffers()			# 全てのバッファ数を返す
+	@buflist = VIM::Buffers()		# 全てのバッファの配列を返す
+	$mybuf = (VIM::Buffers('a.c'))[0]	# 'a.c' のバッファオブジェクト
+						# を返す
+	@winlist = VIM::Windows()		# 全てのウィンドウの配列を返す
+	$nwin = VIM::Windows()			# ウィンドウ数を返す
+	($success, $v) = VIM::Eval('&path')	# $v: 'path' オプション、
+						# $success: 1
+	($success, $v) = VIM::Eval('&xyz')	# $v: '' $success: 0
+	$v = VIM::Eval('expand("<cfile>")')	# <cfile> を展開
+	$curwin->SetHeight(10)			# ウィンドウの高さを設定する
+	@pos = $curwin->Cursor()		# (行, 列) 配列を返す
+	@pos = (10, 10)
+	$curwin->Cursor(@pos)			# カーソルを @pos にセットする
+	$curwin->Cursor(10,10)			# カーソルを10行10列目にセット
+	$mybuf = $curwin->Buffer()		# ウィンドウのバッファオブジェ
+						# クトを返す
+	$curbuf->Name()				# バッファ名を返す
+	$curbuf->Number()			# バッファ番号を返す
+	$curbuf->Count()			# 行数を返す
+	$l = $curbuf->Get(10)			# 10 行目を返す
+	@l = $curbuf->Get(1 .. 5)		# 1行目から5行目までを返す
+	$curbuf->Delete(10)			# 10行目を削除する
+	$curbuf->Delete(10, 20)			# 10行目から20行目までを削除
+	$curbuf->Append(10, "Line")		# 行を挿入する
+	$curbuf->Append(10, "L1", "L2", "L3")	# 3行挿入する
+	@l = ("L1", "L2", "L3")
+	$curbuf->Append(10, @l)			# L1, L2, L3 を挿入する
+	$curbuf->Set(10, "Line")		# 10行目を置き換える
+	$curbuf->Set(10, "Line1", "Line2")	# 10行目と11行目を置き換える
+	$curbuf->Set(10, @l)			# 3行置き換える
+
+モジュール関数:
+
+							*perl-Msg*
+VIM::Msg({msg})
+			{msg} メッセージを表示する。
+
+							*perl-SetOption*
+VIM::SetOption({arg})	Vim のオプションをセットします。{arg} は ":set" コマン
+			ドで使える引数であればなんでもよいです。このことは、引
+			数の中にスペースを入れることは許されないということを意
+			味しますので、注意してください。参照: |:set|
+
+							*perl-Buffers*
+VIM::Buffers([{bn}...])	引数なしだと、配列コンテキストではすべてのバッファのリ
+			ストを、スカラーコンテキストではバッファの数を返しま
+			す。バッファ名 {bn} もしくは、バッファ番号 {bn} のリス
+			トが与えられた場合は、{bn} にマッチするバッファのリス
+			トを返します。ここでは Vim の内部関数 |bufname()| と同
+			じルールが用いられます。
+			警告: |:bwipe| が使われると、このリストは無効になりま
+			す。
+
+							*perl-Windows*
+VIM::Windows([{wn}...])	引数なしだと、配列コンテキストではすべてのウィンドウの
+			リストを返し、スカラーコンテキストではウィンドウの数を
+			返します。ウィンドウ数 {wn} にリストが与えられた場合は、
+			それらの番号のウィンドウのリストを返します。
+			警告: |:bwipe| が使われると、このリストは無効になります。
+
+							*perl-DoCommand*
+VIM::DoCommand({cmd})	Ex コマンド {cmd} を実行します。
+
+							*perl-Eval*
+VIM::Eval({expr})	{expr} を評価して、リストコンテキストでは (success,
+			value) を返し、スカラーコンテキストでは単に値を返しま
+			す。
+			success=1 だと、val は {expr} の値を含みます;
+			success=0 だと、式の評価に失敗したことを示しています。
+			'@x' はレジスタ x の内容を返し、'&x' はオプション x の
+			値を返します。'x' は内部変数 |variables| x を返し、
+			'$x'は Perl の $ENV{x} と同じです。コマンドラインから
+			アクセスできるすべての |functions| は {expr} に使うこ
+			とができます。リスト |List| は文字列に変換されます。そ
+			のとき各要素の間に改行が挿入され、連結されます。
+
+							*perl-Blob*
+VIM::Blob({expr})	スカラー値から |Blob| リテラル文字列 0zXXXX を返します。
+
+==============================================================================
+3. VIM::バッファオブジェクト				*perl-buffer*
+
+メソッド:
+
+							*perl-Buffer-Name*
+Name()		バッファのファイル名を返します。
+
+							*perl-Buffer-Number*
+Number()	バッファの番号を返します。
+
+							*perl-Buffer-Count*
+Count()		バッファの行数を返します。
+
+							*perl-Buffer-Get*
+Get({lnum}, {lnum}?, ...)
+			バッファの {lnum} 行目のテキストを、指定されているそれ
+			ぞれの {lnum} に関して返します。{lnum} のリストとして
+			配列を渡すこともできます。
+
+							*perl-Buffer-Delete*
+Delete({lnum}, {lnum}?)
+			バッファの {lnum} 行目を削除します。二つ目の {lnum} が
+			指定されていると、始めの {lnum} から二つ目の {lnum} ま
+			での範囲の行が削除されます。
+
+							*perl-Buffer-Append*
+Append({lnum}, {line}, {line}?, ...)
+			それぞれの {line} をバッファの {lnum} 行目の後に挿入し
+			ます。{line} のリストは配列でもよいです。
+
+							*perl-Buffer-Set*
+Set({lnum}, {line}, {line}?, ...)
+			バッファの行を1行以上 {line} で指定される行で置き換え
+			ます。置き換えは、{lnum} から始まり、{line} は配列でも
+			よいです。引数が有効でないものであれば、置き換えは起こ
+			りません。
+
+==============================================================================
+4. VIM::ウィンドウオブジェクト				*perl-window*
+
+メソッド:
+							*perl-Window-SetHeight*
+SetHeight({height})
+			ウィンドウの高さをスクリーンの上限以内で {height} に
+			セットします。
+
+							*perl-Window-GetCursor*
+Cursor({row}?, {col}?)
+			引数なしだと、ウィンドウの現在のカーソル位置の
+			(row, col) 配列を返します。{row} と {col} 引数をつけて
+			よばれると、ウィンドウのカーソル位置を {row} と {col}
+			にセットします。{col} は Perl のように0から数えられま
+			すので、Vim のルーラーの値より1つ小さくなるということ
+			に注意してください。
+
+Buffer()						*perl-Window-Buffer*
+			与えられたウィンドウに対応するバッファオブジェクトを返
+			します。
+
+==============================================================================
+5. レキシカル変数					*perl-globals*
+
+いくつかのレキシカル変数があります:
+
+$curwin			現在のウィンドウオブジェクト
+$curbuf			現在のバッファオブジェクト
+$vim			Neovim::Ext オブジェクト
+$nvim			$vim と同義
+$current		Neovim::Ext:Current オブジェクト
+
+これらは、"main" パッケージ経由でも利用できます:
+
+$main::curwin		現在のウィンドウオブジェクト
+$main::curbuf		現在のバッファオブジェクト
+
+ vim:tw=78:ts=8:noet:ft=help:norl:

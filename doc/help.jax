@@ -1,196 +1,209 @@
-*help.txt*	Nvim
+*help.txt*	Nvim 0.12        Last change: 2025-08-24
 
-			VIM - main help file
+			        NVIM - ヘルプ
 									 k
-      Move around:  Use the cursor keys, or "h" to go left,	       h   l
-		    "j" to go down, "k" to go up, "l" to go right.	 j
-Close this window:  Use ":q<Enter>".
-   Get out of Vim:  Use ":qa!<Enter>" (careful, all changes are lost!).
+	      移動:  カーソルを使用するか、"h" で左、"j" で下、	       h   l
+		     "k" で上、"l" で右に移動できる。			 j
+      ヘルプの終了:  ":q<Enter>" を使用する。
+	Vim の終了:  ":qa!<Enter>" を使用する (注意! 変更はすべて破棄される)。
 
-Jump to a subject:  Position the cursor on a tag (e.g. |bars|) and hit CTRL-].
-   With the mouse:  Double-click the left mouse button on a tag, e.g. |bars|.
-	Jump back:  Type CTRL-O.  Repeat to go further back.
+    項目へジャンプ:  タグ (例: |bars|) にカーソルを合わせ、CTRL-] を押す。
+  マウスでジャンプ:  |bars| 等のタグ上でマウスの左ボタンをダブルクリックする。
+    元の場所に戻る:  CTRL-O を押す。更に戻るには繰り返す。
 
-Get specific help:  It is possible to go directly to whatever you want help
-		    on, by giving an argument to the |:help| command.
-		    Prepend something to specify the context:  *help-context*
+    項目を指定する:  |:help| コマンドに項目を指定することで、その項目を直ちに
+		     表示できる。修飾子を先行入力することで、調べたい項目の種
+		     類を指定することもできる:  *help-context*
 
-			  WHAT			PREPEND    EXAMPLE	~
-		      Normal mode command		   :help x
-		      Visual mode command	  v_	   :help v_u
-		      Insert mode command	  i_	   :help i_<Esc>
-		      Command-line command	  :	   :help :quit
-		      Command-line editing	  c_	   :help c_<Del>
-		      Vim command argument	  -	   :help -r
-		      Option			  '	   :help 'textwidth'
-		      Regular expression	  /	   :help /[
-		    See |help-summary| for more contexts and an explanation.
+			  種類			修飾子	    例	~
+		      ノーマルモードコマンド		   :help x
+		      ビジュアルモードコマンド	  v_	   :help v_u
+		      挿入モードコマンド	  i_	   :help i_<Esc>
+		      コマンドラインコマンド	  :	   :help :quit
+		      コマンドライン編集	  c_	   :help c_<Del>
+		      Vim の起動引数		  -	   :help -r
+		      オプション		  '	   :help 'textwidth'
+		      正規表現			  /	   :help /[
+		    その他の種類については |help-summary| を参照。
+		    ヘルプの構文の説明は |notation| を参照。
 
-  Search for help:  Type ":help word", then hit CTRL-D to see matching
-		    help entries for "word".
-		    Or use ":helpgrep word". |:helpgrep|
 
-  Getting started:  Do the Vim tutor, a 20 minute interactive training for the
-		    basic commands, see |vimtutor|.
-		    Read the user manual from start to end: |usr_01.txt|
+  ヘルプを検索する: ":help word" とタイプしてから CTRL-D を押すと "word" に
+		    マッチするヘルプ項目の一覧が表示される。
+		    もしくは ":helpgrep word" を使う。 |:helpgrep|
 
-Vim stands for Vi IMproved.  Most of Vim was made by Bram Moolenaar, but only
-through the help of many others.  See |credits|.
+  はじめに:	    基本的なコマンドのための 30 分間の対話コース、Vim tutor を
+		    行う。|vimtutor| を参照。
+		    ユーザーマニュアルを最初から最後まで読む: |usr_01.txt|
+
+Vim は Vi IMproved の略である。Vim の大部分は Bram Moolenaar によって作成され
+たが、その他多くの人の協力によって作成された。|credits| 参照。
+
+==============================================================================
+NVIM ドキュメント
+
 ------------------------------------------------------------------------------
-						*doc-file-list* *Q_ct*
-BASIC:
-|quickref|	Overview of the most common commands you will use
-|tutor|		20 minutes training course for beginners
-|copying|	About copyrights
-|iccf|		Helping poor children in Uganda
-|sponsor|	Sponsor Vim development, become a registered Vim user
-|www|		Vim on the World Wide Web
-|bugs|		Where to send bug reports
+NVIM について				*reference_toc* *doc-file-list* *Q_ct*
 
-USER MANUAL: These files explain how to accomplish an editing task.
+|news|			前回のリリース以降の更新情報
+|nvim|			Vim からの移行
+|vim-differences|	Nvim compared to Vim
+|vim-differences|	Nvim と Vi の主な違い
+|faq|			よくある質問
+|user-manual|		ユーザーマニュアル: 編集タスクを成し遂げるには
+|quickref|		よく使うコマンドのクイックリファレンス
+|tutor|			30 分の初心者向け対話コース
+|copying|		著作権について
+|iccf|			ウガンダの恵まれない子供達への支援活動
+|sponsor|		Vim の開発を支援し、Vim の登録ユーザーになる
+|www|			インターネット上の Vim 情報
+|bugs|			バグレポートの送信先
+|support|		サポートされたプラットフォーム
 
-|usr_toc.txt|	Table Of Contents
+------------------------------------------------------------------------------
+一般事項
 
-Getting Started ~
-|usr_01.txt|  About the manuals
-|usr_02.txt|  The first steps in Vim
-|usr_03.txt|  Moving around
-|usr_04.txt|  Making small changes
-|usr_05.txt|  Set your settings
-|usr_06.txt|  Using syntax highlighting
-|usr_07.txt|  Editing more than one file
-|usr_08.txt|  Splitting windows
-|usr_09.txt|  Using the GUI
-|usr_10.txt|  Making big changes
-|usr_11.txt|  Recovering from a crash
-|usr_12.txt|  Clever tricks
+|intro|			Vim についての前書き、ヘルプの表記について
+|helphelp|		ヘルプの使い方
+|index|			全コマンド一覧。
+|tips|			さまざまな Tips
+|message.txt|		(エラー)メッセージの説明
+|uganda.txt|		Vim の配布条件と、あなたが支払ったお金の使い道について
 
-Editing Effectively ~
-|usr_20.txt|  Typing command-line commands quickly
-|usr_21.txt|  Go away and come back
-|usr_22.txt|  Finding the file to edit
-|usr_23.txt|  Editing other files
-|usr_24.txt|  Inserting quickly
-|usr_25.txt|  Editing formatted text
-|usr_26.txt|  Repeating
-|usr_27.txt|  Search commands and patterns
-|usr_28.txt|  Folding
-|usr_29.txt|  Moving through programs
-|usr_30.txt|  Editing programs
-|usr_31.txt|  Exploiting the GUI
-|usr_32.txt|  The undo tree
+------------------------------------------------------------------------------
+基本的な編集
 
-Tuning Vim ~
-|usr_40.txt|  Make new commands
-|usr_41.txt|  Write a Vim script
-|usr_42.txt|  Add new menus
-|usr_43.txt|  Using filetypes
-|usr_44.txt|  Your own syntax highlighted
-|usr_45.txt|  Select your language
+|starting|		Vim の起動、起動引数や初期化に関して
+|edit-files|		ファイルの編集と保存
+|motion.txt|		移動コマンド
+|scrolling|		ウィンドウのスクロール
+|insert.txt|		挿入モードと置換モード
+|change.txt|		テキストの削除と変更
+|undo-redo|		アンドゥとリドゥ
+|repeat.txt|		繰り返しコマンド、Vim script、スクリプトのデバッグ
+|visual-mode|		ビジュアルモード (テキストの選択)
+|various|		その他の様々なコマンド
+|crash-recovery|	クラッシュからの復帰
 
+------------------------------------------------------------------------------
+高度な編集
 
-REFERENCE MANUAL: These files explain every detail of Vim.	*reference_toc*
+|cmdline|		コマンドラインの編集
+|options|		全オプションの説明
+|pattern-searches|	検索コマンドと Vim 正規表現
+|key-mapping|		キーマップ(ショートカット)と短縮入力
+|tags|			タグと特別な検索
+|windows|		ウィンドウとバッファのコマンド
+|tabpage|		タブページを操作するコマンド
+|spell|			スペルチェック
+|diff|			複数ファイルの比較
+|folding|		ある範囲を隠す (折り畳む)
+|terminal|		組み込み端末エミュレータ
 
-General subjects ~
-|intro.txt|	general introduction to Vim; notation used in help files
-|help.txt|	overview and quick reference (this file)
-|helphelp.txt|	about using the help files
-|index.txt|	alphabetical index of all commands
-|help-tags|	all the tags you can jump to (index of tags)
-|tips.txt|	various tips on using Vim
-|message.txt|	(error) messages and explanations
-|develop.txt|	development of Nvim
-|debug.txt|	debugging Vim itself
-|uganda.txt|	Vim distribution conditions and what to do with your money
+------------------------------------------------------------------------------
+API (拡張性/スクリプト/プラグイン)
 
-Basic editing ~
-|starting.txt|	starting Vim, Vim command arguments, initialisation
-|editing.txt|	editing and writing files
-|motion.txt|	commands for moving around
-|scroll.txt|	scrolling the text in the window
-|insert.txt|	Insert and Replace mode
-|change.txt|	deleting and replacing text
-|undo.txt|	Undo and Redo
-|repeat.txt|	repeating commands, Vim scripts and debugging
-|visual.txt|	using the Visual mode (selecting a text area)
-|various.txt|	various remaining commands
-|recover.txt|	recovering from a crash
+|api|			RPC 経由の Nvim API, Lua と Vimscript
+|ui|			Nvim UI プロトコル
+|lua-guide|		Nvim Lua ガイド
+|lua|			Lua API
+|luaref|		Lua リファレンスマニュアル
+|luvref|		Luv (|vim.uv|) リファレンスマニュアル
+|autocmd|		イベントハンドラ
+|job-control|		複数のプロセスの呼び出しとコントロール
+|channel|		Nvim 非同期入出力
+|vimscript|		Vimscript リファレンス
+|vimscript-functions|	Vimscript 関数
+|remote-plugin|		Nvim リモートプラグイン
+|health|		状態診断
 
-Advanced editing ~
-|cmdline.txt|	Command-line editing
-|options.txt|	description of all options
-|pattern.txt|	regexp patterns and search commands
-|map.txt|	key mapping and abbreviations
-|tagsrch.txt|	tags and special searches
-|windows.txt|	commands for using multiple windows and buffers
-|tabpage.txt|	commands for using multiple tab pages
-|spell.txt|	spell checking
-|diff.txt|	working with two to four versions of the same file
-|autocmd.txt|	automatically executing commands on an event
-|eval.txt|	expression evaluation, conditional commands
-|fold.txt|	hide (fold) ranges of lines
-|lua.txt|	Lua API
+------------------------------------------------------------------------------
+プログラミング言語サポート
 
-Special issues ~
-|print.txt|	printing
-|remote.txt|	using Vim as a server or client
+|lsp|			言語サーバープロトコル (LSP)
+|diagnostic-api|	診断フレームワーク
+|treesitter|		増分構文解析
+|indent.txt|		C言語や、その他の言語の自動インデント
+|syntax|		構文強調
+|filetype|		ファイルタイプ別の設定
+|quickfix|		編集、コンパイル、修正、の流れを早くするコマンド
+|ft_ada.txt|		Ada ファイルタイププラグイン
+|ft_hare.txt|		Hare ファイルタイププラグイン
+|ft_ps1.txt|		PowerShell ファイルタイププラグイン
+|ft_raku.txt|		Raku ファイルタイププラグイン
+|ft_rust.txt|		Rust ファイルタイププラグイン
+|ft_sql.txt|		SQL ファイルタイププラグイン
 
-Programming language support ~
-|indent.txt|	automatic indenting for C and other languages
-|syntax.txt|	syntax highlighting
-|filetype.txt|	settings done specifically for a type of file
-|quickfix.txt|	commands for a quick edit-compile-fix cycle
-|ft_ada.txt|	Ada (the programming language) support
-|ft_rust.txt|	Filetype plugin for Rust
-|ft_sql.txt|	about the SQL filetype plugin
+------------------------------------------------------------------------------
+ユーザーインターフェース
 
-Language support ~
-|digraph.txt|	list of available digraphs
-|mbyte.txt|	multi-byte text support
-|mlang.txt|	non-English language support
-|rileft.txt|	right-to-left editing mode
-|arabic.txt|	Arabic language support and editing
-|hebrew.txt|	Hebrew language support and editing
-|russian.txt|	Russian language support and editing
+|tui|			組み込みインターフェース
+|gui|			外部グラフィカルインターフェース
+|signs|			ウィンドウ装飾として表示される目印 (ガター)
 
-GUI ~
-|gui.txt|	Graphical User Interface (GUI)
+------------------------------------------------------------------------------
+言語サポート
 
-Interfaces ~
-|if_cscop.txt|	using Cscope with Vim
-|if_pyth.txt|	Python interface
-|if_ruby.txt|	Ruby interface
-|sign.txt|	debugging signs
+|digraph|		利用可能なダイグラフ (digraph) の一覧
+|mbyte.txt|		マルチバイトテキストのサポート
+|mlang.txt|		英語以外の言語のサポート
+|rileft.txt|		右横書き (書字方向が右から左になるモード)
+|arabic.txt|		アラビア語のサポート
+|hebrew.txt|		ヘブライ語のサポート
+|russian.txt|		ロシア語のサポート
+|vietnamese.txt|	ベトナム語のサポート
 
-Versions ~
-|vim_diff.txt|	Main differences between Nvim and Vim
-|vi_diff.txt|	Main differences between Vim and Vi
+------------------------------------------------------------------------------
+相互運用
+
+|provider|		組み込みリモートプラグインホスト
+|if_perl|		Perl インターフェイス
+|if_pyth|		Python インターフェイス
+|if_ruby|		Ruby インターフェイス
+
+------------------------------------------------------------------------------
+バージョン情報
+
+|deprecated|		今後廃止される非推奨の機能
+|vi-differences|	Vim と Vi の違い
+
+------------------------------------------------------------------------------
+NVIM の開発
+
+|dev|			Nvim の開発
+|dev-arch|		内部アーキテクチャ、モジュール、データ構造
+|dev-style|		Development style guidelines
+|dev-style|		開発スタイルガイドライン
+|dev-theme|		デザインガイドライン (カラースキーム等。)
+|dev-tools|		Nvim の開発のためのツールと技術
+|dev-vimpatch|		Vim からのパッチのマージ
+
+標準プラグイン ~
 						*standard-plugin-list*
-Standard plugins ~
-|pi_gzip.txt|      Reading and writing compressed files
-|pi_health.txt|    Healthcheck framework
-|pi_matchit.txt|   Extended "%" matching
-|pi_msgpack.txt|   msgpack utilities
-|pi_netrw.txt|     Reading and writing files over a network
-|pi_paren.txt|     Highlight matching parens
-|pi_spec.txt|      Filetype plugin to work with rpm spec files
-|pi_tar.txt|       Tar file explorer
-|pi_zip.txt|       Zip archive explorer
+|pi_gzip.txt|		圧縮ファイルの読み書き
+|pi_msgpack.txt|	msgpack ユーティリティ
+|pi_paren.txt|		対括弧の強調表示
+|pi_spec.txt|		RPM spec ファイル用ファイルタイププラグイン
+|pi_tar.txt|		Tar ファイルエクスプローラー
+|pi_zip.txt|		Zip アーカイブエクスプローラー
+|netrw|			ネットワークファイルの読み書き
 
-LOCAL ADDITIONS:				*local-additions*
+Local additions ~
+							*local-additions*
 
 ------------------------------------------------------------------------------
-*bars*		Bars example
+Bars の例								*bars*
 
-Now that you've jumped here with CTRL-] or a double mouse click, you can use
-CTRL-T, CTRL-O, g<RightMouse>, or <C-RightMouse> to go back to where you were.
+今、あなたは CTRL-] またはマウスのダブルクリックでここにジャンプしたので、
+ CTRL-T、 CTRL-O、g<RightMouse>、または <C-RightMouse> を使用して、元の場所に
+戻ることができる。
 
-Note that tags are within | characters, but when highlighting is enabled these
-characters are hidden.  That makes it easier to read a command.
+Note: タグは | 文字で囲まれているが、ハイライト表示が有効になっている場合はこ
+れらの文字が非表示になっていることに注意。これにより、コマンドが読みやすくなる。
 
-Anyway, you can use CTRL-] on any word, also when it is not within |, and Vim
-will try to find help for it.  Especially for options in single quotes, e.g.
-'hlsearch'.
+CTRL-] は ( | で囲まれていない場合でも)任意の単語で使用でき、Nvim はそのヘルプ
+を検索しようとする。特に、 'hlsearch' 等のシングルクォートで囲まれたオプション
+の場合。
 
-------------------------------------------------------------------------------
+
  vim:tw=78:isk=!-~,^*,^\|,^\":ts=8:noet:ft=help:norl:

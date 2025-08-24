@@ -1,0 +1,94 @@
+*editorconfig.txt*  Nvim 0.12        Last change: 2025-08-24
+
+
+                         NVIMリファレンスマニュアル
+
+                                            目次を確認するには |gO| をタイプ。
+
+==============================================================================
+EditorConfig との統合                                           *editorconfig*
+
+Nvim は EditorConfig をサポートしています。ファイルを開いた時、 |FileType| 自動
+コマンドと |ftplugin| の実行後、Nvim はそのファイルの全ての親ディレクトリから
+".editorconfig" ファイルを検索、解析し、開いたファイルに一致するプロパティを適
+用します。これはディレクトリ全体(再帰的)に適用される 'modeline' のようなものだ
+と捉えてください。さらなる情報については https://editorconfig.org/ を参照。
+
+                                               *g:editorconfig* *b:editorconfig*
+
+EditorConfig はデフォルトで有効です。無効化するには、以下を設定ファイルに追加
+してください: >lua
+    vim.g.editorconfig = false
+<
+
+(Vimscript の場合: `let g:editorconfig = v:false`) また、バッファ毎に無効化する
+ことも可能です。その場合、バッファにローカルな変数 |b:editorconfig| を `false`に
+設定してください。
+
+Nvim は |b:editorconfig| が `false` でない場合、適用されたプロパティを保存します。
+
+
+                                              *editorconfig-custom-properties*
+
+新しいプロパティは、"properties" テーブルに新しい項目を追加することで追加でき
+ます。テーブルのキーはプロパティ名で、値はコールバック関数であり、変更するバッ
+ファ番号、 `.editorconfig` ファイル内のプロパティの値、そして(任意で)他のすべて
+のプロパティとその値を含むテーブル(他のプロパティに依存するプロパティに便利で
+す)を受け取ります。値は常に文字列でなければならず、必要に応じて強制的に変換す
+る必要があります。以下はサンプルです: >lua
+
+    require('editorconfig').properties.foo = function(bufnr, val, opts)
+      if opts.charset and opts.charset ~= "utf-8" then
+        error("foo can only be set when charset is utf-8", 0)
+      end
+      vim.b[bufnr].foo = val
+    end
+<
+
+                                                     *editorconfig-properties*
+
+次のプロパティがデフォルトでサポートされています:
+
+
+charset                                                 *editorconfig.charset*
+    `"utf-8"`、 `"utf-8-bom"`、 `"latin1"`、 `"utf-16be"`、または `"utf-16le"` の内一つ。
+    'fileencoding' 及び 'bomb' オプションを設定される。
+
+end_of_line                                         *editorconfig.end_of_line*
+    `"lf"`、 `"crlf"`、 `"cr"` のいずれか。これらは 'fileformat' オプションをそれぞ
+    れ "unix"、"dos"、"mac" に設定することに相当する。
+
+indent_size                                         *editorconfig.indent_size*
+    一つのインデントのサイズを表す数値。もしくは、 tab_width プロパティの値を
+    使用する場合、"tab" を値に使用する。 'shiftwidth' 及び 'softtabstop'オプ
+    ションが設定される。値が "tab" でないかつ、 tab_width プロパティが設定され
+    ていない場合、 'tabstop' もこの値に設定される。
+
+indent_style                                       *editorconfig.indent_style*
+    `"tab"` もしくは `"space"` のいずれか。 'expandtab' オプションが設定される。
+
+insert_final_newline                       *editorconfig.insert_final_newline*
+    `"true"` または `"false"`、ファイルの最終バイトに常に改行文字が含まれるか否か。
+    'fixendofline' 及び 'endofline' オプションが設定される。
+
+max_line_length                                 *editorconfig.max_line_length*
+    一行の最大長を示す数値。 'textwidth' オプションが設定される。
+
+root                                                       *editorconfig.root*
+    値が "true" の場合、親ディレクト内からの `.editorconfig` ファイルの検索を停
+    止する。このプロパティは `.editorconfig` ファイル内の最上位に設定する必要が
+    ある(つまり、glob セクション内には設定できない。)。
+
+spelling_language                             *editorconfig.spelling_language*
+    ss または ss-TT 形式のコード。ss の場合は ISO 639 言語コード、ss-TT の場合
+    は ISO 3166 国名コード。 'spelllang' オプションが設定される。
+
+tab_width                                             *editorconfig.tab_width*
+    一つのタブの表示に使用する桁数。 'tabstop' オプションが設定される。
+
+trim_trailing_whitespace               *editorconfig.trim_trailing_whitespace*
+    値が `"true"` の場合、バッファへの書き込み時に行末の空白が自動的に削除され
+    る。
+
+
+ vim:tw=78:ts=8:sw=4:sts=4:et:ft=help:norl:

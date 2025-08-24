@@ -1,47 +1,47 @@
-*remote_plugin.txt*    Nvim
+*remote_plugin.txt*    Nvim 0.12        Last change: 2025-08-24
 
 
-		 NVIM REFERENCE MANUAL    by Thiago de Arruda
+                NVIMリファレンスマニュアル    by Thiago de Arruda
 
 
-Nvim support for remote plugins 		  *remote-plugin*
+リモートプラグインの Nvim サポート		  *remote-plugin*
 
-				      Type |gO| to see the table of contents.
-
-==============================================================================
-1. Introduction					    *remote-plugin-intro*
-
-Extensibility is a primary goal of Nvim. Any programming language may be used
-to extend Nvim without changes to Nvim itself. This is achieved with remote
-plugins, coprocesses that have a direct communication channel (via |RPC|) with
-the Nvim process.
-
-Even though these plugins run in separate processes they can call, be called,
-and receive events just as if the plugin's code were executed in the main
-process.
+                                            目次を確認するには |gO| をタイプ。
 
 ==============================================================================
-2. Plugin hosts					    *remote-plugin-hosts*
+1. はじめに					    *remote-plugin-intro*
 
-While plugins can be implemented as arbitrary programs that communicate
-directly with the high-level Nvim API and are called via |rpcrequest()| and
-|rpcnotify()|, that is not the best approach. Instead, developers should first
-check whether a plugin host is available for their chosen programming language.
+拡張性は、Nvim の重要な目標の一つです。Nvim 本体に直接変更を加えることなく、任
+意のプログラミング言語を使用して Nvim を拡張できます。これは、Nvim プロセスと
+直接通信するチャネル（ |RPC| 経由）を持つコプロセスであるリモートプラグインに
+よって実現されます。
 
-Plugin hosts are programs that provide a high-level environment for plugins,
-taking care of most boilerplate involved in defining commands, autocmds, and
-functions that are implemented over |RPC| connections. Hosts are loaded only
-when one of their registered plugins require it, keeping Nvim's startup as
-fast as possible, even if many plugins/hosts are installed.
+これらのプラグインはそれぞれ別のプロセスで実行されますが、まるでプラグインの
+コードがメインのプロセスで実行されたかのように、イベントを呼び出したり、呼び出
+されたり、受け取ったりします。
 
 ==============================================================================
-3. Example					    *remote-plugin-example*
+2. プラグインホスト				    *remote-plugin-hosts*
 
-The best way to learn about remote plugins is with an example, so let's see
-what a Python plugin looks like. This plugin exports a command, a function, and
-an autocmd. The plugin is called 'Limit', and all it does is limit the number
-of requests made to it. Here's the plugin source code:
->
+プラグインは、高レベルの Nvim API と直接通信し、 |rpcrequest()| 及び |rpcnotify()| 
+を介して呼び出される任意のプログラムとして実装できますが、これは最適なアプロー
+チではありません。代わりに、開発者はまず選択したプログラミング言語でプラグイン
+ホストが利用可能か確認する必要があります。
+
+プラグインホストは、プラグインに高レベルな環境を提供するプログラムであり、コマ
+ンド、自動コマンド、及び |RPC| 接続を介して実装される関数の定義に必要なボイラー
+プレートを処理します。ホストは、登録されているいずれかのプラグインが要求したと
+きにのみ実行されるため、多くのプラグインやホストがインストールされていても、
+Nvim は可能な限り高速に起動します。
+
+==============================================================================
+3. サンプル					    *remote-plugin-example*
+
+リモートプラグインについて学ぶ一番の方法はサンプルを見ることでしょう。こちらの
+Python プラグインを見てみましょう。このプラグインはコマンド、関数、そして自動
+コマンドをエクスポートします。プラグインの名前は 'Limit' で、行っているのは、
+リクエストの数を制限することだけです。ソースコードは次のとおりです: >python
+
     import pynvim
 
     @pynvim.plugin
@@ -77,59 +77,62 @@ of requests made to it. Here's the plugin source code:
             self.calls += 1
 <
 
-As can be seen, the plugin is implemented using idiomatic Python (classes,
-methods, and decorators). The translation between these language-specific
-idioms to Vimscript occurs while the plugin manifest is being generated (see
-the next section).
+ご覧の通り、このプラグインは Python の イディオム (クラス、メソッド、デコレー
+タ) を使用して実装されています。これらの言語固有のイディオムから Vimscript へ
+の変換はプラグインマニフェストの生成中に行われます(次のセクションを参照)。
 
-Notice that the exported command and autocmd are defined with the "sync" flag,
-which affects how Nvim calls the plugin: with "sync" the |rpcrequest()|
-function is used, which will block Nvim until the handler function returns a
-value. Without the "sync" flag, the call is made using a fire and forget
-approach with |rpcnotify()|, meaning return values or exceptions raised in the
-handler function are ignored.
+エクスポートされたコマンドと自動コマンドは "sync" フラグで定義されていることに
+注意してください。これは Nvim がプラグインを呼び出す方法に影響します。"sync"
+フラグが指定されている場合は |rpcrequest()| 関数が使用され、ハンドラ関数が値を
+返すまで Nvim はブロックされます。"sync" フラグが指定されていない場合は
+|rpcnotify()| による「撃ち放し」のアプローチで呼び出しが行われ、ハンドラ関数内
+で返された値や例外は無視されます。
 
-To test the above plugin, it must be saved in "rplugin/python" in a
-'runtimepath' directory (~/.config/nvim/rplugin/python/limit.py for example).
-Then, the remote plugin manifest must be generated with
-|:UpdateRemotePlugins|.
+上記のプラグインをテストするには、プラグインを 'runtimepath' 内の
+"rplugin/python" ディレクトリに保存しなければなりません(例:
+~/.config/nvim/rplugin/python/limit.py)。そして、 |:UpdateRemotePlugins| を実行
+してリモートプラグインマニフェストを生成する必要があります。
 
 ==============================================================================
-4. Remote plugin manifest			    *remote-plugin-manifest*
+4. リモートプラグインマニフェスト		    *remote-plugin-manifest*
 						      *:UpdateRemotePlugins*
 
-Just installing remote plugins to "rplugin/{host}" isn't enough for them to be
-automatically loaded when required. You must execute |:UpdateRemotePlugins|
-every time a remote plugin is installed, updated, or deleted.
+リモートプラグインを "rplugin/{host}" にインストールするだけでは、必要に応じて
+自動的に読み込まれるようにはなりません。リモートプラグインをインストール、更
+新、または削除されるたびに、 |:UpdateRemotePlugins| を実行する必要があります。
 
-|:UpdateRemotePlugins| generates the remote plugin manifest, a special
-Vimscript file containing declarations for all Vimscript entities
-(commands/autocommands/functions) defined by all remote plugins, with each
-entity associated with the host and plugin path.
+|:UpdateRemotePlugins| は、リモートプラグインマニフェストを生成します。これは、
+すべてのリモートプラグインで定義されたすべての Vimscript エンティティ（コマン
+ド、自動コマンド、関数）の宣言を含む特別な Vimscript ファイルで、各エンティティ
+はホストとプラグインのパスに関連付けられています。
 
-Manifest declarations are just calls to the `remote#host#RegisterPlugin`
-function, which takes care of bootstrapping the host as soon as the declared
-command, autocommand, or function is used for the first time.
+マニフェストの宣言は、 `remote#host#RegisterPlugin` 関数の呼び出しに過ぎず、宣言
+されたコマンド、自動コマンド、または関数が初めて使用されるとすぐにホストのブー
+トストラップを行います。
 
-The manifest generation step is necessary to keep Nvim's startup fast in
-situations where a user has remote plugins with different hosts. For example,
-say a user has three plugins, for Python, Java and .NET hosts respectively. If
-we were to load all three plugins at startup, then three language runtimes
-would also be spawned, which could take seconds!
+マニフェストの生成ステップは、ユーザーが異なるホストのリモートプラグインを持って
+いる状況で Nvim の起動を高速化するために必要です。例えば、ユーザーが Python、
+Java、.NET ホスト用の3つのプラグインを持っているとします。起動時に3つのプラグイ
+ンすべてをロードすると、3つの言語ランタイムが生成され、起動に数秒もかかってし
+まうかもしれません!
 
-With the manifest, each host will only be loaded when required. Continuing with
-the example, say the Java plugin is a semantic completion engine for Java code.
-If it defines the autocommand "BufEnter *.java", then the Java host is spawned
-only when Nvim loads a buffer matching "*.java".
+マニフェストがあれば、各ホストは必要な場合にのみロードされます。例えば、先程の
+Java プラグインが Java コード用のセマンティック補完エンジンだとします。自動コ
+マンド `BufEnter *.java` が定義されている場合、Java ホストは Nvim が "*.java" に
+一致するバッファをロードした時のみ呼び出されます。
 
 If the explicit call to |:UpdateRemotePlugins| seems inconvenient, try to see
 it like this: It's a way to provide IDE capabilities in Nvim while still
 keeping it fast and lightweight for general use. It's also analogous to the
 |:helptags| command.
+もし |:UpdateRemotePlugins| を明示的に呼び出すのが面倒に感じるのであれば、次のよ
+うに考えてみてください: これは、Nvim 汎用的な利用に対する高速性と軽量性を維持
+しつつ、IDE のような機能性を提供することだということです。また、 これは
+|:helptags| にも類似しています。
 
 						*$NVIM_RPLUGIN_MANIFEST*
-Unless $NVIM_RPLUGIN_MANIFEST is set the manifest will be written to a file
-named `rplugin.vim` at:
+環境変数 $NVIM_RPLUGIN_MANIFEST が設定されていない場合、マニフェストは次の場所
+で `rplugin.vim` という名前のファイルに書き込まれます。
 
 	Unix ~
 	  $XDG_DATA_HOME/nvim/ or ~/.local/share/nvim/
@@ -137,5 +140,4 @@ named `rplugin.vim` at:
 	Windows ~
 	  $LOCALAPPDATA/nvim/ or ~/AppData/Local/nvim/
 
-==============================================================================
  vim:tw=78:ts=8:noet:ft=help:norl:

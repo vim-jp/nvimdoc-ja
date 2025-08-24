@@ -1,0 +1,159 @@
+*health.txt*               Nvim 0.12        Last change: 2025-08-24
+
+
+                         NVIMリファレンスマニュアル
+
+
+                                            目次を確認するには |gO| をタイプ。
+
+==============================================================================
+Checkhealth                                              *vim.health* *health*
+
+vim.health は、プラグインが考慮する可能性がある設定項目や環境条件などの問題解
+決を手助けするための小さなフレームワークです。Nvim は、設定、パフォーマンス、
+python サポート、ruby サポート、クリップボードサポートなどの状態診断機能が標準
+搭載されています。
+
+全ての状態診断を実行するには、次を使用します:
+    :checkhealth
+<
+
+プラグイン開発者は、状態診断機能を実装することが推奨されます。 |health-dev|
+
+
+☆コマンド                                                    *health-commands*
+
+                                                           *:che* *:checkhealth*
+:che[ckhealth]  全ての状態診断を実行します。
+                                                                       *E5009*
+                Nvim は、構文ハイライト、ファイルタイプ固有の挙動、標準プラグ
+                イン(:checkhealth を含む)のための標準「ランタイムファイル」を
+                見つけるため、 |$VIMRUNTIME|、 'runtimepath'、 'packpath'に依存
+                しています。ランタイムファイルが見つからない場合、これらの機能
+                は動作しません。
+
+:che[ckhealth] {プラグイン}
+                一つ以上のプラグインに対して状態診断を実行します。例: Nvim 標
+                準の状態診断のみ実行するには: >vim
+                        :checkhealth vim.health
+<
+                "foo" 及び "bar" プラグインに対して状態診断を実行するには
+                (これらのプラグインが 'runtimepath' に存在し、Lua インター
+                フェイス `require("foo.health").check()` が実装されていると仮
+                定する): >vim
+                        :checkhealth foo bar
+<
+                Lua サブモジュールに対して状態診断を実行する場合、ドット記法ま
+                たは "*" を使用して全てのサブモジュールを参照します。例えば
+                Nvim が提供する `vim.lsp` と `vim.treesitter` の場合: >vim
+                        :checkhealth vim.lsp vim.treesitter
+                        :checkhealth vim*
+<
+
+☆使い方                                                         *health-usage*
+
+状態診断バッファに対してローカルなキーマップ:
+
+q               ウィンドウを閉じる。
+
+グローバル設定:
+                                                                    *g:health*
+g:health  次の任意のキーを持つ辞書型:
+          - `style` (`'float'|nil`) "float" に設定することで :checkhealth を通
+          常とは異なるフローティングウィンドウに表示する。
+
+          例: >lua
+            vim.g.health = { style = 'float' }
+
+
+ローカル設定:
+
+Checkhealth は自らのバッファのファイルタイプを "checkhealth" にセットします。
+|FileType| イベントを使用することで、バッファをカスタマイズすることができます。
+例として、状態リポートに絵文字を使用したくない場合は: >vim
+    autocmd FileType checkhealth :set modifiable | silent! %s/\v( ?[^\x00-\x7F])//g
+<
+
+
+--------------------------------------------------------------------------------
+healthcheck を実装する                                            *health-dev*
+
+状態診断機能は、ユーザー環境や設定、プラグインにおける前提条件などをチェックす
+るための関数です。Nvim は標準で以下の healthcheck が付属しています:
+• $VIMRUNTIME/autoload/health/
+• $VIMRUNTIME/lua/vim/lsp/health.lua
+• $VIMRUNTIME/lua/vim/treesitter/health.lua
+• など...
+
+あなたのプラグインに新たに状態診断機能を実装するには、単純に、"check()" 関数を
+含んだテーブル型を返す "health.lua" モジュールを 'runtimepath' に追加するだけ
+です。すると、 |:checkhealth| が自動的にその関数を見つけて呼び出します。
+
+例えば、あなたのプラグインの名前が "foo" であれば、次のいずれかの場所
+('runtimepath' 上)に状態診断モジュールを定義します:
+• lua/foo/health/init.lua
+• lua/foo/health.lua
+
+もし、あなたのプラグインが "bar" という名前のサブモジュールも提供しており、別
+途の状態診断機能が必要であれば、次のいずれかの場所に定義してください:
+• lua/foo/bar/health/init.lua
+• lua/foo/bar/health.lua
+
+全ての状態診断モジュールは、必ず `check()` 関数を含んだ Lua テーブルを返さなけ
+ればなりません。
+
+以下のサンプルコードを `lua/foo/health.lua` にコピーし、"foo" をあなたのプラグ
+インの名前に置き換えてください: >lua
+    local M = {}
+
+    M.check = function()
+      vim.health.start("foo report")
+      -- setup 関数のパラメータが正しいか確認する
+      if check_setup() then
+        vim.health.ok("Setup is correct")
+      else
+        vim.health.error("Setup is incorrect")
+      end
+      -- さらに確認を行う
+      -- ...
+    end
+
+    return M
+<
+
+
+error({msg}, {...})                                       *vim.health.error()*
+    エラーを通知する。
+
+    パラメータ: ~
+      • {msg}  (`string`)
+      • {...}  (`string|string[]`) 追加のアドバイス
+info({msg})                                                *vim.health.info()*
+    情報メッセージを通知する。
+
+    パラメータ: ~
+      • {msg}  (`string`)
+
+ok({msg})                                                    *vim.health.ok()*
+    「成功」メッセージを通知する。
+
+    パラメータ: ~
+      • {msg}  (`string`)
+
+start({name})                                             *vim.health.start()*
+    新しい診断を開始する。殆どのプラグインはこれを一度だけ呼び出す必要がある
+    が、もし診断毎に異なるセクションを表示したい場合は、セクション毎にこれを呼
+    び出す。
+
+    パラメータ: ~
+      • {name}  (`string`)
+
+warn({msg}, {...})                                         *vim.health.warn()*
+    警告を通知する。
+
+    パラメータ: ~
+      • {msg}  (`string`)
+      • {...}  (`string|string[]`) 追加のアドバイス
+
+
+ vim:tw=78:ts=8:sw=4:sts=4:et:ft=help:norl:

@@ -1,81 +1,84 @@
-*mlang.txt*     Nvim
+*mlang.txt*     Nvim 0.12        Last change: 2025-08-24
 
 
-		  VIM REFERENCE MANUAL    by Bram Moolenaar
+		VIMリファレンスマニュアル    by Bram Moolenaar
 
 
-Multi-language features				*multilang* *multi-lang*
+多言語機能					*multilang* *multi-lang*
 
-This is about using messages and menus in various languages.  For editing
-multi-byte text see |multibyte|.
+このマニュアルはメッセージとメニューを様々な言語で使用する方法について書かれて
+いる。マルチバイトテキストの編集については |multibyte| を参照。
 
-The basics are explained in the user manual: |usr_45.txt|.
+基本的なことはユーザーマニュアルでも説明されている: |usr_45.txt|。
 
-                                      Type |gO| to see the table of contents.
+                                            目次を確認するには |gO| をタイプ。
 
 ==============================================================================
-1. Messages						*multilang-messages*
+1. メッセージ						*multilang-messages*
 
-Vim picks up the locale from the environment.  In most cases this means Vim
-will use the language that you prefer, unless it's not available.
+Vimはシステム環境からロケール(地域情報)を判定する。ほとんどの場合これは、その
+言語が利用可能な状態でさえあるならば、Vimを好みの言語で使うことができることを
+意味している。
 
-To see a list of supported locale names on your system, look in one of these
-directories (for Unix):
+システムによりサポートされるロケールの一覧を見るには、(UNIXでは)これらのディレ
+クトリを見る:
 	/usr/lib/locale ~
 	/usr/share/locale ~
-Unfortunately, upper/lowercase differences matter.  Also watch out for the
-use of "-" and "_".
+ロケール名には不幸にして大文字と小文字の違いがある。また "-" と "_" の使われ方
+にも用心すること。
 
 					    *:lan* *:lang* *:language* *E197*
 :lan[guage]
 :lan[guage] mes[sages]
 :lan[guage] cty[pe]
 :lan[guage] tim[e]
-			Print the current language (aka locale).
-			With the "messages" argument the language used for
-			messages is printed.  Technical: LC_MESSAGES.
-			With the "ctype" argument the language used for
-			character encoding is printed.  Technical: LC_CTYPE.
-			With the "time" argument the language used for
-			strftime() is printed.  Technical: LC_TIME.
-			Without argument all parts of the locale are printed
-			(this is system dependent).
-			The current language can also be obtained with the
-			|v:lang|, |v:ctype| and |v:lc_time| variables.
+:lan[guage] col[late]
+			現在の言語(言い換えればロケール)を表示する。
+			引数 "message" を使用するとメッセージに利用されている
+			言語が表示される。専門的には: LC_MESSAGES
+			引数 "ctype" を使用すると文字エンコードに利用されてい
+			る言語が表示される。専門的には: LC_CTYPE
+			引数 "time" を使用するとstrftime()が表示に利用する言語
+			が表示される。専門的には: LC_TIME
+			引数 "collate" を使用すると照合に利用する言語が表示さ
+			れる。専門的には: LC_COLLATE
+			無引数ならばロケールの全体が表示される(どのように表示
+			されるかはシステムに依存する)。
+			現在の言語は |v:lang|, |v:ctype|, |v:collate| そして
+			|v:lc_time| の各変数で取得することもできる。
 
 :lan[guage] {name}
 :lan[guage] mes[sages] {name}
 :lan[guage] cty[pe] {name}
 :lan[guage] tim[e] {name}
-			Set the current language (aka locale) to {name}.
-			The locale {name} must be a valid locale on your
-			system.  Some systems accept aliases like "en" or
-			"en_US", but some only accept the full specification
-			like "en_US.ISO_8859-1".  On Unix systems you can use
-			this command to see what locales are supported: >
+:lan[guage] col[late] {name}
+<			{name}というロケールがシステムに存在していなければなら
+			ない。あるシステムでは "en" とか "en_US" と言った別称
+			を受け付けるが、中には "en_US.ISO_8859-1" のように完全
+			な指定しか受け付けないシステムもある。Unix では次のコ
+			マンドで、サポートされているロケールを確認できる: >
 				:!locale -a
-<			With the "messages" argument the language used for
-			messages is set.  This can be different when you want,
-			for example, English messages while editing Japanese
-			text.  This sets $LC_MESSAGES.
-			With the "ctype" argument the language used for
-			character encoding is set.  This affects the libraries
-			that Vim was linked with.  It's unusual to set this to
-			a different value from 'encoding' or "C".  This sets
-			$LC_CTYPE.
-			With the "time" argument the language used for time
-			and date messages is set.  This affects strftime().
-			This sets $LC_TIME.
-			Without an argument both are set, and additionally
-			$LANG is set.
-			The LC_NUMERIC value will always be set to "C" so
-			that floating point numbers use '.' as the decimal
-			point.  This will make a difference for items that
-			depend on the language (some messages, time and date
-			format).
-			Not fully supported on all systems.
-			If this fails there will be an error message.  If it
-			succeeds there is no message.  Example: >
+<			引数 "message" を使用するとメッセージに利用する言語を
+			設定する。これにより例として日本語を編集中に英語メッ
+			セージを使用するようなことができる。これは $LC_MESSAGES
+			を設定する。
+			引数 "ctype" を使用すると文字エンコードに利用する言語
+			を設定する。これはVimがリンクしているライブラリに影響
+			を与える。"C" や 'encoding' と異なる値を指定するのは一
+			般的ではない。これは $LC_CTYPE を設定する。
+			引数 "time" を使用すると時刻と日付のメッセージに利用さ
+			れる言語を設定する。strftime()に影響を与える。これは
+			$LC_TIME を設定する。
+			引数 "collate" を使用すると照合に利用される言語を設定
+			する。照合順に影響を与える。これは $LC_COLLATE を設定
+			する。
+			無引数ならば全てが設定され、加えて $LANG が設定される。
+			LC_NUMERIC は常に "C" にセットされ、浮動小数点数が小数
+			点として '.' を使うようになる。これは言語に依存した項
+			目(メッセージや時刻日付の書式)を変更することができる。
+			全てのシステムで完全にサポートされるわけではない。設定
+			に失敗すればエラーメッセージが表示される。成功した場合
+			には何も表示されない。例: >
 				:language
 				Current language: C
 				:language de_DE.ISO_8859-1
@@ -84,119 +87,103 @@ use of "-" and "_".
 				:lang mes en
 <
 
-MS-WINDOWS MESSAGE TRANSLATIONS				*win32-gettext*
+メッセージファイル(vim.mo)は "$VIMRUNTIME/lang/xx/LC_MESSAGES" に置かなければ
+ならない。"xx" はその言語名の省略形(ほとんどの場合2文字)に置き換えて考える。独
+自の翻訳を書く場合には.poファイルを作成しそれを.moファイルに変換する必要があ
+る。
 
-If you used the self-installing .exe file, message translations should work
-already.  Otherwise get the libintl.dll file if you don't have it yet:
+自動選択された言語を変更するには、$LANGに設定する。次の例は日本語メッセージを
+選択する方法を示している: >
 
-	http://sourceforge.net/projects/gettext
-Or:
-	https://mlocati.github.io/gettext-iconv-windows/
+  :let $LANG = "ja"
 
-This also contains tools xgettext, msgformat and others.
+翻訳をしないようにするには "en" を指定する。
 
-libintl.dll should be placed in same directory as (g)vim.exe, or one of the
-directories listed in the PATH environment value.  Vim also looks for the
-alternate names "libintl-8.dll" and "intl.dll".
-
-Message files (vim.mo) have to be placed in "$VIMRUNTIME/lang/xx/LC_MESSAGES",
-where "xx" is the abbreviation of the language (mostly two letters).
-
-If you write your own translations you need to generate the .po file and
-convert it to a .mo file.  You need to get the source distribution and read
-the file "src/po/README.txt".
-
-To overrule the automatic choice of the language, set the $LANG variable to
-the language of your choice.  use "en" to disable translations. >
-
-  :let $LANG = 'ja'
-
-(text for Windows by Muraoka Taro)
+(このWindows向け文章は村岡太郎によって書かれた)
+{訳注: 訳注として追加されたわけでなく原文にこの記述がある}
 
 ==============================================================================
-2. Menus						*multilang-menus*
+2. メニュー						*multilang-menus*
 
-See |45.2| for the basics, esp. using 'langmenu'.
+基本(特に 'langmenu' の使い方)は |45.2| を参照。
 
-Note that if changes have been made to the menus after the translation was
-done, some of the menus may be shown in English.  Please try contacting the
-maintainer of the translation and ask him to update it.  You can find the
-name and e-mail address of the translator in
-"$VIMRUNTIME/lang/menu_<lang>.vim".
+メニューの翻訳が作られた後に元のメニューが変更された場合には、それらのメニュー
+は英語のまま表示されることがある。そのような場合には翻訳のメンテナーに連絡を取
+り更新するように頼んで欲しい。翻訳者の名前とメールアドレスはファイル
+"$VIMRUNTIME/lang/menu_<lang>.vim" の中に見つけることができる。
 
-To set the font (or fontset) to use for the menus, use the |:highlight|
-command.  Example: >
+メニューに利用するフォントを指定するには、 |:highlight| コマンドを使用する。
+例: >
 
 	:highlight Menu font=k12,r12
 
 
-ALIAS LOCALE NAMES
+☆ロケールの省略名
 
-Unfortunately, the locale names are different on various systems, even though
-they are for the same language and encoding.  If you do not get the menu
-translations you expected, check the output of this command: >
+あいにく、同じ言語に同じエンコードであっても、ロケール名がシステムによって異な
+ることがある。期待した通りにメニューが翻訳されない時には、次のコマンドの実行結
+果を調べる: >
 
 	echo v:lang
 
-Now check the "$VIMRUNTIME/lang" directory for menu translation files that use
-a similar language.  A difference in a "-" being a "_" already causes a file
-not to be found!  Another common difference to watch out for is "iso8859-1"
-versus "iso_8859-1".  Fortunately Vim makes all names lowercase, thus you
-don't have to worry about case differences.  Spaces are changed to
-underscores, to avoid having to escape them.
+次に "$VIMRUNTIME/lang" ディレクトリを調べて同じ言語に使われるメニュー翻訳ファ
+イルを探す。"-" と "_" が違うだけでファイルは見つけられなくなる。良くある間違
+い "iso8859-1" と "iso_8859-1" にも用心する。幸い、Vimは全ての名前を小文字にす
+るので、大文字小文字の区別を心配する必要はない。名前中の空白文字はエスケープす
+るのではなくアンダースコア("_")に変換される。
 
-If you find a menu translation file for your language with a different name,
-create a file in your own runtime directory to load that one.  The name of
-that file could be: >
+使いたい言語用の、それと異なる名前のメニュー翻訳ファイルを見つけた場合は、独自
+のランタイムディレクトリに読み込まれるようファイルを作成する。ファイルの名前は
+次のようにする: >
 
 	~/.config/nvim/lang/menu_<v:lang>.vim
 
-Check the 'runtimepath' option for directories which are searched.  In that
-file put a command to load the menu file with the other name: >
+ファイルが検索されるディレクトリを指定するオプション 'runtimepath' を確認する。
+そのファイルに別の名前のメニューファイルを読み込む、次のようなコマンドを記入す
+る: >
 
 	runtime lang/menu_<other_lang>.vim
 
 
-TRANSLATING MENUS
+☆メニューを翻訳する
 
-If you want to do your own translations, you can use the |:menutrans| command,
-explained below.  It is recommended to put the translations for one language
-in a Vim script.  For a language that has no translation yet, please consider
-becoming the maintainer and make your translations available to all Vim users.
-Send an e-mail to the Vim maintainer <maintainer@vim.org>.
+メニューを独自に翻訳したい場合は、以下で説明するように |:menutrans| コマンドを使
+うことができる。ある1つの言語の翻訳は1つの Vim script にまとめられることが推奨
+される。まだ翻訳が存在しない言語については、メンテナーになりその翻訳を全ての
+Vimユーザーに提供することを是非とも考えていただきたい。Vimのメンテナーにメール
+を送って欲しい。アドレスは<maintainer@vim.org>である。
 
 					*:menut* *:menutrans* *:menutranslate*
 :menut[ranslate] clear
-			Clear all menu translations.
+			メニューの翻訳をすべて削除する。
 
 :menut[ranslate] {english} {mylang}
-			Translate menu name {english} to {mylang}.  All
-			special characters like "&" and "<Tab>" need to be
-			included.  Spaces and dots need to be escaped with a
-			backslash, just like in other |:menu| commands.
-			Case in {english} is ignored.
+			メニュー名{english}を{mylang}に翻訳する。"&" と
+			"<Tab>" の特別な文字も全て含まれる必要がある。半角ス
+			ペースとピリオド('.')は |:menu| コマンドと同様に、バック
+			スラッシュ {訳注: '\'} でエスケープする必要がある。
+			{english}内の大文字小文字は無視される。
 
-See the $VIMRUNTIME/lang directory for examples.
+例は$VIMRUNTIME/langディレクトリを参照。
 
-To try out your translations you first have to remove all menus.  This is how
-you can do it without restarting Vim: >
+翻訳をテストするには一旦全てのメニューを削除する必要がある。次のはVimを再起動
+せずにそれを行う方法である: >
 	:source $VIMRUNTIME/delmenu.vim
 	:source <your-new-menu-file>
 	:source $VIMRUNTIME/menu.vim
 
-Each part of a menu path is translated separately.  The result is that when
-"Help" is translated to "Hilfe" and "Overview" to "�berblick" then
-"Help.Overview" will be translated to "Hilfe.�berblick".
+メニューパスの各部位は個別に翻訳される。"Help" が "Hilfe" に、"Overview" が
+"Überblick" に訳される時、結果的に "Help.Overview" は "Hilfe.Überblick" と翻訳
+される。
 
 ==============================================================================
-3. Scripts						*multilang-scripts*
+3. スクリプト						*multilang-scripts*
 
-In Vim scripts you can use the |v:lang| variable to get the current language
-(locale).  The default value is "C" or comes from the $LANG environment
-variable.
+Vim script では現在の言語(ロケールを)取得するのに変数 |v:lang| を使うことがで
+きる。デフォルトの値は "C" か環境変数$LANGの値になる。
 
-The following example shows how this variable is used in a simple way, to make
-a message adapt to language preferences of the user, >
+以下の例は、この変数を使ったユーザーの好みの言語にメッセージを適合させる簡単な
+例を示している, >
 
 	:if v:lang =~ "de_DE"
 	:  echo "Guten Morgen"
