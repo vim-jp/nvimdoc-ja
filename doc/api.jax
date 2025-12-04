@@ -745,38 +745,6 @@ Extmarkの作成と削除はバッファの変更ではないため、アンド�
 ==============================================================================
 Global Functions                                                  *api-global*
 
-nvim_exec({src}, {output})                                       *nvim_exec()*
-                Executes Vimscript (multiline block of Ex-commands), like
-                anonymous |:source|.
-                |:source|の様にVimscript(複数行のEXコマンド)を実行します。
-
-                Unlike |nvim_command()| this function supports heredocs,
-                script-scope (s:), etc.
-                |nvim_command()|とは異なりヒアドキュメントやスクリプトスコープ
-                (s:)等をサポートします。
-
-                On execution error: fails with VimL error, does not update
-                v:errmsg.
-                実行エラー時: 関数は失敗し、v:errmsgは更新されません。
-
-                Parameters: ~
-                    {src}     Vimscript code
-                    {src}     Vimscriptコード
-                    {output}  Capture and return all (non-error, non-shell
-                              |:!|) output
-                    {output}  すべての出力(エラーとshell(|:!|)を除く)を
-                              キャプチャして返す。
-
-                Return: ~
-                    Output (non-error, non-shell |:!|) if `output` is true,
-                    else empty string.
-                    `output`がtrueならoutput(エラーとshell(:!)を除く)を返す。
-                    それ以外なら空の文字列を返す。
-
-                See also: ~
-                    |execute()|
-                    |nvim_command()|
-
 nvim_command({command})                                       *nvim_command()*
                 Executes an ex-command.
                 1つのEXコマンドを実行します。
@@ -791,40 +759,6 @@ nvim_command({command})                                       *nvim_command()*
 
                 See also: ~
                     |nvim_exec()|
-
-nvim_get_hl_by_name({name}, {rgb})                     *nvim_get_hl_by_name()*
-                Gets a highlight definition by name.
-                名前からハイライト定義を取得します。
-
-                Parameters: ~
-                    {name}  Highlight group name
-                    {name}  ハイライトグループ名
-                    {rgb}   Export RGB colors
-                    {rgb}   RBGカラーの出力
-
-                Return: ~
-                    Highlight definition map
-                    ハイライト定義Map
-
-                See also: ~
-                    |nvim_get_hl_by_id()|
-
-nvim_get_hl_by_id({hl_id}, {rgb})                        *nvim_get_hl_by_id()*
-                Gets a highlight definition by id. |hlID()|
-                IDからハイライト定義を取得します。|hlID()|
-
-                Parameters: ~
-                    {hl_id}  Highlight id as returned by |hlID()|
-                    {hl_id}  |hlID()|が返すID。
-                    {rgb}    Export RGB colors
-                    {rgb}    RBGカラーの出力
-
-                Return: ~
-                    Highlight definition map
-                    ハイライト定義Map
-
-                See also: ~
-                    |nvim_get_hl_by_name()|
 
 nvim_feedkeys({keys}, {mode}, {escape_csi})                  *nvim_feedkeys()*
                 Sends input-keys to Nvim, subject to various quirks controlled
@@ -1147,28 +1081,6 @@ nvim_set_vvar({name}, {value})                               *nvim_set_vvar()*
                     {name}   変数名。
                     {value}  Variable value
                     {value}  変数の値。
-
-nvim_get_option({name})                                    *nvim_get_option()*
-                Gets an option value string.
-                オプションの値を取得します。
-
-                Parameters: ~
-                    {name}  Option name
-                    {name}  オプション名。
-
-                Return: ~
-                    Option value (global)
-                    オプションの値。(グローバル)
-
-nvim_set_option({name}, {value})                           *nvim_set_option()*
-                Sets an option value.
-                オプションに値をセットします。
-
-                Parameters: ~
-                    {name}   Option name
-                    {name}   オプション名。
-                    {value}  New option value
-                    {value}  新しい値。
 
 nvim_out_write({str})                                       *nvim_out_write()*
                 Writes a message to the Vim output buffer. Does not append
@@ -1948,47 +1860,6 @@ nvim_list_chans()                                          *nvim_list_chans()*
                     |nvim_get_chan_info()|で指定された形式でチャンネルを記述す
                     る辞書配列。
 
-nvim_call_atomic({calls})                                 *nvim_call_atomic()*
-                Calls many API methods atomically.
-                複数のAPIメソッドをアトミックに呼び出します。
-
-                This has two main usages:
-                1. To perform several requests from an async context
-                   atomically, i.e. without interleaving redraws, RPC requests
-                   from other clients, or user interactions (however API
-                   methods may trigger autocommands or event processing which
-                   have such side-effects, e.g. |:sleep| may wake timers).
-                2. To minimize RPC overhead (roundtrips) of a sequence of many
-                   requests.
-                主に2つの使い方があります:
-                1. 非同期コンテキストから複数のリクエストをアトミックに実行しま
-                   す。つまり、再描画、他のクライアントからのRPCリクエスト、ユー
-                   ザー対話はありません。(しかし、APIメソッドは副作用を持つ
-                   autocommandやイベント処理を起動することがあります。例えば、
-                   |:sleep|はタイマーを起動することがあります。)
-                2. 多くのリクエストのRPCオーバーヘッド(往復)を最小限に抑えるため。
-
-                Parameters: ~
-                    {calls}  an array of calls, where each call is described
-                             by an array with two elements: the request name,
-                             and an array of arguments.
-                    {calls}  呼び出す配列。2つの要素を持つ配列で記述される:
-                             リクエスト名と引数の配列。
-
-                Return: ~
-                    Array of two elements. The first is an array of return
-                    values. The second is NIL if all calls succeeded. If a
-                    call resulted in an error, it is a three-element array
-                    with the zero-based index of the call which resulted in an
-                    error, the error type and the error message. If an error
-                    occurred, the values from all preceding calls will still
-                    be returned.
-                    2つの要素を持つ配列。1つ目は戻り値の配列です。2つ目はすべて
-                    の呼び出しが成功した場合はNILです。呼び出しがエラーになった
-                    場合、エラーが発生した0ベースのインデックス、エラーの種類、
-                    エラーメッセージの3つの要素を持つ配列になります。エラーが
-                    発生した場合でも、先行するすべての呼び出しから値が返されます。
-
                                                      *nvim_parse_expression()*
 nvim_parse_expression({expr}, {flags}, {highlight})
                 Parse a VimL expression.
@@ -2610,34 +2481,6 @@ nvim_buf_del_var({buffer}, {name})                        *nvim_buf_del_var()*
                     {name}    Variable name
                     {name}    変数名。
 
-nvim_buf_get_option({buffer}, {name})                  *nvim_buf_get_option()*
-                Gets a buffer option value
-                バッファオプションの値を取得します。
-
-                Parameters: ~
-                    {buffer}  Buffer handle, or 0 for current buffer
-                    {buffer}  バッファハンドル。カレントバッファは0。
-                    {name}    Option name
-                    {name}    オプション名。
-
-                Return: ~
-                    Option value
-                    オプションの値。
-
-nvim_buf_set_option({buffer}, {name}, {value})         *nvim_buf_set_option()*
-                Sets a buffer option value. Passing 'nil' as value deletes the
-                option (only works if there's a global fallback)
-                バッファオプションをセットします。値として'nil'を渡すとオプショ
-                ンが削除されます(グローバルフォールバッグがある場合にのみ)。
-
-                Parameters: ~
-                    {buffer}  Buffer handle, or 0 for current buffer
-                    {buffer}  バッファハンドル。カレントバッファは0。
-                    {name}    Option name
-                    {name}    オプション名。
-                    {value}   Option value
-                    {value}   オプションの値。
-
 nvim_buf_get_name({buffer})                              *nvim_buf_get_name()*
                 Gets the full file name for the buffer
                 バッファのフルパスを取得します。
@@ -2940,69 +2783,6 @@ nvim_buf_clear_namespace({buffer}, {ns_id}, {line_start}, {line_end})
 				  クリアする行範囲の最後（排他的）
 				  または クリアするバッファの終端として-1
 
-                                                 *nvim_buf_set_virtual_text()*
-nvim_buf_set_virtual_text({buffer}, {ns_id}, {line}, {chunks}, {opts})
-                Set the virtual text (annotation) for a buffer line.
-                バッファ行のvirtual text(アノテーション)をセットします。
-
-                By default (and currently the only option) the text will be
-                placed after the buffer text. Virtual text will never cause
-                reflow, rather virtual text will be truncated at the end of
-                the screen line. The virtual text will begin one cell
-                (|lcs-eol| or space) after the ordinary text.
-                デフォルト(現在では唯一のオプション)では、テキストはバッファテキ
-                ストの後に配置されます。virtual textはリフローを起さず、画面の行
-                末で切り捨てられます。virtual textは通常のテキストの後のセル(
-                |lcs-eol|またはスペース)から始まります。
-
-                Namespaces are used to support batch deletion/updating of
-                virtual text. To create a namespace, use
-                |nvim_create_namespace|. Virtual text is cleared using
-                |nvim_buf_clear_namespace|. The same `ns_id` can be used for
-                both virtual text and highlights added by
-                |nvim_buf_add_highlight|, both can then be cleared with a
-                single call to |nvim_buf_clear_namespace|. If the virtual text
-                never will be cleared by an API call, pass `ns_id = -1` .
-                ネームスペースはvirtual textを一括で削除/更新するために使用され
-                ます。ネームスペースを作成するには|nvim_create_namespace()|を使
-                用します。virtual textは|nvim_buf_clear_namespace()|を使用してク
-                リアされます。virtual textと|nvim_buf_add_highlight()|によって追
-                加されたハイライトは同じ`ns_id`を使用でき、両方を1回の
-                |nvim_buf_clear_namespace()|呼び出しでクリアできます。
-                virtual textがAPI呼び出しで削除されない場合は、`ns_id = -1`を渡
-                します。
-
-                As a shorthand, `ns_id = 0` can be used to create a new
-                namespace for the virtual text, the allocated id is then
-                returned.
-                省略形として、`ns_id = 0`を使用して新しいネームスペースを作成
-                でき、割り当てられたidが返されます。
-
-                Parameters: ~
-                    {buffer}  Buffer handle, or 0 for current buffer
-                    {buffer}  バッファハンドル。カレントバッファは0。
-                    {ns_id}   Namespace to use or 0 to create a namespace, or
-                              -1 for a ungrouped annotation
-                    {ns_id}   使用するネームスペース。ネームスペースを作成する場
-                              合は0。グループ化されていない場合は-1。
-                    {line}    Line to annotate with virtual text
-                              (zero-indexed)
-                    {line}    virtual textでアノテーションをつける行(0インデック
-                              ス)
-                    {chunks}  A list of [text, hl_group] arrays, each
-                              representing a text chunk with specified
-                              highlight. `hl_group` element can be omitted for
-                              no highlight.
-                    {chunks}  配列[text, hi_group]のリスト。それぞれ指定されたハ
-                              イライト付きのテキストチャンクを表します。
-                              `hi_group`要素はハイライトしない場合省略できます。
-                    {opts}    Optional parameters. Currently not used.
-                    {opts}    オプションパラメーター。現在は未使用。
-
-                Return: ~
-                    The ns_id that was used
-                    使用されたns_id。
-
 nvim_buf_get_virtual_text({buffer}, {lnum})      *nvim_buf_get_virtual_text()*
                 Get the virtual text (annotation) for a buffer line.
                 バッファ行のvirtual text(アノテーション)を取得します。
@@ -3172,34 +2952,6 @@ nvim_win_del_var({window}, {name})                        *nvim_win_del_var()*
                     {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
                     {name}    Variable name
                     {name}    変数名。
-
-nvim_win_get_option({window}, {name})                  *nvim_win_get_option()*
-                Gets a window option value
-                ウィンドウオプションの値を取得します。
-
-                Parameters: ~
-                    {window}  Window handle, or 0 for current window
-                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
-                    {name}    Option name
-                    {name}    オプション名。
-
-                Return: ~
-                    Option value
-                    オプションの値。
-
-nvim_win_set_option({window}, {name}, {value})         *nvim_win_set_option()*
-                Sets a window option value. Passing 'nil' as value deletes the
-                option(only works if there's a global fallback)
-                ウィンドウオプションをセットします。'nil'が値として渡されるとオ
-                プションが削除されます。(グローバルフォールバックがある場合のみ)
-
-                Parameters: ~
-                    {window}  Window handle, or 0 for current window
-                    {window}  ウィンドウハンドル。カレントウィンドウの場合は0。
-                    {name}    Option name
-                    {name}    オプション名。
-                    {value}   Option value
-                    {value}   オプションの値。
 
 nvim_win_get_position({window})                      *nvim_win_get_position()*
                 Gets the window position in display cells. First position is
