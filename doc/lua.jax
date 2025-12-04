@@ -525,7 +525,7 @@ internal/private and must not be used by plugins.
 関数は、内部関数またはprivateな関数であり、プラグインからは使用してはいけません。
 
 ------------------------------------------------------------------------------
-VIM.LOOP						*lua-loop* *vim.loop*
+VIM.LOOP						*lua-loop*
 
 `vim.loop` exposes all features of the Nvim event-loop.  This is a low-level
 API that provides functionality for networking, filesystem, and process
@@ -1129,14 +1129,6 @@ tbl_extend({behavior}, {...})                               *vim.tbl_extend()*
 deep_equal({a}, {b})                                        *vim.deep_equal()*
                 TODO: Documentation
 
-tbl_add_reverse_lookup({o})                     *vim.tbl_add_reverse_lookup()*
-                Add the reverse lookup values to an existing table. For
-                example: `tbl_add_reverse_lookup { A = 1 } == { [1] = 'A', A =
-                1 }`
-
-                Parameters: ~
-                    {o}  table The table to add the reverse to.
-
 list_extend({dst}, {src}, {start}, {finish})               *vim.list_extend()*
                 Extends a list-like table with the values of another list-like
                 table.
@@ -1154,26 +1146,6 @@ list_extend({dst}, {src}, {start}, {finish})               *vim.list_extend()*
 
                 See also: ~
                     |vim.tbl_extend()|
-
-tbl_flatten({t})                                           *vim.tbl_flatten()*
-                Creates a copy of a list-like table such that any nested
-                tables are "unrolled" and appended to the result.
-
-                Parameters: ~
-                    {t}  List-like table
-
-                Return: ~
-                    Flattened copy of the given list-like table.
-
-                See also: ~
-                    Fromhttps://github.com/premake/premake-core/blob/master/src/base/table.lua
-
-tbl_islist({t})                                             *vim.tbl_islist()*
-                Table
-
-                Return: ~
-                    true: A non-empty array, false: A non-empty table, nil: An
-                    empty table
 
 trim({s})                                                         *vim.trim()*
                 Trim whitespace (Lua pattern "%s") from both sides of a

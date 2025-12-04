@@ -1,0 +1,320 @@
+*deprecated.txt*       Nvim
+
+
+                             NVIM REFERENCE MANUAL
+
+
+Nvim                                                              *deprecated*
+
+以下の項目は非推奨であり、将来削除される。
+新規のスクリプトでは使わず、既存のスクリプトは更新すべきである。
+
+==============================================================================
+非推奨の機能
+
+------------------------------------------------------------------------------
+0.11 より非推奨                                              *deprecated-0.11*
+
+API
+• nvim_notify()             |nvim_echo()| や `nvim_exec_lua("vim.notify(...)", ...)` を使う。
+• nvim_subscribe()          プラグインは自身のマルチキャストチャンネルリストを
+  維持しなければならない。
+• nvim_unsubscribe()        プラグインは自身のマルチキャストチャンネルリストを
+  維持しなければならない。
+• nvim_out_write()          |nvim_echo()| を使う。
+• nvim_err_write()          |nvim_echo()| を `{err=true}` で使う。
+• nvim_err_writeln()        |nvim_echo()| を `{err=true}` で使う。
+• nvim_buf_add_highlight()  |vim.hl.range()| や |nvim_buf_set_extmark()| を使う。
+
+DIAGNOSTICS
+• *vim.diagnostic.goto_next()*     |vim.diagnostic.jump()| を `{count=1, float=true}` で使う。
+• *vim.diagnostic.goto_prev()*     |vim.diagnostic.jump()| を `{count=-1, float=true}` で使う。
+• *vim.diagnostic.get_next_pos()*  |vim.diagnostic.get_next()| の返り値の "lnum" と "col" を使う。
+• *vim.diagnostic.get_prev_pos()*  |vim.diagnostic.get_prev()| の返り値の "lnum" と "col" を使う。
+• 各種関数で使われる "win_id" パラメーターは廃止され、代わりに |winid| が使われる。
+• |vim.diagnostic.JumpOpts| の "cursor_position" キーは "pos" に改名された。
+
+ハイライト ~
+• *TermCursorNC*  フォーカスされていない |terminal| ウィンドウにはカーソルがない。
+
+LSP
+• *vim.lsp.util.jump_to_location*      |vim.lsp.util.show_document()| を `{focus=true}` で使う。
+• *vim.lsp.buf.execute_command*        |Client:exec_cmd()| を使う。
+• *vim.lsp.buf.completion*             |vim.lsp.completion.get()| を使う。
+• vim.lsp.buf_request_all            ハンドラの返り値の `error` キーは `err` に改名された。
+• *vim.lsp.with()*                     設定を `vim.lsp.buf.*` の対応する関数に渡す。
+• |vim.lsp.handlers|                   client-to-server response handlers はサポートせず、
+  server-to-client requests/notification handlers のみサポートする。
+• *vim.lsp.handlers.signature_help()*  |vim.lsp.buf.signature_help()| を使う。
+• `client.request()`                   |Client:request()| を使う。
+• `client.request_sync()`              |Client:request_sync()| を使う。
+• `client.notify()`                    |Client:notify()| を使う。
+• `client.cancel_request()`            |Client:cancel_request()| を使う。
+• `client.stop()`                      |Client:stop()| を使う。
+• `client.is_stopped()`                |Client:is_stopped()| を使う。
+• `client.supports_method()`           |Client:supports_method()| を使う。
+• `client.on_attach()`                 |Client:on_attach()| を使う。
+• `vim.lsp.start_client()`             |vim.lsp.start()| を使う。
+
+LUA
+• vim.region()               |getregionpos()| を使う。
+• *vim.highlight*              |vim.hl| に改名された。
+• vim.validate(opts: table)  1. の形式を使う。 |vim.validate()| を参照。
+
+VIMSCRIPT
+• *termopen()*                 |jobstart() を `{term: v:true}` で使う。
+
+------------------------------------------------------------------------------
+0.10 より非推奨                                              *deprecated-0.10*
+
+API
+• *nvim_buf_get_option()*  |nvim_get_option_value()| を使う。
+• *nvim_buf_set_option()*  |nvim_set_option_value()| を使う。
+• *nvim_call_atomic()*     |nvim_exec_lua()| を使う。
+• *nvim_get_option()*      |nvim_get_option_value()| を使う。
+• *nvim_set_option()*      |nvim_set_option_value()| を使う。
+• *nvim_win_get_option()*  |nvim_get_option_value()| を使う。
+• *nvim_win_set_option()*  |nvim_set_option_value()| を使う。
+
+CHECKHEALTH
+• *health#report_error* *vim.health.report_error()*  |vim.health.error()| を使う。
+• *health#report_info* *vim.health.report_info()*    |vim.health.info()| を使う。
+• *health#report_ok* *vim.health.report_ok()*        |vim.health.ok()| を使う。
+• *health#report_start* *vim.health.report_start()*  |vim.health.start()| を使う。
+• *health#report_warn* *vim.health.report_warn()*    |vim.health.warn()| を使う。
+
+DIAGNOSTICS
+• |:sign-define| や |sign_define()| を使った |diagnostic-signs| の設定
+  |vim.diagnostic.config()| の "signs" キーを使う。
+• vim.diagnostic の関数:
+  • *vim.diagnostic.disable()*      |vim.diagnostic.enable()| を使う。
+  • *vim.diagnostic.is_disabled()*  |vim.diagnostic.is_enabled()| を使う。
+  • レガシーシグネチャ: `vim.diagnostic.enable(buf:number, namespace:number)`
+
+LSP
+• *vim.lsp.util.get_progress_messages()*  |vim.lsp.status()| を使う。
+• *vim.lsp.get_active_clients()*          |vim.lsp.get_clients()| を使う。
+• *vim.lsp.for_each_buffer_client()*      |vim.lsp.get_clients()| を使う。
+• *vim.lsp.util.trim_empty_lines()*       |vim.split()| を `trimempty` で使う。
+• *vim.lsp.util.try_trim_markdown_code_blocks()*
+• *vim.lsp.util.set_lines()*
+• *vim.lsp.util.extract_completion_items()*
+• *vim.lsp.util.parse_snippet()*
+• *vim.lsp.util.text_document_completion_list_to_complete_items()*
+• *vim.lsp.util.lookup_section()*         |vim.tbl_get()| を使う: >
+    local keys = vim.split(section, '.', { plain = true })
+    local  vim.tbl_get(table, unpack(keys))
+<
+
+LUA
+• *vim.loop*                      |vim.uv| を使う。
+• *vim.tbl_add_reverse_lookup()*
+• *vim.tbl_flatten()*             |Iter:flatten()| を使う。
+• *vim.tbl_islist()*              |vim.islist()| を使う。
+
+オプション ~
+• "term_background" UIオプション |ui-ext-options| は非推奨になった。
+  今後、背景色の検出はTUIではなくNvimのコアによりluaで実行される。
+
+TREESITTER
+• *LanguageTree:for_each_child()*  |LanguageTree:children()| (非再帰的) を使う。
+
+
+------------------------------------------------------------------------------
+0.9 より非推奨                                                *deprecated-0.9*
+
+API
+• *nvim_get_hl_by_name()*                       |nvim_get_hl()| を使う。
+• *nvim_get_hl_by_id()*                         |nvim_get_hl()| を使う。
+
+TREESITTER
+• *vim.treesitter.language.require_language()*  |vim.treesitter.language.add()| を使う。
+• *vim.treesitter.get_node_at_pos()*            |vim.treesitter.get_node()| を使う。
+• *vim.treesitter.get_node_at_cursor()*         |vim.treesitter.get_node()| と
+                                              |TSNode:type()| を使う。
+• 以下のトップレベルのTreesitterの関数は移動:
+  • *vim.treesitter.inspect_language()*    -> |vim.treesitter.language.inspect()|
+  • *vim.treesitter.get_query_files()*     -> |vim.treesitter.query.get_files()|
+  • *vim.treesitter.set_query()*           -> |vim.treesitter.query.set()|
+  • *vim.treesitter.query.set_query()*     -> |vim.treesitter.query.set()|
+  • *vim.treesitter.get_query()*           -> |vim.treesitter.query.get()|
+  • *vim.treesitter.query.get_query()*     -> |vim.treesitter.query.get()|
+  • *vim.treesitter.parse_query()*         -> |vim.treesitter.query.parse()|
+  • *vim.treesitter.query.parse_query()*   -> |vim.treesitter.query.parse()|
+  • *vim.treesitter.add_predicate()*       -> |vim.treesitter.query.add_predicate()|
+  • *vim.treesitter.add_directive()*       -> |vim.treesitter.query.add_directive()|
+  • *vim.treesitter.list_predicates()*     -> |vim.treesitter.query.list_predicates()|
+  • *vim.treesitter.list_directives()*     -> |vim.treesitter.query.list_directives()|
+  • *vim.treesitter.query.get_range()*     -> |vim.treesitter.get_range()|
+  • *vim.treesitter.query.get_node_text()* -> |vim.treesitter.get_node_text()|
+
+LUA
+  • *nvim_exec()*                               |nvim_exec2()| を使う。
+  • *vim.pretty_print()*                        |vim.print()| を使う。
+
+
+------------------------------------------------------------------------------
+0.8 以前より非推奨
+
+API
+• *nvim_buf_clear_highlight()*   |nvim_buf_clear_namespace()| を使う。
+• *nvim_buf_set_virtual_text()*  |nvim_buf_set_extmark()| を使う。
+• *nvim_command_output()*        |nvim_exec2()| を使う。
+• *nvim_execute_lua()*           |nvim_exec_lua()| を使う。
+• *nvim_get_option_info()*       |nvim_get_option_info2()| を使う。
+
+コマンド ~
+• *:rv* *:rviminfo*                |:rshada| のエイリアス。
+• *:wv* *:wviminfo*                |:wshada| のエイリアス。
+
+環境変数 ~
+• *$NVIM_LISTEN_ADDRESS*
+  • 代わりに以下を使う:
+    • サーバーの名前を設定するには |--listen| や |serverstart()| を使う。
+    • サーバーの名前を取得するには |v:servername| を使う。
+    • 親のNvimを検出するには |$NVIM| を使う。
+  • --listen が与えられると無視される。
+  • 起動時 (|v:servername| の初期化後) に設定解除される。
+    "env" オプションにより |terminal| や |jobstart()| に明示的に渡すことができる。 例: >vim
+        call jobstart(['foo'], { 'env': { 'NVIM_LISTEN_ADDRESS': v:servername  } })
+<
+
+イベント ~
+• *BufCreate*        |BufAdd| を使う。
+• *EncodingChanged*  絶対に発火しない。 'encoding' は常に "utf-8"。
+• *FileEncoding*     絶対に発火しない。 |EncodingChanged| と同等。
+• *GUIEnter*         絶対に発火しない。 |UIEnter| を使う。
+• *GUIFailed*        絶対に発火しない。
+
+キーコード ~
+• *<MouseDown>*      <ScrollWheelUp> を使う。
+• *<MouseUp>*        <ScrollWheelDown> を使う。
+
+ハイライト ~
+• *hl-VertSplit*     |hl-WinSeparator| を使う。
+
+LSP DIAGNOSTICS
+以下の関数については特に断りがない限り、代わりに |vim.diagnostic| の対応する関数を使う。
+例えば、 |vim.lsp.diagnostic.get()| の代わりに |vim.diagnostic.get()| を使う。
+
+• *vim.lsp.diagnostic.clear()*                  |vim.diagnostic.hide()| を使う。
+• *vim.lsp.diagnostic.disable()*                |vim.diagnostic.enable()| を使う。
+• *vim.lsp.diagnostic.display()*                |vim.diagnostic.show()| を使う。
+• *vim.lsp.diagnostic.enable()*
+• *vim.lsp.diagnostic.get()*
+• *vim.lsp.diagnostic.get_all()*                |vim.diagnostic.get()| を使う。
+• *vim.lsp.diagnostic.get_count()*              |vim.diagnostic.count()| を使う。
+• *vim.lsp.diagnostic.get_line_diagnostics()*   |vim.diagnostic.get()| を使う。
+• *vim.lsp.diagnostic.get_next()*
+• *vim.lsp.diagnostic.get_next_pos()*
+• *vim.lsp.diagnostic.get_prev()*
+• *vim.lsp.diagnostic.get_prev_pos()*
+• *vim.lsp.diagnostic.get_virtual_text_chunks_for_line()* 代替はない。
+  virtual text のカスタマイズには |vim.diagnostic.config()| が提供するオプションを使う。
+• *vim.lsp.diagnostic.goto_next()*
+• *vim.lsp.diagnostic.goto_prev()*
+• *vim.lsp.diagnostic.redraw()*                 |vim.diagnostic.show()| を使う。
+• *vim.lsp.diagnostic.reset()*
+• *vim.lsp.diagnostic.save()*                   |vim.diagnostic.set()| を使う。
+• *vim.lsp.diagnostic.set_loclist()*            |vim.diagnostic.setloclist()| を使う。
+• *vim.lsp.diagnostic.set_qflist()*             |vim.diagnostic.setqflist()| を使う。
+• *vim.lsp.diagnostic.show_line_diagnostics()*  |vim.diagnostic.open_float()| を使う。
+• *vim.lsp.diagnostic.show_position_diagnostics()*  |vim.diagnostic.open_float()| を使う。
+
+以下は非推奨であり代替は存在しない。これらは内部的に移動され、APIとして公開されなくなった。
+代わりに |vim.diagnostic.config()| と |vim.diagnostic.show()| を使う。
+
+• *vim.lsp.diagnostic.set_signs()*
+• *vim.lsp.diagnostic.set_underline()*
+• *vim.lsp.diagnostic.set_virtual_text()*
+
+LSP 関数 ~
+• *vim.lsp.buf.server_ready()*
+  使用状況に応じ |LspAttach| を使う。 "Server ready" はLSPの仕様の一部ではない。
+  そのため、NvimのLSPクライアントはこれを意味のある形で実装できない。
+  "Ready" は次の理由で曖昧である:
+  • 言語サーバーがワークスペースの解析を完了しても、編集により解析/ビルドが再び
+    発動する可能性が常にある。
+  • 言語サーバーは変更の処理中でも一部のリクエストは処理できる。
+• *vim.lsp.buf.range_code_action()*      |vim.lsp.buf.code_action()| を
+                                       `range` オプションを指定して使う。
+• *vim.lsp.util.diagnostics_to_items()*  |vim.diagnostic.toqflist()| を使う。
+• *vim.lsp.util.set_qflist()*            |setqflist()| を使う。
+• *vim.lsp.util.set_loclist()*           |setloclist()| を使う。
+• *vim.lsp.buf_get_clients()*            |vim.lsp.get_clients()| を
+                                       {buffer=bufnr} で使う。
+• *vim.lsp.buf.formatting()*             |vim.lsp.buf.format()| を
+                                       {async=true} で使う。
+• *vim.lsp.buf.formatting_sync()*        |vim.lsp.buf.format()| を
+                                       {async=false} で使う。
+• *vim.lsp.buf.range_formatting()*       |vim.lsp.formatexpr()| や
+                                       |vim.lsp.buf.format()| を使う。
+
+LUA
+• vim.register_keystroke_callback()    |vim.on_key()| を使う。
+
+ノーマルモードコマンド ~
+• *]f* *[f*                 "gf" に同じ。
+
+オプション ~
+• *cpo-<* *:menu-<special>* *:menu-special* *:map-<special>* *:map-special*
+  キーコードの `<>` 記法は常に有効。
+• *'fe'*                Vim 6.0 以前は 'fenc' + 'enc' だった。今は使われない。
+• *'highlight'* *'hl'*    組み込みの |highlight-groups| は変更できない。
+• *'langnoremap'*       'nolangremap' のエイリアス。
+• 'sessionoptions'    "unix" と "slash" は常に有効であり、あっても無視される。
+• *'vi'*
+• 'viewoptions'       "unix" と "slash" は常に有効であり、あっても無視される。
+• *'viminfo'*           'shada' のエイリアス。
+• *'viminfofile'*       'shadafile' のエイリアス。
+• *'paste'* *'nopaste'*   'paste' オプションは廃止された:
+                        |paste| は、ターミナルやGUIの貼り付け機能
+                        (CTRL-SHIFT-v, CMD-v (macOS), 中クリックなど) を使う際
+                        自動的に処理される。
+                        "paste mode" を有効化すると:
+                          • 挿入モード、コマンドラインモードのマッピングを無効化。
+                          • 短縮入力を無効化。
+                          • 以下をリセット:
+                            'autoindent' 'expandtab' 'revins' 'ruler'
+                            'showmatch' 'smartindent' 'smarttab' 'softtabstop'
+                            'textwidth' 'wrapmargin'
+                          • 'formatoptions' を空として扱う。
+                          • 以下のオプションを無効化:
+                            • 'cindent'
+                            • 'indentexpr'
+                            • 'lisp'
+
+UI拡張 ~
+• *ui-wildmenu*         |ui-cmdline| と |ui-popupmenu| を使う。
+                        `ext_wildmenu` の |ui-option| により有効化される。
+                        以下のイベントを発行する:
+                        • `["wildmenu_show", items]`
+                        • `["wildmenu_select", selected]`
+                        • `["wildmenu_hide"]`
+• *term_background*     使われない。ターミナルの背景色はTUIではなくNvimのコア
+                      により直接検出される。
+
+変数 ~
+• *b:terminal_job_pid*  `jobpid(&channel)` を使う。
+• *b:terminal_job_id*   `&channel` を使う。現在のバッファ以外に使うには:
+                      • Lua: `vim.bo[bufnr].channel`
+                      • Vimscript: `getbufvar(bufnr, '&channel')`
+
+VIMSCRIPT
+• *buffer_exists()*     |bufexists()| の古い名称。
+• *buffer_name()*       |bufname()| の古い名称。
+• *buffer_number()*     |bufnr()| の古い名称。
+• *file_readable()*     |filereadable()| の古い名称。
+• *highlight_exists()*  |hlexists()| の古い名称。
+• *highlightID()*       |hlID()| の古い名称。
+• *inputdialog()*       |input()| を使う。
+• *jobclose()*          |chanclose()| の古い名称。
+• *jobsend()*           |chansend()| の古い名称 。
+• *last_buffer_nr()*    `bufnr("$").` の古い名称。
+• *rpcstart()*          |jobstart()| を `{'rpc': v:true}` で使う。
+• *rpcstop()*           ジョブを停止するには |jobstop()| 、
+                      ジョブを停止せずにRPC通信を閉じるには `chanclose(id, "rpc")`、
+                      ソケットを閉じるには `chanclose(id)` を使う。
+
+
+ vim:tw=78:ts=8:sw=4:sts=4:et:ft=help:norl:
