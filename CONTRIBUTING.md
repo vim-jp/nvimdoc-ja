@@ -46,7 +46,7 @@ $ git push -u origin my-translation
 - [ ] cmdline.txt
 - [ ] credits.txt
 - [x] debug.txt
-- [ ] deprecated.txt
+- [x] deprecated.txt
 - [x] dev_arch.txt
 - [ ] dev_style.txt
 - [x] dev_theme.txt
