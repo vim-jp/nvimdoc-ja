@@ -24,7 +24,7 @@ $ git checkout -b my-translation
 最新の原文ファイルは [https://github.com/neovim/neovim](https://github.com/neovim/neovim) から取得できます。 原文ファイルを参考に、翻訳ファイルを翻訳してください。以下の手順を参考にしてください。 翻訳のお作法については [Vim ドキュメント翻訳者の手引き](https://github.com/vim-jp/vimdoc-ja-working/wiki/Guide) を参照してください。 特に、ヘルプ特有の構文を知らない方は `:help help-writing` を一読することをお勧めします。
 ```
 $ cd /path/to/nvimdoc-ja
-$ vim doc/foo.jax
+$ nvim doc/foo.jax
 $ git commit -a -m "..."
 ```
 翻訳をこまめにコミットしても良いです。
