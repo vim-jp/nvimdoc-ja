@@ -28,10 +28,10 @@ vim.pack.add({
 2. 言語設定、または `'helplang'` を日本語に設定することで、翻訳されたヘルプファイルを利用することが可能になります。
 ``` lua
 -- 言語設定
-vim.cmd('language ja_JP.utf8')
+vim.cmd.language('ja_JP.utf8')
 
 -- ヘルプファイルの言語設定
-vim.o.helplang = 'ja,en'
+vim.opt.helplang = { 'ja', 'en' }
 ```
 3. `:help` コマンドの引数の末尾にフラグをつけることでも利用できます。
 ``` vim

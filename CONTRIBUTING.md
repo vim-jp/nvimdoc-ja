@@ -24,12 +24,12 @@ $ git checkout -b my-translation
 最新の原文ファイルは [https://github.com/neovim/neovim](https://github.com/neovim/neovim) から取得できます。 原文ファイルを参考に、翻訳ファイルを翻訳してください。以下の手順を参考にしてください。 翻訳のお作法については [Vim ドキュメント翻訳者の手引き](https://github.com/vim-jp/vimdoc-ja-working/wiki/Guide) を参照してください。 特に、ヘルプ特有の構文を知らない方は `:help help-writing` を一読することをお勧めします。
 ```
 $ cd /path/to/nvimdoc-ja
-$ vim doc/foo.jax
+$ nvim doc/foo.jax
 $ git commit -a -m "..."
 ```
 翻訳をこまめにコミットしても良いです。
 ## ヘルプタグを更新する
-ヘルプタグを更新することで Neovim がヘルプファイルを読み込めるようになります。ヘルプタグを更新するには `doc` ディレクトリに移動した後、Neovim のコマンドモードで `:helptags .` を実行すると更新することができます。
+ヘルプタグを更新することで Neovim がヘルプファイルを読み込めるようになります。ヘルプタグを更新するには `doc` ディレクトリに移動した後、Neovim のコマンドモードで `:helptags .` を実行します。
 ## 作業ブランチを push して Pull Request (PR)を作成する
 作業ブランチを push して PR を作成したら、作業完了です。 レビューを受け、修正しつつマージを待ちましょう。
 ```
@@ -46,7 +46,7 @@ $ git push -u origin my-translation
 - [ ] cmdline.txt
 - [ ] credits.txt
 - [x] debug.txt
-- [ ] deprecated.txt
+- [x] deprecated.txt
 - [x] dev_arch.txt
 - [ ] dev_style.txt
 - [x] dev_theme.txt
