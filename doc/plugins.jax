@@ -1,0 +1,302 @@
+*plugins.txt*  Nvim
+
+
+                          NVIMリファレンスマニュアル
+
+                                                目次を見るには |gO| をタイプ。
+
+==============================================================================
+Nvimに付属するプラグインとモジュール                                 *plugins*
+
+NvimにはさまざまなLuaとVimのプラグインやモジュールが付属している。これらは
+コマンド (例えば :TOhtml) や、 require() や :packadd するモジュールを提供する。
+Luaのものは |lua-stdlib| の一部ではない。つまり、グローバルの `vim` モジュール
+名前空間からは利用できない。プラグインには、既定で読み込まれるものと、
+|:packadd| により要求されるまで読み込まれないものがある。
+
+==============================================================================
+標準プラグイン                                          *standard-plugin-list*
+
+ヘルプリンク		読み込まれるか	簡単な説明 ~
+|difftool|		No	2つのディレクトリやファイルを並べて比較する
+|editorconfig|		Yes	editorconfigを検出し適用する
+|ft-shada|		Yes	バイナリの |shada| ファイルを編集する
+|man.lua|		Yes	manページをNvimで閲覧する
+|matchit|		Yes	|%| の拡張
+|matchparen|		Yes	対応するペアをハイライトする
+|netrw|			Yes	ネットワーク越しにファイルを読み書きする
+|package-cfilter|	No	quickfix/location リストをフィルターする
+|package-justify|	No	テキストを両端揃えにする
+|package-nohlsearch|	No	自動的に :nohlsearch を実行する
+|package-termdebug|	No	gdbを使いNvim内でデバッグする
+|pi_gzip.txt|		Yes	圧縮ファイルを読み書きする
+|pi_msgpack.txt|	No	msgpackのユーティリティ
+|pi_paren.txt|		Yes	対応する括弧をハイライトする
+|pi_spec.txt|		Yes	rpmのspecファイル用のファイルタイププラグイン
+|pi_swapmouse|		No	マウスのボタンの左右の役割を入れ換える
+|pi_tar.txt|		Yes	tarファイルエクスプローラ
+|pi_tutor.txt|		Yes	対話的なチュートリアル
+|pi_zip.txt|		Yes	zipアーカイブエクスプローラ
+|spellfile.lua|		Yes	スペルファイルがない場合にインストールする
+|tohtml|		Yes	バッファをhtmlに変換する シンタクスは含まれる
+|undotree-plugin|	No	対話的なテキスト形式のundotree
+
+==============================================================================
+組み込みプラグイン: difftool                                        *difftool*
+
+
+:DiffTool {left} {right}                                           *:DiffTool*
+2つのディレクトリまたはファイルを並べて比較する。
+ディレクトリ差分、ファイル名変更の検出に対応。変更をquickfixリストでハイライト
+する。組み込みの `nvim -d` の差分モードをこのインタフェースで置き換える。
+
+このプラグインは既定では読み込まれないので、 `:DiffTool` を使う前に、
+`:packadd nvim.difftool` を実行する必要がある。
+
+`git difftool -d` に `nvim -d` の置き換えを利用する例: >ini
+    [difftool "nvim_difftool"]
+      cmd = nvim -c \"packadd nvim.difftool\" -d \"$LOCAL\" \"$REMOTE\"
+    [diff]
+      tool = nvim_difftool
+<
+
+
+open({left}, {right}, {opt})                                 *difftool.open()*
+    2つのファイルまたはディレクトリを比較する
+
+    引数: ~
+      • {left}   (`string`)
+      • {right}  (`string`)
+      • {opt}    (`table?`)
+                 • {rename.detect} (`boolean`, 既定: `false`) 名前変更を
+                   検出するか
+                 • {rename.similarity} (`number`, 既定: `0.5`) 名前変更と見做す
+                   最低の類似度 (0 から 1)
+                 • {rename.chunk_size} (`number`, 既定: `4096`) 類似度の計算の
+                   ためにファイルから読むチャンクの最大の大きさ
+                 • {method} (`'auto'|'builtin'|'diffr'`, 既定: `auto`) 使う
+                   diffのメソッド
+                 • {ignore} (`string[]`, 既定: `{}`) 無視するファイルパスの
+                   リスト (例えば: `'.git', '*.log'`)
+                 • {rename} (`table`) 名前変更の検出を制御する
+
+
+==============================================================================
+組み込みプラグイン: editorconfig                                *editorconfig*
+
+EditorConfigは、ディレクトリ全体 (再帰的) の 'modeline' のようなものである。
+ファイルが開かれると、 |ftplugin| と |FileType| の自動コマンドを実行後、
+EditorConfigの機構が、そのファイルのすべての親ディレクトリから
+`.editorconfig` ファイルを検索し、構文解析し、そのプロパティを適用する。詳細は
+https://editorconfig.org/ を参照。
+
+`.editorconfig` ファイルの例: >ini
+    root = true
+
+    [*]
+    charset = utf-8
+    end_of_line = lf
+    indent_size = 4
+    indent_style = space
+    max_line_length = 42
+    trim_trailing_whitespace = true
+
+    [*.{diff,md}]
+    trim_trailing_whitespace = false
+<
+
+                                               *g:editorconfig* *b:editorconfig*
+
+EditorConfigは既定で有効である。無効化するには、これを設定に追加する: >lua
+    vim.g.editorconfig = false
+<
+
+(Vimscript: `let g:editorconfig = v:false`)。バッファ単位で無効化するには、
+|b:editorconfig| というバッファローカル変数を `false` に設定する。
+
+|b:editorconfig| が `false` でなければ適用されたプロパティがそれに保存される。
+
+                                              *editorconfig-custom-properties*
+
+プロパティは、 "properties" のテーブルにエントリーを追加することで追加できる。
+テーブルのキーがプロパティ名、値がコールバック関数である。この関数は、
+変更されるバッファ番号、 `.editorconfig` ファイルにあるプロパティの値、
+他のすべてのプロパティとその値を含むテーブル (他のプロパティに依存する
+プロパティの場合に有用) が渡される。値は必ず文字列であり、型強制が必要な
+場合もある。
+例: >lua
+
+    require('editorconfig').properties.foo = function(bufnr, val, opts)
+      if opts.charset and opts.charset ~= "utf-8" then
+        error("foo can only be set when charset is utf-8", 0)
+      end
+      vim.b[bufnr].foo = val
+    end
+<
+
+                                                     *editorconfig-properties*
+
+既定では以下のプロパティに対応している:
+
+
+charset                                                 *editorconfig.charset*
+    `"utf-8"`, `"utf-8-bom"`, `"latin1"`, `"utf-16be"`, `"utf-16le"` の
+    いずれか。 'fileencoding' と 'bomb' オプションを設定する。
+
+end_of_line                                         *editorconfig.end_of_line*
+    `"lf"`, `"crlf"`, `"cr"` のいずれか。 'fileformat' を
+    "unix", "dos", "mac" に設定することに、それぞれ対応する。
+
+indent_size                                         *editorconfig.indent_size*
+    1つのインデントの大きさを示す数、あるいは、 "tab" の場合は tab_width
+    プロパティの値を使う。 'shiftwidth' と 'softtabstop' オプションを設定する。
+    もしこの値が "tab" でなく、 tab_width プロパティが設定されていない場合、
+    'tabstop' もこの値に設定される。
+
+indent_style                                       *editorconfig.indent_style*
+    `"tab"`, `"space"` のいずれか。 'expandtab' オプションを設定する。
+
+insert_final_newline                       *editorconfig.insert_final_newline*
+    `"true"` か `"false"`。 ファイルの最後のバイトが常に改行文字になるように
+    する。 'fixendofline' と 'endofline' オプションを設定する。
+
+max_line_length                                 *editorconfig.max_line_length*
+    一行の最大の長さを示す数。
+    'textwidth' オプションを設定する。
+
+root                                                       *editorconfig.root*
+    "true" であれば、親ディレクトリから `.editorconfig` ファイルを検索するのを
+    止める。このプロパティは `.editorconfig` ファイルの最上位に置く必要がある
+    (つまり、globのセクションにあってはならない)。
+
+spelling_language                             *editorconfig.spelling_language*
+    ss もしくは ss-TT の形式のコード。 ss は ISO 639 言語コード、
+    TT は ISO 3166 地域識別子である。 'spelllang' オプションを設定する。
+
+tab_width                                             *editorconfig.tab_width*
+    1つのタブ文字の表示幅。 'tabstop' オプションを設定する。
+
+trim_trailing_whitespace               *editorconfig.trim_trailing_whitespace*
+    `"true"` の場合、末尾の空白はバッファの書き込み時に自動的に
+    削除される。
+
+
+==============================================================================
+組み込みプラグイン: spellfile                                  *spellfile.lua*
+
+足りないスペルファイルのダウンロードをユーザに促す。スペルファイルは
+`stdpath('data') .. 'site/spell'` もしくは 'runtimepath' にある最初の書き込める
+ディレクトリに書き込まれる。
+
+`g:loaded_spellfile_plugin = 1` を設定することで無効化できる。
+
+
+*nvim.spellfile.Opts*
+    以下のフィールドを含むテーブル:
+
+    フィールド: ~
+      • {url}         (`string`) スペルファイルをダウンロードするベースURL。
+                      `g:spellfile_URL` が存在する場合はそれを、そうでなければ
+                      https://ftp.nluug.nl/pub/vim/runtime/spell が使われる。
+      • {timeout_ms}  (`integer`, 既定: 15000) |vim.net.request()| が
+                      タイムアウトするまでのミリ秒数。
+      • {confirm}     (`boolean`, 既定: `true`) ユーザにダウンロードの
+                      確認を行うか。
+
+
+config({opts})                                            *spellfile.config()*
+    スペルファイルのダウンロードオプションを設定する。例えば: >lua
+        require('nvim.spellfile').config({ url = '...' })
+<
+
+    引数: ~
+      • {opts}  (`nvim.spellfile.Opts?`) 省略や `nil` であれば、現在の設定を
+                取得する。そうでなければ設定のテーブル。
+
+    返り値: ~
+        (`nvim.spellfile.Opts?`) {opts} が省略された場合は現在の設定。
+
+get({lang})                                                  *spellfile.get()*
+    {lang} の言語用のスペルファイルを、可能であればダウンロードする。
+
+    引数: ~
+      • {lang}  (`string`) 言語コード。
+
+    返り値: ~
+        (`table?`) 以下のフィールドを含むテーブル:
+        • {files} (`string[]`)
+        • {key} (`string`)
+        • {lang} (`string`)
+        • {encoding} (`string`)
+        • {dir} (`string`)
+
+
+==============================================================================
+組み込みプラグイン: tohtml                                            *tohtml*
+
+
+:[range]TOhtml {file}                                                *:TOhtml*
+現在のウィンドウに表示されているバッファをHTMLに変換し、生成されたHTMLを
+新しい分割ウィンドウで開き、その内容を {file} に保存する。 {file} が
+与えられない場合、一時ファイル (|tempname()| により作られる) が使われる。
+
+
+tohtml({winid}, {opt})                                       *tohtml.tohtml()*
+    {winid} のウィンドウに表示されているバッファをHTMLに変換し、結果を
+    文字列のリストとして返す。
+
+    引数: ~
+      • {winid}  (`integer?`) 変換するウィンドウ (既定は現在のウィンドウ)
+      • {opt}    (`table?`) オプション。
+                 • {title}? (`string|false`, 既定: バッファ名) 生成するHTMLの
+                   タイトルタグ。
+                 • {number_lines}? (`boolean`, 既定: `false`) 行番号を
+                   表示する。
+                 • {font}? (`string[]|string`, 既定: `guifont`) 使う
+                   フォント。
+                 • {width}? (`integer`, 既定: 'textwidth' が1以上であればそれ、
+                   そうでなければウィンドウ幅) 右揃えまたは文字が無限に
+                   繰り返される項目の幅。
+                 • {range}? (`integer[]`, 既定: バッファ全体) 変換する行の
+                   範囲
+
+    返り値: ~
+        (`string[]`)
+
+
+==============================================================================
+組み込みプラグイン: undotree                                 *undotree-plugin*
+
+open({opts})                                                 *undotree.open()*
+    |undo-tree| をテキストにより表現したものを表示するウィンドウを開く。
+
+    そのウィンドウ内でカーソルを動かすとアンドゥが変更される。
+
+    ウィンドウが既に開いている場合はウィンドウを閉じる
+
+    このプラグインを読み込むコマンド: >
+                packadd nvim.undotree
+<
+
+    `:Undotree` でも表示できる。                                   *:Undotree*
+
+    引数: ~
+      • {opts}  (`table?`) 以下のフィールドを含むテーブル:
+                • {bufnr} (`integer?`) ツリーを描画するバッファ。省略された場合
+                  新しいバッファが作られる。
+                • {winid} (`integer?`) ツリーのバッファを表示するウィンドウID。
+                  省略された場合、新しいウィンドウが {command} により作られる。
+                • {command} (`string?`) ウィンドウを作るのに使う、Vimscriptの
+                  コマンド。既定値は "30vnew"。 {winid} がnilの場合のみ
+                  使われる。
+                • {title} (`(string|fun(bufnr:integer):string?)?`) ウィンドウの
+                  タイトル。関数であれば、ソースバッファのバッファ番号を
+                  唯一の引数として取り、
+                  文字列を返さなければならない。
+
+    返り値: ~
+        (`boolean?`) ウィンドウが既に開いていればtrueを、そうでなければ
+        nilを返す
+
+
+ vim:tw=78:ts=8:sw=4:sts=4:et:ft=help:norl:

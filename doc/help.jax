@@ -179,14 +179,8 @@ NVIM の開発
 |dev-vimpatch|		Vim からのパッチのマージ
 
 標準プラグイン ~
-						*standard-plugin-list*
-|pi_gzip.txt|		圧縮ファイルの読み書き
-|pi_msgpack.txt|	msgpack ユーティリティ
-|pi_paren.txt|		対括弧の強調表示
-|pi_spec.txt|		RPM spec ファイル用ファイルタイププラグイン
-|pi_tar.txt|		Tar ファイルエクスプローラー
-|pi_zip.txt|		Zip アーカイブエクスプローラー
-|netrw|			ネットワークファイルの読み書き
+
+|standard-plugin-list| を参照。
 
 Local additions ~
 							*local-additions*

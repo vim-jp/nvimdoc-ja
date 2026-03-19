@@ -57,7 +57,6 @@ $ git push -u origin my-translation
 - [ ] diff.txt
 - [x] digraph.txt
 - [ ] editing.txt
-- [x] editorconfig.txt
 - [ ] faq.txt
 - [ ] filetype.txt
 - [ ] fold.txt
@@ -107,6 +106,7 @@ $ git push -u origin my-translation
 - [x] pi_tar.txt
 - [x] pi_tutor.txt
 - [x] pi_zip.txt
+- [x] plugins.txt
 - [ ] provider.txt
 - [ ] quickfix.txt
 - [ ] quickref.txt
