@@ -214,8 +214,7 @@ Nvimは、以下の項目をディクショナリ型のAPIのメタデータと�
 version			Nvim version, API level/compatibility
                         Nvimのバージョン APIレベル/互換性
 
-version.api_level	API version integer *api-level*
-                        APIのバージョン int型で *api-level*
+version.api_level	APIのバージョン int型で *api-level*
 
 version.api_compatible	API is backwards-compatible with this level
                         API Levelにおける後方互換性
