@@ -1,12 +1,12 @@
 $NVIM_LISTEN_ADDRESS	deprecated.jax	/*$NVIM_LISTEN_ADDRESS*
 $NVIM_RPLUGIN_MANIFEST	remote_plugin.jax	/*$NVIM_RPLUGIN_MANIFEST*
-'character'	intro.jax	/*'character'*
+'character'	helphelp.jax	/*'character'*
 'fe'	deprecated.jax	/*'fe'*
 'highlight'	deprecated.jax	/*'highlight'*
 'hl'	deprecated.jax	/*'hl'*
 'langnoremap'	deprecated.jax	/*'langnoremap'*
 'nopaste'	deprecated.jax	/*'nopaste'*
-'option'	intro.jax	/*'option'*
+'option'	helphelp.jax	/*'option'*
 'paste'	deprecated.jax	/*'paste'*
 'vi'	deprecated.jax	/*'vi'*
 'viminfo'	deprecated.jax	/*'viminfo'*
@@ -156,7 +156,7 @@ $NVIM_RPLUGIN_MANIFEST	remote_plugin.jax	/*$NVIM_RPLUGIN_MANIFEST*
 <S-	intro.jax	/*<S-*
 <S-F1>	intro.jax	/*<S-F1>*
 <T-	intro.jax	/*<T-*
-<character>	intro.jax	/*<character>*
+<character>	helphelp.jax	/*<character>*
 <lt>	intro.jax	/*<lt>*
 API	api.jax	/*API*
 Bram	intro.jax	/*Bram*
@@ -165,7 +165,7 @@ BufCreate	deprecated.jax	/*BufCreate*
 C-editing	tips.jax	/*C-editing*
 CTRL-\_CTRL-G	intro.jax	/*CTRL-\\_CTRL-G*
 CTRL-\_CTRL-N	intro.jax	/*CTRL-\\_CTRL-N*
-CTRL-{char}	intro.jax	/*CTRL-{char}*
+CTRL-{char}	helphelp.jax	/*CTRL-{char}*
 Chinese	mbyte.jax	/*Chinese*
 Digraphs	digraph.jax	/*Digraphs*
 E104	digraph.jax	/*E104*
@@ -247,9 +247,9 @@ UTF-8	mbyte.jax	/*UTF-8*
 Uganda	uganda.jax	/*Uganda*
 Unicode	mbyte.jax	/*Unicode*
 W325	recover.jax	/*W325*
-[count]	intro.jax	/*[count]*
+[count]	helphelp.jax	/*[count]*
 [f	deprecated.jax	/*[f*
-[quotex]	intro.jax	/*[quotex]*
+[quotex]	helphelp.jax	/*[quotex]*
 ]f	deprecated.jax	/*]f*
 _G	luaref.jax	/*_G*
 _VERSION	luaref.jax	/*_VERSION*
@@ -360,7 +360,7 @@ coroutine.running()	luaref.jax	/*coroutine.running()*
 coroutine.status()	luaref.jax	/*coroutine.status()*
 coroutine.wrap()	luaref.jax	/*coroutine.wrap()*
 coroutine.yield()	luaref.jax	/*coroutine.yield()*
-count	intro.jax	/*count*
+count	helphelp.jax	/*count*
 count-bytes	tips.jax	/*count-bytes*
 count-items	tips.jax	/*count-items*
 cpo-<	deprecated.jax	/*cpo-<*
@@ -440,7 +440,6 @@ digraphs-default	digraph.jax	/*digraphs-default*
 digraphs-define	digraph.jax	/*digraphs-define*
 digraphs-use	digraph.jax	/*digraphs-use*
 distribution	intro.jax	/*distribution*
-doc-file-list	help.jax	/*doc-file-list*
 dofile()	luaref.jax	/*dofile()*
 donate	uganda.jax	/*donate*
 download	intro.jax	/*download*
@@ -615,7 +614,7 @@ health.txt	health.jax	/*health.txt*
 help	helphelp.jax	/*help*
 help-buffer-options	helphelp.jax	/*help-buffer-options*
 help-codeblock	helphelp.jax	/*help-codeblock*
-help-context	help.jax	/*help-context*
+help-context	helphelp.jax	/*help-context*
 help-curwin	tips.jax	/*help-curwin*
 help-notation	helphelp.jax	/*help-notation*
 help-translated	helphelp.jax	/*help-translated*
@@ -1068,7 +1067,7 @@ mlang.txt	mlang.jax	/*mlang.txt*
 mode-Ex	intro.jax	/*mode-Ex*
 mode-switching	intro.jax	/*mode-switching*
 module()	luaref.jax	/*module()*
-movement	intro.jax	/*movement*
+movement	helphelp.jax	/*movement*
 msgpack-rpc	api.jax	/*msgpack-rpc*
 multi-byte	mbyte.jax	/*multi-byte*
 multi-lang	mlang.jax	/*multi-lang*
@@ -1080,7 +1079,7 @@ multilang-scripts	mlang.jax	/*multilang-scripts*
 mysql	ft_sql.jax	/*mysql*
 neovim	nvim.jax	/*neovim*
 next()	luaref.jax	/*next()*
-notation	intro.jax	/*notation*
+notation	helphelp.jax	/*notation*
 nvchad	nvim.jax	/*nvchad*
 nvim	nvim.jax	/*nvim*
 nvim-from-vim	nvim.jax	/*nvim-from-vim*
@@ -1339,7 +1338,7 @@ python_x	if_pyth.jax	/*python_x*
 python_x-special-comments	if_pyth.jax	/*python_x-special-comments*
 pythonx	if_pyth.jax	/*pythonx*
 pythonx-directory	if_pyth.jax	/*pythonx-directory*
-quotecommandquote	intro.jax	/*quotecommandquote*
+quotecommandquote	helphelp.jax	/*quotecommandquote*
 raku-unicode	ft_raku.jax	/*raku-unicode*
 rawequal()	luaref.jax	/*rawequal()*
 rawget()	luaref.jax	/*rawget()*
@@ -1658,8 +1657,8 @@ zip-history	pi_zip.jax	/*zip-history*
 zip-manual	pi_zip.jax	/*zip-manual*
 zip-usage	pi_zip.jax	/*zip-usage*
 zip-x	pi_zip.jax	/*zip-x*
-{Visual}	intro.jax	/*{Visual}*
-{char1-char2}	intro.jax	/*{char1-char2}*
-{motion}	intro.jax	/*{motion}*
+{Visual}	helphelp.jax	/*{Visual}*
+{char1-char2}	helphelp.jax	/*{char1-char2}*
+{motion}	helphelp.jax	/*{motion}*
 {subject}	helphelp.jax	/*{subject}*
-{}	intro.jax	/*{}*
+{}	helphelp.jax	/*{}*

@@ -1,203 +1,162 @@
-*help.txt*	Nvim 0.12        Last change: 2025-08-24
-
-			        NVIM - ヘルプ
-									 k
-	      移動:  カーソルを使用するか、"h" で左、"j" で下、	       h   l
-		     "k" で上、"l" で右に移動できる。			 j
-      ヘルプの終了:  ":q<Enter>" を使用する。
-	Vim の終了:  ":qa!<Enter>" を使用する (注意! 変更はすべて破棄される)。
-
-    項目へジャンプ:  タグ (例: |bars|) にカーソルを合わせ、CTRL-] を押す。
-  マウスでジャンプ:  |bars| 等のタグ上でマウスの左ボタンをダブルクリックする。
-    元の場所に戻る:  CTRL-O を押す。更に戻るには繰り返す。
-
-    項目を指定する:  |:help| コマンドに項目を指定することで、その項目を直ちに
-		     表示できる。修飾子を先行入力することで、調べたい項目の種
-		     類を指定することもできる:  *help-context*
-
-			  種類			修飾子	    例	~
-		      ノーマルモードコマンド		   :help x
-		      ビジュアルモードコマンド	  v_	   :help v_u
-		      挿入モードコマンド	  i_	   :help i_<Esc>
-		      コマンドラインコマンド	  :	   :help :quit
-		      コマンドライン編集	  c_	   :help c_<Del>
-		      Vim の起動引数		  -	   :help -r
-		      オプション		  '	   :help 'textwidth'
-		      正規表現			  /	   :help /[
-		    その他の種類については |help-summary| を参照。
-		    ヘルプの構文の説明は |notation| を参照。
-
-
-  ヘルプを検索する: ":help word" とタイプしてから CTRL-D を押すと "word" に
-		    マッチするヘルプ項目の一覧が表示される。
-		    もしくは ":helpgrep word" を使う。 |:helpgrep|
-
-  はじめに:	    基本的なコマンドのための 30 分間の対話コース、Vim tutor を
-		    行う。 |vimtutor| を参照。
-		    ユーザーマニュアルを最初から最後まで読む: |usr_01.txt|
-
-Vim は Vi IMproved の略である。Vim の大部分は Bram Moolenaar によって作成され
-たが、その他多くの人の協力によって作成された。 |credits| 参照。
+*help.txt*	Nvim 0.12        Last change: 2026-03-23
 
 ==============================================================================
-NVIM ドキュメント
+Nvimドキュメント
+
+Nvimを初めて使うなら、 |nvim-intro| を参照。 (リンクへ移動するには、カーソルを
+その上に移動し CTRL-] を押すかマウスでctrlクリックする。これで試せる: |bars|)
 
 ------------------------------------------------------------------------------
-NVIM について				*reference_toc* *doc-file-list* *Q_ct*
+Nvimについて						*reference_toc* *Q_ct*
 
-|news|			前回のリリース以降の更新情報
-|nvim|			Vim からの移行
-|vim-differences|	Nvim compared to Vim
-|vim-differences|	Nvim と Vi の主な違い
-|faq|			よくある質問
-|user-manual|		ユーザーマニュアル: 編集タスクを成し遂げるには
-|quickref|		よく使うコマンドのクイックリファレンス
-|tutor|			30 分の初心者向け対話コース
-|copying|		著作権について
-|iccf|			ウガンダの恵まれない子供達への支援活動
-|sponsor|		Vim の開発を支援し、Vim の登録ユーザーになる
-|www|			インターネット上の Vim 情報
-|bugs|			バグレポートの送信先
-|support|		サポートされたプラットフォーム
+- |news|		前のリリース以降のニュース
+- |nvim|		Nvimの始め方
+- |tutor|		初心者向けの30分の対話的コース
+- |vim-differences|	NvimとVimの比較
+- |faq|			よくある質問
+- |tips|		様々なTips
+- |bugs|		バグレポートの送信先
+- |support|		対応プラットフォーム
+- |copying|		著作権について
 
 ------------------------------------------------------------------------------
-一般事項
+使い方
 
-|intro|			Vim についての前書き、ヘルプの表記について
-|helphelp|		ヘルプの使い方
-|index|			全コマンド一覧。
-|tips|			さまざまな Tips
-|message.txt|		(エラー)メッセージの説明
-|uganda.txt|		Vim の配布条件と、あなたが支払ったお金の使い道について
+- |helphelp|		`:help` ファイルの使い方
+- |intro|		Vimへの入門
+- |quickref|		よく使うコマンドの概要
+- |index|		全コマンド一覧
+- |user-manual|		ユーザーマニュアル: 編集のこなし方
+- |message.txt|		(エラー) メッセージの説明
+- |Kuwasha|		ウガンダの恵まれない子供達への支援
 
 ------------------------------------------------------------------------------
 基本的な編集
 
-|starting|		Vim の起動、起動引数や初期化に関して
-|edit-files|		ファイルの編集と保存
-|motion.txt|		移動コマンド
-|scrolling|		ウィンドウのスクロール
-|insert.txt|		挿入モードと置換モード
-|change.txt|		テキストの削除と変更
-|undo-redo|		アンドゥとリドゥ
-|repeat.txt|		繰り返しコマンド、Vim script、スクリプトのデバッグ
-|visual-mode|		ビジュアルモード (テキストの選択)
-|various|		その他の様々なコマンド
-|crash-recovery|	クラッシュからの復帰
+- |starting|		Vimの起動、コマンド引数、初期化
+- |edit-files|		ファイルの編集と保存
+- |motion.txt|		移動するためのコマンド
+- |scrolling|		ウィンドウのスクロール
+- |insert.txt|		挿入モードと置換モード
+- |change.txt|		テキストの削除と変更
+- |undo-redo|		アンドゥとリドゥ
+- |repeat.txt|		繰り返しコマンド、Vim script、スクリプトのデバッグ
+- |visual-mode|		ビジュアルモードの利用 (テキストの選択)
+- |various|		その他の様々なコマンド
+- |crash-recovery|	クラッシュからの復帰
 
 ------------------------------------------------------------------------------
 高度な編集
 
-|cmdline|		コマンドラインの編集
-|options|		全オプションの説明
-|pattern-searches|	検索コマンドと Vim 正規表現
-|key-mapping|		キーマップ(ショートカット)と短縮入力
-|tags|			タグと特別な検索
-|windows|		ウィンドウとバッファのコマンド
-|tabpage|		タブページを操作するコマンド
-|spell|			スペルチェック
-|diff|			複数ファイルの比較
-|folding|		ある範囲を隠す (折り畳む)
-|terminal|		組み込み端末エミュレータ
+- |cmdline|		コマンドラインの編集
+- |options|		全オプションの説明
+- |pattern-searches|	検索コマンドとVimの正規表現
+- |key-mapping|		キーマップ (ショートカット) と短縮入力
+- |tags|		タグと特殊な検索
+- |windows|		ウィンドウとバッファを使うためのコマンド
+- |tabpage|		タブページを使うためのコマンド
+- |spell|		スペルチェック
+- |diff|		ファイルの比較
+- |folding|		特定の範囲の行を隠す (折り畳む)
+- |terminal|		組み込みの端末エミュレータ
 
 ------------------------------------------------------------------------------
 API (拡張性/スクリプト/プラグイン)
 
-|api|			RPC 経由の Nvim API, Lua と Vimscript
-|ui|			Nvim UI プロトコル
-|lua-guide|		Nvim Lua ガイド
-|lua|			Lua API
-|luaref|		Lua リファレンスマニュアル
-|luvref|		Luv (|vim.uv|) リファレンスマニュアル
-|autocmd|		イベントハンドラ
-|job-control|		複数のプロセスの呼び出しとコントロール
-|channel|		Nvim 非同期入出力
-|vimscript|		Vimscript リファレンス
-|vimscript-functions|	Vimscript 関数
-|remote-plugin|		Nvim リモートプラグイン
-|health|		状態診断
+- |api|			RPC、Lua、Vimscriptを介したNvim API
+- |ui|			Nvim UIプロトコル
+- |lua-guide|		Nvim Luaガイド
+- |lua|			Lua API
+- |luaref|		Luaリファレンスマニュアル
+- |luvref|		Luv (|vim.uv|) リファレンスマニュアル
+- |autocmd|		イベントハンドラ
+- |job-control|		複数プロセスの生成と制御
+- |channel|		Nvim非同期IO
+- |vimscript|		Vimscriptのリファレンス
+- |vimscript-functions|	Vimscriptの関数
+- |remote-plugin|	Nvimリモートプラグイン
+- |health|		状態確認
 
 ------------------------------------------------------------------------------
-プログラミング言語サポート
+プログラミング言語対応
 
-|lsp|			言語サーバープロトコル (LSP)
-|diagnostic-api|	診断フレームワーク
-|treesitter|		増分構文解析
-|indent.txt|		C言語や、その他の言語の自動インデント
-|syntax|		構文強調
-|filetype|		ファイルタイプ別の設定
-|quickfix|		編集、コンパイル、修正、の流れを早くするコマンド
-|ft_ada.txt|		Ada ファイルタイププラグイン
-|ft_hare.txt|		Hare ファイルタイププラグイン
-|ft_ps1.txt|		PowerShell ファイルタイププラグイン
-|ft_raku.txt|		Raku ファイルタイププラグイン
-|ft_rust.txt|		Rust ファイルタイププラグイン
-|ft_sql.txt|		SQL ファイルタイププラグイン
-
-------------------------------------------------------------------------------
-ユーザーインターフェース
-
-|tui|			組み込みインターフェース
-|gui|			外部グラフィカルインターフェース
-|signs|			ウィンドウ装飾として表示される目印 (ガター)
+- |lsp|			言語サーバープロトコル (LSP)
+- |diagnostic-api|	診断フレームワーク
+- |treesitter|		増分構文解析
+- |indent.txt|		Cやその他の言語の自動インデント
+- |syntax|		シンタクスハイライト
+- |filetype|		特定の種類のファイル用の設定
+- |quickfix|		編集・コンパイル・修正のサイクルを早くするコマンド
+- |ft_ada.txt|		Adaのファイルタイププラグイン
+- |ft_hare.txt|		Hareのファイルタイププラグイン
+- |ft_ps1.txt|		PowerShellのファイルタイププラグイン
+- |ft_raku.txt|		Rakuのファイルタイププラグイン
+- |ft_rust.txt|		Rustのファイルタイププラグイン
+- |ft_sql.txt|		SQLのファイルタイププラグイン
 
 ------------------------------------------------------------------------------
-言語サポート
+UI
 
-|digraph|		利用可能なダイグラフ (digraph) の一覧
-|mbyte.txt|		マルチバイトテキストのサポート
-|mlang.txt|		英語以外の言語のサポート
-|rileft.txt|		右横書き (書字方向が右から左になるモード)
-|arabic.txt|		アラビア語のサポート
-|hebrew.txt|		ヘブライ語のサポート
-|russian.txt|		ロシア語のサポート
-|vietnamese.txt|	ベトナム語のサポート
+- |tui|			組み込みのUI
+- |gui|			外部の (グラフィカルな) UI
+- |signs|		ウィンドウの装飾として表示される目印 (ガター)
+
+------------------------------------------------------------------------------
+多言語対応
+
+- |digraph|		利用できるダイグラフの一覧
+- |mbyte.txt|		マルチバイトテキスト対応
+- |mlang.txt|		英語でない言語の対応
+- |rileft.txt|		右横書きモード
+- |l10n-arabic.txt|	アラビア語対応
+- |l10n-hebrew.txt|	ヘブライ語対応
+- |l10n-russian.txt|	ロシア語対応
+- |l10n-vietnamese.txt|	ベトナム語対応
 
 ------------------------------------------------------------------------------
 相互運用
 
-|provider|		組み込みリモートプラグインホスト
-|if_perl|		Perl インターフェイス
-|if_pyth|		Python インターフェイス
-|if_ruby|		Ruby インターフェイス
+- |provider|		組み込みのリモートプラグインホスト
+- |if_perl|		Perlインターフェイス
+- |if_pyth|		Pythonインターフェイス
+- |if_ruby|		Rubyインターフェイス
 
 ------------------------------------------------------------------------------
 バージョン情報
 
-|deprecated|		今後廃止される非推奨の機能
-|vi-differences|	Vim と Vi の違い
+- |deprecated|		今後廃止される非推奨の機能
+- |vi-differences|	VimとViの違い
 
 ------------------------------------------------------------------------------
-NVIM の開発
+nvimの開発
 
-|dev|			Nvim の開発
-|dev-arch|		内部アーキテクチャ、モジュール、データ構造
-|dev-style|		Development style guidelines
-|dev-style|		開発スタイルガイドライン
-|dev-theme|		デザインガイドライン (カラースキーム等。)
-|dev-tools|		Nvim の開発のためのツールと技術
-|dev-vimpatch|		Vim からのパッチのマージ
+- |dev|			Nvimの開発
+- |dev-arch|		内部アーキテクチャ、モジュール、データ構造
+- |dev-style|		開発スタイルガイドライン
+- |dev-test|		テストを書いて走らせる
+- |dev-theme|		デザインのガイドライン (カラースキーム等)
+- |dev-tools|		Nvimの開発のためのツールとテクニック
+- |dev-vimpatch|	Vimからのパッチのマージ
 
 標準プラグイン ~
 
 |standard-plugin-list| を参照。
 
-Local additions ~
-							*local-additions*
+ローカルで追加されたもの ~
+							     *local-additions*
 
 ------------------------------------------------------------------------------
-Bars の例								*bars*
+Barsの例								*bars*
 
-今、あなたは CTRL-] またはマウスのダブルクリックでここにジャンプしたので、
- CTRL-T、 CTRL-O、g<RightMouse>、または <C-RightMouse> を使用して、元の場所に
-戻ることができる。
+CTRL-] かマウスのダブルクリックでここにジャンプしたのなら、 CTRL-T、
+CTRL-O、g<RightMouse>、または <C-RightMouse> を使うと元の場所に戻れる。
 
-Note: タグは | 文字で囲まれているが、ハイライト表示が有効になっている場合はこ
-れらの文字が非表示になっていることに注意。これにより、コマンドが読みやすくなる。
+タグは | 文字で囲まれているが、ハイライトが有効な場合はこの文字が非表示になる
+ことに注意 (読み易さのため)。
 
-CTRL-] は ( | で囲まれていない場合でも)任意の単語で使用でき、Nvim はそのヘルプ
-を検索しようとする。特に、 'hlsearch' 等のシングルクォートで囲まれたオプション
-の場合。
+CTRL-] は任意の単語に ("|" で囲まれていない場合でも) 使用でき、Nvimはそのヘルプ
+を探そうとする。特に、一重引用符で囲まれたオプションの場合。
+例: 'hlsearch'
 
 
  vim:tw=78:isk=!-~,^*,^\|,^\":ts=8:noet:ft=help:norl:
