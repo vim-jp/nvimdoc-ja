@@ -1,7 +1,7 @@
 *deprecated.txt*       Nvim
 
 
-                             NVIM REFERENCE MANUAL
+                          NVIMリファレンスマニュアル
 
 
 Nvim                                                              *deprecated*
@@ -11,6 +11,56 @@ Nvim                                                              *deprecated*
 
 ==============================================================================
 非推奨の機能
+
+------------------------------------------------------------------------------
+0.12 より非推奨					*deprecated-0.12*
+
+API
+
+• todo
+
+DIAGNOSTICS
+
+• |vim.diagnostic.JumpOpts| の "float"。	"on_jump" を使う。
+• |vim.diagnostic.Opts.Jump| の "float"。	"on_jump" を使う。
+
+ハイライト ~
+
+• *:ownsyntax* *w:current_syntax*	'winhighlight' を使う。
+
+LSP
+
+• *vim.lsp.client_is_stopped()*		|vim.lsp.get_client_by_id()| を使う。
+• *vim.lsp.util.stylize_markdown()*	|vim.treesitter.start()| を以下の設定で使う。
+					`vim.wo.conceallevel = 2`
+• *vim.lsp.log.should_log()*		|vim.lsp.log.set_format_func()| を使い
+					エントリーをログファイルから除くには `nil` を返す。
+• *vim.lsp.semantic_tokens.start()*	`vim.lsp.semantic_tokens.enable(true)` を使う。
+• *vim.lsp.semantic_tokens.stop()*	`vim.lsp.semantic_tokens.enable(false)` を使う。
+• *vim.lsp.set_log_level()*		`vim.lsp.log.set_level()` を使う。
+• *vim.lsp.get_log_path()*		`vim.lsp.log.get_filename()` を使う。
+• *vim.lsp.get_buffers_by_client_id()*	`vim.lsp.get_client_by_id(id).attached_buffers`
+					を使う。
+• *vim.lsp.stop_client()*		|Client:stop()| を使う。
+• *vim.lsp.codelens.refresh()*		`vim.lsp.codelens.enable(true)` を使う。
+• *vim.lsp.codelens.clear()*		`vim.lsp.codelens.enable(false)` を使う。
+• *vim.lsp.codelens.display()*
+• *vim.lsp.codelens.save()*
+• *vim.lsp.codelens.on_codelens()*
+
+LUA
+
+• *vim.diff()*				|vim.text.diff()| に改名
+• `vim.keymap.set.Opts` と `vim.keymap.del.Opts` の "buffer"	"buf" に改名
+
+UI
+
+• *hit-enter* *hit-enter-prompt*	|ui2| の場合、レガシーの "Press ENTER"
+  *press-enter				プロンプトは発動しない。
+
+VIMSCRIPT
+
+• todo
 
 ------------------------------------------------------------------------------
 0.11 より非推奨                                              *deprecated-0.11*
@@ -29,9 +79,12 @@ API
 DIAGNOSTICS
 • *vim.diagnostic.goto_next()*     |vim.diagnostic.jump()| を `{count=1, float=true}` で使う。
 • *vim.diagnostic.goto_prev()*     |vim.diagnostic.jump()| を `{count=-1, float=true}` で使う。
-• *vim.diagnostic.get_next_pos()*  |vim.diagnostic.get_next()| の返り値の "lnum" と "col" を使う。
-• *vim.diagnostic.get_prev_pos()*  |vim.diagnostic.get_prev()| の返り値の "lnum" と "col" を使う。
-• 各種関数で使われる "win_id" パラメーターは廃止され、代わりに |winid| が使われる。
+• *vim.diagnostic.get_next_pos()*  |vim.diagnostic.get_next()| の返り値の
+                                 "lnum" と "col" を使う。
+• *vim.diagnostic.get_prev_pos()*  |vim.diagnostic.get_prev()| の返り値の
+                                 "lnum" と "col" を使う。
+• 各種関数で使われる "win_id" パラメーターは廃止され、
+  代わりに |winid| が使われる。
 • |vim.diagnostic.JumpOpts| の "cursor_position" キーは "pos" に改名された。
 
 ハイライト ~
@@ -41,10 +94,11 @@ LSP
 • *vim.lsp.util.jump_to_location*      |vim.lsp.util.show_document()| を `{focus=true}` で使う。
 • *vim.lsp.buf.execute_command*        |Client:exec_cmd()| を使う。
 • *vim.lsp.buf.completion*             |vim.lsp.completion.get()| を使う。
-• vim.lsp.buf_request_all            ハンドラの返り値の `error` キーは `err` に改名された。
+• vim.lsp.buf_request_all            ハンドラの返り値の `error` キーは
+                                     `err` に改名された。
 • *vim.lsp.with()*                     設定を `vim.lsp.buf.*` の対応する関数に渡す。
-• |vim.lsp.handlers|                   client-to-server response handlers はサポートせず、
-  server-to-client requests/notification handlers のみサポートする。
+• |vim.lsp.handlers| クライアントからサーバへのレスポンスハンドラは対応せず、
+  サーバからクライアントへのリクエスト/通知ハンドラのみ対応する。
 • *vim.lsp.handlers.signature_help()*  |vim.lsp.buf.signature_help()| を使う。
 • `client.request()`                   |Client:request()| を使う。
 • `client.request_sync()`              |Client:request_sync()| を使う。
@@ -62,7 +116,7 @@ LUA
 • vim.validate(opts: table)  1. の形式を使う。 |vim.validate()| を参照。
 
 VIMSCRIPT
-• *termopen()*                 |jobstart() を `{term: v:true}` で使う。
+• *termopen()*                 |jobstart()| を `{term: v:true}` で使う。
 
 ------------------------------------------------------------------------------
 0.10 より非推奨                                              *deprecated-0.10*
@@ -174,8 +228,8 @@ API
     • サーバーの名前を取得するには |v:servername| を使う。
     • 親のNvimを検出するには |$NVIM| を使う。
   • --listen が与えられると無視される。
-  • 起動時 (|v:servername| の初期化後) に設定解除される。
-    "env" オプションにより |terminal| や |jobstart()| に明示的に渡すことができる。 例: >vim
+  • 起動時 (|v:servername| の初期化後) に削除される。"env" オプション
+    により |terminal| や |jobstart()| に明示的に渡すことはできる。例: >vim
         call jobstart(['foo'], { 'env': { 'NVIM_LISTEN_ADDRESS': v:servername  } })
 <
 
@@ -214,7 +268,6 @@ LSP DIAGNOSTICS
 • *vim.lsp.diagnostic.goto_next()*
 • *vim.lsp.diagnostic.goto_prev()*
 • *vim.lsp.diagnostic.redraw()*                 |vim.diagnostic.show()| を使う。
-• *vim.lsp.diagnostic.reset()*
 • *vim.lsp.diagnostic.save()*                   |vim.diagnostic.set()| を使う。
 • *vim.lsp.diagnostic.set_loclist()*            |vim.diagnostic.setloclist()| を使う。
 • *vim.lsp.diagnostic.set_qflist()*             |vim.diagnostic.setqflist()| を使う。
@@ -260,13 +313,20 @@ LUA
 • *cpo-<* *:menu-<special>* *:menu-special* *:map-<special>* *:map-special*
   キーコードの `<>` 記法は常に有効。
 • *'fe'*                Vim 6.0 以前は 'fenc' + 'enc' だった。今は使われない。
+• *'gdefault'*            ブーリアン (既定で無効) :substitute の "/g" フラグ
+                        を既定にする。 |complex-change| を参照。
+                                コマンド 'gdefault' 有効 'gdefault' 無効  ~
+                                :s///     すべて置換      1つ置換
+                                :s///g    1つ置換         すべて置換
+                                :s///gg   すべて置換      1つ置換
+                        WARNING: 設定するとプラグインが壊れる。"/g" の意味が
+                        反転するからである。 |:s_g|
 • *'highlight'* *'hl'*    組み込みの |highlight-groups| は変更できない。
 • *'langnoremap'*       'nolangremap' のエイリアス。
-• 'sessionoptions'    "unix" と "slash" は常に有効であり、あっても無視される。
-• *'vi'*
-• 'viewoptions'       "unix" と "slash" は常に有効であり、あっても無視される。
-• *'viminfo'*           'shada' のエイリアス。
-• *'viminfofile'*       'shadafile' のエイリアス。
+• *'magic'* *'nomagic'*     ブーリアン (既定で有効) 検索 |pattern| の中の
+                        特殊文字を変更する。
+                        WARNING: 無効化するとプラグインが壊れる。ほとんどのパターン
+                        はこれが有効であると想定するからである。 |/\M| 参照。
 • *'paste'* *'nopaste'*   'paste' オプションは廃止された:
                         |paste| は、ターミナルやGUIの貼り付け機能
                         (CTRL-SHIFT-v, CMD-v (macOS), 中クリックなど) を使う際
@@ -283,6 +343,11 @@ LUA
                             • 'cindent'
                             • 'indentexpr'
                             • 'lisp'
+• 'sessionoptions'    "unix" と "slash" は常に有効であり、あっても無視される。
+• *'vi'*
+• 'viewoptions'       "unix" と "slash" は常に有効であり、あっても無視される。
+• *'viminfo'*           'shada' のエイリアス。
+• *'viminfofile'*       'shadafile' のエイリアス。
 
 UI拡張 ~
 • *ui-wildmenu*         |ui-cmdline| と |ui-popupmenu| を使う。
@@ -294,13 +359,12 @@ UI拡張 ~
 • *term_background*     使われない。ターミナルの背景色はTUIではなくNvimのコア
                       により直接検出される。
 
-変数 ~
+VIMSCRIPT
+• *<sfile>*             |<script>| もしくは |<stack>| を使う。
 • *b:terminal_job_pid*  `jobpid(&channel)` を使う。
 • *b:terminal_job_id*   `&channel` を使う。現在のバッファ以外に使うには:
                       • Lua: `vim.bo[bufnr].channel`
                       • Vimscript: `getbufvar(bufnr, '&channel')`
-
-VIMSCRIPT
 • *buffer_exists()*     |bufexists()| の古い名称。
 • *buffer_name()*       |bufname()| の古い名称。
 • *buffer_number()*     |bufnr()| の古い名称。
@@ -310,10 +374,11 @@ VIMSCRIPT
 • *inputdialog()*       |input()| を使う。
 • *jobclose()*          |chanclose()| の古い名称。
 • *jobsend()*           |chansend()| の古い名称 。
-• *last_buffer_nr()*    `bufnr("$").` の古い名称。
+• *last_buffer_nr()*    bufnr("$") の古い名称。
 • *rpcstart()*          |jobstart()| を `{'rpc': v:true}` で使う。
-• *rpcstop()*           ジョブを停止するには |jobstop()| 、
-                      ジョブを停止せずにRPC通信を閉じるには `chanclose(id, "rpc")`、
+• *rpcstop()*           ジョブを停止するには |jobstop()| を、
+                      ジョブを停止せずにRPC通信を閉じるには
+                      `chanclose(id, "rpc")` を、
                       ソケットを閉じるには `chanclose(id)` を使う。
 
 
