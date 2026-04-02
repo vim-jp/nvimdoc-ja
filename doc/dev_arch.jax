@@ -1,52 +1,161 @@
-*dev_arch.txt*          Nvim 0.12        Last change: 2025-08-24
+*dev_arch.txt*          Nvim 0.12        Last change: 2026-04-02
 
 
                          NVIMリファレンスマニュアル
 
 
-Nvimの開発方法およびモジュールとサブシステムの説明            *dev-arch*
+Nvimの開発方法、モジュールとサブシステムの説明                *dev-arch*
 
-各主要モジュールのファイルは、先頭にコメント形式で概要が記述されている(そうで
-なければならない)。このドキュメントは以下の点を説明することである。
+モジュールごとの詳細については、それぞれのモジュールの冒頭にドキュメントが
+書かれている (`terminal.c`, `undo.c`, …)。それぞれの主要モジュールは
+ファイル冒頭のコメントに概観が書かれている (そうでなければならない)。
 
-1. これらがどのように組み合わさっているかの概要
-2. 次のような基本的なタスクの解説:
-    - パブリック関数の廃止
-    - 新たなパプリック (API) 関数の追加
-    - 新たなパブリック (UI) イベントの追加
-3. TODO: move src/nvim/README.md into this doc.
+このドキュメントでは以下を提供する:
+
+1. これらがどのように組み合わさっているかの概観
+2. 次のような基本的なタスクのガイド:
+    - (TODO) パブリック関数の廃止
+    - (TODO) 新しいパブリック (API) 関数や (UI) イベントの追加
 
                                             目次を確認するには |gO| をタイプ。
 
 ==============================================================================
-データ構造
+プロジェクト構成: どこに何を置くか
 
-基本的にはリストに対しては `kvec.h` を使用してだくさい。どうしてもリンクリストが
-必要な場合は "intrusive" なリンクリストを定義する `lib/queue_defs.h` を使用して
-ください。
+Cのコード ~
+
+- NvimのCのコードは `src/nvim/` に置かれる。
+    - 我々がフォークし所有する、第三者製のコンポーネントも含まれる。
+      これは、アップストリームを追跡しないことを意味する。具体的には `vterm/`
+      と `tui/termkey/` がそうである。
+- Vendoredされた第三者製のコンポーネントは `src/*` に置かれる。
+    - `src/tee/` と `src/xxd/` は専用のビルドファイルを持つ。Windowsにおいて
+      確実に利用できるよう、Windowsのアーティファクトに含まれる。
+    - その他の `src/cjson/` や `src/mpack/` などのコンポーネントはNvim自体に
+      組み込まれる。vendoredされたソースはアップストリームと同期され、
+      我々は所有しない。
+
+"MAINTAIN.md" も参照。
+
+生成されたCのファイルは、役割を分かりやすくするため次のファイル名の規則に従う:
+- `*.c`, `*.generated.c` - インクルードなどが揃った、完全なCのファイル。
+- `*.c.h` - parametrizedされたCのファイル。必要なインクルードをすべて含むが、
+  使う前にマクロを定義する必要がある。 例: `typval_encode.c.h`
+- `*.h` - インクルードが揃った完全なヘッダ。 `*.generated.h` には適用されない。
+- `*.h.generated.h` - エクスポートされる関数の宣言。
+- `*.c.generated.h` - staticな関数の宣言。
+
+
+Luaのコード ~
+
+Luaのコードは次の4つの場所のいずれかに置かれる:
+
+1. プラグイン! すべてを `vim.*` に入れる必要はない。プラグインは、以下のような
+   必須でない機能にとって適切なモデルである。
+   (1) "autoload" の挙動を持つ。 (2) ユーザが無効化や第三者のプラグインで
+   置き換えられる。 (3) 主にユーザ用であり、APIではない。
+   - "オプトアウト" のプラグイン (起動時に有効化): `runtime/plugin/`
+   - "オプトイン" のプラグイン (`:packadd` により有効化): `runtime/pack/dist/opt/`
+   - Note: |standard-plugin-list| を更新する。
+   - Note: 新しいプラグインは、Luaモジュールを共有の "nvim" の名前空間に
+     置かなければならない:  `require('foo')` ではなく、 `require('nvim.foo')`。
+   - 例:
+     - ✅ spellfile `runtime/lua/nvim/spellfile.lua`
+     - ✅ tutor
+   - 以下のレガシーのプラグインは例に使わない (これらのモジュールは本来
+     `lua/x.lua` ではなく、 `lua/nvim/x.lua` になければならない):
+     - ❌ editorconfig.lua
+     - ❌ man.lua
+     - ❌ nvim.difftool
+     - ❌ nvim.tohtml
+     - ❌ nvim.undotree
+2. ランタイム: `runtime/lua/vim/`。 遅延読み込みされるモジュール 例: `treesitter`, `lpeg`.
+3. コア: `runtime/lua/vim/_core/`。 Nvimのバイナリにコンパイルされ、
+   Nvimの内部と直接やり取りすることができる。メインスレッドでのみ利用できる。
+   下記の |dev-lua-builtin| を参照。
+4. "共有" のコア `runtime/lua/vim/_core/shared.lua`。常に利用できる純粋な
+   Luaの関数。テストランナーや、Nvimから起動されるワーカースレッド/プロセスで
+   使われる。
+
+最上位の `vim.` の名前空間は、基本的なLuaとエディタの機能のためにある。
+それ以外の機能はサブモジュール (`vim.foo`) (ただし入れ子にし過ぎない) や
+プラグイン (上記を参照) にする。
+
+Vimの `if_lua` との互換性は明確に目標外である。
+
+                                                             *dev-lua-builtin*
+Luaモジュールのうち、 VIMRUNTIME が不正でも必要なもの (データ構造や
+必須のユーティリティなど) は、 `nvim` のバイナリ内にコンパイルする必要がある。
+これをする方法は2つある:
+- 非公開なら、 `runtime/lua/vim/_core/` にコードを置く。
+- 公開なら、 `runtime/lua/vim/` 内に新しいファイルパスを決め、
+  src/nvim/CMakeLists.txt 内の VIM_MODULE_FILE にそれを加える。
+
 
 ==============================================================================
-UI イベント
+データ構造
 
-UI イベントに最も直接的に関係するソースファイルは次の通りです:
-1. `src/nvim/ui.*`: 登録された UI 構造体のハンドラー関数を呼び出す(msgpack-rpc
-                  とは独立)。
-2. `src/nvim/api/ui.*`: msgpack-rpc 経由でメッセージをリモート UI に転送。
+- StringBuilder
+- 動的なリスト/vectorには、 kvec もしくは garray.c (文字列には StringBuilder)
 
-UI イベントは `src/nvim/api.ui_events.in.h` で定義されています。このファイルは
-直接コンパイルされず、上記のソースファイルで使用されるラッパー関数を自動生成す
-る `src/nvim/generators/gen_api_ui_events.lua` によって解析されます。また、
-`api_info().ui_events` としてアクセス可能なメタデータも生成します。
+ほとんどのリストには `kvec.h` を使う。どうしても連結リストが必要なのであれば、
+"intrusive" な連結リストを定義する `src/nvim/lib/queue_defs.h` を使う。
 
-neovim/neovim のコミット d3a8e9217f39c59dd7762bd22a76b8bd03ca85ff に新しい UI
-イベントを追加する方法のサンプルがあります。
+バッファのテキストは、 `src/nvim/memline.c` で定義される行セグメントの木として
+管理される。中心となる考えは `ml_find_line` にある。
 
-UI イベントは UI に従いますが、これは UI イベントのデータの深いコピーであるこ
-とを意味します。
+エディタの概念の多くのはLuaのデータファイルとして定義されている:
 
-この開発サイクル中に NVIM_API_LEVEL を上げていない場合は、必ず上げてください。
+- イベント (自動コマンド): src/nvim/auevents.lua
+- Ex (コマンドライン) コマンド: src/nvim/ex_cmds.lua
+- オプション: src/nvim/options.lua
+- Vimscriptの関数: src/nvim/eval.lua
+- v: 変数: src/nvim/vvars.lua
 
-その他の参考資料:
+==============================================================================
+イベント                                                          *dev-events*
+
+歴史的に "自動コマンド" と呼ばれ、ここでは "エディタイベント" や "イベント" と
+呼ばれるイベントは、高水準なイベントであり、プラグインやユーザの設定、
+Nvimエディタが利用する。(これとは無関係な、 `event/defs.h#Event` 構造体により
+定義される低水準な概念があり、これは内部の |event-loop| を介して渡される単なる
+データの塊である。)
+
+可能であれば、新しいエディタイベントは `aucmd_defer()` を使って
+実装されるべきである (可能であれば、既存のイベントもこれに移行する)。
+これはイベントを予測できる形で処理し、クラッシュや競合状態を防ぐためである。
+例は `do_markset_autocmd` を参照。
+
+==============================================================================
+UIイベント                                                     *dev-ui-events*
+
+長期的な目標はUIイベントが単なる "エディタイベント" (かつての "自動コマンド")
+の一種となることである。ユーザ向けやプラグイン向けのイベントが区別されている
+理由は特にない。イベントはイベントである。イベントの経路は無関係であり、
+すべてのイベントは任意の経路 (エディタもしくはRPC) において利用できなければ
+ならない。
+
+しかし現状、UIイベントは汎用的な `redraw` 通知にパッケージされた特定の
+RPCイベントである。 |vim.ui_attach()| により、プロセス内でリッスンすることも
+できる。
+
+UIイベントは遅延してUIに送られるため、UIイベントデータは深くコピーされる。
+
+UIイベントに直接関係するソースファイル:
+1. `src/nvim/ui.*`: 登録されたUI構造体のハンドラ関数を呼び出す。 (msgpack-rpc から独立している)
+2. `src/nvim/api/ui.*`: メッセージをmsgpack-rpc経由でリモートUIに送る。
+
+UIイベントは `src/nvim/api/ui_events.in.h` で定義される。
+このファイルは直接コンパイルされず、 `src/gen/gen_api_ui_events.lua` により
+解析されラッパー関数が自動的に生成され、その関数が上記のソースファイルで
+使われる。
+`api_info()` により参照できるメタデータも生成する。
+
+新しいUIイベントを追加する例については、
+コミット d3a8e9217f39c59dd7762bd22a76b8bd03ca85ff を参照。
+NVIM_API_LEVEL の値を増やすことを忘れないように。
+
+他の参考資料:
 - |msgpack-rpc|
 - |ui|
 - https://github.com/neovim/neovim/pull/3246
@@ -58,20 +167,283 @@ UI イベントは UI に従いますが、これは UI イベントのデータ
 API
 
                                                         *dev-api-fast*
-API 関数と Vimscript の "eval" 関数は |api-fast| としてマークできます。これは、
-Lua コールバックやその他のシナリオにおいて安全に呼び出せることを意味します。
-ただし、 `os_breakcheck()` を呼び出す可能性がある場合は "fast" としてマークする
-ことはできません。これは、現在の実行を "yield" し、想定されていないコードの実
-行を開始する可能性があるためです:
-- 予期しない関数に誤って再帰する。
-- "yield" された呼び出し元に戻る前に、(グローバル)状態を復元せずに変更する。
+API関数やVimscriptの "eval" 関数には |api-fast| とマークされたものがある。
+これは、Luaコールバックやその他の状況において安全に呼び出せるという意味である。
+関数が `os_breakcheck()` を呼び出しうる場合、それを "fast" としてマークする
+ことはできない。 `os_breakcheck()` は現在の実行を中断し以下を想定していない
+新たなコードの実行を始める可能性があるからである:
+- 誤って、これを想定しない関数に再帰すること。
+- (グローバルな) 状態を変更し、 "yielded" されたcallsiteに戻る前にそれを復元
+  しないこと。
 
-実際には、 `os_breakcheck()` を呼び出す可能性のあるコードは "fast" にはならない
-ことを意味します。例えば、コミット 3940c435e405 では `nvim__get_runtime` のよ
-うなバグを `os_breakcheck()` を `EW_NOBREAK` フラグを用いて明示的に禁止することで
-修正しました。
+実用上は、 `os_breakcheck()` をトリガーしうるコードは "fast" になりえない
+ということである。例えば、コミット 3940c435e405 は、 `nvim__get_runtime` の
+そのようなバグを、 `EW_NOBREAK` のフラグにより `os_breakcheck()` を明示的に
+禁止することで修正した。
 
-"fast" ではないコードの主な例: 正規表現マッチ、 ワイルドカード展開、式の評価。
+典型的なfastでないコードの例: 正規表現マッチング、ワイルドカードの展開、
+式の評価。
+
+
+==============================================================================
+イベントループ                                                    *event-loop*
+
+内部的で低水準な、libuvのイベントループ (|luv-event-loop|) は、任意の処理を
+予測できる形でスケジューリングするために使われる。スケジューリングの代表的な
+使用例は、遅延されるエディタイベント (自動コマンド) である。もう1つの例は
+|job-control| である。
+
+非同期イベント対応 ~
+
+Nvimが追加した機能の一つが、任意の非同期イベントへの対応である。
+以下のようなものである:
+
+- RPCリクエスト
+- ジョブ制御のコールバック
+- タイマー
+
+Nvimは、文字を待つ間に別のイベントループに入ることで、この機能を実装している。
+なので、以下よりも: >py
+
+  def state_enter(on_state, data):
+    do
+      key = readkey()           # ユーザからキーを読み取る
+    while on_state(data, key)   # 現在の状態に対応するコールバックを呼び出す
+
+以下がNvimのループを正しく表している: >py
+
+  def state_enter(on_state, data):
+    do
+      event = read_next_event() # OSからイベントを読み取る
+    while on_state(data, event) # 現在の状態に対応するコールバックを呼び出す
+
+`event` はOSから送られてきたものであり、ユーザ入力が含まれる (それ以外も
+含まれる)。 `read_next_event()` の部分は内部的にはlibuvで実装されている。
+libuvはNvimが利用するプラットフォーム層である。
+
+NvimのコードはVimから継承されたため、状態は "任意のイベント" を受け取るように
+設計されていない。そのためそれらを表現するためには特別なキーを使う (状態が
+"任意のイベント" を受け取ったとき、通常は画面を更新する以外に
+何もしない)。
+
+メインループ ~
+
+`Loop` 構造体 (`main_loop` を表現する) が複数のキューを1つのループに
+まとめている: >
+
+    uv_loop_t uv;
+    MultiQueue *events;
+    MultiQueue *thread_events;
+    MultiQueue *fast_events;
+
+`loop_poll_events` は、Nvimのアイドル時および `os_breakcheck` の間隔ごとに
+`Loop.uv` と `Loop.fast_events` を確認する。
+
+MultiQueue のいい所は、使い捨ての "子キュー" を気軽にアタッチできる点である。
+例えば `do_os_system()` は、自動的にイベントを `main_loop` にルートするため
+(すべての生成されたプロセスに対して!) これをする: >
+
+    Process *proc = &uvproc.process;
+    MultiQueue *events = multiqueue_new_child(main_loop.events);
+    proc->events = events;
+
+
+Nvimのライフサイクル ~
+
+Nvimが入力を処理する方法。
+
+典型的なVim的な編集セッションについて考える:
+
+01. Vimが起動画面を表示する
+02. ユーザが入力: `:`
+03. Vimがコマンドラインモードに入る
+04. ユーザが入力: `edit README.txt<CR>`
+05. Vimがファイルを開きノーマルモードに戻る
+06. ユーザが入力: `G`
+07. Vimがファイルの末尾に移動する
+09. ユーザが入力: `5`
+10. Vimがカウント待機モードに入る
+11. ユーザが入力: `d`
+12. Vimがオペレータ待機モードに入る
+13. ユーザが入力: `w`
+14. Vimが5つの語を削除する
+15. ユーザが入力: `g`
+16. Vimが "gコマンドモード" に入る
+17. ユーザが入力: `g`
+18. Vimがファイルの先頭に移動する
+19. ユーザが入力: `i`
+20. Vimが挿入モードに入る
+21. ユーザが入力: `word<ESC>`
+22. Vimが "word" を最初に挿入しノーマルモードに戻る
+
+なおユーザのアクションは、エディタの状態を変更する複数の入力に分割されている。
+"gコマンドモード" (ステップ16) に関するドキュメントはないが、内部的には
+"オペレータ待機モード" に似た実装になっている。
+
+このことから、Vimは入力駆動ステートマシン (より正確には、状態を復帰するには
+スタックが必要なため、プッシュダウン・オートマトンである) の振る舞いを持つこと
+が分かる。それぞれの状態がキーを処理するコールバックを持つと仮定すると、
+次の疑似コードでメインループを表現できる: >py
+
+  def state_enter(state_callback, data):
+    do
+      key = readkey()                 # ユーザからキーを読み取る
+    while state_callback(data, key)   # 現在の状態に対応するコールバックを呼び出す
+<
+
+つまり、それぞれの状態への遷移は、状態固有のコールバックとデータを
+`state_enter` に渡すことで行われる。以下は、上記で説明されたワークフローのよう
+なものを実装する疑似コードである: >py
+
+  def main()
+    state_enter(normal_state, {}):
+
+  def normal_state(data, key):
+    if key == ':':
+      state_enter(command_line_state, {})
+    elif key == 'i':
+      state_enter(insert_state, {})
+    elif key == 'd':
+      state_enter(delete_operator_state, {})
+    elif key == 'g':
+      state_enter(g_command_state, {})
+    elif is_number(key):
+      state_enter(get_operator_count_state, {'count': key})
+    elif key == 'G'
+      jump_to_eof()
+    return true
+
+  def command_line_state(data, key):
+    if key == '<cr>':
+      if data['input']:
+        execute_ex_command(data['input'])
+      return false
+    elif key == '<esc>'
+      return false
+
+    if not data['input']:
+      data['input'] = ''
+
+    data['input'] += key
+    return true
+
+  def delete_operator_state(data, key):
+    count = data['count'] or 1
+    if key == 'w':
+      delete_word(count)
+    elif key == '$':
+      delete_to_eol(count)
+    return false  # ノーマルモードに戻る
+
+  def g_command_state(data, key):
+    if key == 'g':
+      go_top()
+    elif key == 'v':
+      reselect()
+    return false  # ノーマルモードに戻る
+
+  def get_operator_count_state(data, key):
+    if is_number(key):
+      data['count'] += key
+      return true
+    unshift_key(key)  # キーを入力バッファに返す
+    state_enter(delete_operator_state, data)
+    return false
+
+  def insert_state(data, key):
+    if key == '<esc>':
+      return false  # 挿入モードを終了
+    self_insert(key)
+    return true
+<
+
+以上でNvimの内部の概観ができたであろう。 `g_command_state` や
+`get_operator_count_state` のような一部の状態は、
+専用の `state_enter` のコールバックを持たず、他の状態に暗黙的に組み込まれる
+(リファクタリングを進めて変わる予定である)。実際のコードを読み始めるにあたり、
+以下が推奨される順番である:
+
+1. `state_enter()` 関数 (state.c)。これが実際のプログラムのループである。
+   なお、 `VimState` 構造体が使われるが、これは状態データとコールバックの
+   関数ポインタを含んでいる。
+2. `main()` 関数 (main.c)。すべてのスタートアップの後、この関数の最後で
+   `normal_enter` が呼び出され、ノーマルモードに入る。
+3. `normal_enter()` 関数 (normal.c) は、NormalState 構造体をセットアップし
+   `state_enter` を呼び出す、小さなラッパーである。
+4. `normal_check()` 関数 (normal.c) ノーマルモードのイテレーションごとに
+   呼び出される。
+5. `normal_execute()` 関数 (normal.c) はノーマルモードでキーが読み取られたとき
+   呼び出される。
+
+3、4、5のノーマルモードの説明で表れた構造は `state_enter` ループの管理する
+他のモードでも使われる:
+
+- コマンドラインモード: `command_line_{enter,check,execute}()`(`ex_getln.c`)
+- 挿入モード: `insert_{enter,check,execute}()`(`edit.c`)
+- ターミナルモード: `terminal_{enter,execute}()`(`terminal.c`)
+
+重要な変数 ~
+
+現在のモードは `State` に格納される。取りうる値は `MODE_NORMAL`,
+`MODE_INSERT`, `MODE_CMDLINE`, とその他にいくつかある。
+
+現在のウィンドウは `curwin`、現在のバッファは `curbuf` である。これらは、
+ウィンドウ内のカーソル位置、オプションの値、ファイル名などを含む構造体を
+指している。
+
+すべてのグローバル変数は `globals.h` で宣言される。
+
+メインイベントループ ~
+
+メインループは state_enter 内に実装されている。基本となる考えは、ユーザが文字を
+入力するのを待ち、それを次の文字が必要になるまで処理するということである。
+そのため、Vimが文字の入力を待つ箇所は複数ある。
+これには `vgetc()` 関数が使われる。マッピングもこれにより処理される。
+
+我々が "Nvimイベントループ" と呼ぶものは、実際には、 `fast_events` キューと場合
+によっては遅延イベント (の妥当な部分集合) を両方処理するための、 `uv_run` の
+ラッパーである。そのため、Luaプラグインから "yield" をするには、
+多くの場合 "生の" `vim.uv.run()` は十分でない。代わりに `vim.wait(0)` を使う。
+
+画面の更新は、コマンドやコマンド列が終了するまで遅延される。
+この処理は `update_screen()` が担う。これはすべてのウィンドウに対して
+`win_update()` を呼び出し、それがすべての行に対して `win_line()` を呼び出す。
+これ以上の説明は [drawscreen.c](drawscreen.c) を参照。
+
+コマンドラインモード ~
+
+`:` を入力すると、 `normal_cmd()` が `getcmdline()` を呼び出し、Exコマンドの
+行を保持する。 `getcmdline()` はループを呼び出し、このループが入力される文字を
+処理する。 `<CR>` や `<Esc>` やその他のコマンドラインモードを終了する文字が
+押下されると返る。
+
+Exコマンド ~
+
+Exコマンドは `do_cmdline()` 関数が処理する。これが `:` のコマンドラインの一般的
+な構文解析をし、各コマンドごとに `do_one_cmd()` を呼び出す。
+whileループの処理もする。
+
+`do_one_cmd()` は範囲指定と一般的な引数を解析し、 exarg_t に入れ、
+コマンドを処理する関数に渡す。
+
+`:` のコマンドは [ex_cmds.lua](ex_cmds.lua) に列挙されている。
+
+ノーマルモードコマンド ~
+
+ノーマルモードコマンドは `normal_cmd()` 関数が処理する。他に、オプショナルな
+カウントと、一部のコマンド用に追加の文字を処理する。これらは `cmdarg_T` に
+入れられ、コマンドを処理する関数に渡される。
+
+`nv_cmds` というテーブルが [normal.c](normal.c) にある。
+これはコマンドを表現するエントリーのリストである。
+エントリーの1番目の要素はコマンドの最初の文字、2番目はコマンドを処理する関数で
+ある。
+
+挿入モードコマンド ~
+
+`i` や `a` のコマンドを実行すると、 `normal_cmd()` が `edit()` 関数を呼び出す。
+これは、次の文字を待って処理するループを含む。
+この関数は挿入モードを終了すると返る。
 
 
 ==============================================================================

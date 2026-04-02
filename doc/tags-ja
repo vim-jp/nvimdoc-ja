@@ -421,8 +421,10 @@ dev-api-client	develop.jax	/*dev-api-client*
 dev-api-fast	dev_arch.jax	/*dev-api-fast*
 dev-arch	dev_arch.jax	/*dev-arch*
 dev-doc	develop.jax	/*dev-doc*
+dev-events	dev_arch.jax	/*dev-events*
 dev-guidelines	develop.jax	/*dev-guidelines*
 dev-lua	develop.jax	/*dev-lua*
+dev-lua-builtin	dev_arch.jax	/*dev-lua-builtin*
 dev-lua-doc	develop.jax	/*dev-lua-doc*
 dev-provider	develop.jax	/*dev-provider*
 dev-theme	dev_theme.jax	/*dev-theme*
@@ -430,6 +432,7 @@ dev-tools	dev_tools.jax	/*dev-tools*
 dev-tools-backtrace	dev_tools.jax	/*dev-tools-backtrace*
 dev-tools-gdb	dev_tools.jax	/*dev-tools-gdb*
 dev-ui	develop.jax	/*dev-ui*
+dev-ui-events	dev_arch.jax	/*dev-ui-events*
 dev_arch.txt	dev_arch.jax	/*dev_arch.txt*
 dev_theme.txt	dev_theme.jax	/*dev_theme.txt*
 dev_tools.txt	dev_tools.jax	/*dev_tools.txt*
@@ -471,6 +474,7 @@ error()	luaref.jax	/*error()*
 escape	intro.jax	/*escape*
 euro	digraph.jax	/*euro*
 euro-digraph	digraph.jax	/*euro-digraph*
+event-loop	dev_arch.jax	/*event-loop*
 feature-request	intro.jax	/*feature-request*
 file:close()	luaref.jax	/*file:close()*
 file:flush()	luaref.jax	/*file:flush()*
