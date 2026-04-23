@@ -1,0 +1,734 @@
+*dev.txt*          Nvim
+
+
+                          NVIMリファレンスマニュアル
+
+
+Nvimの開発                                              *development* *dev*
+
+このリファレンスでは、NvimアプリケーションやNvim自体を開発するための、
+設計上の制約とガイドラインについて解説する。Nvimのアーキテクチャや内部概念に
+関する解説については |dev-arch| を参照。
+
+Nvimは無償かつオープンソースである。誰でも貢献できる。
+    https://github.com/neovim/neovim/blob/master/CONTRIBUTING.md
+
+                                                目次を見るには |gO| をタイプ。
+
+==============================================================================
+設計目標                                                *design-goals*
+
+重要な順に並んでいる (おおむね)。矛盾する項目もあるが、意図された
+ものである。バランスを探る必要がある。
+
+
+Nvimは... 改良されている                                *design-improved* ~
+
+NvimのNeoな部分は、NvimをVimとして良いものにすべきであり、まったく異なる
+エディタにしてはならない。
+- 好みの問題の場合、Vim/Unixの伝統に従う。関連するVim/Unixの伝統がない場合、
+  "一般的な事例" を考慮する。
+- 追加できる機能に制限はない。新しい機能は次に基づいて決める。
+  (1) ユーザの要望、 (2) 実装にかかる労力そして (3) 誰かが実際にそれを実装
+  する。
+- 後方互換性は1つの機能である。
+  特にRPC APIは決して互換性を損ねてはならない。
+
+
+Nvimは... よく文書化されている                          *design-documented* ~
+
+- ドキュメントの無い機能は役に立たない。新機能を追加するパッチはドキュメント
+  を含まなければならない。
+- ドキュメントは網羅的で理解しやすくあるべきである。具体例を書くようにする。
+- 文章は必要以上に長くしない。ドキュメントが少ない方が目的の項目を見つけやすく
+  なる。
+
+
+Nvimは... 速く小さい                                    *design-speed-size* ~
+
+Nvimは小さく速く保つ。これは汎用性と使い易さに直結する。
+- コンピュータは年々速くなり大型化している。Vimも進化してよいが、コンピュータの
+  進化する速度を上回ってはならない。Vimが古いシステムでも使えるようにする。
+- 多くのユーザはVimをシェルから頻繁に起動する。起動時間は短くなければならない。
+- コマンドは効率よく動作しなければならない。消費する時間はできるだけ短くなけれ
+  ばならない。有用なコマンドであれば多少長くなってもよい。
+- Vimを遅い通信環境で使う人もいることを忘れてはならない。通信のオーバーヘッドは
+  最小化する。
+- Vimはコンポーネントの1つに過ぎない。巨大なアプリケーションするのではなく、
+  他のプログラムとうまく連携するようにする
+  ("コンポーザビリティ")。
+
+
+Nvimは... 保守しやすい                                  *design-maintain* ~
+
+- ソースコードが乱雑になってはならない。信頼できるコードであるべきである。
+- コメントは有意義な方法で書く。関数名と引数名を列挙するだけでは役に立たない。
+  それが何のために存在するのかを説明する。
+- 別のプラットフォームへの移植は、プラットフォーム非依存のコードを変更し過ぎる
+  ことなく、簡単にできるべきである。
+- オブジェクト指向の精神を活かす: データとコードはまとめる。コードの他の部分
+  への知識の分散を最小限に抑える。
+
+
+Nvimは何でないか                                        *design-not* ~
+
+NvimはOSではない。それより、他のツールと組み合わせたり、コンポーネントとして
+ホストすべきである。Marvimはかつて言った:
+"Emacsと違い、Nvimには流し台が含まれない... しかし配管工事には最適である"
+
+
+==============================================================================
+開発者ガイドライン                                            *dev-guidelines*
+
+------------------------------------------------------------------------------
+プロバイダ                                                      *dev-provider*
+
+Nvimの主要な目標は、エディタのコアの知識なしにエディタを拡張できるようにする
+ことである。一部のコア機能は、外部スクリプトとして実装される "プロバイダ" に
+委譲されている。
+
+例:
+
+1. Vimのソースコードでは、今では xclip や pbcopy/pbpaste のようなシェルコマンド
+   により達成される2つのタスクを行うため、クリップボードに関するロジックが
+   1000行以上のCのソースコード (ui.c) を占めている。
+2. Pythonスクリプティング対応: Vimは、Pythonのインタプリタを組み込むために3つの
+   ファイルを持つ: if_python.c, if_python3.c, if_py_both.h.
+   合計で9500行ほどのCのソースコードである。対して、NvimにおけるPython
+   スクリプティングは、約2000行のPythonで実装された外部のホストプロセスにより
+   行われる。
+
+プロバイダフレームワークはVimscriptをCから呼び出す。このフレームワークは、
+eval.c の2つの関数で構成されている:
+
+- eval_call_provider({name}, {method}, {arguments}, {discard}):
+  `provider#{name}#Call` を、 {method} と {arguments} を引数として呼び出す。
+  {discard} がtrueであれば、プロバイダの返した値はすべて捨てられ、
+  空の値が返される。
+- eval_has_provider({name}): `g:loaded_{name}_provider` 変数を確認する。
+  プロバイダスクリプトは、それが "有効で機能している" ことを示すため、この変数
+  を2に設定する。機能が利用できるか確認するために |has()| から呼び出される。
+
+例えば、Pythonプロバイダは "autoload/provider/python.vim" のスクリプトで
+実装されている。このスクリプトは、有効な外部のPythonホストが見つかった場合に
+のみ `g:loaded_python_provider` を2にする。そうすると、 `has("python")` が、
+Pythonサポートが機能しているかを反映する。
+
+                                                        *provider-reload*
+GUIや他のアプリケーションがプロバイダを "再読み込み" したいことがある。
+プロバイダを再読み込みするには、その "loaded" フラグを削除し |:runtime| で
+再読み込みする: >vim
+
+    :unlet g:loaded_clipboard_provider
+    :runtime autoload/provider/clipboard.vim
+
+
+------------------------------------------------------------------------------
+ドキュメント                                                         *dev-doc*
+
+- "直接表現する"。曖昧な、口語的な表現はドキュメント (docstring,
+  ユーザマニュアル, ウェブサイト, ニュースレター, …) において使わない。
+  言葉を濁さない。個性や味のある表現を控えめに使う分には歓迎されるが、通常は、
+  読者の時間と労力を考慮して最適化する: "正確でありながら簡潔" を目指す。
+    - 能動態を使う: "XはFooによりなされる" ではなく、 "FooはXをする"。
+    - "選んだ言葉がユーザ体験の重要な一部になる"
+      https://developer.apple.com/design/human-interface-guidelines/writing
+    - "...口語的になり過ぎたり軽薄になることなく"
+      https://developers.google.com/style/tone
+- (インラインコメントではなく) docstringを書く。命令形 ("Get") ではなく、
+  現在の時制 ("Gets") を使う。 "How" ではなく "What" を記述することにより、
+  曖昧性が減り明確性が改善される。 >
+    ✅ OK:
+    /// Gets a highlight definition.
+    ❌ NO:
+    /// Get a highlight definition.
+- 曖昧さを避けるために必要な場合を除き、docstringは "The" や "A" で始めないよう
+  にする。これは視覚的な補助となりノイズが減る。 >
+    ✅ OK:
+    /// @param dirname Path fragment before `pend`
+    ❌ NO:
+    /// @param dirname The path fragment before `pend`
+- Vimとの相違点:
+    - ヘルプタグに "nvim-" は前置しない。Vimとの相違点は |vim_diff.txt| に
+      記載する。それ以外の区別は必要ない。
+    - Vimの機能が削除された場合、ヘルプからその項目を削除しタグを
+      |vim_diff.txt| に移動する。
+- 非推奨になった機能は |deprecated.txt| で述べ、元のドキュメントは削除する。
+- 一貫した表現を使う。
+    - ヘルプタグにおける "terminal" は常に "組み込みの端末エミュレーター" を
+      指し、 "ユーザのホスト端末" は指さない。
+    - ホスト端末に関するヘルプタグには "tui-" を前置し、可能であれば本文では
+      "TUI" を使う。
+- Luaのドキュメントの置き場所の大まかなガイドライン:
+    - Nvim APIの関数 `vim.api.nvim_*` は `api.txt` に入れる。
+    - モジュールが大きく、汎用的な低水準なLuaの機能に関係しない場合、
+      分離を検討する。例:
+      `treesitter.txt`
+    - そうでなければ、 `lua.txt` に追加する。
+
+ドキュメント形式 ~
+
+Nvimが所有するドキュメントについては、ヘルプドキュメントが他の形式 (たとえば
+HTML: https://neovim.io/doc/user ) でもきれいにレンダリングされるよう、以下の
+厳密な "vimdoc" の部分集合を使う。
+
+厳密な "vimdoc" の部分集合:
+
+- 自動的に折り返したくない隣合う行には "-" か "•" を前置した (このような) リス
+  トを使う。リストは常に "flow" レイアウト (ソフトラップ) でレンダリングされ、
+  レガシーの :help ドキュメントに一般的な、あらかじめ整形 (ハードラップ) された
+  レイアウトでレンダリングされない。番号付きのリストも使える。例: "1."
+- ブロック (段落) は空行で区切る。
+- 不必要にインデントすると "flow" レイアウトが使えなくなるので避ける。
+  整形済みのセクションが必要なら、 ">" で始まる |help-codeblock| に
+  入れる。
+- 引数やフィールドは `{foo}` のように書く。
+- 省略できる引数やフィールドは `{foo}?` のように書く。
+
+Cのdocstring ~
+
+Nvim APIのドキュメントは、ソースコード内の関数定義の上にdocstring (ドキュメント
+コメント) として存在する。 |api| の :help は src/nvim/api/*.c で定義された
+docstringから生成される。
+
+docstringの形式:
+- 行は `///` で始める
+- 特別なトークンは `@` にトークン名を続けたもので始める:
+  `@note`, `@param`, `@return`
+- Markdownに対応。
+- タグは `[tag]()` のように書く。
+- 参照は `[tag]` のように書く
+- コード例には "```" を使う。
+  コード例は `vim` や `lua` として注釈できる。
+
+例: |nvim_open_win()| のヘルプは、src/nvim/api/win_config.c で定義される
+次のようなdocstringから生成される: >
+
+    /// Opens a new window.
+    /// ...
+    ///
+    /// Example (Lua): window-relative float
+    ///
+    /// ```lua
+    /// vim.api.nvim_open_win(0, false, {
+    ///   relative='win',
+    ///   row=3,
+    ///   col=3,
+    ///   width=12,
+    ///   height=3,
+    /// })
+    /// ```
+    ///
+    /// @param buffer Buffer to display
+    /// @param enter  Enter the window
+    /// @param config Map defining the window configuration. Keys:
+    ///   - relative: Sets the window layout, relative to:
+    ///      - "editor" The global editor grid.
+    ///      - "win"    Window given by the `win` field.
+    ///      - "cursor" Cursor position in current window.
+    /// ...
+    /// @param[out] err Error details, if any
+    ///
+    /// @return Window handle, or 0 on error
+
+
+Luaのdocstring                                                   *dev-lua-doc* ~
+Luaのドキュメントは、ソースコード内の関数定義の上にdocstringとして存在する。
+|lua-vim| の :help はそのdosctringから生成される。
+
+docstringの形式:
+- LuaCATSの注釈を使う: https://luals.github.io/wiki/annotations/
+- Markdownに対応。
+- タグは `[tag]()` のように書く。
+- 参照は `[tag]` のように書く。
+- コード例には "```" を使う。
+  コード例は `vim` や `lua` として注釈できる
+- 関数が "stable" になったら、 `@since <api-level>` を使い |api-level| を
+  記す。もし `<api-level>` が現在の安定版リリースより大きければ (もしくは0であ
+  れば)、 "experimental" としてマークされる。  {訳注: src/gen/util.lua の誤り}
+  - api-levelからNvimのバージョンへの写像については、 scripts/util.lua を参照。
+- 非推奨の関数には `@deprecated` を使う。
+- ドキュメント生成を防ぐには `@nodoc` を使う。
+- 関数が内部的ないしパブリックでない場合 `@private` を使う。
+  - 関数をアンダーバーの接頭辞 ("foo" ではなく "_foo") を付けて命名すると
+    `@nodoc` と `@private` を意味する。
+- `@class` ブロックを `@param` ブロックにインライン化するには `@inlinedoc` を
+  使う。例えば、 >lua
+      --- Object with fields:
+      --- @class myOpts
+      --- @inlinedoc
+      ---
+      --- Documentation for some field
+      --- @field somefield? integer
+
+      --- @param opts? myOpts
+      function foo(opts)
+      end
+<
+
+  は次のようにレンダリングされる: >vimdoc
+
+      foo({opts})
+
+          Parameters:
+            - {opts}? (table) Object with the fields:
+                      - {somefield}? (integer) Documentation
+                        for some field
+<
+- `@meta` として宣言されたファイルは、型付けとドキュメントのためだけに使われる (typescriptの "*.d.ts" ファイルに似ている)。
+
+例: |vim.paste()| のヘルプは、 runtime/lua/vim/_core/editor.lua の
+vim.paste を装飾する次のようなdocstringから生成される: >
+
+    --- Paste handler, invoked by |nvim_paste()| when a conforming UI
+    --- (such as the |TUI|) pastes text into the editor.
+    ---
+    --- 例: To remove ANSI color codes when pasting:
+    ---
+    --- ```lua
+    --- vim.paste = (function()
+    ---   local overridden = vim.paste
+    ---   ...
+    --- end)()
+    --- ```
+    ---
+    --- @since 12
+    --- @see |paste|
+    ---
+    --- @param lines  ...
+    --- @param phase  ...
+    --- @returns false if client should cancel the paste.
+
+
+EXXエラーコード                                              *dev-error-codes* ~
+
+新しい "EXX" エラーコード (例: |E5555|) を決めるには、単に新しいEXXの番号を
+使ってメッセージをprintすればよい: >
+    emsg(_("E996: Invalid thing"));
+<
+既存のエラーコードを見るには: >
+    :new | put =filter(getcompletion('h E', 'cmdline'), 'v:val =~# ''E\d\d''')
+
+`linterrcodes` ビルドターゲットを使うと、 "EXX" コードが一意かつヘルプタグを
+持っているか確認できる。CIで走るが、ローカルで走らせることもできる: >
+    make linterrcodes
+<
+
+------------------------------------------------------------------------------
+標準ライブラリの設計                                                 *dev-lua*
+
+|dev-naming| も参照。
+
+- コアのLuaモジュール |lua-stdlib| はシンプルにする。緻密なOOPや疑似OOPの設計は
+  避ける。プラグインの作者が欲しいのは使える関数であり、巨大な派手な継承階層
+  ではない。
+- Nvimの標準ライブラリにおいて、特別なオブジェクトを要求したり返すのは避ける。
+  プレーンなテーブルや値の方がシリアライズしやすく、リテラルから構築しやすく、
+  inspectしてprintしやすく、本質的にすべてのLuaプラグインとの互換性がある。
+  (ただし `vim.cmd` のような不透明でデータでないオブジェクトには適用されない)
+- 標準ライブラリの関数は次の一般的なパターンに沿うべきである:
+  - 失敗を伝えるには |lua-result-or-message| (`any|nil,nil|string`) を返す、
+    もしくは適していれば |dev-error-patterns| から決める。
+  - テーブルだけでなく、イテラブルも受け取るようにする。
+    - Note: イテラブルが無意味な場合もある。例: spair() は定義からして入力を
+    ソートする。そのためイテラブルを取るメリットがない。入力を "具体化" する
+    必要があるため、 "ストリーム" に対しては利用できないからである。
+  - 可能であれば、テーブルではなくイテラブル (ジェネレータ) を返す。
+  - 関数を |for-in| ループに使うのであれば、pairs() や ipairs() の
+    インターフェースを模倣する。
+
+                                                          *dev-error-patterns*
+失敗を呼び出し元に伝えるには、次のパターンから決める (優先順に並んで
+いる):
+1. `retval, errmsg`
+  - 失敗することが正常、もしくは呼び出し元が他の方法で処理を継続
+    (フォールバック) することが実用的な場合。 |lua-result-or-message| を参照。
+2. オプショナルな結果, エラーメッセージなし
+  - 1. の特殊な場合。 "存在しない" の場合が1つしかない場合
+    (例: キャッシュルックアップ、連想配列ルックアップ)。
+3. `error("no luck")`
+  - 無効な状態 ("起きてはならない") や、失敗することが異常、または低水準であ
+    り呼び出し元がそれを意味のある形で処理することができない場合。
+    利点として、エラーの伝搬が勝手に行われるため、意図せずエラーを握り潰すこと
+    が起こりにくい。 (例: `uv_handle/pipe:write()` を返り値を確認せずに使うこと
+    はよくある。)
+4. `on_error` コールバック
+  - 非同期や "visitor" でグラフを探索する場合、かつ処理を続ける間に
+    多くのエラーが集められる可能性がある場合。
+5. `vim.notify` (ときにオプショナルな `opts.silent` (非同期、visitor) と共に)
+  - 高水準 / アプリケーション水準のメッセージ。エンドユーザが直接呼び出す場合。
+
+
+インターフェースの規則                                          *dev-patterns* ~
+
+可能な場合、次のパターンがLuaとAPIに適用される:
+
+- バッファIDなどを取る場合、0は "現在のバッファ"、nilは "すべてのバッファ" を
+  意味する。ウィンドウID、タブページIDなどについても同様。
+  - 例: |vim.lsp.codelens.clear()| |vim.diagnostic.enable()|
+- コールバックを取る関数シグネチャ (例: |table.foreach()|) は、
+  可能であればそれを最後の引数 (optsの後) にすべきである (正確に1回だけ
+  呼び出される関数 |continuation| の場合は必ず)。
+  - より "騒がしくない" 引数を初めの方に置くことで可読性が上がる。
+  - luvと一貫している。
+  - 次の形式の関数を変換する将来の非同期ライブラリに有用。
+    `function(<args>, cb(<ret)>))` => `function(<args>) -> <ret>`
+  - 例: >lua
+    -- ✅ OK:
+    filter(…, opts, function() … end)
+    -- ❌ NO:
+    filter(function() … end, …, opts)
+    -- ❌ NO:
+    filter(…, function() … end, opts)
+- モジュールがユーザの設定を受け取るのであれば `config(opts)` 関数を公開する。
+  `opts` が省略されたら (もしくは `nil` であれば) 現在の設定を返す。
+  - 例: |vim.diagnostic.config()| を参照。
+- "有効化" ("トグル") のインターフェースと振る舞い:
+  - `enable(…, nil)` と `enable(…, {buf=nil})` はシノニムであり、機能の
+    "グローバル" な有効化を制御する。
+    - `is_enabled(nil)` と `is_enabled({buf=nil})`、同様に、機能のグローバルな
+      状態をクエリする。
+  - `enable(…, {buf: number})` はバッファローカルな "有効化" フラグを設定する。
+    - `is_enabled({buf: number})`、同様に、機能のバッファローカルな状態をクエリ
+      する。
+  - 以上の "ベストプラクティス" のリファレンス実装については
+    |vim.lsp.inlay_hint.enable()| と |vim.lsp.inlay_hint.is_enabled()| を参照。
+  - NOTE: 未決定の問題: https://github.com/neovim/neovim/issues/28603
+- 変換系の関数は "フィルター" の機能も持つべきである (適していれば):
+  関数がnilを返したらそのときの入力が除かれ (フィルターする) そうでなければ
+  変換された値が使われる。
+  - 例: |vim.diagnostic.Opts.Float| の format() フィールドを参照。
+- "foreach" 系の関数 (例: |LanguageTree:for_each_tree()|) は追加しない。
+  柔軟性が高く組み合わせやすい |iterable| を返すようにする: >lua
+    vim.iter(parser.tree_iter()):each(function()
+      ...
+    end)
+<
+
+------------------------------------------------------------------------------
+API設計                                                              *dev-api*
+
+|dev-naming| も参照。
+
+- APIを追加するとき、次の点を確認する:
+  - どんな先例を参考にしたか? それとの違いは何か?
+  - そのAPIは将来に拡張できるか? どのように? またはなぜできないのか?
+  - そのAPIは既存のAPIに似ているか? 古いAPIを非推奨にすべきか?
+  - ドキュメント内の関連する概念を照合したか?
+- 必要とあらば制約や制限を設け、 "互いに排他的" な引数は避ける。
+  例えば、 nvim_create_autocmd() は互いに排他的な "callback" と "command"
+  という引数を持つ。しかし、Vimscriptの関数の名前に対応しない、かつ
+  "callback" が文字列であればExコマンド (Vimscriptの関数を呼び出せる) として
+  扱うようにすれば、"command" 引数はなくせる。
+  "buffer" 引数も、"pattern" が数であればバッファ番号として扱うことで、
+  なくせる。
+- 現在のカーソル位置や現在のバッファなどに依存する関数は避け、代わりに
+  位置やバッファなどを引数に取るようにする。
+
+どこに置くか ~
+
+- API (libnvim/RPC): 低水準な内部機能や、クライアントやCの利用者が必要とする
+  基礎的なもの (`nvim_exec_lua()` など) を公開する。
+- Lua標準ライブラリ = APIの上に成り立つ高水準な機能。
+
+命名ガイドライン                                        *dev-naming* ~
+
+命名は非常に重要である: ものの名前は、それを使用、議論、検索、共有... する者に
+とって主要なインターフェースである。標準ライブラリ、API、UIでの一貫した命名は、
+ユーザと開発者が類似の概念 ("系統") を見つけ直感的に理解するのに役立ち、
+認知負荷を下げる。
+発見しやすいとコードの再利用が促され、同様に、冗長な重複する機能を避けることが
+できる。
+これによりコードの表面積が減り、バグを最小化することができる。
+
+通常、名前を決めるときは先例を探す。つまり、既存の (非推奨でない) 関数を見る。
+具体的には、以下を参照...
+
+                                                        *dev-name-common*
+可能であれば既存の {動詞} の名前 (操作) を使う:
+    - add:          コレクションに追加したり挿入する
+    - attach:       イベントを受け取るために何かをリッスンする (TODO: "on" に改名?)
+    - call:         関数を呼び出す
+    - callback      |continuation|: 非同期関数の結果を返す、関数の引数
+                    (フィールドではない)。その他のコールバックと
+                    イベントハンドラは "on_…" という名前にする。
+    - cancel:       イベントやイテレーションを中断する。一般的に、
+                    ユーザ主導でありエラーなし ("abort" は中止しエラー/失敗を
+                    通知する。)
+    - clear:        状態を消去するがコンテナを破壊しない
+    - create:       新しい (些細でない) ものを作る (TODO: "def" に改名?)
+    - del:          もの (ないし複数のもの) を削除する
+    - detach:       アタッチされたリスナーを処分する (TODO: "un" に改名?)
+    - enable:       機能を有効化/無効化する。シグネチャは
+                    `enable(enable?:boolean, filter?:table)` であるべき。
+    - eval:         式を評価する
+    - exec:         コードを実行する。結果を返す場合もある
+    - fmt:          整形する
+    - get:          ものを取得する。2つ種類がある (オーバーロード):
+                    1. `get<T>(id: int): T` 1つの項目を返す。
+                    2. `get<T>(filter: dict): T[]` リストを返す。
+    - has:          項目、機能などの存在を確認する
+    - inspect:      高水準な、多くの場合対話的な、ビューを表示する
+    - is_enabled:   機能が有効か確認する。
+    - on_…:         イベントや非同期の結果を処理する、もしくはそのような
+                    ハンドラを登録する。 |dev-name-events|
+    - open:         何かを開く (バッファ、ウィンドウ、 …)
+    - parse:        何かを構造化された形に構文解析する
+    - request:      リモート (ネットワーク、RPC) の操作を呼び出す。
+    - send:         チャンネルにデータやメッセージを書き込む。
+    - set:          もの (やそのグループ) を設定する
+    - start:        長生きするプロセスを起動する。"start" が明らかに適する
+                    場合を除き、 "enable" を使う。
+    - stop:         "start" の反対。長生きするプロセスを解体する。
+    - try_{動詞}:   ベストエフォート操作。失敗すればnullかエラーオブジェクトを返す
+
+次の非推奨の動詞は使わない:
+    - contains:     "has" を使う。
+    - disable:      `enable(enable: boolean)` を使う。
+    - exit:         "cancel" (場合によっては "stop") を使う。
+    - is_disabled:  `!is_enabled()` を使う。
+    - list:         "get" と重複
+    - notify:       "print"、"echo" と重複
+    - show:         "print"、"echo" と重複
+    - toggle:       `enable(not is_enabled())` を使う。
+
+API関数の {主題} には一貫性のある名前を使う: バッファはあらゆる場所で "buf" と
+呼ばれ、場所によって "buffer" や "buf" と表記が分かれてはならない。
+    - buf:          バッファ
+    - chan:         チャンネル (|channel|)
+    - cmd:          コマンド
+    - cmdline:      コマンドラインのUIや入力
+    - dir:          ディレクトリ
+    - fn:           関数
+    - hl:           ハイライト
+    - pos:          位置
+    - proc:         システムプロセス
+    - tabpage:      タブページ
+    - win:          ウィンドウ
+
+次の非推奨の名詞は使わない:
+    - buffer        "buf" を使う
+    - command       "cmd" を使う
+    - window        "win" を使う
+
+                                                        *dev-name-events*
+イベント処理コールバックおよびそれを登録するインターフェース (on_key) の命名
+には "on_" を接頭辞として使う。これらの関連する概念について命名規則が混乱する
+ことを避けるため、この多義性が許容されている。
+
+エディタイベント (|events|) (自動コマンド) は歴史的に次のように命名される: >
+    {大文字開始の名詞}{大文字開始のイベント名}
+
+API (RPC) イベントは次の形式で命名する: >
+    nvim_{名詞}_{イベント名}_event
+
+例: >
+    nvim_buf_changedtick_event
+<
+                                                        *continuation*
+"継続" は、非同期関数の結果を返し1度だけ呼び出されるコールバック関数
+として実装される。多くの場合、メインスレッドでエラーを出すことを避けるため、
+`err` を最初の引数として取る。例: >
+    foo(…, callback: fun(err, …))
+`callback` という名前は継続にのみ使える。その他のコールバックやイベント
+ハンドラには |dev-name-events| の "on_…" という規則を使う。
+
+                                                        *dev-api-name*
+新しいRPC |API| 関数は次の形式で命名する: >
+    nvim_{主題}_{動詞}_{任意の修飾子}
+
+nvim_buf/nvim_win/nvim_tabpage のAPIを新しく追加してはならない。ただしその概念
+が1つの "スコープ" にのみ適用されるのならしてもよい。つまり、 {主題} はスコープ
+(buf/win/tabpage/global) に適用される主題 ("ns", "extmark", "option", …)
+であり、スコープであってはならない。スコープは引数として指定されるべきである
+(一般的に、 |nvim_get_option_value()| のように相互排他な buf/win/… フラグ、
+もしくは、それほど一般的ではないが、 |nvim_get_option_info2()| のように
+`scope: string` というフィールドとして指定される)。
+
+- 例: `nvim_get_keymap('v')` はグローバルの文脈で動作する (最初の引数はバッファ
+  ではない)。 "get" という動詞は、与えられたフィルター引数に一致する
+  ものを取得することを示す。 `nvim_get_keymap('')` (空のフィルター) がすべての
+  項目を返すので、 "list" という動詞は必要ない。
+- 例: `nvim_buf_del_mark` は `Buffer` オブジェクト (最初の引数) に作用し、
+  "del" が {動詞} である。
+
+                                                        *dev-namespace-name*
+名前空間の名前は `nvim.foo.bar` のようにする: >
+    vim.api.nvim_create_namespace('nvim.lsp.codelens')
+<
+
+                                                        *dev-augroup-name*
+自動コマンドのグループ名は `nvim.foo.bar` のようにする: >
+    vim.api.nvim_create_augroup('nvim.treesitter.dev')
+<
+
+インターフェースのパターン                              *dev-api-patterns* ~
+
+主題ごとに `nvim_{主題}_{動詞}_…` のインターフェースを1つだけ作るようにする。
+
+例: >
+
+    nvim_ns_add(
+      ns_id: int,
+      filter: {
+        handle: integer (buf/win/tabpage id)
+        scope: "global" | "win" | "buf" | "tabpage"
+      }
+    ): { ok: boolean }
+
+    nvim_ns_get(
+      ns_id: int,
+      filter: {
+        handle: integer (buf/win/tabpage id)
+        scope: "global" | "win" | "buf" | "tabpage"
+      }
+    ): { ids: int[] }
+
+    nvim_ns_del(
+      ns_id: int,
+      filter: {
+        handle: integer (buf/win/tabpage id)
+        scope: "global" | "win" | "buf" | "tabpage"
+      }
+    ): { ok: boolean }
+
+
+悪い例:
+
+同じ `xx` という主題のために `nvim_xx`、 `nvim_buf_xx`、 `nvim_win_xx`、
+`nvim_tabpage_xx` という関数を作ると、ドキュメントやテスト、ボイラープレート、
+インターフェースが4倍必要になる。ユーザはそれを把握し、メンテナーはそれを保守す
+る必要がある。したがって、以下は推奨されない (この12個もの関数を上の3個の関数と
+比較してほしい): >
+
+    nvim_add_ns(…)
+    nvim_buf_add_ns(…)
+    nvim_win_add_ns(…)
+    nvim_tabpage_add_ns(…)
+    nvim_del_ns(…)
+    nvim_buf_del_ns(…)
+    nvim_win_del_ns(…)
+    nvim_tabpage_del_ns(…)
+    nvim_get_ns(…)
+    nvim_buf_get_ns(…)
+    nvim_win_get_ns(…)
+    nvim_tabpage_get_ns(…)
+
+------------------------------------------------------------------------------
+APIクライアント                                               *dev-api-client*
+
+                                                        *api-client*
+APIクライアントはNvim |API| をラップし自然な "SDK" をそのプラットフォーム
+(|jargon| を参照) 用に提供する。好きなプラットフォームやプログラミング言語用に
+新しいAPIクライアントを作ることもできる。
+
+APIクライアントのリスト:
+    https://github.com/neovim/neovim/wiki/Related-projects#api-clients
+
+                                                        *node-client* *pynvim*
+次のクライアントはAPIクライアントの "リファレンス実装" とみなせる:
+- https://github.com/neovim/node-client
+- https://github.com/neovim/pynvim
+
+標準機能 ~
+
+- APIクライアントの役割はmsgpack-rpcの詳細を隠蔽することである。ラッパーは、
+  |api-metadata| をNvimから読み取ることで自動的に生成できる。 |api-mapping|
+- クライアントは接続後 |nvim_set_client_info()| を呼び出すべきである。そうする
+  と、ユーザやプラグインは |ChanInfo| イベントを処理することでクライアントを
+  検知できる。こうすることで特殊変数や他のクライアントヒントの必要がなくなる。
+- クライアントは |nvim_error_event| 通知を処理すべきである。この通知は、
+  nvimへの非同期リクエストが拒否されたりエラーを起こした場合に送られる。
+
+パッケージの命名 ~
+
+APIクライアントのパッケージ名は、 "neovim" や "python-client" のように曖昧で
+あってはならない。"nvim" を接頭辞や接尾辞として、エコシステムの規則に従う識別子
+に付ける。
+
+例えば、Pythonのパッケージは名前に "py" が入っている傾向にある。そのため
+"pynvim" はよい名前である: 規則に従っており曖昧でない。もし "neovim" という名前
+であれば、ユーザは混乱し、ドキュメントと議論が複雑になる。
+
+APIクライアントのパッケージ名の例:
+- ✅ OK: nvim-racket
+- ✅ OK: pynvim
+- ❌ NO: python-client
+- ❌ NO: neovim_
+
+APIクライアント実装ガイドライン ~
+
+- トランスポート層は残りのライブラリから分離する。 |rpc-connecting|
+- Nvimが使うBINとEXTの型をサポートするMessagePack specのバージョン5を最低でも
+  実装しているMessagePackのライブラリを使う。
+- シングルスレッドのイベントループのライブラリ/パターンを使う。
+- クライアントの実装に使う言語のファイバー/コルーチンのライブラリを使う。これ
+  により並行性が大きく単純化され、原始的なマルチタスクからくる複雑性なしに、
+  ライブラリはノンブロッキングなイベントループの上にブロッキングAPIを公開する
+  ことができる。
+- RPCリクエストに対するレスポンスの順序については何も仮定してはならない。
+- クライアントはリクエストを想定すべきである。また、クライアントのレスポンスを
+  待つ間Nvimはブロックされるため、すぐに処理すべきである。
+- クライアントは通知を想定すべきである。ただし、Nvimはブロックされないので、
+  "ASAP" (すぐではなく) で処理しても問題ない。
+- C/C++のプロジェクトでは、 msgpack.org のライブラリではなくlibmpackを使う。
+    https://github.com/libmpack/libmpack/
+  libmpackは小さく (依存なし、C/C++のプロジェクトにインラインで組み込める)
+  効率がよい (アロケーションなし)。Nvimの要求するプロトコルであるmsgpack-RPCも
+  実装している。
+    https://github.com/msgpack-rpc/msgpack-rpc
+
+
+------------------------------------------------------------------------------
+外部UI                                                                *dev-ui*
+
+外部UIは |api-contract| のことを知っておく必要がある。特に、Nvimの将来の
+バージョンで既存のイベントに項目が追加されることがある。APIは強い後方互換性が
+あるが、既存のイベントに新しい (オプショナルな) フィールドが追加されても、
+クライアントは壊れてはならない。
+
+標準機能 ~
+
+外部UIは以下の共通機能を実装することが求められる:
+
+- 接続後 |nvim_set_client_info()| を呼び出し、ユーザやプラグインが |ChanInfo| 
+  イベントを処理することでUIを検知できるようにする。こうすることで、
+  特殊変数やUI固有の設定ファイル (gvimrc, macvimrc, …) が必要なくなる。
+- カーソルのスタイル (形、色) は 'guicursor' のプロパティに従うべきである。
+  このプロパティは mode_info_set UIイベントと共に渡される。
+- ALT/META (macOSでは "Option") キーは |<M-| コードとして送る。
+- "スーパー" キー (Windowsキー、Appleキー) は |<D-| コードとして送る。
+- Nvimのキーマップ空間と衝突するキーマップは避ける。GUIは新しいコード
+  (<C-,> <C-Enter> <C-S-x> <D-x>) やパターン ("シフト シフト") を多く持って
+  おり、これはNvimの既定やプラグインなどと衝突する可能性がない。
+- "option_set" |ui-global| イベントを他のGUIの動作のヒントにするとよい。
+  このイベントではさまざまなUI関連のオプション ('guifont', 'ambiwidth', …) が
+  発行される。"mouse_on", "mouse_off" も参照。
+- UIは通常 |$NVIM_APPNAME| を設定すべきではない (ユーザが明示的に要求した場合は
+  除く)。
+- |ui-event-hl_attr_define| により与えられるテキストの装飾/属性に対応する。
+  "url" 属性はクリックできるハイパーリンクとして表示されるべきである。
+- |:restart| が機能するよう、 "restart" UIイベントを処理する。
+- capslockを検知し、capslockが有効であれば印を表示する。
+
+
+マルチグリッドUI ~
+                                                        *dev-ui-multigrid*
+- マルチグリッドUIは、 `win_float_pos` |ui-multigrid| イベントを使い、
+  フローティングウィンドウを次のメソッドのいずれかを用いて表示すべきである。
+  必要に応じウィンドウごとに違うメソッドを選べる。
+
+  1. Nvimにウィンドウの位置とzオーダーを決めさせる。 `win_float_pos` UIイベント
+  の `compindex`, `screen_row`, `screen_col` の情報を使うとできる。
+  Nvimにgridを自動的に決めさせるには、UIは `grid` 引数に0を指定して
+  `nvim_input_mouse` を呼び出す。
+  2. `anchor`, `anchor_grid`, `anchor_row`, `anchor_col`, `zindex` を
+  ウィンドウの位置決めの参考にする。ウィンドウが画面外にある場合、
+  UIはそれを移動やリサイズしなければならない。その場合Nvimは実際のウィンドウ
+  配置に関する情報を知らないので、UIは `mouse_enabled` を考慮したうえで
+  実際のグリッドIDを指定して `nvim_input_mouse` を呼び出す必要がある。
+  Note: 情報が不足しているため、一部のAPI関数はこれらのウィンドウに対して
+  予期しない結果を返す場合がある。
+- 外部のウィンドウの場合、グリッドIDも `nvim_input_mouse` に渡す必要がある。
+
+ vim:tw=78:ts=8:sw=4:et:ft=help:norl:
