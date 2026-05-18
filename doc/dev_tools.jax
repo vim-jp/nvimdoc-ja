@@ -1,4 +1,4 @@
-*dev_tools.txt*          Nvim 0.12        Last change: 2025-08-24
+*dev_tools.txt*          Nvim 0.13        Last change: 2026-05-18
 
 
                          NVIMリファレンスマニュアル
@@ -6,43 +6,298 @@
 
 Nvim の開発のためのツールと技術                                 *dev-tools*
 
-次のアドバイスは、Nvim 自体の問題に対処したりデバッグするときに役立ちます。
-
-TODO: merge |debug.txt| into here.
+Nvim自体の開発とデバッグを行うためのもの。
 
                                             目次を確認するには |gO| をタイプ。
 
 ==============================================================================
-バックトレース                                        *dev-tools-backtrace*
+Nvimの開発のクイックスタートガイド                            *dev-quickstart*
+
+5分もあればNvimをハックし始められる:
+
+1. `BUILD.md` のビルド要件が揃っていることを確認。
+2. リポジトリをクローンし、中に "cd" する: >
+        git clone https://github.com/neovim/neovim
+        cd neovim
+        # (オプショナル) Nvimをビルドして実行:
+        make
+        VIMRUNTIME=./runtime ./build/bin/nvim --luamod-dev
+3. テストを1つ走らせる。まず "example_spec.lua" から始める。これはテストの
+   書き方を示すための実際のテストである: >
+        make functionaltest TEST_FILE=test/functional/example_spec.lua
+4. テストファイルの `before_each` ブロックに注目。これが `clear()` を呼び出す
+   ので、 `it()` のテストごとに新しいNvimのインスタンスが開始される。
+5. テストはNvimのインスタンス内で処理をし、 `eq()` によりアサーションをする。
+   UIを確認したいテストには `screen:expect()` も使える。
+6. 次はNvim自体にコード変更を加える。するとその影響が見られる。テスト例は
+   `feed('iline1…')` をする。なので、 `src/nvim/edit.c` にある挿入モードの
+   コードに変更を加えよう。
+   `normalchar` ラベルの直後にある `insert_handle_key` 関数の中に
+   次のコードを加える: >
+        s->c = 'x';
+7. 再び "example_spec.lua" テストを走らせると、次のように失敗するはず
+   である: >
+        test/functional/example_spec.lua:31: Row 1 did not match.
+        Expected:
+          |*line1               |
+          |*line^2               |
+          |{0:~                   }|
+          |{0:~                   }|
+          |                    |
+        Actual:
+          |*xine1               |
+          |*xine^2               |
+          |{0:~                   }|
+          |{0:~                   }|
+          |                    |
+
+これで、コードベースを変更、テストを書いて走らせる方法が分かった。
+内部のアーキテクチャの詳細については |dev-arch| を参照。
+
+==============================================================================
+ログ                                                          *dev-tools-logs*
+
+低水準のログメッセージは `$NVIM_LOG_FILE` に同期される。
+
+UIイベントのログはDEBUGレベルでログされる。 >
+
+    rm -rf build/
+    make CMAKE_BUILD_TYPE=Debug
+
+`LOG_CALLSTACK()` を使うと (Linuxのみ) 現在のスタックトレースをログできる。
+他のファイル (例えば、stderr) にログを書き込むには、 `LOG_CALLSTACK_TO_FILE(FILE*)` を使う。
+`-no-pie` (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=860394#15) が必要: >
+
+    rm -rf build/
+    make CMAKE_BUILD_TYPE=Debug CMAKE_EXTRA_FLAGS="-DCMAKE_C_FLAGS=-no-pie"
+
+多くのログメッセージは "UI" や "RPC" のような共通の接頭辞を持つ。ログをフィルタ
+するにはシェルを使う。例: DEBUGレベルではUIメッセージを除きたいかもしれない: >
+
+    tail -F ~/.local/state/nvim/nvim.log | cat -v | stdbuf -o0 grep -v UI | stdbuf -o0 tee -a log
+
+
+==============================================================================
+再現性のあるビルド
+
+Nvimを再現性高くビルドするには、cmakeの変数 `LUA_GEN_PRG` を、
+`LUAJIT_SECURITY_PRN=0` でビルドされたLuaJITバイナリに設定する。コミット
+cb757f2663e6950e655c6306d713338dfa66b18d を参照。
+
+
+==============================================================================
+TUIのデバッグ                                                  *dev-tools-tui*
+
+TUIの検査 ~
+
+Ghostty https://ghostty.org/ のinspectorツールを使うと、Nvimのようなターミナル
+アプリケーションの出力やイベントを観測およびクエリすることができる。
+
+Ghostty inspectorで "Terminal IO" タブをクリックするとトレースが得られる。
+
+TERMINFO LOGGING
+
+'verbose' レベルが3の場合、現在のシステムで使われるterminfoの値を知れるよう、
+Nvimは内部のterminfoの状態をログに記録する。 >
+
+    nvim -V3log
+
+GDB LLDBによるTUIのデバッグ ~
+
+NvimのTUIを立ち上げると2つのプロセスが起動する。1つはメインのエディタ状態用、
+もう1つはTUIのレンダリング用である。どちらのプロセスもnvimのバイナリを使う。
+そのため、間違った方にブレークポイントを設定すると、成功はするが
+ブレークポイントがヒットしないことになる。
+
+メインプロセスをデバッグするには、TUIを立ち上げない `--headless` フラグを指定し
+nvimのバイナリをデバッグする。こうすることでTUIのレンダリングに関係しない
+コードの中にブレークポイントを指定することができる。次のようにする: >
+
+    lldb -- ./build/bin/nvim --headless --listen ~/.cache/nvim/debug-server.pipe
+
+lldb内で `run` と入力する。すると、新しいターミナルウィンドウでヘッドレスの
+プロセスにアタッチし、エディタと対話できるようになる。次のようにする: >
+
+    ./build/bin/nvim --remote-ui --server ~/.cache/nvim/debug-server.pipe
+
+逆に、TUIのレンダリングをデバッグする目的で、ヘッドレスのプロセスを開始し、
+エディタ状態を失わずに、remote-uiプロセスを何回もデバッグすることもできる。
+
+nvim-dapを使い自動的に子 (メイン) プロセスをデバッグする方法については、
+https://zignar.net/2023/02/17/debugging-neovim-with-neovim-and-nvim-dap/ を参照。
+
+TUIの再描画 ~
+
+NvimのTUIの再描画動作をデバッグする際、再描画の速度を遅くすると役立つことが
+ある。 'writedelay' と 'redrawdebug' のオプションを設定すると、UIがどこで、いつ
+描画されるかが見られる。 >
+
+    :set writedelay=50 rdb=compositor
+
+Note: Nvimは内部でscreenbufferを使っており、内部で大きな範囲が再描画されても、
+最小限の更新しかしない。内部の余分な再描画もハイライトするには、 >
+
+    :set writedelay=50 rdb=compositor,nodelta
+
+TUIのトレース ~
+
+Ghostty inspectorで "Terminal IO" タブをクリックするとトレースが得られる。
+
+あるいは、古くからある `script` コマンドこそが "最先端" である。libvtermの
+`vterm-dump` ユーティリティを使えば結果を人間に読み易く整形できる。
+
+Nvimのターミナルセッションを記録し、 `vterm-dump` で整形する: >sh
+
+    script foo
+    ./build/bin/nvim -u NONE
+    # CTRL-d でスクリプトセッションを終了する
+
+    # `vterm-dump` ユーティリティを使い結果を整形する。
+    ./.deps/usr/bin/vterm-dump foo > bar
+
+これで、 `bar` を別のセッションと比較し、TUIの動作をデバッグできる。
+
+ターミナルの資料 ~
+
+- `man terminfo`
+- https://github.com/vim/vim/blob/0124320c97b0fbbb44613f42fc1c34fee6181fc8/src/libvterm/doc/seqs.txt
+- https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
+
+==============================================================================
+パフォーマンスのデバッグ                                      *dev-tools-perf*
+
+プロファイリング (簡単) ~
+
+任意のコードのパフォーマンスボトルネックをデバッグするには、シンプルな (そして
+非常に効果的な) アプローチがある:
+
+1. 遅いコードをループ内で実行する。
+2. 実行を約5回中断し、スタックトレースを保存する。
+3. ボトルネックの原因は、 (ほぼ必ず) ほとんどのスタックトレースに現れる。
+
+
+プロファイリング (高度) ~
+
+`perf` と `flamegraph` を組み合わせるとより高度なプロファイリングができる。
+
+
+USDTプロファイリング (強力) ~
+
+もしくは、USDTのプローブを `NVIM_PROBE` (https://github.com/neovim/neovim/pull/12036) により使う。
+
+> USDTは基本的に、ユーザランドバイナリに安定したプローブポイントを定義する手段である。
+> bccの利点は、プローブポイントに合わせてロジックを定義できる点で
+> ある。
+
+ツール:
+- bpftraceは、カーネルバイトコードであるBPFに対し、awkのような言語を提供する。
+- BCCはCの部分集合を提供する。bpftraceよりも複雑なロジックを記述できるが、手間もかかる。
+
+以下はbpftraceを使う例である。遅いvim関数を追跡し、その途中で開かれたファイル
+を出力する。
+最後に、関数のタイミングのヒストグラムを出力する: >
+
+    #!/usr/bin/env bpftrace
+
+    BEGIN {
+      @depth = -1;
+    }
+
+    tracepoint:sched:sched_process_fork /@pidmap[args->parent_pid]/ {
+      @pidmap[args->child_pid] = 1;
+    }
+
+    tracepoint:sched:sched_process_exit /@pidmap[args->pid]/ {
+      delete(@pidmap[args->pid]);
+    }
+
+    usdt:build/bin/nvim:neovim:eval__call_func__entry {
+        @pidmap[pid] = 1;
+        @depth++;
+        @funcentry[@depth] = nsecs;
+    }
+
+    usdt:build/bin/nvim:neovim:eval__call_func__return {
+        $func = str(arg0);
+        $msecs = (nsecs - @funcentry[@depth]) / 1000000;
+
+        @time_histo = hist($msecs);
+
+        if ($msecs >= 1000) {
+          printf("%u ms for %s\n", $msecs, $func);
+          print(@files);
+        }
+
+        clear(@files);
+        delete(@funcentry[@depth]);
+        @depth--;
+    }
+
+    tracepoint:syscalls:sys_enter_open,
+    tracepoint:syscalls:sys_enter_openat {
+      if (@pidmap[pid] == 1 && @depth >= 0) {
+        @files[str(args->filename)] = count();
+      }
+    }
+
+    END {
+      clear(@depth);
+    }
+
+    $ sudo bpftrace funcslower.bt
+    1527 ms for Slower
+    @files[/usr/lib/libstdc++.so.6]: 2
+    @files[/etc/fish/config.fish]: 2
+    <snip>
+
+    ^C
+    @time_histo:
+    [0]                71430 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
+    [1]                  346 |                                                    |
+    [2, 4)               208 |                                                    |
+    [4, 8)                91 |                                                    |
+    [8, 16)               22 |                                                    |
+    [16, 32)              85 |                                                    |
+    [32, 64)               7 |                                                    |
+    [64, 128)              0 |                                                    |
+    [128, 256)             0 |                                                    |
+    [256, 512)             6 |                                                    |
+    [512, 1K)              1 |                                                    |
+    [1K, 2K)               5 |                                                    |
+<
+
+==============================================================================
+バックトレース                                           *dev-tools-backtrace*
 
 LINUX
 
-Ubuntu や CentOS 等ではデフォルトでコアダンプは無効化されています。
+UbuntuやCentOSなどでは、既定でコアダンプは無効化されている。
 コアダンプを有効化するには:
 >bash
     ulimit -c unlimited
 <
-systemd ベースのシステムでは次のように簡単にバックトレースを取得できます:
+systemdベースのシステムでは次のように簡単にバックトレースを取得できる:
 >bash
     coredumpctl -1 gdb
 <
-`coredumpctl` はオプションのツールなので、任意でインストールする必要があります。
+`coredumpctl` はオプションのツールなので、インストールする必要がある場合がある:
 >bash
     sudo apt install systemd-coredump
 <
 
-完全なバックトレースが最も役に立ちます。クラッシュに関連するバグを報告する際は
-`backtrace.txt` ファイルを送ってください。
+完全なバックトレースであれば最も役立つ。クラッシュに関連するバグを報告する際は
+`backtrace.txt` ファイルを送ってほしい。
 >bash
     2>&1 coredumpctl -1 gdb | tee -a backtrace.txt
     (gdb) thread apply all bt full
 <
 
-`coredumpctl` がインストールされていないシステムでは、 `core` ダンプファイルがカレ
-ントディレクトリまたは他の場所に保存される場合があります。 `apport` がインストー
-ルされている Linux システム (Ubuntu など) におけるコアダンプファイルの保存先は
-システム設定に応じて `/var/lib/apport/coredump` などにになります。こちらも参照し
-てください: https://stackoverflow.com/a/18368068
+`coredumpctl` がインストールされていないシステムでは、 `core` ダンプファイルが
+カレントディレクトリや他の場所に保存される場合がある。 `apport` がインストール
+されているLinuxシステム (Ubuntuなど) におけるコアダンプファイルの保存先は
+システム設定 (`/proc/sys/kernel/core_pattern` を参照) に応じて
+`/var/lib/apport/coredump` などになる。参照:
+https://stackoverflow.com/a/18368068
 
 `./core` ダンプファイルからバックトレースを取得するには:
 >bash
@@ -52,135 +307,172 @@ systemd ベースのシステムでは次のように簡単にバックトレー
 
 MACOS
 
-もし `nvim` がクラッシュした場合、 `Console.app` (「クラッシュレポート」または古い
-バージョンの macOS の場合「ユーザー診断レポート」から) でバックトレースを確認
-できます。
+`nvim` がクラッシュした場合、 `Console.app` (「クラッシュレポート」または古い
+macOSの場合「ユーザー診断レポート」から) でバックトレースを確認できる。
 >bash
     open -a Console
 <
-macOS でもコアダンプを有効にすることができます。それにはまず `/cores/` ディレク
-トリが存在し、書き込み可能であることを確認してください。
+macOSでもコアダンプを有効にすることができる。それにはまず `/cores/` ディレク
+トリが存在し、書き込み可能であることを確認する。
 >bash
     sudo mkdir /cores
     sudo chown root:admin /cores
     sudo chmod 1775 /cores
 <
-次に、コアサイズの制限を `unlimited` に設定します:
+次に、コアサイズの制限を `unlimited` に設定する:
 >bash
     ulimit -c unlimited
 <
-これはシェルのプロセス毎に実行されることに注意してください。これを全てのシェル
-のデフォルトに設定したい場合は、上記のコードをシェルの init ファイル
-(例: `~/.bashrc`) に追加してください。
+これはシェルのプロセス毎に行われることに注意する。これを全てのシェル
+のデフォルトに設定したい場合、上記のコードをシェルのinitファイル
+(例: `~/.bashrc`) に追加する。
 
-最後に、 `lldb` でコアファイルを開くことができます。
+その後、 `lldb` でコアファイルを開くことができる。
 >bash
     lldb -c /cores/core.12345
 <
-Apple のドキュメントには他にも役立つ情報が掲載されています。
+Appleのドキュメントには他にも役立つ情報が掲載されている。
 https://developer.apple.com/library/archive/technotes/tn2124/_index.html#//apple_ref/doc/uid/DTS10003391-CH1-SECCOREDUMPS,
-ただし、このページの情報の一部は古くなっていることに注意してください(例えば
+ただし、このページの情報の一部は古くなっていることに注意 (例えば
 `/etc/launchd.conf` でコアダンプを有効にする方法など)。
+
+
+WINDOWS
+
+Windows版のNvimが再現できる形でクラッシュする場合、有用なバグレポートを提供する
+ために取れるステップがある。
+
+Nvimの実行ファイルに対応するデバッグシンボル (PDB) ファイルが必要になる: nvim.pdb。
+PDBは実行ファイルと同じ場所に置かれているはずである。
+(TODO: NvimのCIリリースでは現在提供されていない)。EXEに対応するPDB
+(同じビルド) を使うように注意する。
+
+実行ファイルを自分で Microsoft Visual C++ コンパイラを使ってビルドした場合、
+PDBはEXEと一緒にビルドされている。
+
+Visual Studioを持っているなら、VC ToolkitやWinDbgの代わりにそれを使う。
+
+他のコンパイラについては、必ず次のデバッガを使う: gdbもしくはlldb。
+
+NvimのクラッシュをVisual Studio 2005でデバッグする ~
+
+まずnvim.exeを起動し、次にVisual Studioを起動する。(もしVisual Studioを
+持っていないなら https://visualstudio.microsoft.com/downloads/ から得る)。
+
+Toolsメニューで、Attach to Processをクリックする。Nvimのプロセスを選択する。
+
+Nvimで、クラッシュを再現する。すると、Visual Studioにダイアログが出て、Nvimの
+プロセスのハンドルされていない例外を教えてくれる。Breakをクリックしプロセスに
+割り込む。
+
+Visual Studioに、シンボルが読み込まれておらずソースコードが表示できない旨の
+ダイアログが出る。OKをクリックする。
+
+いくつかウィンドウが開く。Call Stackウィンドウで右クリックする。Load Symbolを
+選択する。Find Symbolsダイアログが開き、 (g)vim.pdb が検索される。PDBファイルの
+あるディレクトリに移動し、Openをクリックする。
+
+この時点で、vimの関数名と行番号を含むコールスタックが得られる。
+いずれかの行をダブルクリックすると、Find SourceダイアログがNvimのソースのある
+ディレクトリに移動する (もしあれば)
+
+これ以上デバッグする方法が分からない場合は、 ":help bug-report" の説明に
+従う。コールスタックをバグレポートの中に貼り付ける。
+
+Visual StudioのDebugメニューからミニダンプを保存し、バグレポートと一緒に
+送ることもできる。ミニダンプとは、プロセスの状態に関する情報が含まれた小さな
+ファイル (100KB未満) である。
 
 ==============================================================================
 Gdb                                                          *dev-tools-gdb*
 
-☆GDB を使用して機能テストをステップ実行する
+GDBを使用して機能テストをステップ実行する ~
 
-`TEST_TAG` を使用して、壊れたタグ (形式 `#foo`、例: `it("test #foo ...", ...)`)に
-一致するテストを実行します。
+`TEST_TAG` を使い、 `#foo` のタグに一致するテストを走らせる (例:
+`it("test #foo ...", ...)`):
 >bash
     GDB=1 TEST_TAG=foo make functionaltest
 <
-次に、別の端末で以下を実行します:
+次に、別の端末で以下を実行する:
 >bash
     gdb build/bin/nvim
     (gdb) target remote localhost:7777
 
--- https://github.com/neovim/neovim/blob/master/test/functional/testnvim.lua.
-   の `nvim_argv` を参照してください。
+-- https://github.com/neovim/neovim/blob/master/test/functional/testnvim.lua の `nvim_argv` を参照。
 
-☆LLDB を使用してユニットテストをステップ実行する
+LLDBを使用してユニットテストをステップ実行する ~
 
 >
-    lldb .deps/usr/bin/luajit -- .deps/usr/bin/busted --lpath="./build/?.lua" test/unit/
+    lldb build/bin/nvim -- -l test/runner.lua --lpath=./build/?.lua test/unit/
 <
-☆GDB を使う
+GDBを使う ~
 
-pid 1234 で実行中の `nvim` プロセスにアタッチするには (ヒント: 実行中の Nvim
-インスタンスの pid は |getpid()| を呼び出すことで取得できます)、次のようにしま
-す:
+pidが1234の `nvim` プロセスにアタッチするには (ヒント: 実行中のNvimインスタンス
+のpidは |getpid()| を呼び出すことで取得できる)、次のようにする:
 >bash
     gdb -tui -p 1234 build/bin/nvim
 <
-`gdb` の対話型プロンプトが表示されます。以下の操作が利用可能です:
+`gdb` の対話型プロンプトが表示される。以下の操作が利用できる:
 
-- `break foo` で `foo()` 関数にブレークポイントを設定する
+- `break foo` で `foo()` 関数にブレークポイントを設定
 - `n` で次の文にステップオーバー
-    - `<Enter>` で最後のコマンドを繰り返す
+    - `<Enter>` で直前のコマンドを繰り返す
 - `s` で次の文にステップイン
-
 - `c` で続行する
-- `finish` で現在の関数でステップアウト
+- `finish` で現在の関数からステップアウト
 - `p zub` で `zub` の値を表示する
 - `bt` で現在の位置からのバックトレース（コールスタック）を表示する
-- `CTRL-x CTRL-a` or `tui enable` to show a TUI view of the source file in the
-  current debugging context. This can be extremely useful as it avoids the
-  need for a gdb "frontend".
-- `CTRL-x CTRL-a` または `tui enable` で現在のデバッグコンテキストでソースファイル
-  の TUI ビューを表示する。これは、gdb のフロントエンドを必要としないため、非
-  常に便利である
+- `CTRL-x CTRL-a` または `tui enable` で現在のデバッグコンテキストで
+  ソースファイルのTUIビューを表示する。これによりgdbのフロントエンドが必要なく
+  なるため、非常に便利である。
 - `<up>` と `<down>` でソースファイルをスクロールする
 
-☆GDB リバースデバッグ
+GDBリバースデバッグ ~
 
 - `set record full insn-number-max unlimited` を実行する
-- しばらく `continue` を実行する (少なくとも `main()` が実行するまで)
+- しばらく `continue` する (少なくとも `main()` が実行されるまで)
 - `record` を実行する
-- バグを誘発させた後、 `revert-next` や `reverse-step` を使用してデバッガーを巻き
+- バグを誘発させた後、 `revert-next` や `reverse-step` を使用してデバッガを巻き
   戻す
 
-☆GDBSERVER を使う
+gdbserverを使う ~
 
-複数の `gdb` クライアントを実行中の同じ `nvim` プロセスに接続したり、ローカルの
-`gdb` を使ってリモートの `nvim` プロセスに接続したい場合、 `gdbserver` を利用するこ
-とで単一のプロセスにアタッチし、複数の `gdb` クライアントからそのプロセスを制
-御できます。
+複数の `gdb` クライアントを同じ実行中の `nvim` プロセスに接続したり、ローカルの
+`gdb` からリモートの `nvim` プロセスに接続したい場合、 `gdbserver` を利用する
+ことで、単一のプロセスにアタッチし、複数の `gdb` クライアントからそのプロセスを
+制御できる。
 
-端末を開き、次のように `nvim` にアタッチされた `gdbserver` を起動します:
+端末を開き、次のように `nvim` にアタッチされた `gdbserver` を起動する:
 >bash
     gdbserver :6666 build/bin/nvim 2> gdbserver.log
 <
-`gebserver` がポート 6666 でリッスンします。 次に、別の端末でこのセッションに
-アタッチします:
+`gdbserver` がポート6666でリッスンする。次に、別の端末でこのセッションに
+アタッチする:
 >bash
     gdb build/bin/nvim
 <
-`gdb` に入ったら、リモートセッションに接続する必要があります:
-
+`gdb` に入ったら、リモートセッションに接続する必要がある:
 >
     (gdb) target remote localhost:6666
 <
-もし gdbserver が TUI をバックグラウンドプロセスとして実行した場合、TUI は pty
-からの入力 (また SIGTTIN シグナルの受信) や出力データ (SIGTTOU シグナル) の読
-み取りができなくなる可能性があります。TUI をフォアグラウンドプロセスとして強制
-的に実行するには、以下を
+gdbserverがTUIをバックグラウンドプロセスにした場合、TUIはptyからの入力を
+読み取れなくなったり (SIGTTINシグナルを受信する)、データを出力できなくなる
+(SIGTTOUシグナル)。TUIを強制的にフォアグラウンドプロセスにするには、以下を
 >c
     signal (SIGTTOU, SIG_IGN);
     if (!tcsetpgrp(data->input.in_fd, getpid())) {
         perror("tcsetpgrp failed");
     }
 <
-`tui.c:terminfo_start` に追加します。
+`tui.c:terminfo_start` に追加する。
 
+tmuxでgdbserverを使う ~
 
-☆TMUX で GDBSERVER を使う
-
-https://github.com/neovim/neovim/blob/master/BUILD.md#custom-makefile のカスタ
-ムされた makefile を利用することで、先述した `gdbserver` を利用したデバッグセッ
-ションを素早く始めることができます。
-この `local.mk` の例では、 `make debug` と入力するとデバッグセッションを作成しま
-す。
+https://github.com/neovim/neovim/blob/master/BUILD.md#custom-makefile の
+カスタムのmakefileを利用することで、先述した `gdbserver` を利用したデバッグ
+セッションを素早く始めることができる。
+この `local.mk` の例では、 `make debug` と入力するとデバッグセッションを作成す
+る。
 >make
     .PHONY: dbg-start dbg-attach debug build
 
@@ -195,12 +487,58 @@ https://github.com/neovim/neovim/blob/master/BUILD.md#custom-makefile のカス�
 
     debug: dbg-start dbg-attach
 <
-こちらの `gdb_start.sh` にはデバッガーの起動時に呼び出される `gdb` コマンドが含ま
-れています。これは `dbg-start` ルールによって起動されたサーバーにアタッチする
-必要があります。例:
+この `gdb_start.sh` にはデバッガの起動時に呼び出される `gdb` コマンドが含ま
+れている。これは `dbg-start` ルールによって起動されたサーバーにアタッチする
+必要がある。例:
 >
     (gdb) target remote localhost:6666
     (gdb) br main
 <
+==============================================================================
+クラッシュやメモリリークのデバッグ                            *dev-tools-asan*
 
-vim:tw=78:ts=8:et:ft=help:norl:
+ASANでのビルド ~
+
+NvimをClangのサニタイザ (Address Sanitizer: ASan, Undefined
+Behavior Sanitizer: UBSan, Memory Sanitizer: MSan, Thread Sanitizer: TSan) で
+ビルドすると、未定義動作、リークやその他のエラーを発生した直後にキャッチするの
+に役立つ。Valgrindより圧倒的に速い。
+
+clang 3.4以上が必要で、 `llvm-symbolizer` が `$PATH` になければならない: >
+
+    clang --version
+
+Nvimをsanitizer instrumentation (いずれかを選択する) でビルドする: >
+
+    CC=clang make CMAKE_EXTRA_FLAGS="-DENABLE_ASAN_UBSAN=ON"
+    CC=clang make CMAKE_EXTRA_FLAGS="-DENABLE_MSAN=ON"
+    CC=clang make CMAKE_EXTRA_FLAGS="-DENABLE_TSAN=ON"
+
+ログを記録するディレクトリを作る: >
+
+    mkdir -p "$HOME/logs"
+
+サニタイザを次の環境変数により設定する: >
+
+    # メモリリークを検出するには detect_leaks=1 に変える (遅く、ノイズが多くなる)。
+    export ASAN_OPTIONS="detect_leaks=0:log_path=$HOME/logs/asan"
+    # ログにバックトレースを含める。
+    export MSAN_OPTIONS="log_path=${HOME}/logs/msan"
+    export TSAN_OPTIONS="log_path=${HOME}/logs/tsan"
+
+こうすることでログが `${HOME}/logs/*san.PID` に書き込まれるようになる。
+
+詳細: https://github.com/google/sanitizers/wiki/SanitizerCommonFlags
+
+nvimを組み込みのTUIで実行している場合、クラッシュ後にクラッシュログを読み込み、
+再起動されたnvimのインスアンスでquickfixリストに表示するようにできる。
+以下をinit.luaに加える (お好みでquickfixコマンドを調整する):
+>lua
+    if vim.env.ASAN_OPTIONS ~= nil then
+      local log_name = vim.env.HOME.."/logs/asan."..vim.uv.getpid()
+      local args = {"--embed", "-n", "+set efm=%+A%*[^/]%f:%l:%c", "+silent cfile "..log_name, "+silent cfirst", "+silent copen"}
+      vim.api.nvim__set_restart_on_crash("nvim", args)
+    end
+<
+
+ vim:tw=78:ts=8:sw=4:et:ft=help:norl:

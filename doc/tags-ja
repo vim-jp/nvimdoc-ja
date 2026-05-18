@@ -380,13 +380,6 @@ cursor_down	intro.jax	/*cursor_down*
 cursor_left	intro.jax	/*cursor_left*
 cursor_right	intro.jax	/*cursor_right*
 cursor_up	intro.jax	/*cursor_up*
-debug-gcc	debug.jax	/*debug-gcc*
-debug-leaks	debug.jax	/*debug-leaks*
-debug-minidump	debug.jax	/*debug-minidump*
-debug-vim	debug.jax	/*debug-vim*
-debug-vs2005	debug.jax	/*debug-vs2005*
-debug-win32	debug.jax	/*debug-win32*
-debug-windbg	debug.jax	/*debug-windbg*
 debug.debug()	luaref.jax	/*debug.debug()*
 debug.getfenv()	luaref.jax	/*debug.getfenv()*
 debug.gethook()	luaref.jax	/*debug.gethook()*
@@ -401,7 +394,6 @@ debug.setlocal()	luaref.jax	/*debug.setlocal()*
 debug.setmetatable()	luaref.jax	/*debug.setmetatable()*
 debug.setupvalue()	luaref.jax	/*debug.setupvalue()*
 debug.traceback()	luaref.jax	/*debug.traceback()*
-debug.txt	debug.jax	/*debug.txt*
 decada_members	ft_ada.jax	/*decada_members*
 definitions	intro.jax	/*definitions*
 deprecated	deprecated.jax	/*deprecated*
@@ -425,6 +417,7 @@ dev-api-patterns	dev.jax	/*dev-api-patterns*
 dev-arch	dev_arch.jax	/*dev-arch*
 dev-augroup-name	dev.jax	/*dev-augroup-name*
 dev-doc	dev.jax	/*dev-doc*
+dev-error-codes	dev.jax	/*dev-error-codes*
 dev-error-patterns	dev.jax	/*dev-error-patterns*
 dev-events	dev_arch.jax	/*dev-events*
 dev-guidelines	dev.jax	/*dev-guidelines*
@@ -437,10 +430,15 @@ dev-namespace-name	dev.jax	/*dev-namespace-name*
 dev-naming	dev.jax	/*dev-naming*
 dev-patterns	dev.jax	/*dev-patterns*
 dev-provider	dev.jax	/*dev-provider*
+dev-quickstart	dev_tools.jax	/*dev-quickstart*
 dev-theme	dev_theme.jax	/*dev-theme*
 dev-tools	dev_tools.jax	/*dev-tools*
+dev-tools-asan	dev_tools.jax	/*dev-tools-asan*
 dev-tools-backtrace	dev_tools.jax	/*dev-tools-backtrace*
 dev-tools-gdb	dev_tools.jax	/*dev-tools-gdb*
+dev-tools-logs	dev_tools.jax	/*dev-tools-logs*
+dev-tools-perf	dev_tools.jax	/*dev-tools-perf*
+dev-tools-tui	dev_tools.jax	/*dev-tools-tui*
 dev-ui	dev.jax	/*dev-ui*
 dev-ui-events	dev_arch.jax	/*dev-ui-events*
 dev-ui-multigrid	dev.jax	/*dev-ui-multigrid*
@@ -606,8 +604,6 @@ g:zip_shq	pi_zip.jax	/*g:zip_shq*
 g:zip_unzipcmd	pi_zip.jax	/*g:zip_unzipcmd*
 g:zip_zipcmd	pi_zip.jax	/*g:zip_zipcmd*
 gQ	intro.jax	/*gQ*
-gdb	debug.jax	/*gdb*
-get-ms-debuggers	debug.jax	/*get-ms-debuggers*
 getfenv()	luaref.jax	/*getfenv()*
 getmetatable()	luaref.jax	/*getmetatable()*
 gnat#Insert_Tags_Header()	ft_ada.jax	/*gnat#Insert_Tags_Header()*
@@ -1311,7 +1307,6 @@ pi_tar.txt	pi_tar.jax	/*pi_tar.txt*
 pi_tutor.txt	pi_tutor.jax	/*pi_tutor.txt*
 pi_zip.txt	pi_zip.jax	/*pi_zip.txt*
 plsql	ft_sql.jax	/*plsql*
-plugin_name.txt	helphelp.jax	/*plugin_name.txt*
 plugins	plugins.jax	/*plugins*
 plugins.txt	plugins.jax	/*plugins.txt*
 portable-config	nvim.jax	/*portable-config*
@@ -1537,7 +1532,6 @@ utf8	mbyte.jax	/*utf8*
 v:lua-call	lua.jax	/*v:lua-call*
 v_CTRL-\_CTRL-G	intro.jax	/*v_CTRL-\\_CTRL-G*
 v_CTRL-\_CTRL-N	intro.jax	/*v_CTRL-\\_CTRL-N*
-valgrind	debug.jax	/*valgrind*
 vi-differences	vi_diff.jax	/*vi-differences*
 vi_diff.txt	vi_diff.jax	/*vi_diff.txt*
 vim-additions	vi_diff.jax	/*vim-additions*
