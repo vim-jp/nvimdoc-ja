@@ -14,15 +14,15 @@
 `システム`        `Tier`      `バージョン`                `テスト済みバージョン`
 Linux (x86_64)   1      >= 2.6.32, glibc >= 2.12     Ubuntu 24.04
 Linux (arm64)    1      >= 2.6.32, glibc >= 2.12     Ubuntu 24.04
-macOS (x86_64)   1      >= 11                        macOS 13
-macOS (arm64)    1      >= 11                        macOS 15
-Windows 64-bit   1      >= Windows 10 Version 1809   Windows Server 2022
-FreeBSD          1      >= 10                        FreeBSD 14
+macOS (x86_64)   1      >= 11                        macOS 15
+macOS (arm64)    1      >= 11                        macOS 26
+Windows 64-bit   1      >= Windows 10 Version 2004   Windows Server 2025
+FreeBSD          2      >= 10
 OpenBSD          2      >= 7
 MinGW            2      MinGW-w64
-Windows 64-bit   3      < Windows 10 Version 1809
+Windows 64-bit   3      < Windows 10 Version 2004
 
-Note: Windows 10 の場合、 |:terminal| は"Version 1809" 以上が必要です。Windows
+Note: Windows 10 の場合、 |:terminal| には "Version 1809" 以上が必要です。Windows
 のバージョンを確認するには "winver" コマンドを実行し、 "Version xxxx" をご覧く
 ださい("OS Build" ではありません)。
 
@@ -31,14 +31,12 @@ https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=ms
 
 サポートタイプ ~
 
-* Tier 1: 公式にサポートされており、CI でテスト済みである。いかなるパッチもこ
+- Tier 1: 公式にサポートされており、CI でテスト済みである。いかなるパッチもこ
   れらのプラットフォームのサポートを損なわせてはならない。
-
-* Tier 2: 公式にサポートされているが、CI によるテストは必須ではない。これらの
+- Tier 2: 公式にサポートされているが、CI によるテストは必須ではない。これらの
   プラットフォームに対するサポートは最優先事項ではないが、最大限の努力で維持す
   る。
-
-* Tier 3: テストされておらず、無保証。すべての機能が動作するとは限らない。
+- Tier 3: テストされておらず、無保証。すべての機能が動作するとは限らない。
 
 新たなプラットフォームのサポート ~
 

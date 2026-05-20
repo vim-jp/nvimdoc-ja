@@ -6,7 +6,7 @@
                                                 目次を見るには |gO| をタイプ。
 
 ==============================================================================
-Nvimに付属するプラグインとモジュール                                 *plugins*
+Nvimに付属するプラグインとモジュール                         *standard-plugin*
 
 NvimにはさまざまなLuaとVimのプラグインやモジュールが付属している。これらは
 コマンド (例えば :TOhtml) や、 require() や :packadd するモジュールを提供する。
@@ -28,7 +28,10 @@ Luaのものは |lua-stdlib| の一部ではない。つまり、グローバル
 |package-cfilter|	No	quickfix/location リストをフィルターする
 |package-justify|	No	テキストを両端揃えにする
 |package-nohlsearch|	No	自動的に :nohlsearch を実行する
+|package-spellfile|	Yes	スペルファイルがない場合にインストールする
 |package-termdebug|	No	gdbを使いNvim内でデバッグする
+|package-tohtml|	Yes	バッファをhtmlに変換する。シンタクスは含まれる
+|package-undotree|	No	対話的なテキスト形式のundotree
 |pi_gzip.txt|		Yes	圧縮ファイルを読み書きする
 |pi_msgpack.txt|	No	msgpackのユーティリティ
 |pi_paren.txt|		Yes	対応する括弧をハイライトする
@@ -37,9 +40,6 @@ Luaのものは |lua-stdlib| の一部ではない。つまり、グローバル
 |pi_tar.txt|		Yes	tarファイルエクスプローラ
 |pi_tutor.txt|		Yes	対話的なチュートリアル
 |pi_zip.txt|		Yes	zipアーカイブエクスプローラ
-|spellfile.lua|		Yes	スペルファイルがない場合にインストールする
-|tohtml|		Yes	バッファをhtmlに変換する シンタクスは含まれる
-|undotree-plugin|	No	対話的なテキスト形式のundotree
 
 ==============================================================================
 組み込みプラグイン: difftool                                        *difftool*
@@ -50,8 +50,9 @@ Luaのものは |lua-stdlib| の一部ではない。つまり、グローバル
 ディレクトリ差分、ファイル名変更の検出に対応。変更をquickfixリストでハイライト
 する。組み込みの `nvim -d` の差分モードをこのインタフェースで置き換える。
 
-このプラグインは既定では読み込まれないので、 `:DiffTool` を使う前に、
-`:packadd nvim.difftool` を実行する必要がある。
+このプラグインは既定では読み込まれないので、 `:packadd` を使い有効化する: >
+    :packadd nvim.difftool
+<
 
 `git difftool -d` に `nvim -d` の置き換えを利用する例: >ini
     [difftool "nvim_difftool"]
@@ -74,10 +75,10 @@ open({left}, {right}, {opt})                                 *difftool.open()*
                    最低の類似度 (0 から 1)
                  • {rename.chunk_size} (`number`, 既定: `4096`) 類似度の計算の
                    ためにファイルから読むチャンクの最大の大きさ
-                 • {method} (`'auto'|'builtin'|'diffr'`, 既定: `auto`) 使う
-                   diffのメソッド
                  • {ignore} (`string[]`, 既定: `{}`) 無視するファイルパスの
                    リスト (例えば: `'.git', '*.log'`)
+                 • {method} (`'auto'|'builtin'|'diffr'`, 既定: `auto`) 使う
+                   diffのメソッド
                  • {rename} (`table`) 名前変更の検出を制御する
 
 
@@ -182,7 +183,7 @@ trim_trailing_whitespace               *editorconfig.trim_trailing_whitespace*
 
 
 ==============================================================================
-組み込みプラグイン: spellfile                                  *spellfile.lua*
+組み込みプラグイン: spellfile                              *package-spellfile*
 
 足りないスペルファイルのダウンロードをユーザに促す。スペルファイルは
 `stdpath('data') .. 'site/spell'` もしくは 'runtimepath' にある最初の書き込める
@@ -195,13 +196,13 @@ trim_trailing_whitespace               *editorconfig.trim_trailing_whitespace*
     以下のフィールドを含むテーブル:
 
     フィールド: ~
-      • {url}         (`string`) スペルファイルをダウンロードするベースURL。
-                      `g:spellfile_URL` が存在する場合はそれを、そうでなければ
-                      https://ftp.nluug.nl/pub/vim/runtime/spell が使われる。
-      • {timeout_ms}  (`integer`, 既定: 15000) |vim.net.request()| が
-                      タイムアウトするまでのミリ秒数。
-      • {confirm}     (`boolean`, 既定: `true`) ユーザにダウンロードの
-                      確認を行うか。
+      • {confirm}?     (`boolean`, 既定: `true`) ユーザにダウンロードの
+                       確認を行うか。
+      • {timeout_ms}?  (`integer`, 既定: 15000) |vim.net.request()| が
+                       タイムアウトするまでのミリ秒数。
+      • {url}?         (`string`) スペルファイルをダウンロードするベースURL。
+                       `g:spellfile_URL` が存在する場合はそれを、そうでなければ
+                       https://ftp.nluug.nl/pub/vim/runtime/spell が使われる。
 
 
 config({opts})                                            *spellfile.config()*
@@ -224,21 +225,25 @@ get({lang})                                                  *spellfile.get()*
 
     返り値: ~
         (`table?`) 以下のフィールドを含むテーブル:
+        • {dir} (`string`)
+        • {encoding} (`string`)
         • {files} (`string[]`)
         • {key} (`string`)
         • {lang} (`string`)
-        • {encoding} (`string`)
-        • {dir} (`string`)
 
 
 ==============================================================================
-組み込みプラグイン: tohtml                                            *tohtml*
+組み込みプラグイン: tohtml                                    *package-tohtml*
 
 
 :[range]TOhtml {file}                                                *:TOhtml*
 現在のウィンドウに表示されているバッファをHTMLに変換し、生成されたHTMLを
 新しい分割ウィンドウで開き、その内容を {file} に保存する。 {file} が
 与えられない場合、一時ファイル (|tempname()| により作られる) が使われる。
+
+このプラグインは既定では読み込まれないので、 `:packadd` を使い有効化する: >
+    :packadd nvim.difftool
+<
 
 
 tohtml({winid}, {opt})                                       *tohtml.tohtml()*
@@ -248,44 +253,40 @@ tohtml({winid}, {opt})                                       *tohtml.tohtml()*
     引数: ~
       • {winid}  (`integer?`) 変換するウィンドウ (既定は現在のウィンドウ)
       • {opt}    (`table?`) オプション。
-                 • {title}? (`string|false`, 既定: バッファ名) 生成するHTMLの
-                   タイトルタグ。
-                 • {number_lines}? (`boolean`, 既定: `false`) 行番号を
-                   表示する。
                  • {font}? (`string[]|string`, 既定: `guifont`) 使う
                    フォント。
+                 • {number_lines}? (`boolean`, 既定: `false`) 行番号を
+                   表示する。
+                 • {range}? (`integer[]`, 既定: バッファ全体) 変換する行の
+                   範囲
+                 • {title}? (`string|false`, 既定: バッファ名) 生成するHTMLの
+                   タイトルタグ。
                  • {width}? (`integer`, 既定: 'textwidth' が1以上であればそれ、
                    そうでなければウィンドウ幅) 右揃えまたは文字が無限に
                    繰り返される項目の幅。
-                 • {range}? (`integer[]`, 既定: バッファ全体) 変換する行の
-                   範囲
 
     返り値: ~
         (`string[]`)
 
 
 ==============================================================================
-組み込みプラグイン: undotree                                 *undotree-plugin*
+組み込みプラグイン: undotree                                *package-undotree*
 
 open({opts})                                                 *undotree.open()*
     |undo-tree| をテキストにより表現したものを表示するウィンドウを開く。
+    ウィンドウが既に開いている場合はウィンドウを閉じる
+    `:Undotree`                                                    *:Undotree*
 
     そのウィンドウ内でカーソルを動かすとアンドゥが変更される。
 
-    ウィンドウが既に開いている場合はウィンドウを閉じる
-
-    このプラグインを読み込むコマンド: >
-                packadd nvim.undotree
+    このプラグインは既定では読み込まれないので、 `:packadd` を使い有効化する: >
+        :packadd nvim.difftool
 <
-
-    `:Undotree` でも表示できる。                                   *:Undotree*
 
     引数: ~
       • {opts}  (`table?`) 以下のフィールドを含むテーブル:
                 • {bufnr} (`integer?`) ツリーを描画するバッファ。省略された場合
                   新しいバッファが作られる。
-                • {winid} (`integer?`) ツリーのバッファを表示するウィンドウID。
-                  省略された場合、新しいウィンドウが {command} により作られる。
                 • {command} (`string?`) ウィンドウを作るのに使う、Vimscriptの
                   コマンド。既定値は "30vnew"。 {winid} がnilの場合のみ
                   使われる。
@@ -293,6 +294,8 @@ open({opts})                                                 *undotree.open()*
                   タイトル。関数であれば、ソースバッファのバッファ番号を
                   唯一の引数として取り、
                   文字列を返さなければならない。
+                • {winid} (`integer?`) ツリーのバッファを表示するウィンドウID。
+                  省略された場合、新しいウィンドウが {command} により作られる。
 
     返り値: ~
         (`boolean?`) ウィンドウが既に開いていればtrueを、そうでなければ

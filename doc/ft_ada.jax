@@ -3,28 +3,12 @@
 
 		    ADAファイルタイププラグイン リファレンスマニュアル~
 
-ADA								      *ada.vim*
+ADA								*ft-ada-syntax*
 
-1.  構文強調				    |ft-ada-syntax|
-2.  ファイルタイププラグイン		    |ft-ada-plugin|
-3.  オムニ補完				    |ft-ada-omni|
-    3.1 "gnat xref" を使ったオムニ補完		|gnat-xref|
-    3.2 "ctags" を使ったオムニ補完		|ada-ctags|
-4.  コンパイラへの対応			    |ada-compiler|
-    4.1 GNAT					|compiler-gnat|
-    4.2 Dec Ada					|compiler-decada|
-5.  リファレンス			    |ada-reference|
-    5.1 オプション				|ft-ada-options|
-    5.2 コマンド				|ft-ada-commands|
-    5.3 変数					|ft-ada-variables|
-    5.4 定数					|ft-ada-constants|
-    5.5 関数					|ft-ada-functions|
-6.  その他のプラグイン			    |ada-extra-plugins|
+                                                目次を見るには |gO| をタイプ。
 
 ==============================================================================
 1. 構文強調 ~
-
-							       *ft-ada-syntax*
 
 このモードはオブジェクト指向プログラムや型保護等の機能がサポートされた、Adaの
 2005年版("Ada 2005")を想定して作られている。Ada 2005で追加されたキーワードを使
@@ -498,6 +482,7 @@ taglist.vim
 	ソースコードエクスプローラーサイドバー。Adaで利用可能にするパッチがあ
 	る。
 
-GNU Adaプロジェクトが配布するVimは以上を全て含んでいる。
+GNU Adaプロジェクトが配布するVim (https://sourceforge.net/projects/gnuada/) は
+以上を全て含んでいる。
 
  vim:tw=78:ts=8:noet:ft=help:norl:

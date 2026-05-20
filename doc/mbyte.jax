@@ -684,11 +684,10 @@ Overlong sequenceに対して特別な処理はされない。通常の文字と
 X-WindowでUTF-8を使う					*utf-8-in-xwindows*
 
 使用するフォントを選択する必要がある。全角文字を表示するにはさらに別のフォント
-が必要。設定するには次の三つの方法がある:
+が必要。設定するには次の二つの方法がある:
 
 1. 'guifont' を設定して、 'guifontwide' は Nvim に設定させる
 2. 'guifont' と 'guifontwide' を設定する
-3. 'guifontset' を設定する
 
 詳細は各オプションの説明を参照。例: >
 

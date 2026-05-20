@@ -4,7 +4,7 @@
                 NVIMリファレンスマニュアル    by Thiago de Arruda
 
 
-Nvim ジョブ制御			  			*job* *job-control*
+Nvim ジョブ制御		*job* *job-control* *E901* *E903* *E947* *E948*
 
 ジョブ制御は Nvim でマルチタスクを実現する方法であり、スクリプトが現在の Nvim
 インスタンスをブロックすることなく複数のプロセスを生成して制御できます。
@@ -14,7 +14,7 @@ Nvim ジョブ制御			  			*job* *job-control*
 ==============================================================================
 コンセプト
 
-ジョブ ID     						*job-id*
+ジョブ ID							       *job-id*
 
 各ジョブは整数の ID で識別され、現在の Nvim セッションの間は一意です。各ジョブ
 ID は有効な |channel-id| であり、同じ "キー空間" を共有します。 |jobstart()|のよう
@@ -25,7 +25,7 @@ ID は有効な |channel-id| であり、同じ "キー空間" を共有しま�
 できる |channel| を形成します。
 
 ==============================================================================
-使い方							*job-control-usage*
+使い方							    *job-control-usage*
 
 ジョブを制御するには、"job…" ファミリーの関数を使用します。例えば:
 |jobstart()|、 |jobstop()| 等。
@@ -51,9 +51,8 @@ ID は有効な |channel-id| であり、同じ "キー空間" を共有しま�
     \ }
     let job1 = jobstart(['bash'], extend({'shell': 'shell 1'}, s:callbacks))
     let job2 = jobstart(['bash', '-c', 'for i in {1..10}; do echo hello $i!; sleep 1; done'], extend({'shell': 'shell 2'}, s:callbacks))
-
-上記のスクリプトを試すには、~/foo.vim にコピーした後、次のコードを実行します:
->bash
+<
+上記のスクリプトを試すには、~/foo.vim にコピーした後、次のコードを実行します: >bash
     nvim -u ~/foo.vim
 <
 挙動の解説:
@@ -67,7 +66,7 @@ ID は有効な |channel-id| であり、同じ "キー空間" を共有しま�
     渡される。これはシェルから受け取った標準出力や標準エラー出力を表示する。
 
 |on_stdout| と |on_stderr| については |channel-callback| を参照。
-							*on_exit*
+								      *on_exit*
 on_exit コールバックに渡される引数:
   0: |job-id|
   1: プロセスの終了ステータス、またはシグナルによる場合は 128+SIGNUM (例:
@@ -89,8 +88,7 @@ on_exit コールバックに渡される引数:
             \ {'on_stdout': 'Receive'})
 <       https://github.com/neovim/neovim/issues/1592
 
-  Note 2:
-	ジョブイベントハンドラは、部分的な(不完全な)行を受け取る場合がありま
+  Note: ジョブイベントハンドラは、部分的な(不完全な)行を受け取る場合がありま
 	す。on_stdout 及び on_stderr の特定の呼び出しにおいて、 `a:data` が改
 	行で終わるかは保証されません。
 	  - `abcdefg` は `['abc']`、 `['defg']` として受け取る可能性があります。
@@ -139,8 +137,7 @@ on_exit コールバックに渡される引数:
     :call chansend(job1, "invalid-command\n")
     :call chansend(job1, "exit\n")
 <
-ジョブは |jobstop()| によっていつでも強制終了できます:
->vim
+ジョブは |jobstop()| によっていつでも強制終了できます: >vim
     :call jobstop(job1)
 <
 ジョブを強制終了せずに各ストリームを閉じることも可能です。 |chanclose()| を参照

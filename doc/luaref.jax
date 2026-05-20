@@ -3725,7 +3725,7 @@ package.path                                                      *package.path*
         `./foo.lua`、 `./foo.lc`、 `/usr/local/foo/init.lua` のロードをこの順序で試み
         る。
 
-package.preload                                              *package.preload()*
+package.preload                                                *package.preload*
         特定のモジュールのローダを格納するテーブル (|require()| を参照)。
 
 package.seeall({module})                                      *package.seeall()*

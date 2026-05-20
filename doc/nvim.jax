@@ -30,6 +30,8 @@ Nvim をカスタマイズするには、設定ファイルが必要です。"ex
 
     :exe 'edit' stdpath('config') .. '/init.lua'
     :read $VIMRUNTIME/example_init.lua
+    :write ++p
+    :restart
 <
 Nvim を Lua で構成する際の実用的なノートについては、 |lua-guide| を参照してくだ
 さい。
@@ -43,8 +45,7 @@ Nvim を少し試してみて、その極限の可能性を知りたい場合は
 - *lazyvim* https://www.lazyvim.org/
 - *nvchad* https://nvchad.com/
 - *kickstart* https://github.com/nvim-lua/kickstart.nvim
-  - こちらは推奨されません。代わりに `$VIMRUNTIME/example_init.lua` を使用してく
-    ださい。
+  - こちらは推奨されません。代わりに |example-init| を使用してください。
 
 ただし、最終的には時間をかけて Nvim の標準設定を学び、必要に応じてオプションを
 段階的に設定したり、プラグインを |config| に追加することをお勧めします。
@@ -76,19 +77,19 @@ Vim からの移行                                                 *nvim-from-v
 使用するために 'ttymouse' 設定を保持したい場合は、次のように設定します:
 >vim
     if !has('nvim')
-        set ttymouse=xterm2
+      set ttymouse=xterm2
     endif
 
 Nvim 専用の設定については、次のようにします:
 >vim
     if has('nvim')
-        tnoremap <Esc> <C-\><C-n>
+      tnoremap <Esc> <C-\><C-n>
     endif
 
 より詳細なアプローチには |exists()| を使用します:
 >vim
     if exists(':tnoremap')
-        tnoremap <Esc> <C-\><C-n>
+      tnoremap <Esc> <C-\><C-n>
     endif
 
 これで Nvim をより快適に使いこなせるようになるはずです。詳しくは |nvim-features|
@@ -100,6 +101,7 @@ Nvim は XDG |base-directories| に従うため、Windows における設定フ�
 パスを利用したい場合は、~/AppData/Local/nvim/init.vim に次のコードを追加してく
 ださい: >vim
     source ~/.config/nvim/init.vim
+<
 
 ==============================================================================
  vim:tw=78:ts=8:et:ft=help:norl:

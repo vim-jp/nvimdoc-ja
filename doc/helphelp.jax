@@ -1,4 +1,4 @@
-*helphelp.txt*	Nvim 0.12         Last change: 2026-03-24
+*helphelp.txt*	Nvim 0.13         Last change: 2026-05-20
 
 
 		  VIMリファレンスマニュアル    by Bram Moolenaar
@@ -139,7 +139,7 @@ CTRL-{char}	制御文字として入力された文字 {char}。CTRL キーを�
 ヘルプコマンド					*online-help*
 
 			*help* *<Help>* *:h* *:help* *<F1>* *i_<F1>* *i_<Help>*
-<Help>		or
+<Help>		または
 :h[elp]			新しいウィンドウを作成し、ヘルプファイルを読み込み専用
 			で開きます。ヘルプウィンドウがすでに開いているときはそ
 			のウィンドウを使います。カレントウィンドウの幅がスク
@@ -150,6 +150,18 @@ CTRL-{char}	制御文字として入力された文字 {char}。CTRL キーを�
 			に、オプション 'helplang' が参照されます。
 
                         目次を確認するには |gO| をタイプしてください。
+
+							*:help!*
+:h[elp]!		カーソル位置の |WORD| から、DWIM ("Do What I Mean") 方式で
+			ヘルプタグを推測する: さまざまなヒューリスティクスを用い
+			有効なヘルプタグが見つかるまで句読点を削除していく。
+
+			例えば、次のコードの任意の場所にカーソルに移動し、 `:help!`
+			を実行してみてほしい: >
+
+				local v = vim.version.parse(vim.system({'foo'}):wait().stdout)
+<
+			`:exe 'help' expand('<cword>')` と比較してみてほしい。
 
 						*{subject}* *E149* *E661*
 :h[elp] {subject}	":help" と同じですが、加えて、{subject} へタグジャンプ
@@ -221,9 +233,11 @@ CTRL-{char}	制御文字として入力された文字 {char}。CTRL キーを�
 			ます。例: >
 				:help so<C-V><CR>only
 <
-:h[elp]! [subject]	":help" と同じですが、非英語のヘルプファイルを開いてい
-			るときには、それと同じ言語を優先します。
-			|help-translated|も参照。
+
+:h[elp]! {subject}	":help" と同じですが、現在のファイルと同じ |help-translated|
+			言語のタグを優先します。
+
+			|:help!| ({subject} なし) とは無関係です。
 
 							*:helpc* *:helpclose*
 :helpc[lose]		ヘルプウィンドウがあれば、1つ閉じます。
@@ -467,15 +481,12 @@ tag-name は他のすべての Vim ヘルプのタグ名とは違う名前にな
 既存のヘルプタグに言及してそのタグへのリンクを作成するには、名前をバー ("|")
 で挟みます。例: |help-writing|
 
-Vim コマンドに言及してそのコマンドへのリンクを作成するには、コマンド名をバック
-クォートで囲みます。 例: `:filetype` の中。これはコードブロックのようにコマン
-ドとしてハイライトされて見えるでしょう。 (下を参照)
-
 Vim オプションについて言及するときは、オプション名をシングルクォートで囲みま
 す。例: 'statusline'
 
 ファイル名や関数のパラメータなど、その他の技術用語を参照する場合は、それらを
-バッククォートで囲みます。例: `~/.path/to/init.vim`
+バッククォートで囲みます。例: `~/.path/to/init.vim`。そうすることでインライン
+コードとしてレンダリングされる ("コードブロック" |help-codeblock| と対照的)。
 
 
 ☆ハイライト表示

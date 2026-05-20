@@ -28,8 +28,9 @@ APIについて                                                      *lua-guide-
 このガイドでは、APIであるLuaを介しNvimと対話するさまざまな方法を示す。
 このAPIは3つの層で構成される:
 
+
 1. Vimから継承された "Vim API":
-   Vimscriptの |Ex-commands|、 |builtin-functions| および |user-function|
+   Vimscriptの |Ex-command|、 |builtin-functions| および |user-function|
    |vim.cmd()| と |vim.fn| から利用する。
    詳細は下記の |lua-guide-vimscript| で説明する。
 2. Cで書かれた "Nvim API"
@@ -44,11 +45,13 @@ APIについて                                                      *lua-guide-
 そして、 Vim API の関数には0オリジンのものがある。Luaの配列は
 既定で1オリジンであるにも関わらずである。
 
-これにより、新たなAPIを一から作ることなしに、Luaからすべての機能が利用できる。
-そのため、異なる層で機能が重複することは基本的にない。ただし機能や性能に利点が
-ある場合はこの限りではない。例えば |nvim_create_autocmd()| はLuaの関数を直接
-呼び出せるが、 |:autocmd| はそうではない。このように複数の方法がある場合は
-Luaから使う上で便利な方を紹介する。
+これにより、完全に新しいAPIを一から書くことなしに、Luaからすべての機能が利用で
+きる。そのため、異なる層で機能が重複することは基本的にない。ただし機能や性能に
+利点がある場合はこの限りではない。例えば |nvim_create_autocmd()| はLuaの関数を
+直接呼び出せるが、 |:autocmd| はそうではない。
+このように複数の方法がある場合はLuaから使う上でもっとも便利な方法のみを
+紹介する。
+
 
 ==============================================================================
 Luaを使う                                                  *lua-guide-using-Lua*
@@ -66,7 +69,6 @@ Note: |:lua| コマンドはそれぞれスコープを持ち、"local"を使っ
 <
 変数の値やテーブルの中身を見るには `:lua=` が便利である。
 これは `:lua vim.print(...)` と同等である:
-{訳注: `:lua print(vim.inspect(...))` と等価}
 >vim
     :lua =package
 <
@@ -85,6 +87,22 @@ Luaのコードを |:lua-heredoc| ブロックに入れる:
       end
     EOF
 <
+                                                       *lua-guide-interrupt*
+Luaは通常 |CTRL-C| で中断できない (LuaはNvimに対して暗黙的に譲らない)。
+遅いループをユーザが中断できるようにするには、 周期的に |vim.wait()| を
+呼び出す。 `interval=0` を渡すことでダミーのタイマーのセットアップがスキップ
+され、呼び出しのオーバーヘッドを減らせる: >lua
+
+    while true do
+      -- ...処理...
+      local _, code = vim.wait(0, nil, 0)
+      if code == -2 then -- CTRL-C。
+        break
+      end
+    end
+<
+参照: https://github.com/neovim/neovim/issues/6800
+
 ------------------------------------------------------------------------------
 起動時にLuaのファイルを使う                                   *lua-guide-config*
 
@@ -132,7 +150,8 @@ Luaのモジュール                                              *lua-guide-mo
 サブモジュールが単なるサブディレクトリであることに注目。
 `.` はパスの区切り文字の `/` に相当する (Windows でも同じ)。
 
-|init.lua| ファイルはディレクトリの指定のみで読み込める:
+|init.lua| ファイルが含まれるディレクトリは直接requireでき、
+ファイル名を指定する必要がない:
 >lua
     require('other_modules') -- other_modules/init.lua を読み込む
 <
@@ -150,13 +169,13 @@ Luaのモジュール                                              *lua-guide-mo
 <
 |:source| と違い、 |require()| は 'runtimepath' 下の `lua/` ディレクトリの中を
 検索するだけでなく、初回読み込み時にモジュールをキャッシュする。
-`require()` を次に実行しても検索や実行はされず、キャッシュされた値が返る。
-ファイルを再度実行するには手動でキャッシュを削除する必要がある:
+したがって、 `require()` を再び実行しても検索や実行はされず、キャッシュされた
+ファイルが返る。ファイルを返すには、まず手動でキャッシュから削除する必要が
+ある:
 >lua
     package.loaded['myluamodule'] = nil
     require('myluamodule')    -- 再度ストレージからモジュールを読み込み、実行
 <
-------------------------------------------------------------------------------
 参照:
 • |lua-module-load|: `require()` がモジュールを探す方法
 • |pcall()|
@@ -224,7 +243,6 @@ Vimscriptの関数                                        *lua-guide-vim-functio
 >lua
     vim.fn['my#autoload#function']()
 <
-------------------------------------------------------------------------------
 参照:
 • |vimscript-functions|: Vimscriptの関数すべての説明
 • |function-list|: Vimscriptの関数をトピックで分類したもの
@@ -283,7 +301,6 @@ Vimscriptの関数                                        *lua-guide-vim-functio
 >lua
     vim.g.myvar = nil
 <
-------------------------------------------------------------------------------
 参照:
 • |lua-vim-variables|
 
@@ -380,7 +397,6 @@ vim.o
                                -- を true にする
     print(vim.wo[0].number)    --> true
 <
-------------------------------------------------------------------------------
 参照:
 • |lua-options|
 
@@ -426,12 +442,12 @@ Luaモジュールの関数には以下のようにマップできる。
 第4引数にはマッピングの挙動を指定するキーを含んだテーブルが指定できる。
 キーは主に |:map-arguments| に記載されているもの。
 特に有用なもの:
-• `buffer`: 指定された場合、その番号のバッファのみにマッピングを設定する。
+• `buf`: 指定された場合、その番号のバッファのみにマッピングを設定する。
   `0` と `true` は現在のバッファを意味する。 >lua
     -- 現在のバッファにマッピングを設定
-    vim.keymap.set('n', '<Leader>pl1', require('plugin').action, { buffer = true })
+    vim.keymap.set('n', '<Leader>pl1', require('plugin').action, { buf = 0 })
     -- バッファ番号4にマッピングを設定
-    vim.keymap.set('n', '<Leader>pl1', require('plugin').action, { buffer = 4 })
+    vim.keymap.set('n', '<Leader>pl1', require('plugin').action, { buf = 4 })
 <
 • `silent`: `true` であれば、エラーメッセージなどの出力を抑制する。 >lua
     vim.keymap.set('n', '<Leader>pl1', require('plugin').action, { silent = true })
@@ -447,8 +463,6 @@ Luaモジュールの関数には以下のようにマップできる。
 • `desc`: |:map| などでマッピングを列挙するときに表示される文字列
   {rhs} がLuaの関数である場合、以下の情報しか表示されないので、有用である。
   `Lua: <number> <source file>:<line>`
-  {訳注:
-  `<Lua {数}: {ソースファイル}:{行}>` }
   そのためプラグインは提供するマッピングに常にこれを設定すべきである。 >lua
     vim.keymap.set('n', '<Leader>pl1', require('plugin').action,
       { desc = 'Execute action from plugin' })
@@ -469,9 +483,8 @@ Luaモジュールの関数には以下のようにマップできる。
 特定のマッピングを削除するには |vim.keymap.del()| が使える:
 >lua
     vim.keymap.del('n', '<Leader>ex1')
-    vim.keymap.del({'n', 'c'}, '<Leader>ex2', {buffer = true})
+    vim.keymap.del({'n', 'c'}, '<Leader>ex2', { buf = 0 })
 <
-------------------------------------------------------------------------------
 参照:
 • `vim.api.`|nvim_get_keymap()|:     すべてのグローバルのマッピングを返す。
 • `vim.api.`|nvim_buf_get_keymap()|: あるバッファのすべてのマッピングを返す。
@@ -534,8 +547,8 @@ Luaの関数は、発火した自動コマンドについての情報を含む�
 >lua
     vim.api.nvim_create_autocmd("FileType", {
       pattern = "lua",
-      callback = function(args)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = args.buf })
+      callback = function(ev)
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buf = ev.buf })
       end
     })
 <
@@ -625,8 +638,9 @@ Vimscriptでは以下のように書くであろう:
 ------------------------------------------------------------------------------
 自動コマンドを削除する                           *lua-guide-autocommands-delete*
 
-`vim.api.`|nvim_clear_autocmds()| を使うと自動コマンドを削除できる。この関数は
-対象の自動コマンドを表現するテーブルを引数に取る:
+`vim.api.`|nvim_clear_autocmds()| を使うと自動コマンドを削除できる。
+この関数は、省略できない唯一の引数として、対象の自動コマンドを表現するキーの
+テーブルを取る:
 >lua
     -- BufEnter と InsertLeave の自動コマンドを削除
     vim.api.nvim_clear_autocmds({event = {"BufEnter", "InsertLeave"}})
@@ -643,7 +657,6 @@ Vimscriptでは以下のように書くであろう:
 Note: 自動コマンドがなんらかのグループに含まれる場合、たとえあるオプションが
 一致しても `group` を指定しないと削除できない。
 
-------------------------------------------------------------------------------
 参照
 • |nvim_get_autocmds()|:  一致する自動コマンドをすべて返す。
 • |nvim_exec_autocmds()|: 一致する自動コマンドをすべて実行する。
@@ -740,9 +753,8 @@ Luaの関数が指定できる。 >lua
 <
 ==============================================================================
 クレジット                                                   *lua-guide-credits*
-このガイドは nanotee さんのLuaガイド:
+このガイドは nanotee さんのLuaガイドを元にしています:
 https://github.com/nanotee/nvim-lua-guide
-を元にしています。
 
 @nanotee さんありがとうございます!
 

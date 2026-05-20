@@ -32,6 +32,10 @@ Copyright: Copyright (C) 2005-2015 Charles E Campbell	 *zip-copyright*
    <return> キーを押す。編集後、ファイルに書き込むこともできる。現在、このプラ
    グインを使用して zip アーカイブに新しいファイルを作成することはできない。
 
+   zip プラグインは、一般的なパストラバーサル攻撃のパターンを検出しようとする
+   が、すべてのケースを検出できるとは限らない。信頼できない入力データを使用す
+   る場合は、このプラグインの使用に十分注意すること。
+
    コマンド~
 								*zip-x*
    x : カーソル上にある一覧のファイルを解凍する
@@ -49,7 +53,7 @@ Copyright: Copyright (C) 2005-2015 Charles E Campbell	 *zip-copyright*
    るように、正しいクォートのメカニズムを推測しようとする。ただし、設定で使用
    するクォートを誤推測した場合は以下を使用する >
 	g:zip_shq
-<  デフォルトでは、Unix ではシングルクォート (')、Windows ではダブルクォート
+<   デフォルトでは、Unix ではシングルクォート (')、Windows ではダブルクォート
    (")である。クォート自体をしたくない場合は <.vimrc> の中で g:zip_shq に空文
    字を設定する (let g:zip_shq = "") だけである。
 
@@ -75,6 +79,16 @@ Copyright: Copyright (C) 2005-2015 Charles E Campbell	 *zip-copyright*
    "0" に設定すると、"unzip" コマンドの実行を防ぐことができる: >
 	let g:zip_exec=0
 <
+   PowerShell コアへのフォールバック~
+
+   このプラグインは、まず (より高機能な) GNU zip/unzip コマンドの使用を試みる。
+   これらのコマンドが使用できない、または失敗し、ユーザーが PowerShell Core を
+   使用している場合 (つまり、'shell' オプションが "pwsh" に一致する場合)、プラ
+   グインは PowerShell Core コマンドレットにフォールバックする。PowerShell
+   Core コマンドレットには制限があり、zip アーカイブのサブディレクトリ内のファ
+   イルの書き込みや解凍はできない。ただし、別途 unzip バイナリをインストールす
+   る必要がないという利点がある。
+
    読み込みの無効化~
 
    何らかの理由で vim を使用して zip ファイルを検査したくない場合は、次の 2 つ
@@ -97,18 +111,19 @@ Copyright: Copyright (C) 2005-2015 Charles E Campbell	 *zip-copyright*
    この行に拡張子を追加していけば対応する拡張子を増やすことができる。
 
    代わりに .vimrc で *g:zipPlugin_ext* を使って変更する方法もある。現時点
-   (2025年4月現在) は以下が含まれる: >
+   (2026年5月現在) は以下が含まれる: >
 
-        let g:zipPlugin_ext='*.aar,*.apk,*.celzip,*.crtx,*.docm,*.docx,
+        let g:zipPlugin_ext='*.aar,*.apk,*.cbz,*.celzip,*.crtx,*.docm,*.docx,
        \ *.dotm,*.dotx,*.ear,*.epub,*.gcsx,*.glox,*.gqsx,*.ja,*.jar,*.kmz,
        \ *.odb,*.odc,*.odf,*.odg,*.odi,*.odm,*.odp,*.ods,*.odt,*.otc,*.otf,
-       \ *.otg,*.oth,*.oti,*.otp,*.ots,*.ott,*.oxt,*.potm,*.potx,*.ppam,
-       \ *.ppsm,*.ppsx,*.pptm,*.pptx,*.sldx,*.thmx,*.vdw,*.war,*.whl,*.wsz,
-       \ *.xap,*.xlam,*.xlsb,*.xlsm,*.xlsx,*.xltm,*.xltx,*.xpi,*.zip'
+       \ *.otg,*.oth,*.oti,*.otp,*.ots,*.ott,*.oxt,*.pkpass,*.potm,*.potx,
+       \ *.ppam,*.ppsm,*.ppsx,*.pptm,*.pptx,*.sldx,*.thmx,*.vdw,*.war,*.whl,
+       \ *.wsz, *.xap,*.xlam,*.xlsb,*.xlsm,*.xlsx,*.xltm,*.xltx,*.xpi,*.zip'
 
 ==============================================================================
 4. 開発履歴							*zip-history* {{{1
    unreleased:
+       Sep 19, 2025 * support PowerShell Core
        Jul 12, 2025 * drop ../ on write to prevent path traversal attacks
        Mar 11, 2025 * handle filenames with leading '-' correctly
        Aug 21, 2024 * simplify condition to detect MS-Windows
@@ -158,9 +173,9 @@ Copyright: Copyright (C) 2005-2015 Charles E Campbell	 *zip-copyright*
 		    * g:zip_shq provided to allow for quoting control for the
 		      command being passed via :r! ... commands.
    v8 Apr 10, 2006 * Bram Moolenaar reported that he received an error message
-                     due to "Pattern not found: ^.*\%0c"; this was caused by
+                     due to `Pattern not found: ^.*\%0c`; this was caused by
 		     stridx finding a Name... at the beginning of the line;
-		     zip.vim tried 4,$s/^.*\%0c//, but that doesn't work.
+		     zip.vim tried `4,$s/^.*\%0c//`, but that doesn't work.
 		     Fixed.
    v7 Mar 22, 2006 * escaped some characters that can cause filename handling
                      problems.

@@ -26,8 +26,6 @@ $NVIM_RPLUGIN_MANIFEST	remote_plugin.jax	/*$NVIM_RPLUGIN_MANIFEST*
 --remote-wait	remote.jax	/*--remote-wait*
 --remote-wait-silent	remote.jax	/*--remote-wait-silent*
 --server	remote.jax	/*--server*
---serverlist	remote.jax	/*--serverlist*
---servername	remote.jax	/*--servername*
 :AdaLines	ft_ada.jax	/*:AdaLines*
 :AdaRainbow	ft_ada.jax	/*:AdaRainbow*
 :AdaSpaces	ft_ada.jax	/*:AdaSpaces*
@@ -77,6 +75,7 @@ $NVIM_RPLUGIN_MANIFEST	remote_plugin.jax	/*$NVIM_RPLUGIN_MANIFEST*
 :exusage	helphelp.jax	/*:exusage*
 :h	helphelp.jax	/*:h*
 :help	helphelp.jax	/*:help*
+:help!	helphelp.jax	/*:help!*
 :helpc	helphelp.jax	/*:helpc*
 :helpclose	helphelp.jax	/*:helpclose*
 :helpg	helphelp.jax	/*:helpg*
@@ -167,6 +166,7 @@ API	api.jax	/*API*
 Bram	intro.jax	/*Bram*
 Bram-Moolenaar	intro.jax	/*Bram-Moolenaar*
 BufCreate	deprecated.jax	/*BufCreate*
+BufModifiedSet	deprecated.jax	/*BufModifiedSet*
 C-editing	tips.jax	/*C-editing*
 CTRL-\_CTRL-G	intro.jax	/*CTRL-\\_CTRL-G*
 CTRL-\_CTRL-N	intro.jax	/*CTRL-\\_CTRL-N*
@@ -219,6 +219,10 @@ E791	mbyte.jax	/*E791*
 E856	helphelp.jax	/*E856*
 E880	if_pyth.jax	/*E880*
 E887	if_pyth.jax	/*E887*
+E901	job_control.jax	/*E901*
+E903	job_control.jax	/*E903*
+E947	job_control.jax	/*E947*
+E948	job_control.jax	/*E948*
 EX	intro.jax	/*EX*
 EncodingChanged	deprecated.jax	/*EncodingChanged*
 Ex	intro.jax	/*Ex*
@@ -230,6 +234,7 @@ ICCF	uganda.jax	/*ICCF*
 Japanese	mbyte.jax	/*Japanese*
 Kibaale	uganda.jax	/*Kibaale*
 Korean	mbyte.jax	/*Korean*
+Kuwasha	uganda.jax	/*Kuwasha*
 LanguageTree:for_each_child()	deprecated.jax	/*LanguageTree:for_each_child()*
 Lua	lua.jax	/*Lua*
 Moolenaar	intro.jax	/*Moolenaar*
@@ -285,7 +290,6 @@ ada-compiler	ft_ada.jax	/*ada-compiler*
 ada-ctags	ft_ada.jax	/*ada-ctags*
 ada-extra-plugins	ft_ada.jax	/*ada-extra-plugins*
 ada-reference	ft_ada.jax	/*ada-reference*
-ada.vim	ft_ada.jax	/*ada.vim*
 alt	intro.jax	/*alt*
 api	api.jax	/*api*
 api-buffer	api.jax	/*api-buffer*
@@ -321,6 +325,7 @@ b:rust_cargo_check_benches	ft_rust.jax	/*b:rust_cargo_check_benches*
 b:rust_cargo_check_examples	ft_rust.jax	/*b:rust_cargo_check_examples*
 b:rust_cargo_check_tests	ft_rust.jax	/*b:rust_cargo_check_tests*
 b:rustfmt_autosave	ft_rust.jax	/*b:rustfmt_autosave*
+b:rustfmt_autosave_if_config_present	ft_rust.jax	/*b:rustfmt_autosave_if_config_present*
 b:terminal_job_id	deprecated.jax	/*b:terminal_job_id*
 b:terminal_job_pid	deprecated.jax	/*b:terminal_job_pid*
 backslash	intro.jax	/*backslash*
@@ -343,7 +348,6 @@ charity	uganda.jax	/*charity*
 charset	mbyte.jax	/*charset*
 charset-conversion	mbyte.jax	/*charset-conversion*
 client-server	remote.jax	/*client-server*
-client-server-name	remote.jax	/*client-server-name*
 clientserver	remote.jax	/*clientserver*
 clientserver-missing	remote.jax	/*clientserver-missing*
 codeset	mbyte.jax	/*codeset*
@@ -400,6 +404,7 @@ deprecated	deprecated.jax	/*deprecated*
 deprecated-0.10	deprecated.jax	/*deprecated-0.10*
 deprecated-0.11	deprecated.jax	/*deprecated-0.11*
 deprecated-0.12	deprecated.jax	/*deprecated-0.12*
+deprecated-0.13	deprecated.jax	/*deprecated-0.13*
 deprecated-0.9	deprecated.jax	/*deprecated-0.9*
 deprecated.txt	deprecated.jax	/*deprecated.txt*
 design-documented	dev.jax	/*design-documented*
@@ -420,7 +425,10 @@ dev-doc	dev.jax	/*dev-doc*
 dev-error-codes	dev.jax	/*dev-error-codes*
 dev-error-patterns	dev.jax	/*dev-error-patterns*
 dev-events	dev_arch.jax	/*dev-events*
+dev-filesystem	dev_arch.jax	/*dev-filesystem*
 dev-guidelines	dev.jax	/*dev-guidelines*
+dev-internals-howto	dev_arch.jax	/*dev-internals-howto*
+dev-layout	dev_arch.jax	/*dev-layout*
 dev-lua	dev.jax	/*dev-lua*
 dev-lua-builtin	dev_arch.jax	/*dev-lua-builtin*
 dev-lua-doc	dev.jax	/*dev-lua-doc*
@@ -428,6 +436,9 @@ dev-name-common	dev.jax	/*dev-name-common*
 dev-name-events	dev.jax	/*dev-name-events*
 dev-namespace-name	dev.jax	/*dev-namespace-name*
 dev-naming	dev.jax	/*dev-naming*
+dev-new-event	dev_arch.jax	/*dev-new-event*
+dev-new-excmd	dev_arch.jax	/*dev-new-excmd*
+dev-new-vimfn	dev_arch.jax	/*dev-new-vimfn*
 dev-patterns	dev.jax	/*dev-patterns*
 dev-provider	dev.jax	/*dev-provider*
 dev-quickstart	dev_tools.jax	/*dev-quickstart*
@@ -654,7 +665,6 @@ i_CTRL-\_CTRL-N	intro.jax	/*i_CTRL-\\_CTRL-N*
 i_digraph	digraph.jax	/*i_digraph*
 i_esc	intro.jax	/*i_esc*
 iccf	uganda.jax	/*iccf*
-iccf-donations	uganda.jax	/*iccf-donations*
 ident-search	tips.jax	/*ident-search*
 if_perl	if_perl.jax	/*if_perl*
 if_perl.txt	if_perl.jax	/*if_perl.txt*
@@ -784,6 +794,7 @@ lua-guide-commands-create	lua-guide.jax	/*lua-guide-commands-create*
 lua-guide-commands-delete	lua-guide.jax	/*lua-guide-commands-delete*
 lua-guide-config	lua-guide.jax	/*lua-guide-config*
 lua-guide-credits	lua-guide.jax	/*lua-guide-credits*
+lua-guide-interrupt	lua-guide.jax	/*lua-guide-interrupt*
 lua-guide-mappings	lua-guide.jax	/*lua-guide-mappings*
 lua-guide-mappings-del	lua-guide.jax	/*lua-guide-mappings-del*
 lua-guide-mappings-set	lua-guide.jax	/*lua-guide-mappings-set*
@@ -1264,11 +1275,14 @@ os.rename()	luaref.jax	/*os.rename()*
 os.setlocale()	luaref.jax	/*os.setlocale()*
 os.time()	luaref.jax	/*os.time()*
 os.tmpname()	luaref.jax	/*os.tmpname()*
+package-spellfile	plugins.jax	/*package-spellfile*
+package-tohtml	plugins.jax	/*package-tohtml*
+package-undotree	plugins.jax	/*package-undotree*
 package.cpath	luaref.jax	/*package.cpath*
 package.loaded	luaref.jax	/*package.loaded*
 package.loadlib()	luaref.jax	/*package.loadlib()*
 package.path	luaref.jax	/*package.path*
-package.preload()	luaref.jax	/*package.preload()*
+package.preload	luaref.jax	/*package.preload*
 package.seeall()	luaref.jax	/*package.seeall()*
 page-down	intro.jax	/*page-down*
 page-up	intro.jax	/*page-up*
@@ -1307,7 +1321,6 @@ pi_tar.txt	pi_tar.jax	/*pi_tar.txt*
 pi_tutor.txt	pi_tutor.jax	/*pi_tutor.txt*
 pi_zip.txt	pi_zip.jax	/*pi_zip.txt*
 plsql	ft_sql.jax	/*plsql*
-plugins	plugins.jax	/*plugins*
 plugins.txt	plugins.jax	/*plugins.txt*
 portable-config	nvim.jax	/*portable-config*
 postgresql	ft_sql.jax	/*postgresql*
@@ -1384,7 +1397,6 @@ rpc-connecting	api.jax	/*rpc-connecting*
 rpcstart()	deprecated.jax	/*rpcstart()*
 rpcstop()	deprecated.jax	/*rpcstop()*
 ruby	if_ruby.jax	/*ruby*
-ruby-blob	if_ruby.jax	/*ruby-blob*
 ruby-buffer	if_ruby.jax	/*ruby-buffer*
 ruby-command	if_ruby.jax	/*ruby-command*
 ruby-commands	if_ruby.jax	/*ruby-commands*
@@ -1420,7 +1432,6 @@ spec_chglog_release_info	pi_spec.jax	/*spec_chglog_release_info*
 speed-up	tips.jax	/*speed-up*
 spellfile.config()	plugins.jax	/*spellfile.config()*
 spellfile.get()	plugins.jax	/*spellfile.get()*
-spellfile.lua	plugins.jax	/*spellfile.lua*
 sponsor	intro.jax	/*sponsor*
 sql-adding-dialects	ft_sql.jax	/*sql-adding-dialects*
 sql-completion	ft_sql.jax	/*sql-completion*
@@ -1447,6 +1458,7 @@ sqlgettype	ft_sql.jax	/*sqlgettype*
 sqlj	ft_sql.jax	/*sqlj*
 sqlserver	ft_sql.jax	/*sqlserver*
 sqlsettype	ft_sql.jax	/*sqlsettype*
+standard-plugin	plugins.jax	/*standard-plugin*
 standard-plugin-list	plugins.jax	/*standard-plugin-list*
 string.byte()	luaref.jax	/*string.byte()*
 string.char()	luaref.jax	/*string.char()*
@@ -1489,7 +1501,6 @@ term_background	deprecated.jax	/*term_background*
 termopen()	deprecated.jax	/*termopen()*
 tips	tips.jax	/*tips*
 tips.txt	tips.jax	/*tips.txt*
-tohtml	plugins.jax	/*tohtml*
 tohtml.tohtml()	plugins.jax	/*tohtml.tohtml()*
 tonumber()	luaref.jax	/*tonumber()*
 tostring()	luaref.jax	/*tostring()*
@@ -1515,7 +1526,6 @@ ubuntu	intro.jax	/*ubuntu*
 uganda	uganda.jax	/*uganda*
 uganda.txt	uganda.jax	/*uganda.txt*
 ui-wildmenu	deprecated.jax	/*ui-wildmenu*
-undotree-plugin	plugins.jax	/*undotree-plugin*
 undotree.open()	plugins.jax	/*undotree.open()*
 unicode	mbyte.jax	/*unicode*
 uninstall	intro.jax	/*uninstall*

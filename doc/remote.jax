@@ -111,24 +111,5 @@ Vim の clientserver は Nvim にはまだ実装されていない追加の機�
    --remote-tab-wait-silent	Nvim ではまだサポートされていない。
 				--remote-wait-silent と同様、しかし各ファイル
 				を新しいタブページで開く。
-							    *--servername*
-   --servername {name}		Nvim ではまだサポートされていない。
-				サーバー名{name}になる。--remote コマンドのど
-				れか1つと併用すると、デフォルトのサーバーでは
-				なく{name}で指定されるサーバーに接続する(下を
-				参照)。使用される名前は大文字になる。
-
-								*--serverlist*
-   --serverlist			Nvim ではまだサポートされていない。
-				サーバー名のリストを表示する。
-
-
-
-
-☆サーバー名						*client-server-name*
-
-デフォルトではVimは自分が起動された時の名前(gvim, egvim ...)のサーバーになろう
-とする。これは引数 --servername で変更できる。Nvim は名前付きパイプまたはソケッ
-トをリッスンしますが、この --servername 機能はまだサポートしていません。
 
  vim:tw=78:sw=4:ts=8:noet:ft=help:norl:

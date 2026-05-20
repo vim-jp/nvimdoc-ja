@@ -1,4 +1,4 @@
-*if_pyth.txt*   Nvim 0.12        Last change: 2025-08-24
+*if_pyth.txt*   Nvim 0.13        Last change: 2026-05-20
 
 
                          NVIMリファレンスマニュアル
@@ -166,11 +166,14 @@ vim.eval(str)						*python-eval*
 	- Vim の式を評価した結果が文字列か数値ならば文字列
 	- Vim の式を評価した結果がリストならばリスト
 	- Vim の式を評価した結果が Vim の辞書ならば辞書
+	- Vim の式を評価した結果が |v:true| または |v:false| の場合は真偽値
+	- Vim の式を評価した結果が |v:null| または |v:none| の場合は `None`
 	辞書およびリストは再帰的に展開されます。
 	例: >vim
 	    :py text_width = vim.eval("&tw")
-	    :py str = vim.eval("12+12")		
-	    " 結果は文字列であることに注意!数値に変換するには int() を使うこと
+	    :py str = vim.eval("12+12")		# 結果は文字列であることに注意!
+						# 数値に変換するには int() を
+						# 使うこと
 
 vim.strwidth(str)					*python-strwidth*
 	|strwidth()| と同じ。str の画面上の幅を数値で返す。タブ文字は 1 幅とし
@@ -235,7 +238,7 @@ vim.tabpages						*python-tabpages*
 
 vim.current						*python-current*
 	vim内で使える様々な "現在の" オブジェクトへの、(特定の属性を通した)
-	アクセスを提供するオブジェクト: >vim
+	アクセスを提供するオブジェクト:
 		vim.current.line	現在の行 (RW)			String
 		vim.current.buffer	現在のバッファ (RW)		Buffer
 		vim.current.window	現在のウィンドウ (RW)		Window
@@ -306,7 +309,7 @@ Python では、 'runtimepath' のパスのリストを使う代わりに、vim.
 の各パス {rtp} に対して {rtp}/python3 と {rtp}/pythonx のモジュールがロードさ
 れます。
 
-実装は以下のようになっています。ただし実際は C で書かれています: >python
+実装は以下のようになっています: >python
 
     from imp import find_module, load_module
     import vim
@@ -354,7 +357,7 @@ Python では、 'runtimepath' のパスのリストを使う代わりに、vim.
 
     sys.path_hooks.append(hook)
 
-vim.VIM_SPECIAL_PATH					*python-VIM_SPECIAL_PATH*
+vim.VIM_SPECIAL_PATH				*python-VIM_SPECIAL_PATH*
 	Vim のパスフックに関連付けられた文字列定数。Vim によって設定されたパス
 	フックが vim.VIM_SPECIAL_PATH 定数以外のパスに対して呼び出された場合は
 	ImportError が発生します。そうでなければ特殊ローダが使用されます。

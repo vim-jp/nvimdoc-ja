@@ -1,9 +1,11 @@
-*if_ruby.txt*          Nvim 0.12        Last change: 2025-08-24
+*if_ruby.txt*          Nvim 0.13	Last change: 2026-05-20
 
 
-		 VIM リファレンスマニュアル    by Shugo Maeda
+		  VIM リファレンスマニュアル	  by Shugo Maeda
 
-Rubyインターフェイス     				*if_ruby* *ruby* *Ruby*
+Rubyインターフェイス					*if_ruby* *ruby* *Ruby*
+
+詳細は |provider-ruby| を参照。
 
 			*E266* *E267* *E268* *E269* *E270* *E271* *E272* *E273*
 
@@ -28,10 +30,11 @@ Rubyのホームページは https://www.ruby-lang.org/ である。ここでRub
 			ンド同様にドット '.' がデフォルトである。詳細について
 			は |:let-heredoc| を参照。
 
-			この形式の |:ruby|コマンドは主にVIM scriptにRubyコード
+
+			この形式の |:ruby|コマンドは主にVim scriptにRubyコード
 			を埋め込むのに便利である。
 
-VIM script の例: >
+Vim script の例: >
 
 	function! RedGem()
 	ruby << EOF
@@ -99,13 +102,9 @@ Rubyのコードは全てのvimへのアクセスを"VIM"モジュール経由�
 VIM::message({msg})
 	メッセージ{msg}を表示する。
 
-							*ruby-blob*
-VIM::blob({arg})
-	{arg}から |Blob| リテラル文字列を返す。
-
 							*ruby-set_option*
 VIM::set_option({arg})
-	VIMのオプションを設定する。{arg}は ":set" コマンドが受け付けるものであ
+	vimのオプションを設定する。{arg}は ":set" コマンドが受け付けるものであ
 	れば何でも良い。引数の中では空白文字が使えないことに注意。 |:set| を参
 	照。
 
@@ -115,7 +114,7 @@ VIM::command({cmd})
 
 							*ruby-evaluate*
 VIM::evaluate({expr})
-	VIM内部の実行エンジンを使ってスクリプト{expr}を実行評価する
+	vim内部の実行エンジンを使ってスクリプト{expr}を実行評価する
 	(|expression|参照)。実行結果は文字列で返される。リスト型(|List|)は文字列に
 	変換され改行を挿入して結合される。
 
@@ -138,13 +137,13 @@ count		行数を返す。
 length		行数を返す。
 self[{n}]	バッファの行を返す。{n}は行番号。
 self[{n}] = {str}
-                バッファの行を設定する。{n}は行番号。
+		バッファの行を設定する。{n}は行番号。
 delete({n})	バッファから行を削除する。{n}は行番号。
 append({n}, {str})
 		行{n}の後ろに行を追加する。
 line		そのバッファがアクティブなら、カレント行を返す。
-line = {str}    そのバッファがアクティブなら、カレント行を設定する。
-line_number     そのバッファがアクティブなら、カレント行の行番号を返す。
+line = {str}	そのバッファがアクティブなら、カレント行を設定する。
+line_number	そのバッファがアクティブなら、カレント行の行番号を返す。
 
 ==============================================================================
 4. VIM::Window オブジェクト				*ruby-window*
