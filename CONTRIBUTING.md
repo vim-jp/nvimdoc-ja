@@ -37,6 +37,8 @@ $ git push -u origin my-translation
 ```
 # 翻訳状況
 
+翻訳されているファイルは neovim/neovim@2e82e0bcf6daf3adfeec6146d77d665a98692022 時点の翻訳です。
+
 - [ ] api-ui-events.txt
 - [ ] api.txt 🚧(作業中)
 - [ ] autocmd.txt
