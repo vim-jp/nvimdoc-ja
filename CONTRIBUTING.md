@@ -37,27 +37,27 @@ $ git push -u origin my-translation
 ```
 # 翻訳状況
 
-- [ ] api.txt 🚧(作業中)
+翻訳されているファイルは neovim/neovim@2e82e0bcf6daf3adfeec6146d77d665a98692022 時点の翻訳です。
+
 - [ ] api-ui-events.txt
-- [ ] arabic.txt
+- [ ] api.txt 🚧(作業中)
 - [ ] autocmd.txt
 - [ ] change.txt
 - [ ] channel.txt
 - [ ] cmdline.txt
 - [ ] credits.txt
-- [x] debug.txt
 - [x] deprecated.txt
+- [ ] dev.txt
 - [x] dev_arch.txt
 - [ ] dev_style.txt
+- [ ] dev_test.txt
 - [x] dev_theme.txt
 - [x] dev_tools.txt
 - [ ] dev_vimpatch.txt
-- [ ] develop.txt 🚧(作業中)
 - [ ] diagnostic.txt
 - [ ] diff.txt
 - [x] digraph.txt
 - [ ] editing.txt
-- [x] editorconfig.txt
 - [ ] faq.txt
 - [ ] filetype.txt
 - [ ] fold.txt
@@ -69,7 +69,6 @@ $ git push -u origin my-translation
 - [x] ft_sql.txt
 - [ ] gui.txt
 - [x] health.txt
-- [ ] hebrew.txt
 - [x] help.txt
 - [x] helphelp.txt
 - [x] if_perl.txt
@@ -80,6 +79,10 @@ $ git push -u origin my-translation
 - [ ] insert.txt
 - [x] intro.txt
 - [x] job_control.txt
+- [ ] l10n-arabic.txt
+- [ ] l10n-hebrew.txt
+- [ ] l10n-russian.txt
+- [ ] l10n-vietnamese.txt
 - [ ] lsp.txt
 - [ ] lua-bit.txt
 - [x] lua-guide.txt
@@ -107,15 +110,15 @@ $ git push -u origin my-translation
 - [x] pi_tar.txt
 - [x] pi_tutor.txt
 - [x] pi_zip.txt
+- [x] plugins.txt
 - [ ] provider.txt
 - [ ] quickfix.txt
 - [ ] quickref.txt
 - [x] recover.txt
-- [x] remote.txt 
+- [x] remote.txt
 - [x] remote_plugin.txt
 - [ ] repeat.txt
 - [ ] rileft.txt
-- [ ] russian.txt
 - [ ] scroll.txt
 - [ ] sign.txt
 - [ ] spell.txt
@@ -165,7 +168,6 @@ $ git push -u origin my-translation
 - [ ] usr_toc.txt
 - [ ] various.txt
 - [x] vi_diff.txt
-- [ ] vietnamese.txt
 - [ ] vim_diff.txt
 - [ ] vimeval.txt
 - [ ] vimfn.txt

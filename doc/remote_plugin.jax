@@ -1,4 +1,4 @@
-*remote_plugin.txt*    Nvim 0.12        Last change: 2025-08-24
+*remote_plugin.txt*    Nvim
 
 
                 NVIMリファレンスマニュアル    by Thiago de Arruda
@@ -121,14 +121,10 @@ Java プラグインが Java コード用のセマンティック補完エンジ
 マンド `BufEnter *.java` が定義されている場合、Java ホストは Nvim が "*.java" に
 一致するバッファをロードした時のみ呼び出されます。
 
-If the explicit call to |:UpdateRemotePlugins| seems inconvenient, try to see
-it like this: It's a way to provide IDE capabilities in Nvim while still
-keeping it fast and lightweight for general use. It's also analogous to the
-|:helptags| command.
 もし |:UpdateRemotePlugins| を明示的に呼び出すのが面倒に感じるのであれば、次のよ
-うに考えてみてください: これは、Nvim 汎用的な利用に対する高速性と軽量性を維持
-しつつ、IDE のような機能性を提供することだということです。また、 これは
-|:helptags| にも類似しています。
+うに考えてみてください: これは、Nvimの一般的な利用のための高速性と軽量性を維持
+しつつ、IDE のような機能性を提供する手段だと。また、これは |:helptags| にも
+類似しています。
 
 						*$NVIM_RPLUGIN_MANIFEST*
 環境変数 $NVIM_RPLUGIN_MANIFEST が設定されていない場合、マニフェストは次の場所
