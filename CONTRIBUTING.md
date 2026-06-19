@@ -134,38 +134,38 @@ $ git push -u origin my-translation
 - [x] uganda.txt
 - [ ] undo.txt
 - [ ] userfunc.txt
-- [ ] usr_01.txt
-- [ ] usr_02.txt
-- [ ] usr_03.txt
-- [ ] usr_04.txt
-- [ ] usr_05.txt
-- [ ] usr_06.txt
-- [ ] usr_07.txt
-- [ ] usr_08.txt
-- [ ] usr_09.txt
-- [ ] usr_10.txt
-- [ ] usr_11.txt
-- [ ] usr_12.txt
-- [ ] usr_20.txt
-- [ ] usr_21.txt
-- [ ] usr_22.txt
-- [ ] usr_23.txt
-- [ ] usr_24.txt
-- [ ] usr_25.txt
-- [ ] usr_26.txt
-- [ ] usr_27.txt
-- [ ] usr_28.txt
-- [ ] usr_29.txt
-- [ ] usr_30.txt
-- [ ] usr_31.txt
-- [ ] usr_32.txt
-- [ ] usr_40.txt
-- [ ] usr_41.txt
-- [ ] usr_42.txt
-- [ ] usr_43.txt
-- [ ] usr_44.txt
-- [ ] usr_45.txt
-- [ ] usr_toc.txt
+- [x] usr_01.txt
+- [x] usr_02.txt
+- [x] usr_03.txt
+- [x] usr_04.txt
+- [x] usr_05.txt
+- [x] usr_06.txt
+- [x] usr_07.txt
+- [x] usr_08.txt
+- [x] usr_09.txt
+- [x] usr_10.txt
+- [x] usr_11.txt
+- [x] usr_12.txt
+- [x] usr_20.txt
+- [x] usr_21.txt
+- [x] usr_22.txt
+- [x] usr_23.txt
+- [x] usr_24.txt
+- [x] usr_25.txt
+- [x] usr_26.txt
+- [x] usr_27.txt
+- [x] usr_28.txt
+- [x] usr_29.txt
+- [x] usr_30.txt
+- [x] usr_31.txt
+- [x] usr_32.txt
+- [x] usr_40.txt
+- [x] usr_41.txt
+- [x] usr_42.txt
+- [x] usr_43.txt
+- [x] usr_44.txt
+- [x] usr_45.txt
+- [x] usr_toc.txt
 - [ ] various.txt
 - [x] vi_diff.txt
 - [ ] vim_diff.txt
