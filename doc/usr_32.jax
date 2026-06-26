@@ -1,4 +1,4 @@
-*usr_32.txt*	For Vim バージョン 9.2.  Last change: 2026 Feb 14
+*usr_32.txt*	Nvim
 
 
 		     VIM ユーザーマニュアル	by Bram Moolenaar
@@ -78,7 +78,7 @@ undo/redo は分岐することができます。変更を undo してから新�
 	 one two    me too ~
 
 この状態で |u| コマンドを使って undo してみてください。二回 undo すると "one"
-に戻ります。|CTRL-R| で redo すると "one too" になります。もう一度 |CTRL-R| を
+に戻ります。 |CTRL-R| で redo すると "one too" になります。もう一度 |CTRL-R| を
 実行すると "me too" になります。このように、undo/redo を実行すると、最後に使わ
 れた枝を上下に移動できます。
 
@@ -101,7 +101,7 @@ undo されたかわかるように)。
 
 	:undo 2
 
-テキストが "one two" (change 2 の下) になります。|:undo| コマンドを使うと、指
+テキストが "one two" (change 2 の下) になります。 |:undo| コマンドを使うと、指
 定した変更の下にジャンプできます。
 
 新しい変更を加えてみましょう。"one" を "not" に変更します:
@@ -120,7 +120,7 @@ undo されたかわかるように)。
 	    |
 	 not two ~
 
-何か考えが変わって "me too" に戻りたくなった場合は、|g-| コマンドを使います。
+何か考えが変わって "me too" に戻りたくなった場合は、 |g-| コマンドを使います。
 このコマンドは時間を基準にして戻ります。ツリーを上下に移動するのではなく、直前
 の変更に移動します。
 
@@ -160,7 +160,7 @@ two") にいるとして、10 秒前に戻るには次のようにします: >
 
 	:earlier 10s
 
-指定した時間だけ戻り、ツリーの特定の位置へ移動できます。|:earlier| コマンドの
+指定した時間だけ戻り、ツリーの特定の位置へ移動できます。 |:earlier| コマンドの
 引数は "m" で分、"h" で時間、"d" で日を指定することもできます。すべての変更を
 元に戻したい場合は大きな値を指定してください: >
 
@@ -181,4 +181,6 @@ undo 情報の詳細を見たい、触りたい、という場合は |undotree()
 
 次章: |usr_40.txt|  新しいコマンドを作る
 
-Copyright: see |manual-copyright|  vim:tw=78:ts=8:noet:ft=help:norl:
+Copyright: see |manual-copyright|
+
+vim:tw=78:ts=8:noet:ft=help:norl:

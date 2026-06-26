@@ -1,4 +1,4 @@
-*usr_43.txt*	For Vim バージョン 9.2.  Last change: 2026 Feb 14
+*usr_43.txt*	Nvim
 
 
 		     VIM ユーザーマニュアル	by Bram Moolenaar
@@ -23,33 +23,32 @@ C プログラムやシェルスクリプトなどの特定の種類のファイ
 
 ファイルタイププラグインの使用方法については既に |add-filetype-plugin| で説明
 しました。しかし、標準では最小限の設定しかされないので、それだけでは物足りない
-と思います。例えば C ファイルを開いたときに、'softtabstop' オプションを 4 に設
+と思います。例えば C ファイルを開いたときに、 'softtabstop' オプションを 4 に設
 定したり、三行コメントを挿入するためのマップを定義したりすると便利かもしれませ
 ん。2 ステップで設定できます。
 
 							*your-runtime-dir*
-1. 自分のランタイムディレクトリを作成する。Unix なら普通は "~/.vim" です。その
-   ディレクトリの中に "ftplugin" ディレクトリを作成します: >
+1. 自分のランタイムディレクトリを作成する。Unix なら普通は "~/.config/nvim" です。
+   そのディレクトリの中に "ftplugin" ディレクトリを作成します: >
 
-	mkdir ~/.vim
-	mkdir ~/.vim/ftplugin
+	mkdir -p ~/.config/nvim/ftplugin
 <
-   Unix 以外のシステムでは、'runtimepath' オプションを見て、"ftplugin" ディレ
+   Unix 以外のシステムでは、 'runtimepath' オプションを見て、"ftplugin" ディレ
    クトリが検索される場所を確認してください: >
 
-	set runtimepath
+	set runtimepath?
 
 <  普通は最初のディレクトリ (最初のコンマの前) を使います。初期設定以外のディ
-   レクトリを使いたい場合は、|vimrc| ファイルの中で 'runtimepath' オプションを
+   レクトリを使いたい場合は、 |init.vim| ファイルの中で 'runtimepath' オプションを
    設定してディレクトリを追加してください。
 
-2. "~/.vim/ftplugin/c.vim" を作成して設定を書きます: >
+2. "~/.config/nvim/ftplugin/c.vim" を作成して設定を書きます: >
 
 	setlocal softtabstop=4
 	noremap <buffer> <LocalLeader>c o/**************<CR><CR>/<Esc>
 	let b:undo_ftplugin = "setl softtabstop< | unmap <buffer> <LocalLeader>c"
 
-そして、C ファイルを開いてみてください。'softtabstop' オプションが 4 に設定さ
+そして、C ファイルを開いてみてください。 'softtabstop' オプションが 4 に設定さ
 れていますね。しかし、他のファイルを開くと初期設定の 0 にリセットされます。そ
 れは ":setlocal" コマンドが使われているからです。このコマンドはバッファの
 'softtabstop' オプションだけを設定します。他のバッファを開くと、開いたバッファ
@@ -94,7 +93,7 @@ Vim がファイルタイプを認識しない場合は、設定を追加して�
 更しません。これによってファイルタイプが二重に設定されないようになっています。
 
 ファイル名にマッチするパターンはいろいろなものが使えます。ディレクトリ名を含め
-ることもできます。|autocmd-patterns| 参照。例えば、"/usr/share/scripts" にある
+ることもできます。 |autocmd-patterns| 参照。例えば、"/usr/share/scripts" にある
 ファイルが拡張子に関係なくすべて "ruby" ファイルであるなら、次のような設定を追
 加します: >
 
@@ -106,34 +105,34 @@ Vim がファイルタイプを認識しない場合は、設定を追加して�
 しかし、/usr/share/scripts/README.txt を開いたとき、それは ruby ファイルではあ
 りえませんよね。"*" で終わるパターンの問題は、多くのファイルにマッチしすぎてし
 まうことです。この問題を避けるには、'runtimepath' の最後に指定されたディレクト
-リに "filetype.vim" を置きます。例えば Unix なら "~/.vim/after/filetype.vim"
+リに "filetype.vim" を置きます。例えば Unix なら "~/.config/nvim/after/filetype.vim"
 などです。
-では、~/.vim/filetype.vim にテキストファイルの検出を設定します: >
+では、~/.config/nvim/filetype.vim にテキストファイルの検出を設定します: >
 
 	augroup filetypedetect
 	au BufNewFile,BufRead *.txt			setf text
 	augroup END
 
 このファイルは 'runtimepath' の最初に見つかります。そして、最後に見つかるファ
-イル "~/.vim/after/filetype.vim" の中で次の設定をします: >
+イル ~/.config/nvim/after/filetype.vim の中で次の設定をします: >
 
 	augroup filetypedetect
 	au BufNewFile,BufRead /usr/share/scripts/*	setf ruby
 	augroup END
 
 処理の流れは次のようになります。Vim は 'runtimepath' の各ディレクトリから
-"filetype.vim" を探します。最初に "~/.vim/filetype.vim" が見つかります。*.txt
-を処理する自動コマンドがここで定義されます。次に Vim は $VIMRUNTIME にある
+"filetype.vim" を探します。最初に ~/.config/nvim/filetype.vim が見つかります。
+*.txt を処理する自動コマンドがここで定義されます。次に Vim は $VIMRUNTIME にある
 filetype.vim を見つけます ($VIMRUNTIME は 'runtimepath' の中程にあります)。最
-後に ~/.vim/after/filetype.vim が見つかり、/usr/share/scripts の ruby ファイル
-を認識するための自動コマンドが追加されます。
+後に ~/.config/nvim/after/filetype.vim が見つかり、/usr/share/scripts の
+ruby ファイルを認識するための自動コマンドが追加されます。
 /usr/share/scripts/README.txt を開くと、定義された順番で自動コマンドがチェック
 されます。*.txt というパターンがマッチするので、"setf text" が実行され、ファイ
 ルタイプが "text" に設定されます。ruby 用のパターンもマッチするので、"setf
 ruby" が実行されます。しかし、'filetype' は既に設定されているので何も起こりま
 せん。
 /usr/share/scripts/foobar を開くと、同様に自動コマンドがチェックされます。ruby
-のパターンだけがマッチするので、"setf ruby" が実行され、'filetype' が ruby に
+のパターンだけがマッチするので、"setf ruby" が実行され、 'filetype' が ruby に
 設定されます。
 
 
@@ -175,4 +174,6 @@ scripts.vim は標準ファイルの filetype.vim で定義された自動コマ
 
 次章: |usr_44.txt|  構文ファイルを作成する
 
-Copyright: see |manual-copyright|  vim:tw=78:ts=8:noet:ft=help:norl:
+Copyright: see |manual-copyright|
+
+vim:tw=78:ts=8:noet:ft=help:norl:
