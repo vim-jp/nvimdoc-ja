@@ -561,7 +561,7 @@ substitute() の呼び出しの前後にいろいろな処理を入れたりす�
 の一覧は |functions| を参照してください。関数の名前の上で CTRL-] を押すと、詳
 細な説明にジャンプできます。
 
-文字列繰作:						*string-functions*
+文字列操作:						*string-functions*
 	nr2char()		数値から文字を得る
 	list2str()		数値のリストから文字列を得る
 	char2nr()		文字の数値を得る
@@ -792,7 +792,7 @@ Blob 操作:						*blob-functions*
 	deletebufline()		指定したバッファから行を削除する
 
 					*system-functions* *file-functions*
-システム関数とファイル繰作:
+システム関数とファイル操作:
 	glob()			ワイルドカードを展開する
 	globpath()		複数のディレクトリを対象にワイルドカードを展開
 	glob2regpat()		glob パターンを正規表現に変換する
