@@ -1,0 +1,931 @@
+*message.txt*   Nvim
+
+
+		  VIM リファレンスマニュアル	by Bram Moolenaar
+
+
+==============================================================================
+メッセージ
+
+このファイルにはVimが表示するメッセージとエラーメッセージのリストが、アルファ
+ベット順で紹介してある。メッセージの意味がわからなかった時にはこれを使って調べ
+ることができる。だけど完璧ではない。
+
+                                            目次を確認するには |gO| をタイプ。
+
+==============================================================================
+メッセージ履歴			*:messages* *:mes* *message-history*
+
+既に発生したメッセージを見るのに ":messages" コマンドが使用できる。これはメッ
+セージが上書きされてしまったり、スクロールで流れていってしまった時にとりわけ便
+利である。これは 'shortmess' オプションに依存する。
+
+	:mes[sages]		すべてのメッセージを表示する。
+
+	:{count}mes[sages]	直近 {count} 件のメッセージを表示する。
+
+	:mes[sages] clear	すべてのメッセージを削除する。
+
+	:{count}mes[sages] clear
+				直近 {count} 件を残して、メッセージを
+				削除する。
+
+記憶されるメッセージ数は、 'messagesopt' オプションによって決められる。
+
+								*g<*
+コマンド "g<" を使うと前のコマンドの出力の最後のページを見ることができる。
+これは 'more' がオンのときだけ有効である。
+|ui2| の場合: "g<" は直近のメッセージを |pager| に表示する。
+
+特定の(エラー)メッセージに関するヘルプを見つけたいときは、メッセージの最初に表
+示されるIDを使う。例えば: >
+
+	E72: Close error on swap file
+
+または翻訳版なら: >
+
+	E72: Errore durante chiusura swap file
+
+というメッセージに関するヘルプを見つけるには: >
+
+	:help E72
+
+とすればよい。面倒ならシフトキーを使わないでもできる: >
+
+	:help e72
+
+==============================================================================
+エラーメッセージ				*error-messages* *errors*
+
+エラーメッセージが表示されたが、それを読む前に消えてしまった場合には、次のコマ
+ンドでもう一度見ることができる: >
+  :echo v:errmsg
+もしくは最近のメッセージのリストを見る: >
+  :messages
+詳しくは上の `:messages` を参照。
+
+メッセージ一覧 ~
+			*E222* *E228* *E232* *E293* *E298* *E304* *E317*
+			*E318* *E356* *E438* *E439* *E440* *E316* *E320* *E322*
+			*E323* *E341* *E473* *E570* *E685* *E292*  >
+  Add to read buffer
+  makemap: Illegal mode
+  Cannot create BalloonEval with both message and callback
+  Hangul automata ERROR
+  block was not locked
+  Didn't get block nr {N}?
+  ml_upd_block0(): Didn't get block 0??
+  pointer block id wrong {N}
+  Updated too many blocks?
+  get_varp ERROR
+  u_undo: line numbers wrong
+  undo list corrupt
+  undo line missing
+  ml_get: cannot find line {N}
+  cannot find line {N}
+  line number out of range: {N} past the end
+  line count wrong in block {N}
+  Internal error
+  Internal error: {function}
+  fatal error in cs_manage_matches
+  Invalid count for del_bytes(): {N}
+
+これは内部エラーである。これを再現できる場合はバグレポートを送ってください。
+|bugs| を参照。
+
+>
+  ATTENTION
+  Found a swap file by the name ...
+
+|ATTENTION| を参照。
+
+							*E787*  >
+  Buffer changed unexpectedly
+
+コマンドがバッファを使用しているときにイベントハンドラがバッファを変更した:
+- |FileChangedRO| ハンドラが |:diffget| や |:diffput| 中にバッファを変更した。
+- |Progress| ハンドラが |:write| 中にバッファを変更した。書き込みは中止され、
+  元のファイルが復元される ('writebackup')。
+
+							*E92*  >
+  Buffer {N} not found
+
+あなたが要求したバッファは存在しない。これはマークを含んでいたり、その他の方法
+で参照されているバッファを完全に削除(wiped out)したときも起こりうる。
+|:bwipeout|
+
+							*E95*  >
+  Buffer with this name already exists
+
+完全に同名のバッファを2つ持つことはできない。これにはファイルに繋がるパスも含
+まれる。
+
+							*E1513* >
+  Cannot switch buffer. 'winfixbuf' is enabled
+
+ウィンドウで 'winfixbuf' が有効になっている場合、そのウィンドウのカレントバッ
+ファを変更することはできない。続行する前に 'nowinfixbuf' を設定する必要がある。
+コマンドがサポートしていれば、[!] を使用してウィンドウのバッファを強制的に切り
+替えることができる。
+
+							*E72*  >
+  Close error on swap file
+
+編集中のテキストのコピーを保存するスワップファイル |swap-file| が適切にクローズ
+できなかった。たいていは無害。
+
+							*E169*  >
+  Command too recursive
+
+ExコマンドがExコマンドを実行するExコマンドを実行...(以下略)となったとき起こる。
+この制限は、200 または 'maxfuncdepth' のどちらか大きいほうである。それ以上多い
+ときはおそらく無限ループである。おそらく |:execute| か |:source| コマンドが関係
+しているだろう。
+
+							*E254*  >
+  Cannot allocate color {name}
+
+色名 {name} が不明。ほとんどのシステム上で利用可能な色のリストが |gui-colors| に
+あるので参照。
+
+							*E458*  >
+  Cannot allocate colormap entry, some colors may be incorrect
+
+Vimに必要な色数が使用できないことを意味している。Vimは終了しないが、一部の色が
+正しく表示されない。多くの色を使っていそうなアプリケーションを止めるか、もしく
+はgvimを起動した後で起動してみると良い。
+
+ブラウザーは多くの色を浪費することで知られている。netscape の場合は、独自の
+colormapを使うように指定することで回避できる: >
+	netscape -install
+もしくは色数の制限をしてしまう(64くらいが良いらしい): >
+	netscape -ncols 64
+同じことをXdefaultsを使ってやるなら: >
+	Netscape*installColormap: Yes
+もしくは  >
+	Netscape*maxImageColors:  64
+<
+							*E79*  >
+  Cannot expand wildcards
+
+ファイル名がおかしな文字の組み合わせを含んでいる。そのためVimはワイルドカード
+を展開しようとしたが、失敗した。これはマッチするファイル名が見つからなかったと
+いうことではなく、パターンが不正であることを意味している。
+
+							*E459*  >
+  Cannot go back to previous directory
+
+ファイル名を展開中に、Vimが以前使われていたディレクトリに戻ることに失敗した。
+こうなると、使われている全てのファイル名が無効になるかもしれない。ユーザーはカ
+レントディレクトリに実行パーミッションを持っている必要がある。
+
+							*E190* *E212*  >
+  Cannot open "{filename}" for writing
+  Can't open file for writing
+
+なんらかの理由によって、あなたが書こうとしているファイルは作成または上書きがで
+きない。理由は、そのディレクトリに書き込みパーミッションを持っていないか、ファ
+イル名が無効であることかもしれない。
+
+							*E166*  >
+  Can't open linked file for writing
+
+あなたは上書きできないファイルに書き込みをしようとしていて、そのファイルはリン
+ク(ハードリンクまたはシンボリックリンク)である。そのリンクまたはファイルのある
+ディレクトリが書き込み可能なら、それでも書き込むことは可能だが、あなたがそのリ
+ンクを削除してその場所にファイルを書き込みたいのか、ファイルそのものを削除して
+その場所に新しいファイルを書き込みたいのかVimにはわからない。もし本当にファイ
+ルをこの名前で書き込みたいのなら、手動でリンクまたはファイルを削除するか、Vim
+がそれを上書きできるようにパーミッションを変更しなければならない。
+
+							*E46*  >
+  Cannot change read-only variable "{name}"
+
+関数の引数 |a:var| またはVim内部変数 |v:var| に値を代入しようとした。これらはリ
+ードオンリーである。
+
+							*E90*  >
+  Cannot unload last buffer
+
+Vimは常に少なくとも1つのバッファをロードしていなければならない。そうでなければ
+ウィンドウに表示するものが何もなくなってしまう。
+
+							*E40*  >
+  Can't open errorfile <filename>
+
+":make" や ":grep" コマンドを使った時: エラーメッセージやgrepの出力の保存に
+使われるファイルを開くことができなかった。これには幾つかの原因が考えられる:
+- 'shellredir' が間違っている。
+- シェルがディレクトリを変更してしまったために、エラーファイルが違うディレクト
+  リに作られてしまった。 'makeef' を変更することで修正できるが、makeコマンドが
+  誤ったディレクトリで実行されることは変わらない。
+- 'makeef' が間違っている。
+- 'grepprg' や 'makeprg' を実行できない。これは必ず検出できるとは限らない(特に
+  Windowsでは)。$PATHをチェックすること。
+
+ >
+  Can't open file C:\TEMP\VIoD243.TMP
+
+MS-Windowsにおいて、外部コマンドの出力を読み込もうとしたが、コマンドが正常に動
+作しなかったときに現れる。原因はさまざまである。 'shell', 'shellquote',
+'shellxquote', 'shellslash' やこれらに関連したオプションをチェックすること。外
+部コマンドが見つからなかった可能性もある。その場合の特別なエラーメッセージは
+用意されていない。
+
+							*E12*  >
+  Command not allowed from exrc/vimrc in current dir or tag search
+
+いくつかのコマンドはセキュリティ上の理由のために許可されていない。それらのコマ
+ンドはたいていカレントディレクトリの.exrcや.nvimrcまたはtagsファイルから来る。
+'secure' も参照。
+
+							*E74*  >
+  Command too complex
+
+マッピングが非常に長いコマンド文字列に展開されてしまった。マッピングが間接的に
+自分自身を呼ぶことによって起こった可能性がある。
+
+>
+  CONVERSION ERROR
+
+ファイル書き込み時に "CONVERSION ERROR" という文字が現れたら、これは内部で使わ
+れているUTF-8からファイルのフォーマットに変換するときにいくつかのビットが失わ
+れたことを意味する。この場合ファイルは変更なしとしてマークされない。情報の欠落が
+気になるなら、バッファ中の文字を扱えるように 'fileencoding' オプションを他の値
+にし、再度書き込みを行うこと。気にしないならバッファを破棄したり 'modified' オ
+プションをリセットしてもよい。
+バックアップファイルがある場合、 'writebackup' または 'backup' が設定されている
+場合、それは削除されないので、それを元の位置に戻すことで変更を破棄できる。
+
+							*E302*  >
+  Could not rename swap file
+
+ファイル名が変更されたとき、Vimは |swap-file| も同様にリネームしようとする。
+これが失敗し、以前のスワップファイルが引き続き使われる。多くの場合は無害。
+
+							*E43* *E44*  >
+  Damaged match string
+  Corrupted regexp program
+
+Vim内部でなんらかの不具合が起こり、正規表現が壊れてしまった。この問題を再現で
+きるなら報告してください。 |bugs|
+
+							*E208* *E209* *E210*  >
+  Error writing to "{filename}"
+  Error closing "{filename}"
+  Error reading "{filename}"
+
+これはVimがファイルをリネームしようとしたが、ファイル名の単純な変更ができな
+かったときに起こる。するとファイルはコピーされるが、どういうわけかこれが失敗し
+た。結果として、元のファイルとコピー先のファイルの両方が存在するが、コピー先の
+ファイルは不完全な可能性がある。
+
+>
+  Vim: Error reading input, exiting...
+
+これは入力が求められているときにタイプされた文字が読み込めなかった場合に起こ
+る。Vimはどうにもならなくなり、終了するしかない。これは標準入力と標準出力の両
+方がリダイレクトされていて、かつVimを終了させないスクリプトを実行しているとき
+に起こりうる。
+
+							*E47*  >
+  Error while reading errorfile
+
+エラーファイルの読み込みに失敗した。これは、エラーメッセージが認識できないこと
+によって引き起こされるわけではない。
+
+							*E80*  >
+  Error while writing
+
+ファイルの書き込みが正常に完了しなかった。そのファイルはおそらく不完全である。
+
+							*E13* *E189*  >
+  File exists (add ! to override)
+  "{filename}" exists (add ! to override)
+
+間違ってファイルを上書きしてしまわないように保護されている。それでも上書きし
+たいのなら、同じコマンドの直後に "!" を付けて使用する。
+例: >
+	:w /tmp/test
+これをこう変える: >
+	:w! /tmp/test
+<
+							*E768*  >
+  Swap file exists: {filename} (:silent! overrides)
+
+Vim で編集している最中のファイルは上書きしないようになっている。このエラーはス
+ワップファイルが存在するのに ":w! filename" を実行したときに発生する。
+- もしそのスワップファイルが昔のクラッシュした編集セッションで作られたものなら
+  このスワップファイルは消したいだろう。 {filename} を編集するとそのスワップ
+  ファイルについての情報が得られる。
+- 強制的に保存したいならコマンドの前に ":silent!" をつける。例: >
+	:silent! w! /tmp/test
+< 既存のファイルを上書きするために既に ! をつけているので、この特別なコマンド
+が必要になる。
+
+							*E139*  >
+  File is loaded in another buffer
+
+あなたは別のバッファで使われている名前でファイルを書き込もうとしている。そう
+すると同じファイルの2つの版ができてしまう。
+
+							*E142*  >
+  File not written: Writing is disabled by 'write' option
+
+'write' オプションがオフである。ファイルを書き込もうとする全てのコマンドがこの
+メッセージを生成するようになる。コマンドライン引数で |-m| を指定したのが原因か
+もしれない。 ":set write" で 'write' オプションをオンにできる。
+
+							*E25*  >
+  Nvim does not have a built-in GUI
+
+Nvimは組み込みのGUIを持たない。従って `:gvim` と `:gui` は機能しない。
+
+							*E49*  >
+  Invalid scroll size
+
+これは 'scroll', 'scrolljump', 'scrolloff' オプションに無効な値を設定すること
+によって引き起こされる。
+
+							*E17*  >
+  "{filename}" is a directory
+
+あなたは既存のディレクトリの名前でファイルを書き込もうとした。これは不可能であ
+る。ファイル名を追加する必要があるだろう。
+
+							*E19*  >
+  Mark has invalid line number
+
+存在しない行番号を持つマークを使用した。別のファイルにマークがあり、
+他のプログラムがそのファイルの行を削除したときに発生することがある。
+
+							*E219* *E220*  >
+  Missing {.
+  Missing }.
+
+ファイル名の中に{}を使っているが、{に対応する}がない、またはその逆。これは
+{foo,bar}のように使わねばならない。これは "foo" と "bar" にマッチする。
+
+							*E315*  >
+  ml_get: invalid lnum: {number}
+
+Vimの内部エラー。どうしたらこれを再現できるかを調べて、 |bug-report| を送って
+くれないだろうか。
+
+							*E173*  >
+  {number} more files to edit
+
+引数リストの最後の項目を編集していないのに終了しようとしている。これはまだ編集
+すべきファイルがあるのに誤って終了するのを防止する。 |argument-list| を参照。
+もし本当に終了したいのなら、もう1度繰り返せば終了できる。
+
+							*E23* *E194*  >
+  No alternate file
+  No alternate file name to substitute for '#'
+
+オルタネートファイルがまだ定義されていない。 |alternate-file| 参照。
+
+							*E32*  >
+  No file name
+
+現在のバッファに名前が存在していない。ファイルに保存するためには ":w filename"
+を使う。もしくは ":file fname" でバッファに名前を付ける。
+
+							*E141*  >
+  No file name for buffer {number}
+
+変更されたバッファの１つがファイル名を持っていない。そのためそのファイルを書き
+込めない。そのバッファにファイル名を与える必要がある: >
+	:buffer {number}
+	:file {filename}
+<
+							*E33*  >
+  No previous substitute regular expression
+
+パターンに文字 '~' を使用すると、以前に ":substitute" コマンドで使われたパター
+ンに置き換えられる。そのようなコマンドがまだ使われていない時には、これは失敗す
+る。 |/~| 参照。また、これは ":s/pat/%/" を使ったときにも起こる。この "%" は
+以前の置換で使われた置換後文字列を意味する。
+
+							*E35*  >
+  No previous regular expression
+
+空の検索パターンを使用したときには、以前に使われた検索パターンが再度使用され
+る。しかし、以前に検索が行われていないのならば無理な話だ。
+
+							*E24*  >
+  No such abbreviation
+
+":unabbreviate" コマンドを、存在していない略語を引数にして実行した。
+":cunabbrev"、":iunabbrev" などのバリエーションも同じメッセージを与える。
+後ろに空白がついていないかチェックすること。
+
+							*E31*  >
+  No such mapping
+
+":unmap" コマンドを、存在していないマップを引数にして実行した。":cunmap"、
+":unmap!" などの、このコマンドのバリエーションも同じメッセージを生成する。
+いくつかのヒント:
+- 後ろに空白がついていないかチェックすること。
+- バッファローカルなマッピングについては ":unmap <buffer>" とする必要がある。
+  |:map-<buffer>|
+
+							*E37* *E89*  >
+  No write since last change (add ! to override)
+  No write since last change for buffer {N} (add ! to override)
+
+変更のあるファイルを放棄(|abandon|)しようとした。Vimは作業内容を失ってしまう
+危険から守ってくれる。変更されたファイルを ":w" で保存するか、変更を失った
+としても本当に放棄(|abandon|)するかのどちらかである。破棄するには、使ったコマ
+ンドに '!' を付けて実行すればよい。例: >
+	:e other_file
+これをこう変える: >
+	:e! other_file
+<
+							*E162*  >
+  No write since last change for buffer "{name}"
+
+変更されたバッファがあるのにVimを終了しようとしたとき表示される。変更された
+バッファを |:w| で書き込むか、":qa!" などのバッファを強制的に破棄するコマンドを
+使うかしなければならない。保存しておきたい変更を破棄しないように注意すること。特
+に 'hidden' をセットしているときは、バッファのことを忘れているかもしれない。
+
+>
+  [No write since last change]
+
+このメッセージは、少なくとも1つのバッファが変更されているときにシェルコマンド
+を実行したときに現れる。このメッセージを表示させなくするには、オプション
+'warn' をオフにする。
+
+							*E38*  >
+  Null argument
+
+Vim内部で何か不具合が起こり、NULLポインタが現れてしまった。もしこの問題を再現
+できるなら報告してください。 |bugs|
+
+						*E41* *E82* *E83* *E342*  >
+  Out of memory!
+  Out of memory!  (allocating {number} bytes)
+  Cannot allocate any buffer, exiting...
+  Cannot allocate buffer, using other one...
+
+あ～あ… 何か厄介なことをしたか、別のプログラムがメモリを喰らい尽くしたか。気
+をつけて。Vimはメモリ不足の状況というのは、想定していない。まず、変更したファ
+イルが保存されているか確認しよう。それからメモリを節約する方法を考えよう。安全
+に使いたいのならば、一度Vimを終了して、再度起動しましょう。
+
+バッファは一部のみメモリに保持されるので、大きなファイルを編集するときでもメモ
+リ不足になることはほとんどない。アンドゥ情報は完全にメモリに保持されるが、次の
+方法でその量を減らすことができる:
+- 'undolevels' を小さい値に設定する。-1 に設定するとアンドゥ機能を完全に無効に
+  できる。すべての行を変更するような場合に役立つ。
+- 'undoreload' をゼロに設定して無効化する。
+
+							*E339*  >
+  Pattern too long
+
+int型が16ビットのシステム上で起こる: コンパイルされた正規表現パターンの長さが
+65000文字以上である。もっと短いパターンを試してみること。
+また、ルールのオフセットが利用可能な空間に収まらない場合にも起こる。もっとシン
+プルなパターンを試してみること。
+
+							*E45*  >
+  'readonly' option is set (add ! to override)
+
+読み込み専用とマークされたファイルに書き込もうとした。本当にファイルを書き込ん
+でしまうには、 'readonly' オプションをリセットするか、保存に使用したコマンドに
+'!' を付けて実行し直すかのどちらか。例: >
+	:w
+これはこう変える: >
+	:w!
+<
+							*E294* *E295* *E301*  >
+  Read error in swap file
+  Seek error in swap file read
+  Oops, lost the swap file!!!
+
+Vimが |swap-file| からテキストを読み込もうとしたが、何かまずいことが起こった。
+関係するバッファのテキストが破壊されているかもしれない。バッファを書き込む前に
+注意深くチェックすること。違いをチェックするために、別のファイルに書き出すと
+いいかもしれない。
+
+							*E192*  >
+  Recursive use of :normal too deep
+
+":normal" コマンドの引数で再び ":normal" コマンドを使い、再帰的になっている。
+再帰の深さは 'maxmapdepth' で制限されている。この例ではどうやってそれを引き起
+こすかを示している: >
+	:map gq :normal gq<CR>
+"gq" とタイプすれば、このマッピングが実行され、その結果再び "gq" が呼び出され
+る。
+
+							*E22*  >
+  Scripts nested too deep
+
+スクリプトはコマンドライン引数の "-s" や、 `:source!` コマンドで読み込むことが
+できる。スクリプトは、他のスクリプトファイルを読み込むことができる。これは14段
+階まで続けることができる。それ以上に入れ子にした場合には、Vimは再帰的なループ
+があると仮定し、このエラーメッセージを出して読み込みを止める。
+
+							*E300*  >
+  Swap file already exists (symlink attack?)
+
+Vimがスワップファイルを開こうとしたが、それが既に存在するかその場所にシンボ
+リックリンクがあったとき表示される。これは本来起こってはならない。なぜならVim
+はすでにそのファイルが存在しないことをチェックしたからである。他の誰かが同じ
+ファイルをちょうど同じ瞬間に開いたか(これはほぼありえない)、誰かがsymlink攻撃
+をしようとしているかである(/tmpにあるファイルを編集中か、 'directory' が "/tmp"
+で始まっている場合に起こりうる。 'directory' を "/tmp" 以下に設定すべきではな
+い)。
+
+							*E432*  >
+  Tags file not sorted: {file name}
+
+Vim(およびVi)はtagsファイルがASCII順でソートされていることを期待する。そうすれ
+ば線形探索よりもかなり高速な二分探索が可能になるからである。もしもtagsファイル
+がソートされていなかったら、 'tagbsearch' オプションをリセットする必要がある。
+このメッセージはVimがtagを探している時に問題があると表示される。tagsファイルが
+ソートされていないにもかかわらず、このメッセージが表示されないことも時々ある。
+
+							*E424*  >
+  Too many different highlighting attributes in use
+
+Vimは約223種類までの強調表示を扱うことができる。この限界に達してしまったという
+ことは、異なる引数に対して |:highlight| コマンドを使いすぎたことを意味する。
+":highlight link" はカウントされない。
+
+							*E77*  >
+  Too many file names (glob not allowed)
+
+ファイル名を展開して、マッチが1個以上見つかった。直前に使われたコマンドに対し
+てはマッチが1つしか許されない。
+グロブに一致するすべてのファイルを編集したい場合は |:next| を使う。
+
+							*E303*  >
+  Unable to open swap file for "{filename}", recovery impossible
+
+Vimがスワップファイルを作成できなかった。ファイルを編集することはできるが、も
+しVimが不意に終了したら、変更は失われる。また、巨大なファイルを編集するときは
+メモリを多く消費するかもしれない。このエラーを回避するために 'directory' オプ
+ションを変更するとよいかもしれない。 'directory' が空の場合、このエラーは発生し
+ない。 |swap-file| を参照。
+
+							*E140*  >
+  Use ! to write partial buffer
+
+範囲選択をしてバッファの一部を書き込むとき、元のファイルを上書きしようとするこ
+とはあまりない。これはおそらく誤りである(例えばビジュアルモードがアクティブな
+ときに ":w" を使った)。それゆえVimはコマンドの後に ! をつけることを要求する。
+例: ":3,10w!"。
+>
+
+  Warning: Cannot convert string "<Key>Escape,_Key_Cancel" to type
+  VirtualBinding
+
+起動時にこのようなメッセージが現れた場合、これはVimの問題ではなく、X11の設定が
+間違っている。
+
+							*W10*  >
+  Warning: Changing a readonly file
+
+ファイルが読み込み専用なのに、変更を加えようとしている。このメッセージを避ける
+には、自動コマンドイベント |FileChangedRO| を使うことができる(自動コマンドは
+'readonly' オプションをリセットしなければならない)。ファイルへの変更を完全に禁
+止するには 'modifiable' を参照。
+このメッセージは 'readonly' がセットされて以降最初の変更に対してのみ現れる。
+
+							*W13*  >
+  Warning: File "{filename}" has been created after editing started
+
+存在しないファイルの編集をしていたはずが、今は同名のファイルが存在する。現在開
+いているファイルの編集を続けるか、新しく作成されたファイルを開くか決めなければ
+ならない。 'buftype' が空でないときはこのメッセージは表示されない。
+
+							*W11*  >
+  Warning: File "{filename}" has changed since editing started
+
+ファイルが編集を始めた時とは違うタイムスタンプを持っていて、その内容が変更され
+ている(より正確には: 現在のオプション設定と自動コマンドでそのファイルを読み直
+した場合に異なるテキストになる)多分他のプログラムがそのファイルを書き換えたのだ
+ろう。何が起こったのか究明し、どっちの版を残したいのか決断する必要がある。これを
+自動的に行わせたいのなら 'autoread' オプションをセットすること。
+'buftype' が空でない場合は、このメッセージは表示されない。
+|FileChangedShell| 自動コマンドも参照。
+
+次のオプションを含むダイアログが表示される:
+
+"OK":		警告を無視して編集を続行する。変更は読み込まれず、バッファはそ
+		のまま残る。
+
+"Load File":	ディスクからファイルを再読み込みし、現在のバッファの内容を置き
+		換える。Vim で行った変更のうち保存されていないものはすべて失わ
+		れる。
+
+"Load File and Options":
+		ディスクからファイルを再読み込みし、インデント、構文ハイライ
+		ト、テキスト幅、その他のファイルタイプ固有のオプションなど、関
+		連するファイル設定を適用する。これにより、現在の設定と自動コマ
+		ンドに基づいて、バッファがファイルの意図した構成と一致するよう
+		になる。
+
+何も間違っていないのに、このメッセージを受け取る可能性が1つ考えられる: 夏時間が
+始まる日にWindowsでファイルを保存した場合である。この場合、次の方法のうちどれか
+で修正できる: >
+- 次の行をautoexec.batに加える: >
+	   SET TZ=-1
+< "-1" はタイムゾーンに合わせて変える。
+- "automatically adjust clock for daylight saving changes" を無効にする。
+- 単に、次の日にファイルを再び書き直す。または時計を次の日にセットし、ファイル
+  を2回書き込み、時計を戻す。
+
+もし W11 が常に表示される場合、"Acronis Active Protection" を無効にするか、Vim
+を信頼できるサービス/アプリケーションとして登録する必要があるかもしれない。
+
+							*W12*  >
+  Warning: File "{filename}" has changed and the buffer was changed in Vim as well
+
+上のものと同様だが、Vim内のバッファも同様に変更された。Vim中の版とディスク上の
+版のどちらを残すのか決めなければならない。 'buftype' が空でない場合、このメッ
+セージは表示されない。
+
+							*W16*  >
+  Warning: Mode of file "{filename}" has changed since editing started
+
+バッファのタイムスタンプが変更され、中身は同じだがモード(パーミッション)が変更
+されたとき。これは通常、読み込み専用ビットをリセットするようなバージョン管理シ
+ステムからファイルをチェックアウトしたときに起こる。ファイルを読み直すのが安全
+である。自動的にファイルを読み直させるようにするには 'autoread' をセットするこ
+と。
+
+							*E211*  >
+  File "{filename}" no longer available
+
+編集を始めているファイルが消え失せたか、もはやアクセスできない。変更が失われる
+のを避けるため、バッファが書き込まれたか確認すること。 'buftype' が空でないとき
+はこのメッセージは表示されない。
+
+							*W14*  >
+  Warning: List of file names overflow
+
+とてつもなくたくさんのバッファを使っている。こうなると2つのバッファに同じ番号
+が割り当てられるようになり、様々な問題を引き起こす。Vim を終了し、再起動すると
+よいかもしれない。
+
+							*E931*  >
+  Buffer cannot be registered
+
+メモリ不足になったかバッファ番号が重複した。W14 の後に発生するかもしれない。
+バッファ検索は常には機能しないので、Vim を再起動したほうが良い。
+
+							*E296* *E297*  >
+  Seek error in swap file write
+  Write error in swap file
+
+これはたいていディスクが一杯のときに起こる。Vim が |swap-file| にテキストを書
+き込むことができなかった。直接的には有害ではないが、Vim が不意に終了したとき、
+テキストが失われ、復活の可能性もなくなってしまうかもしれない。この問題が続くと
+Vimのメモリが足りなくなるかもしれない。
+
+							*E10*  >
+  \\ should be followed by /, ? or &
+
+コマンドラインがバックスラッシュで始まっているか、コマンドの範囲のおかしな場所
+にバックスラッシュが含まれている。これはしばしばコマンドラインの行継続が無効に
+されているため引き起こされる。行継続を有効にするには 'cpoptions' から 'C' フラ
+グを除く。
+
+							*E471*  >
+  Argument required
+
+引数を必要とするExコマンドに対し、引数を与えないで実行したとき起こる。
+
+							*E474* *E475* *E983*  >
+  Invalid argument
+  Invalid argument: {arg}
+  Duplicate argument: {arg}
+
+Ex コマンドまたは関数に無効な引数が指定された。または |jobjtart()| もしくは
+|system()| に実行可能でないコマンドが渡された。
+
+							*E488*  >
+  Trailing characters
+  Trailing characters: {text}
+
+引数をつけてはならないExコマンドに引数が指定された。
+または、引数に無効な文字が含まれていて、認識されていない。
+
+							*E477* *E478*  >
+  No ! allowed
+  Don't panic!
+
+"!" をつけてはならない Ex コマンドに "!" をつけた。
+
+							*E481*  >
+  No range allowed
+
+範囲指定を許可していない Ex コマンドに範囲を指定した。 |cmdline-ranges| を
+参照。
+
+							*E482* *E483*  >
+  Can't create file {filename}
+  Can't get temp file name
+
+Vim が一時ファイルを作成できなかった。
+
+							*E484* *E485*  >
+  Can't open file {filename}
+  Can't read file {filename}
+
+Vim が一時ファイルを読み込めなかった。特に Windows では、cmd.exe での特殊文字
+のエスケープがうまくできない場合に発生する。パッチ 7.3.443 でエスケープ方法が
+変更された。 |system()| に与えるすべてのシェル引数に |shellescape()| を使ってみ
+るとよい。あるいは、明示的に ^ でエスケープする方法もある。 'shellxquote'
+と 'shellxescape' も参照。
+
+							*E464*  >
+  Ambiguous use of user-defined command
+
+名前の先頭部分が一致するユーザー定義コマンドが 2 つあり、そのうちの 1 つを実行
+しようとコマンドライン補完をした。 |user-cmd-ambiguous| を参照。
+例: >
+	:command MyCommand1 echo "one"
+	:command MyCommand2 echo "two"
+	:MyCommand
+<
+							*E492*  >
+  Not an editor command
+
+Exコマンドでもユーザー定義コマンドでもないコマンドを実行しようとした。
+
+							*E905*  >
+  Cannot set this option after startup
+
+起動時にしか変更できないオプションを起動後に設定しようとした。
+
+							*E943*  >
+  Command table needs to be updated, run 'make'
+
+src/ex_cmds.lua にコマンドを追加した後にソースコードを変更した時にのみ生じる。
+ビルドを再実行することでルックアップテーブルを更新する。
+
+							*E970*  >
+  Failed to initialize lua interpreter
+  Failed to initialize builtin lua modules
+
+起動時、Luaのインタプリタまたはその組み込みモジュールの初期化にNvimが失敗した。
+Nvimの実行を妨げる致命的なエラーである。
+
+							*E5107*  >
+  Lua: {error}
+
+|:lua| コマンドや関数を実行するときに、Luaコードのコンパイル (loadbuffer) に
+失敗した。 {error} にはLuaの構文やコンパイルのエラーメッセージが含まれる。
+
+							*E5108*  >
+  Lua function: {error}
+  Lua: {error}
+
+Luaコードを実行またはLua関数を補完するときにLuaコードの実行 (pcall) に失敗した。
+{error} にはLuaランタイムのエラーメッセージとトレースバックが含まれる。
+
+							*E5109*  >
+  Lua: {error}
+
+|:luado| コマンドを実行するときに、Luaコードのコンパイル (loadbuffer) に失敗
+した。 {error} にはLuaの構文やコンパイルのエラーメッセージが含まれる。
+
+							*E5110*  >
+  Lua: {error}
+
+|:luado| コマンドの初期化時に、Luaコードの実行 (pcall) に失敗した。
+{error} にはLuaランタイムのエラーメッセージとトレースバックが含まれる。
+
+							*E5111*  >
+  Lua: {error}
+
+|:luado| のコールバックまたはLuaスクリプトの読み込み時にLuaコードの実行に失敗
+した。 {error} にはLuaランタイムのエラーメッセージとトレースバックが含まれる。
+
+							*E5112*  >
+  Lua chunk: {error}
+
+Luaチャンクのコンパイルに失敗した。Luaコードをコンパイルするときに loadstring()
+関数がエラーを返した。 {error} にはコンパイルエラーメッセージが含まれる。
+
+							*E5113*  >
+  Lua chunk: {error}
+
+コンパイルに成功した後、Luaチャンクの実行に失敗した。 {error} にはLuaランタイム
+のエラーメッセージとトレースバックが含まれる。
+
+							*E5114*  >
+  Converting print argument #{i}: {error}
+
+Luaの `print()` が、引数番号 {i} を文字列に変換できなかった。 {error} には変換
+エラーの詳細が含まれる。
+
+							*E5115*  >
+  Loading Lua debug string: {error}
+
+Luaのデバッグコマンドの文字列の読み込み (コンパイル) に失敗した。 {error} には
+コンパイルエラーメッセージが含まれる。
+
+							*E5116*  >
+  Calling Lua debug string: {error}
+
+Luaのデバッグコマンドの文字列の実行に失敗した。 {error} にはランタイムエラー
+メッセージとトレースバックが含まれる。
+
+							*E5117*  >
+  Lua mapping no longer exists
+
+再生されたキー (|.|、 |CmdAtom| の `keys` や |vim.on_key()| で捉えられたキー) が
+Luaコールバックのマッピングを参照していたが、それが削除または再定義された。
+
+==============================================================================
+メッセージ						*messages*
+
+メッセージは |ui2| のメッセージエリアに表示される。それを越えた ("あふれた")
+場合は折り畳まれ、折り畳まれた行数が "spill" 指標により示される。
+メッセージ全体を表示するには |g<| を使う。
+
+|ui2| のメッセージエリアがあふれる ("こぼれる") のを防ぐには:
+- 'cmdheight' を 2 かそれ以上に設定する。
+- 'shortmess' にフラグを追加する。
+- 'showcmd' と 'ruler' の両方か、もしくはどちらかをリセットする。
+
+						*more-prompt* *pager*  >
+  f/d/j: screen/page/line down, b/u/k: up, <Esc>: stop paging
+
+このメッセージは |ui2| のモーダルダイアログが開いている時に表示される。
+'more' オプションがオンの時だけ表示される。
+|hl-MoreMsg| グループでハイライトされる。
+
+|ui2| の場合: "g<" を使うとメッセージをページャーに表示できる。前のメッセージが
+まだ表示されている状態でコマンドがメッセージを出すと、メッセージがページャー
+ウィンドウに集められる。フォーカスはされない: "g<" と入力するとフォーカスし、
+他のキーを入力すると消去される。
+
+     種類					効果 ~
+     <CR> か <NL> か j か <Down>		1 行進める
+     d						1 ページ下 (半画面)
+     <Space> か f か <PageDown> か CTRL-F	1 画面下
+     G						一番下まで進む、hit-enter プロ
+						ンプトが表示されるところまで
+
+     キー					動作 ~
+     <BS> か k か <Up>				1 行戻る
+     u						1 ページ上 (半画面)
+     b か <PageUp> か CTRL-B			1 画面上
+     g						最初へ戻る
+
+     q か <Esc> か CTRL-C			リスト表示を止める
+     :						リスト表示を止めコマンドライン
+						に入る
+    <C-Y>					モードレスセレクションをクリッ
+						プボード (レジスタ "* と "+)
+						にヤンク (コピー) する。
+    {メニューの項目}				コマンドラインでメニューが定義
+						されていること
+    <LeftMouse>					次のページ (*)
+
+
+==============================================================================
+プログレスメッセージ					*progress-message*
+
+プラグインやNvimの機能は、 "progress" |ui-messages| を発行することで、
+長期的なタスクの状態を報告することができる。
+
+プログレスメッセージの作成および更新は、 |nvim_echo()| を `kind='progress'` を
+指定して呼び出すことで行う。各メッセージは、 `nvim_echo` により返される固有の
+メッセージidを持つ。 `nvim_echo` を呼び出す際にこのidを指定することで更新が
+できる。
+
+Note: プログレスメッセージが宙ぶらりんにならないよう、タスクが終了したら必ず
+"running" でない `status` を発行すること。そうしないと、タスクをメッセージidで
+追跡している消費者 (Nvim自体も含む) はタスクの終了に気づけない。
+
+イベント: ~
+    • ext-ui の場合、プログレスメッセージの作成/更新時に |ui-messages| の
+      msg_show イベントが発火する。
+    • プログレスメッセージを更新または作成すると、 |Progress| 自動コマンドも
+      発生する。
+
+例: >lua
+    local progress = {
+      kind = 'progress',
+      percent = 10,
+      source = 'my-plugin',
+      status = 'running',
+      title = 'term',
+    }
+    progress.id = vim.api.nvim_echo({ { 'searching...' } }, true, progress)
+    progress.percent = 50
+    vim.api.nvim_echo({ { 'searching' } }, true, progress)
+    progress.status = 'success'
+    progress.percent = 100
+    vim.api.nvim_echo({ { 'done' } }, true, progress)
+<
+参照: |nvim_echo()| |ui-messages| |Progress|
+
+ vim:tw=78:ts=8:noet:ft=help:norl:
