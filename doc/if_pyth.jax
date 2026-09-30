@@ -15,14 +15,14 @@ NvimのPythonインターフェイス				*if_pyth* *python* *Python*
 
 					*:python* *:py* *E263* *E264* *E887*
 :[range]py[thon] {stmt}
-			Pythonのステートメント{stmt}を実行します。`:python` コ
+			Pythonのステートメント {stmt} を実行します。 `:python` コ
 			マンドが機能するか簡単にチェックするには: >vim
 				:python print("Hello")
 
 :[range]py[thon] << [trim] [{endmarker}]
 {script}
 {endmarker}
-			Pythonのスクリプト{script}を実行します。Vim スクリプト
+			Pythonのスクリプト {script} を実行します。Vim スクリプト
 			に Python のコードを含めるのに便利です。Python が必須
 			です、 |script-here| を参照してください。
 
@@ -81,7 +81,7 @@ Pythonを使って範囲をフィルタリングするには、`:py` と組み�
 <
 							*:pyfile* *:pyf*
 :[range]pyf[ile] {file}
-			{file}内のPythonスクリプトを実行します。引数はそのまま
+			{file} 内のPythonスクリプトを実行します。引数はそのまま
 			一つのファイル名として使われます。
 
 これら２つのコマンドは、本質的には同じことを行います - つまり、Pythonのコード
@@ -161,7 +161,7 @@ vim.command(str)					*python-command*
 		normal('"a2dd"aP')
 
 vim.eval(str)						*python-eval*
-	vim 内の式評価を使って、式を評価します (|expression|を参照)。戻り値は、
+	vim 内の式評価を使って、式を評価します (|expression| を参照)。戻り値は、
 	次の通り:
 	- Vim の式を評価した結果が文字列か数値ならば文字列
 	- Vim の式を評価した結果がリストならばリスト
@@ -248,7 +248,7 @@ vim.current						*python-current*
 	最後のものに関しては、若干の説明が必要でしょう。:python、:pyfileコマン
 	ドで、範囲が指定された場合、この行の範囲は、"現在の範囲" として扱われ
 	ます。範囲はバッファに少し似ていますが、全てのアクセスは行のサブセット
-	に制限されます。詳細は |python-range|を参照してください。
+	に制限されます。詳細は |python-range| を参照してください。
 
 	Note: vim.current.{buffer,window,tabpage} に値を代入するときはその値が
 	有効なオブジェクト(|python-buffer|、 |python-window| 、 |python-tabpage| )
@@ -437,7 +437,7 @@ vim._get_paths						*python-_get_paths*
 	b.mark(name)	名前付きマークの位置を示す(row,col)の組を返す
 			(これは[]"<> marksでも得られる)
 	b.range(s,e)	与えられたバッファのs行目からe行目(s行とe行も含む
-			|inclusive|)を示すレンジオブジェクト(|python-range|を
+			|inclusive|)を示すレンジオブジェクト(|python-range| を
 			参照)を返す
 
 Note 行を追加するときは、その行に改行文字 '\n' が含まれてはなりません。末尾
@@ -611,7 +611,7 @@ Python が利用可能かは次のコマンドで確認できます: >vim
 	  echo 'there is Python 3.x'
 	endif
 
-Python 2 はサポートされていません。後方互換性を保つため、 `has('python')`は常に
+Python 2 はサポートされていません。後方互換性を保つため、 `has('python')` は常に
 ゼロを返します。
 
 ==============================================================================

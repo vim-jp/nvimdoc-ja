@@ -83,7 +83,7 @@ Copyright: Copyright (C) 2005-2015 Charles E Campbell	 *zip-copyright*
 
    このプラグインは、まず (より高機能な) GNU zip/unzip コマンドの使用を試みる。
    これらのコマンドが使用できない、または失敗し、ユーザーが PowerShell Core を
-   使用している場合 (つまり、'shell' オプションが "pwsh" に一致する場合)、プラ
+   使用している場合 (つまり、 'shell' オプションが "pwsh" に一致する場合)、プラ
    グインは PowerShell Core コマンドレットにフォールバックする。PowerShell
    Core コマンドレットには制限があり、zip アーカイブのサブディレクトリ内のファ
    イルの書き込みや解凍はできない。ただし、別途 unzip バイナリをインストールす
