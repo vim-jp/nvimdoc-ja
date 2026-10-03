@@ -28,7 +28,7 @@ python サポート、ruby サポート、クリップボードサポートな�
                                                                        *E5009*
                 Nvim は、構文ハイライト、ファイルタイプ固有の挙動、標準プラグ
                 イン(:checkhealth を含む)のための標準「ランタイムファイル」を
-                見つけるため、 |$VIMRUNTIME|、 'runtimepath'、 'packpath'に依存
+                見つけるため、 |$VIMRUNTIME|、 'runtimepath'、 'packpath' に依存
                 しています。ランタイムファイルが見つからない場合、これらの機能
                 は動作しません。
 

@@ -44,11 +44,11 @@ Nvim の |RPC| 機能により、クライアントは Nvim をプログラム�
    --remote-tab-silent		--remote-silent と同様、しかし各ファイルを新し
 				いタブページで開く。
 								*--remote-send*
-   --remote-send {keys}		サーバーに{keys}を送信して終了する。{keys} に
+   --remote-send {keys}		サーバーに {keys} を送信して終了する。 {keys} に
 				マップは適用されない。特殊キー名が使用できる。
 				例: "<CR>" は CR 文字になる。
 								*--remote-expr*
-   --remote-expr {expr}		サーバーに{expr}を実行評価させ、その結果を標準
+   --remote-expr {expr}		サーバーに {expr} を実行評価させ、その結果を標準
 				出力に印刷する。
 								*--remote-ui*
    --remote-ui			サーバーの UI を端末に表示する。完全にインタラ

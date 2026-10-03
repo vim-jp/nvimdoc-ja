@@ -43,9 +43,9 @@ Adaファイルを読込む前に、コマンドラインで ":" とこれらの
 "let" コマンドを追加すれば、これらのオプション設定を永続化することができる。
 
 このモードは遅いコンピュータ(90MHz)上でも高速に動作するが、もしもパフォーマン
-スが受け入れられないほど低いようならば、 |g:ada_withuse_ordinary|を有効化する。
+スが受け入れられないほど低いようならば、 |g:ada_withuse_ordinary| を有効化する。
 
-|g:ada_folding|がセットされていると、構文による折り畳み命令(|fold-syntax|)が追
+|g:ada_folding| がセットされていると、構文による折り畳み命令(|fold-syntax|)が追
 加される。
 
 ==============================================================================
@@ -122,7 +122,7 @@ Universal/Exuberant Ctags のAdaパーサーはかなり新しく、完全な対
 								*ada-compiler*
 
 Adaモードは複数のAdaコンパイラに対応していて、Adaソースを開くとき、
-|g:ada_default_compiler|で設定されているコンパイラセットを自動的に読み込む。
+|g:ada_default_compiler| で設定されているコンパイラセットを自動的に読み込む。
 このコンパイラプラグインは、実際のコンパイラプラグインと、サポート関数・変数の
 セットに分かれている。これによって、ユーザーの開発環境用に特殊化したコンパイラ
 プラグインを作ることが容易になっている。
@@ -134,7 +134,7 @@ Adaモードは複数のAdaコンパイラに対応していて、Adaソース�
 GNATは現在入手可能な唯一の(ビールとスピーチ両方の意味で)フリーなAdaコンパイラ
 である。ライセンス条項に違いのある複数のバージョンが用意されている。
 
-GNATコンパイラプラグインは<F7>を押すとコンパイルを行い、その後即座に結果を表示
+GNATコンパイラプラグインは <F7> を押すとコンパイルを行い、その後即座に結果を表示
 する。プロジェクトファイルを設定することができる: >
 		call g:gnat.Set_Project_File ('my_project.gpr')
 <
@@ -147,20 +147,20 @@ GNAT オブジェクト ~
 
 							       *g:gnat.Make()*
 g:gnat.Make()
-		|g:gnat.Make_Command|を呼び出し、結果を |quickfix| ウィンドウ
+		|g:gnat.Make_Command| を呼び出し、結果を |quickfix| ウィンドウ
 		に表示する。
 
 							     *g:gnat.Pretty()*
 g:gnat.Pretty()
-		|g:gnat.Pretty_Program|を呼び出す。
+		|g:gnat.Pretty_Program| を呼び出す。
 
 							       *g:gnat.Find()*
 g:gnat.Find()
-		|g:gnat.Find_Program|を呼び出す。
+		|g:gnat.Find_Program| を呼び出す。
 
 							       *g:gnat.Tags()*
 g:gnat.Tags()
-		|g:gnat.Tags_Command|を呼び出す。
+		|g:gnat.Tags_Command| を呼び出す。
 
 						   *g:gnat.Set_Project_File()*
 g:gnat.Set_Project_File([{file}])
@@ -177,19 +177,19 @@ g:gnat.Project_File	文字列
 
 							 *g:gnat.Make_Command*
 g:gnat.Make_Command	文字列
-		|g:gnat.Make()|に使われる外部プログラム ('makeprg')。
+		|g:gnat.Make()| に使われる外部プログラム ('makeprg')。
 
 						       *g:gnat.Pretty_Program*
 g:gnat.Pretty_Program	文字列
-		|g:gnat.Pretty()|に使われる外部プログラム
+		|g:gnat.Pretty()| に使われる外部プログラム
 
 							 *g:gnat.Find_Program*
 g:gnat.Find_Program	文字列
-		|g:gnat.Find()|に使われる外部プログラム
+		|g:gnat.Find()| に使われる外部プログラム
 
 							 *g:gnat.Tags_Command*
 g:gnat.Tags_Command	文字列
-		|g:gnat.Tags()|に使われる外部プログラム
+		|g:gnat.Tags()| に使われる外部プログラム
 
 							 *g:gnat.Error_Format*
 g:gnat.Error_Format	文字列
@@ -201,7 +201,7 @@ g:gnat.Error_Format	文字列
 					*compiler-vaxada* *compiler-compaqada*
 
 Dec Ada (歴代の名前は VAX Ada, Dec Ada, Compaq Ada, HP Ada)は相当古いAda 83の
-コンパイラである。対応は基本的なものである: <F7>で現在のユニットをコンパイルす
+コンパイラである。対応は基本的なものである: <F7> で現在のユニットをコンパイルす
 る。
 
 Dec Adaは引数としてファイル名でなくパッケージ名が渡されることを期待する。コン
@@ -213,7 +213,7 @@ DEC ADA オブジェクト ~
 
 							     *g:decada.Make()*
 g:decada.Make()		関数
-		|g:decada.Make_Command|を呼び出し、結果を |quickfix|ウィンドウ
+		|g:decada.Make_Command| を呼び出し、結果を |quickfix| ウィンドウ
 		に表示する。
 
 							*g:decada.Unit_Name()*
@@ -365,13 +365,13 @@ g:ada_default_compiler	  文字列
 		標準型(|g:ada_standard_types|)の色をトグルする。
 
 :GnatFind							   *:GnatFind*
-		|g:gnat.Find()|を呼び出す。
+		|g:gnat.Find()| を呼び出す。
 
 :GnatPretty							 *:GnatPretty*
-		|g:gnat.Pretty()|を呼び出す。
+		|g:gnat.Pretty()| を呼び出す。
 
 :GnatTags							   *:GnatTags*
-		|g:gnat.Tags()|を呼び出す。
+		|g:gnat.Tags()| を呼び出す。
 
 ------------------------------------------------------------------------------
 5.3 変数 ~
@@ -381,15 +381,15 @@ g:ada_default_compiler	  文字列
 g:gnat			    オブジェクト
 		GNATコンパイラを管理するコントロールオブジェクト。このオブジェ
 		クトは最初にAdaのソースコードが読み込まれたときに、
-		|g:ada_default_compiler|が "gnat" に設定されているならば作成さ
-		れる。詳しくは |gnat_members|を参照。
+		|g:ada_default_compiler| が "gnat" に設定されているならば作成さ
+		れる。詳しくは |gnat_members| を参照。
 
 								    *g:decada*
 g:decada		      オブジェクト
 		Dec Adaコンパイラを管理するコントロールオブジェクト。このオブ
 		ジェクトは最初にAdaのソースコードが読み込まれたときに、
-		|g:ada_default_compiler|が "decada" に設定されているならば作成
-		される。詳しくは |decada_members|を参照。
+		|g:ada_default_compiler| が "decada" に設定されているならば作成
+		される。詳しくは |decada_members| を参照。
 
 ------------------------------------------------------------------------------
 5.4 定数 ~
@@ -412,7 +412,7 @@ g:ada#Comment		文字列
 							      *g:ada#Keywords*
 g:ada#Keywords		辞書のリスト
 		キーワード、属性などのリスト。オムニ補完で用いられる形式。詳し
-		くは |complete-items|を参照。
+		くは |complete-items| を参照。
 
 							   *g:ada#Ctags_Kinds*
 g:ada#Ctags_Kinds	リストの辞書
@@ -432,11 +432,11 @@ ada#List_Tag([{line}, {col}])				      *ada#Listtags()*
 
 ada#Jump_Tag ({ident}, {mode})				      *ada#Jump_Tag()*
 		カーソル下(または指定の行・桁)のAda要素の全ての出現位置を
-		タグジャンプリスト内にリストする。引数{mode}は
+		タグジャンプリスト内にリストする。引数 {mode} は
 		"tjump"、"stjump" のどちらかとする。
 
 ada#Create_Tags ({option})				   *ada#Create_Tags()*
-		Ctagsを使ってtagsファイルを作成する。引数{option}が "file" な
+		Ctagsを使ってtagsファイルを作成する。引数 {option} が "file" な
 		ら現在のファイル、"dir" なら現在のファイルのディレクトリ、また
 		はファイル名とする。
 

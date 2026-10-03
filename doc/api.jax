@@ -55,7 +55,7 @@ functions take an `rpc` key in the options dictionary. RPC channels can also
 be opened by other processes connecting to TCP/IP sockets or named pipes
 listened to by Nvim.
 チャネルを開くためのいくつかの方法を |channel-intro| で確認してください。
-チャネルを開く関数は、オプション辞書の`rpc`を取り込みます。
+チャネルを開く関数は、オプション辞書の `rpc` を取り込みます。
 RPCチャネルは、Nvimで待ち受けしているTCP/IPソケットや名前付きパイプに
 接続している、他のプロセスでも開くことができます。
 
@@ -80,7 +80,7 @@ Connecting to the socket is the easiest way a programmer can test the API,
 which can be done through any msgpack-rpc client library or full-featured
 |api-client|. Here's a Ruby script that prints "hello world!" in the current
 Nvim instance:
-msgpack-rpcライブラリまたは |api-client|の全機能を通してソケットに
+msgpack-rpcライブラリまたは |api-client| の全機能を通してソケットに
 接続することは、プログラマがAPIのテストを簡単にする最も簡単な方法です。
 以下は、Nvimインスタンスで "hello world!" を出力するRubyスクリプトです。
 >
@@ -112,7 +112,7 @@ functions can be called interactively:
 <
 You can also embed Nvim via |jobstart()|, and communicate using |rpcrequest()|
 and |rpcnotify()|:
-Nvimの |jobstart()| 経由で |rpcrequest()| と |rpcnotify()|を使っての通信を埋め込む
+Nvimの |jobstart()| 経由で |rpcrequest()| と |rpcnotify()| を使っての通信を埋め込む
 こともできます。
 >
     let nvim = jobstart(['nvim', '--embed'], {'rpc': v:true})
@@ -158,7 +158,7 @@ NvimのC言語APIのいくつかは、ただのC99標準周辺のtypedefsであ�
   in the |api-metadata| `types` key are stable: they will not change and are
   thus forward-compatible.
   拡張オブジェクトデータは、整数型のオブジェクトハンドルです。
-  |api-metadata|型のキーの中で与えられる拡張データ型のコードは安定しています。
+  |api-metadata| 型のキーの中で与えられる拡張データ型のコードは安定しています。
   従って、これらは変更されず前方互換性があります。
 
   EXT Type	C type					Data
@@ -194,7 +194,7 @@ queue).  Lua code can use |vim.in_fast_event()| to detect a {fast} context.
 キューです。
 それで、もしエディタがモーダル（例: |hit-enter-prompt|）でユーザの入力を
 待っているならば、リクエストはブロックされるでしょう。
-|nvim_get_mode()| や |nvim_input()|のような遅延処理されない関数は、
+|nvim_get_mode()| や |nvim_input()| のような遅延処理されない関数は、
 入力キューでの待機なしで、即座に実施されます。
 
 
@@ -279,17 +279,17 @@ APIの発見にメタデータを使うことができます。
   1. Connect to a running Nvim instance and call |nvim_get_api_info()| via
      msgpack-rpc. This is best for clients written in dynamic languages which
      can define functions at runtime.
-     起動中のNvimインスタンセスに接続し、msgpack-rpc経由で |nvim_get_api_info()|を
+     起動中のNvimインスタンセスに接続し、msgpack-rpc経由で |nvim_get_api_info()| を
      コールします。
      これが、実行中にメソッドを定義できる動的な言語で記述されたクライアントにとって、
      最善です。
 
   2. Start Nvim with the |--api-info| option. Useful for clients written in
      statically-compiled languages.
-     静的なコンパイルされた言語については、Nvimを |--api-info|オプション付きで起動してください。
+     静的なコンパイルされた言語については、Nvimを |--api-info| オプション付きで起動してください。
      
   3. Use the |api_info()| Vimscript function.
-     Vimscriptは |api_info()|を使ってください。
+     Vimscriptは |api_info()| を使ってください。
 
 Example: To get a human-readable list of API functions: >
 例: 人間にとって読みやすいAPIメソッドのリストを取得するためには:
@@ -309,10 +309,10 @@ The Nvim API is composed of functions and events.
 NVIMのAPIは関数とイベントから構成される。
 
 - Clients call functions like those described at |api-global|.
-  クライアントは |api-global|で記述された関数のようにコールする。
+  クライアントは |api-global| で記述された関数のようにコールする。
 
 - Clients can subscribe to |ui-events|, |api-buffer-updates|, etc.
-  クライアントは |ui-events|, |api-buffer-updates|などを読み込む
+  クライアントは |ui-events|, |api-buffer-updates| などを読み込む
 
 - API function names are prefixed with "nvim_".
   API関数の名前は "nvim_" のプレフィックスがつく。
@@ -335,7 +335,7 @@ Nvimが進歩するにつれて、APIは規約に従って変更するかもし�
   - Functions introduced in the development (unreleased) version MAY CHANGE.
     (Clients can dynamically check `api_prerelease`, etc. |api-metadata|)
   非リリースな開発中に導入された関数は、変更されるかもしれません。
-  （クライアントは`api_prerelease`などをチェックします |api-metadata|）
+  （クライアントは `api_prerelease` などをチェックします |api-metadata|）
 
 - Event parameters will not be removed or reordered (after release).
   リリース後のイベントのパラメータは、削除または記録はされないでしょう。
@@ -371,8 +371,8 @@ nvim_error_event[{type}, {message}]
 
 {type} is a numeric id as defined by `api_info().error_types`, and {message} is
 a string with the error message.
-{type}は、`api_info().error_types`によって定義された整数値です。
-{message}は、エラーメッセージの文字列です。
+{type} は、 `api_info().error_types` によって定義された整数値です。
+{message} は、エラーメッセージの文字列です。
 
 ==============================================================================
 Buffer update events					*api-buffer-updates*
@@ -383,7 +383,7 @@ This is similar to |TextChanged| but more powerful and granular.
 APIクライアントは、Nバッファ更新イベントを読み込むために、vimバッファへアタッチできます。
 
 Call |nvim_buf_attach()| to receive these events on the channel:
-チャンネルでそれらのイベントを受信するためには、 |nvim_buf_attach()|をコールしてください。
+チャンネルでそれらのイベントを受信するためには、 |nvim_buf_attach()| をコールしてください。
 
                                                         *nvim_buf_lines_event*
 nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, {more}]
@@ -392,8 +392,8 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
   zero-indexed) were changed to the new text in the {linedata} list. The
   granularity is a line, i.e. if a single character is changed in the editor,
   the entire line is sent.
-  1行目{firstline}から最終行{lastline}（0から始まるインデックス方式）までの間の
-  バッファテキストが、{linedata}リストのなかで新しい行に変更されたときです。
+  1行目 {firstline} から最終行 {lastline}（0から始まるインデックス方式）までの間の
+  バッファテキストが、 {linedata} リストのなかで新しい行に変更されたときです。
   粒度は行単位です。例として、もしエディタ内で1文字変更されたなら、行全体が
   送られます。
 
@@ -401,12 +401,12 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
   When {changedtick} is |v:null| this means the screen lines (display) changed
   but not the buffer contents. {linedata} contains the changed screen lines.
   This happens when 'inccommand' shows a buffer preview.
-  {changedtick}が |v:null|なとき、これは表示行を変更されたことを意味します。
+  {changedtick} が |v:null| なとき、これは表示行を変更されたことを意味します。
   しかし、バッファ内容ではありません。
-  これは、 'inccommand'がバッファプレビューを表示したときに発生します。
+  これは、 'inccommand' がバッファプレビューを表示したときに発生します。
 
 
-  Properties:~
+  Properties: ~
   プロパティ:
     {buf} API buffer handle (buffer number)
     {buf} APIバッファハンドル（バッファ番号）
@@ -414,20 +414,20 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
     {changedtick} value of |b:changedtick| for the buffer. If you send an API
     command back to nvim you can check the value of |b:changedtick| as part of
     your request to ensure that no other changes have been made.
-    {changedtick}は、バッファ用変数である |b:changedtick|の値。
+    {changedtick} は、バッファ用変数である |b:changedtick| の値。
     nvimに返却されるAPIコマンドを送信時、
     リクエスト全体の一部として、他の変更は行われていないことを
-    |b:changedtick|の値で確認できる。
+    |b:changedtick| の値で確認できる。
 
 
     {firstline} integer line number of the first line that was replaced.
     Zero-indexed: if line 1 was replaced then {firstline} will be 0, not 1.
     {firstline} is always less than or equal to the number of lines that were
     in the buffer before the lines were replaced.
-    {firstline}は置換された最初の行番号を示す整数値。
-    0から始まるインデックス方式:1行目が置換されたなら、{firstline}は、
+    {firstline} は置換された最初の行番号を示す整数値。
+    0から始まるインデックス方式:1行目が置換されたなら、 {firstline} は、
     1ではなく0です。
-    {firstline}は、いつもバッファ内の行が置換される前の行番号以下または同値です。
+    {firstline} は、いつもバッファ内の行が置換される前の行番号以下または同値です。
 
     {lastline} integer line number of the first line that was not replaced
     (i.e. the range {firstline}, {lastline} is end-exclusive).
@@ -435,20 +435,20 @@ nvim_buf_lines_event[{buf}, {changedtick}, {firstline}, {lastline}, {linedata}, 
     of 6. {lastline} is always be less than or equal to the number of lines
     that were in the buffer before the lines were replaced. {lastline} will be
     -1 if the event is part of the initial update after attaching.
-    {lastline}は置換されていない最初の行番号を示す整数値。
-    (例. {firstline}と{lastline}の範囲は、終端を含まない)
+    {lastline} は置換されていない最初の行番号を示す整数値。
+    (例. {firstline} と {lastline} の範囲は、終端を含まない)
 
 
     {linedata} list of strings containing the contents of the new buffer
     lines. Newline characters are omitted; empty lines are sent as empty
     strings.
-    {linedata}は、新しいバッファのコンテンツを含む文字列のリストです。
+    {linedata} は、新しいバッファのコンテンツを含む文字列のリストです。
     新しい行の文字は省かれます; 空行は空の文字として扱われます。
 
     {more} boolean, true for a "multipart" change notification: the current
     change was chunked into multiple |nvim_buf_lines_event| notifications
     (e.g. because it was too big).
-    {more}は真偽値です。trueは複数箇所の文字変更の通知です: 現在のの変更は
+    {more} は真偽値です。trueは複数箇所の文字変更の通知です: 現在のの変更は
     複数の |nvim_buf_lines_event| 通知のなかにまとめられました。
     (現在のの変更は大きすぎるためです)
 
@@ -459,7 +459,7 @@ nvim_buf_changedtick_event[{buf}, {changedtick}]  *nvim_buf_changedtick_event*
   |b:changedtick| がインクリメントされたがテキストの変更がなかった場合の、
   アンドゥ/リドゥに関連します。
 
-  Properties:~
+  Properties: ~
     {buf} API buffer handle (buffer number)
     {changedtick} new value of |b:changedtick| for the buffer
     {buf} APIバッファハンドル（バッファ番号）
@@ -470,20 +470,20 @@ nvim_buf_detach_event[{buf}]                           *nvim_buf_detach_event*
   When buffer is detached (i.e. updates are disabled). Triggered explicitly by
   |nvim_buf_detach()| or implicitly in these cases:
   バッファがデタッチしたとき（例. 更新が無効化された）のイベント。
-  |nvim_buf_detach()|による明示的なトリガ、または以下の暗黙的な場合:
+  |nvim_buf_detach()| による明示的なトリガ、または以下の暗黙的な場合:
 
   - Buffer was |abandon|ed and 'hidden' is not set.
-    バッファが廃棄され、 'hidden'がセットされていない
+    バッファが廃棄され、 'hidden' がセットされていない
 
   - Buffer was reloaded, e.g. with |:edit| or an external change triggered
     |:checktime| or 'autoread'.
-    |:edit|または |:checktime|または 'autoread'による外部的な変更によって、バッファがリロードされたとき
+    |:edit| または | :checktime|または 'autoread' による外部的な変更によって、バッファがリロードされたとき
 
   - Generally: whenever the buffer contents are unloaded from memory.
     一般的に:
     バッファの内容がメモリから廃棄されるときいつでもイベントが発火する
 
-  Properties:~
+  Properties: ~
     {buf} API buffer handle (buffer number)
     {buf} APIバッファハンドル（バッファ番号）
 
@@ -491,7 +491,7 @@ nvim_buf_detach_event[{buf}]                           *nvim_buf_detach_event*
 EXAMPLE ~
 
 Calling |nvim_buf_attach()| with send_buffer=true on an empty buffer, emits: >
-空のバッファ上で、send_buffer=trueとともに |nvim_buf_attach|呼ぶと、次の
+空のバッファ上で、send_buffer=trueとともに |nvim_buf_attach| 呼ぶと、次の
 イベントが発生します。
   nvim_buf_lines_event[{buf}, {changedtick}, 0, -1, [""], v:false]
 
@@ -512,7 +512,7 @@ User moves to line 3 and deletes 20 lines using "20dd", emits: >
 
 User selects lines 3-5 using |linewise-visual| mode and then types "p" to
 paste a block of 6 lines, emits: >
-ユーザは |linewise-visual|モードで3-5行目を選択し、"p"を入力してから
+ユーザは |linewise-visual| モードで3-5行目を選択し、"p"を入力してから
 6行ペーストすると、次のイベントが発生します。
   nvim_buf_lines_event[{buf}, {changedtick}, 2, 5,
     ['pasted line 1', 'pasted line 2', 'pasted line 3', 'pasted line 4',
@@ -534,8 +534,8 @@ callbacks. These callbacks are called frequently in various contexts;
 プロセスにおいて、LuaプラグインはLuaのコールバックの形でバッファの更新を
 受け取ることができます。
 これらのコールバックは、様々な文脈の形で頻繁に呼ばれます。
-|textlock|はバッファ内容とウインドウのレイアウトを遮ります（前述の処理を
-メインループに延期するため、 |vim.schedule|を使用します）。
+|textlock| はバッファ内容とウインドウのレイアウトを遮ります（前述の処理を
+メインループに延期するため、 |vim.schedule| を使用します）。
 
 |nvim_buf_attach| will take keyword args for the callbacks. "on_lines" will
 receive parameters ("lines", {buf}, {changedtick}, {firstline}, {lastline},
@@ -555,22 +555,22 @@ be accessed inside the callback as
 `utf_sizes` is set to true in |nvim_buf_attach()| keyword args, then the
 UTF-32 and UTF-16 sizes of the deleted region is also passed as additional
 arguments {old_utf32_size} and {old_utf16_size}.
-{old_byte_size}は、{lastline}後の最新の追加行を含む、{firstline}から
-{lastline}の範囲で置換された内容の合計バイト数です。
-もし`utf_sizes`が |nvim_buf_attach()|の引数内でtrueに設定されたならば、
-削除された領域のUTF-32とUTF-16サイズもまた{old_utf32_size}と{old_utf16_size}の
+{old_byte_size} は、 {lastline} 後の最新の追加行を含む、 {firstline} から
+{lastline} の範囲で置換された内容の合計バイト数です。
+もし `utf_sizes` が |nvim_buf_attach()| の引数内でtrueに設定されたならば、
+削除された領域のUTF-32とUTF-16サイズもまた {old_utf32_size} と {old_utf16_size} の
 追加引数として許可される。
 
 "on_changedtick" is invoked when |b:changedtick| was incremented but no text
 was changed. The parameters recieved are ("changedtick", {buf}, {changedtick}).
-テキストの変更はないけれど |b:changedtick|がインクリメントされたとき、
+テキストの変更はないけれど |b:changedtick| がインクリメントされたとき、
 "on_changedtick"は呼び出される。
 
                                                         *api-lua-detach*
 In-process Lua callbacks can detach by returning `true`. This will detach all
 callbacks attached with the same |nvim_buf_attach| call.
-処理中において、Luaのコールバックは`true`の返却によってデタッチできる。
-このことは同じ |nvim_buf_attach|コールとともアタッチされたすべてのコールバックを
+処理中において、Luaのコールバックは `true` の返却によってデタッチできる。
+このことは同じ |nvim_buf_attach| コールとともアタッチされたすべてのコールバックを
 デタッチします。
 
 
@@ -582,7 +582,7 @@ similar to |matchaddpos()| but with some key differences. The added highlights
 are associated with a buffer and adapts to line insertions and deletions,
 similar to signs. It is also possible to manage a set of highlights as a group
 and delete or replace all at once.
-Nvimは位置ベースのハイライトをバッファに追加できます。 |matchaddpos()|に似ていま
+Nvimは位置ベースのハイライトをバッファに追加できます。 |matchaddpos()| に似ていま
 すが、いくつか重要な違いがあります。追加されたハイライトはバッファに関連づけられ
 signの様に行の追加と削除に追従します。ハイライトのセットをグループとして管理し、
 一度に削除や置換をすることもできます。
@@ -601,9 +601,9 @@ Highlights are registered using the |nvim_buf_add_highlight()| function. If an
 external highlighter plugin wants to add many highlights in a batch,
 performance can be improved by calling |nvim_buf_add_highlight()| as an
 asynchronous notification, after first (synchronously) reqesting a source id.
-ハイライトは |nvim_buf_add_highlight()|関数を使って登録します。外部のハイライト
+ハイライトは |nvim_buf_add_highlight()| 関数を使って登録します。外部のハイライト
 プラグインで一度に多くのハイライトを追加したい場合、最初に(同期的に)ソースidを
-取得した後で |nvim_buf_add_highlight()|を非同期的に呼び出すことでパフォーマンスが
+取得した後で |nvim_buf_add_highlight()| を非同期的に呼び出すことでパフォーマンスが
 改善されます。
 
 Example using the Python API client (|pynvim|):
@@ -623,7 +623,7 @@ clear highlights from a specific source, in a specific line range or the
 entire buffer by passing in the line range 0, -1 (the latter is the default in
 python as used above).
 ハイライトの削除や更新をしない場合、src_idに-1を渡します(Pythonのデフォルト値)。
-|nvim_buf_clear_namespace()|を使用するとハイライトを削除できます。範囲指定をする
+|nvim_buf_clear_namespace()| を使用するとハイライトを削除できます。範囲指定をする
 ことができ、0、-1を指定するとバッファ全体が対象になります(-1は上記で使用した
 Pythonのデフォルト値です)。
 
@@ -647,19 +647,19 @@ cursor. Floats are fully functional windows supporting user editing, common
 |api-window| calls, and most window options (except 'statusline').
 Floating windowは通常のウィンドウの上に表示されます。
 カーソルの近くに表示されるウィンドウ等、シンプルなウィジェットを実装するのに
-便利です。 |api-window|の呼び出しやウィンドウオプション('statusline'を除く)等、
+便利です。 |api-window| の呼び出しやウィンドウオプション('statusline' を除く)等、
 通常の編集機能を完全にサポートしています。
 
 Two ways to create a floating window:
 Floating windowを作成する2つの方法:
 - |nvim_open_win()| creates a new window (needs a buffer, see |nvim_create_buf()|)
-- |nvim_open_win()|で新しいウィンドウを作る。 
-  (バッファが必要。 |nvim_create_buf()|を参照。)
+- |nvim_open_win()| で新しいウィンドウを作る。 
+  (バッファが必要。 |nvim_create_buf()| を参照。)
 - |nvim_win_set_config()| reconfigures a normal window into a float
-- |nvim_win_set_config()|で通常のウィンドウをFloating Windowに再設定する。
+- |nvim_win_set_config()| で通常のウィンドウをFloating Windowに再設定する。
 
 To close it use |nvim_win_close()| or a command such as |:close|.
-ウィンドウを閉じるには |nvim_win_close()|を呼び出すか |:close|といったコマンドを
+ウィンドウを閉じるには |nvim_win_close()| を呼び出すか |:close| といったコマンドを
 使用します。
 
 Buffer text can be highlighted by typical mechanisms (syntax highlighting,
@@ -668,10 +668,10 @@ Buffer text can be highlighted by typical mechanisms (syntax highlighting,
 options from the current window; specify `style=minimal` in |nvim_open_win()|
 to disable various visual features such as the 'number' column.
 バッファのテキストは通常の方法(構文ハイライト、 |api-highlights|)でハイライトする
-ことができます。 |hl-NormalFloat|グループは通常のテキストをハイライトします。
-'winhighlight'は通常通り、ウィンドウローカルなハイライトグループを上書きでき
+ことができます。 |hl-NormalFloat| グループは通常のテキストをハイライトします。
+'winhighlight' は通常通り、ウィンドウローカルなハイライトグループを上書きでき
 ます。カレントウィンドウのオプションを継承します。
-|nvim_open_win()|で`style=minimal`を指定すると、 'number'等の様々な視覚効果が
+|nvim_open_win()| で `style=minimal` を指定すると、 'number' 等の様々な視覚効果が
 無効になります。
 
 Currently, floating windows don't support widgets like border or scrollbar.
@@ -707,7 +707,7 @@ Example:
 We will set an extmark at the first row and third column. |api-indexing| is
 zero-indexed, so we use row=0 and column=2. Passing id=0 creates a new mark
 and returns the id: >
-1行目の3列目にExtmarkをセットします。 |api-indexing|は0から始まるため、行に0、
+1行目の3列目にExtmarkをセットします。 |api-indexing| は0から始まるため、行に0、
 列に2を指定します。
 
     let g:mark_ns = nvim_create_namespace('myplugin')
@@ -728,7 +728,7 @@ We can get all marks in a buffer for our namespace (or by a range): >
 Deleting all text surrounding an extmark does not remove the extmark. To
 remove an extmark use |nvim_buf_del_extmark()|.
 Extmarkが含まれるテキストを削除してもExtmarkは削除されません。
-Extmarkを削除するには |nvim_buf_del_extmark()|を使用してください。
+Extmarkを削除するには |nvim_buf_del_extmark()| を使用してください。
 
 Namespaces allow your plugin to manage only its own extmarks, ignoring those
 created by another plugin.
@@ -763,8 +763,8 @@ nvim_feedkeys({keys}, {mode}, {escape_csi})                  *nvim_feedkeys()*
                 Sends input-keys to Nvim, subject to various quirks controlled
                 by `mode` flags. This is a blocking call, unlike
                 |nvim_input()|.
-                入力キーをNvimに送ります。`mode`フラグで挙動を制御できます。
-                |nvim_input()|と異なりブロッキングコールです。
+                入力キーをNvimに送ります。 `mode` フラグで挙動を制御できます。
+                |nvim_input()| と異なりブロッキングコールです。
 
                 On execution error: does not fail, but updates v:errmsg.
                 エラー発生時:関数は失敗せず、v:errmsgが更新されます。
@@ -773,10 +773,10 @@ nvim_feedkeys({keys}, {mode}, {escape_csi})                  *nvim_feedkeys()*
                     {keys}        to be typed
                     {keys}        入力するキー。
                     {mode}        behavior flags, see |feedkeys()|
-                    {mode}        フラグ。 |feedkeys()|を参照。
+                    {mode}        フラグ。 |feedkeys()| を参照。
                     {escape_csi}  If true, escape K_SPECIAL/CSI bytes in
                                   `keys`
-                    {escape_csi}  trueの時、`keys`のK_SPECIAL/CSIバイトを
+                    {escape_csi}  trueの時、 `keys` のK_SPECIAL/CSIバイトを
                                   エスケープする。
 
                 See also: ~
@@ -787,7 +787,7 @@ nvim_input({keys})                                              *nvim_input()*
                 Queues raw user-input. Unlike |nvim_feedkeys()|, this uses a
                 low-level input buffer and the call is non-blocking (input is
                 processed asynchronously by the eventloop).
-                ユーザー入力をキューに入れます。 |nvim_feedkeys()|と異なり、
+                ユーザー入力をキューに入れます。 |nvim_feedkeys()| と異なり、
                 低レベルの入力バッファを使用しノンブロッキングで呼び出されます。
                 (入力はイベントループによって非同期に処理されます。)
 
@@ -797,13 +797,13 @@ nvim_input({keys})                                              *nvim_input()*
                 Note:
                     |keycodes| like <CR> are translated, so "<" is special. To
                     input a literal "<", send <LT>.
-                    <CR>のような |keycodes|は変換されます。"<"は特別です。
-                    "<"を入力するには<LT>を使います。
+                    <CR> のような |keycodes| は変換されます。"<"は特別です。
+                    "<"を入力するには <LT> を使います。
                 Note:
                     For mouse events use |nvim_input_mouse()|. The pseudokey
                     form "<LeftMouse><col,row>" is deprecated since
                     |api-level| 6.
-                    マウスイベントは |nvim_input_mouse()|を使用してください。
+                    マウスイベントは |nvim_input_mouse()| を使用してください。
                     疑似キー形式"<LeftMouse><col,row>"はAPIレベル6から非推奨に
                     なりました。
 
@@ -840,7 +840,7 @@ nvim_input_mouse({button}, {action}, {modifier}, {grid}, {row}, {col})
                     現在、ループ内で複数のマウスイベントを呼び出すスクリプトの
                     ようなことはできません。マウスの中間位置は無視されます。
                     GUIでリアルタイムのマウス入力を実装するために使用します。
-                    |nvim_input()|の非推奨な疑似キー("<LeftMouse><col,row>")も
+                    |nvim_input()| の非推奨な疑似キー("<LeftMouse><col,row>")も
                     同様の制限があります。
 
                 Attributes: ~
@@ -869,7 +869,7 @@ nvim_input_mouse({button}, {action}, {modifier}, {grid}, {row}, {col})
                                 ます。
                     {grid}      Grid number if the client uses |ui-multigrid|,
                                 else 0.
-                    {grid}      クライアントが |ui-multigrid|を使用している場合
+                    {grid}      クライアントが |ui-multigrid| を使用している場合
                                 グリッドナンバー。それ以外は0。
                     {row}       Mouse row-position (zero-based, like redraw
                                 events)
@@ -882,7 +882,7 @@ nvim_input_mouse({button}, {action}, {modifier}, {grid}, {row}, {col})
 nvim_replace_termcodes({str}, {from_part}, {do_lt}, {special})
                 Replaces terminal codes and |keycodes| (<CR>, <Esc>, ...) in a
                 string with the internal representation.
-                文字列内の端末コードとキーコード(|keycodes| <CR>,<Esc>等)を
+                文字列内の端末コードとキーコード(|keycodes| <CR>, <Esc> 等)を
                 内部表現に置き変えます。
 
                 Parameters: ~
@@ -892,10 +892,10 @@ nvim_replace_termcodes({str}, {from_part}, {do_lt}, {special})
                     {from_part}  古いVimパラメータ。通常はtrue。
                     {do_lt}      Also translate <lt>. Ignored if `special` is
                                  false.
-                    {do_lt}      <lt>も変換する。`special`がfalseなら無視される。
+                    {do_lt}      <lt> も変換する。 `special` がfalseなら無視される。
                     {special}    Replace |keycodes|, e.g. <CR> becomes a "\n"
                                  char.
-                    {special}    <CR>を"\n"のように |keycodes|を置き変える。
+                    {special}    <CR> を"\n"のように |keycodes| を置き変える。
 
                 See also: ~
                     replace_termcodes
@@ -922,12 +922,12 @@ nvim_eval({expr})                                                *nvim_eval()*
 nvim_exec_lua({code}, {args})                                *nvim_exec_lua()*
                 Execute Lua code. Parameters (if any) are available as `...`
                 inside the chunk. The chunk can return a value.
-                Luaコードを実行します。パラメータ(もしあれば)はチャンク内で`...`
+                Luaコードを実行します。パラメータ(もしあれば)はチャンク内で `...`
                 として使用できます。チャンクは値を返すことができます。
 
                 Only statements are executed. To evaluate an expression,
                 prefix it with `return` : return my_function(...)
-                文のみが実行されます。式を評価するには`retuen`にプレフィックスを
+                文のみが実行されます。式を評価するには `retuen` にプレフィックスを
                 つけます。: return my_function( ... )
 
                 Parameters: ~
@@ -960,7 +960,7 @@ nvim_call_function({fn}, {args})                        *nvim_call_function()*
 
 nvim_call_dict_function({dict}, {fn}, {args})      *nvim_call_dict_function()*
                 Calls a VimL |Dictionary-function| with the given arguments.
-                指定された引数でVimLの |Dictionary-function|を呼びます。
+                指定された引数でVimLの |Dictionary-function| を呼びます。
 
                 On execution error: fails with VimL error, does not update
                 v:errmsg.
@@ -969,7 +969,7 @@ nvim_call_dict_function({dict}, {fn}, {args})      *nvim_call_dict_function()*
                 Parameters: ~
                     {dict}  Dictionary, or String evaluating to a VimL |self|
                             dict
-                    {dict}  辞書、または |self|辞書を評価する文字列。
+                    {dict}  辞書、または |self| 辞書を評価する文字列。
                     {fn}    Name of the function defined on the VimL dict
                     {fn}    VimL辞書で定義された関数名。
                     {args}  Function arguments packed in an Array
@@ -982,7 +982,7 @@ nvim_call_dict_function({dict}, {fn}, {args})      *nvim_call_dict_function()*
 nvim_strwidth({text})                                        *nvim_strwidth()*
                 Calculates the number of display cells occupied by `text` .
                 <Tab> counts as one cell.
-                `text`が占める表示セルの数を計算します。<Tab>は1つのセルとして
+                `text` が占める表示セルの数を計算します。 <Tab> は1つのセルとして
                 カウントされます。
 
                 Parameters: ~
@@ -995,7 +995,7 @@ nvim_strwidth({text})                                        *nvim_strwidth()*
 
 nvim_list_runtime_paths()                          *nvim_list_runtime_paths()*
                 Gets the paths contained in 'runtimepath'.
-                |'runtimepath'|に含まれるパスを取得します。
+                |'runtimepath'| に含まれるパスを取得します。
 
                 Return: ~
                     List of paths
@@ -1123,10 +1123,10 @@ nvim_list_bufs()                                            *nvim_list_bufs()*
                 現在のバッファハンドルのリストを取得します。
 
                 Includes unlisted (unloaded/deleted) buffers, like `:ls!` .
-                `:ls!`のようにバッファリストにない(非ロード、削除された)バッファ
+                `:ls!` のようにバッファリストにない(非ロード、削除された)バッファ
                 も含まれます。
                 Use |nvim_buf_is_loaded()| to check if a buffer is loaded.
-                |nvim_buf_is_loaded()|を使用してバッファがロードされているかを
+                |nvim_buf_is_loaded()| を使用してバッファがロードされているかを
                 確認します。
 
                 Return: ~
@@ -1179,7 +1179,7 @@ nvim_create_buf({listed}, {scratch})                       *nvim_create_buf()*
 
                 Parameters: ~
                     {listed}   Sets 'buflisted'
-                    {listed}   'buflisted'を設定します。
+                    {listed}   'buflisted' を設定します。
                     {scratch}  Creates a "throwaway" |scratch-buffer| for
                                temporary work (always 'nomodified')
                     {scratch}  一時的な作業用の"使い捨ての"スクラッチバッファ(|scratch-buffer|)
@@ -1204,18 +1204,18 @@ nvim_open_win({buffer}, {enter}, {config})                   *nvim_open_win()*
                 GUIs, and are displayed as separate top-level windows.
                 現在、Floating windowと外部ウィンドウを開くために使用されていま
                 す。Floating windowは他のウィンドウのアンカー位置に描画される
-                ウィンドウです。内部的に描画することも、 |ui-multigrid|拡張を備え
+                ウィンドウです。内部的に描画することも、 |ui-multigrid| 拡張を備え
                 た外部GUIで描画することもできます。外部ウィンドウは、マルチ
                 グリッドGUIでのみサポートされ、独立したトップレベルウィンドウと
                 して表示されます。
 
                 For a general overview of floats, see |api-floatwin|.
-                Floating windowsの概要は、 |api-floatwin|を参照してください。
+                Floating windowsの概要は、 |api-floatwin| を参照してください。
 
                 Exactly one of `external` and `relative` must be specified.
                 The `width` and `height` of the new window must be specified.
-                `external`か`relative`を指定する必要があります。
-                新しいウィンドウの`width`と`height`を指定する必要があります。
+                `external` か `relative` を指定する必要があります。
+                新しいウィンドウの `width` と `height` を指定する必要があります。
 
                 With relative=editor (row=0,col=0) refers to the top-left
                 corner of the screen-grid and (row=Lines-1,col=Columns-1)
@@ -1267,7 +1267,7 @@ nvim_open_win({buffer}, {enter}, {config})                   *nvim_open_win()*
                                 • "editor" グローバルなエディタグリッド。
                                 • "win" Window given by the `win` field, or
                                   current window.
-                                • "win" `win`フィールドで指定されたウィンドウ。
+                                • "win" `win` フィールドで指定されたウィンドウ。
                                    またはカレントウィンドウ。
                                 • "cursor" Cursor position in current window.
                                 • "cursor" カレントウィンドウのカーソル位置。
@@ -1304,8 +1304,8 @@ nvim_open_win({buffer}, {enter}, {config})                   *nvim_open_win()*
                               • `bufpos` : バッファテキストを基準にFloating
                                  windowを配置します(relative="win"の時のみ)。
                                  0から始まる[line, column]のタプルを取ります。
-                                 `row`と`col`が指定されている場合その位置が適用
-                                 されます。それ以外の場合はデフォルトで`row`=1,
+                                 `row` と `col` が指定されている場合その位置が適用
+                                 されます。それ以外の場合はデフォルトで `row`=1,
                                  `col`=0になります。(バッファテキスト近くのツー
                                  ルチップのようになります。)
                               • `row` : Row position in units of "screen cell
@@ -1323,7 +1323,7 @@ nvim_open_win({buffer}, {enter}, {config})                   *nvim_open_win()*
                               • `focusable` : ユーザー操作によってフォーカスを
                                  許可するかどうか(ウィンドウコマンド、マウスイベ
                                  ント)。デフォルトはtrue。フォーカスできないウィ
-                                 ンドウは、 |nvim_set_current_win()|で入ることが
+                                 ンドウは、 |nvim_set_current_win()| で入ることが
                                  できます。
                               • `external` : GUI should display the window as
                                 an external top-level window. Currently
@@ -1353,11 +1353,11 @@ nvim_open_win({buffer}, {enter}, {config})                   *nvim_open_win()*
                                    windowとして使用するのに便利です。無効になる
                                    オプションは、 'number', 'relativenumber',
                                    'cursorline', 'cursorcolumn', 'foldcolumn',
-                                   'spell', 'list'です。 'signcolumn'は`auto`に
-                                   変更され、 'colorcolumn'は削除されます。
+                                   'spell', 'list' です。 'signcolumn' は `auto` に
+                                   変更され、 'colorcolumn' は削除されます。
                                    バッファ終端領域を非表示にするには 'fillchars'
-                                   の`eob`フラグを空白文字に設定し、 'winhighlight'
-                                   の |EndOfBuffer|を削除します。
+                                   の `eob` フラグを空白文字に設定し、 'winhighlight'
+                                   の |EndOfBuffer| を削除します。
 
                 Return: ~
                     Window handle, or 0 on error
@@ -1395,14 +1395,14 @@ nvim_create_namespace({name})                        *nvim_create_namespace()*
                 see |nvim_buf_add_highlight()| and
                 |nvim_buf_set_virtual_text()|.
                 ネームスペースはバッファのハイライトとVirtual textで使用されます。
-                |nvim_buf_add_highlight()|と |nvim_buf_set_virtual_text()|を参照。
+                |nvim_buf_add_highlight()| と |nvim_buf_set_virtual_text()| を参照。
 
                 Namespaces can be named or anonymous. If `name` matches an
                 existing namespace, the associated id is returned. If `name`
                 is an empty string a new, anonymous namespace is created.
-                ネームスペースは名前付きか匿名にできます。`name`が既存のネームス
+                ネームスペースは名前付きか匿名にできます。 `name` が既存のネームス
                 ペースと一致する場合、関連付けされたidが返されます。
-                `name`が空の文字列の場合、新しい匿名のネームスペースが作られます。
+                `name` が空の文字列の場合、新しい匿名のネームスペースが作られます。
 
                 Parameters: ~
                     {name}  Namespace name or empty string
@@ -1427,7 +1427,7 @@ nvim_paste({data}, {crlf}, {phase})                             *nvim_paste()*
                 Invokes the `vim.paste` handler, which handles each mode
                 appropriately. Sets redo/undo. Faster than |nvim_input()|.
                 Lines break at LF ("\n").
-                各モードを適切に処理する`vim.paste`ハンドラーを呼び出します。
+                各モードを適切に処理する `vim.paste` ハンドラーを呼び出します。
                 LF("\n")で改行します。
 
                 Errors ('nomodifiable', `vim.paste()` failure, …) are
@@ -1435,8 +1435,8 @@ nvim_paste({data}, {crlf}, {phase})                             *nvim_paste()*
                 is strictly decided by `vim.paste()` ). On error, subsequent
                 calls are ignored ("drained") until the next paste is
                 initiated (phase 1 or -1).
-                エラー('nomodifiable', `vim.paste()`の失敗)は`err`に反映されます
-                が、返り値に影響はありません(厳密には`vim.paste()`に決定される)。
+                エラー('nomodifiable', `vim.paste()` の失敗)は `err` に反映されます
+                が、返り値に影響はありません(厳密には `vim.paste()` に決定される)。
                 エラー発生時、次の貼り付けが開始(phase 0か-1)されるまでその後の
                 呼び出しは無視("drained")されます。
 
@@ -1452,8 +1452,8 @@ nvim_paste({data}, {crlf}, {phase})                             *nvim_paste()*
                              • 2: continues the paste (zero or more times)
                              • 3: ends the paste (exactly once)
                     {phase}  -1: 1回の呼び出しで貼り付け(ストリームではない)。
-                             ストリームとして貼り付けするにはこれらの`phase`値で
-                             `nvim_paste`を順番に呼び出す。:
+                             ストリームとして貼り付けするにはこれらの `phase` 値で
+                             `nvim_paste` を順番に呼び出す。:
                              • 1: 貼り付け開始(1回だけ)
                              • 2: 貼り付けを続行(0回以上)
                              • 3: 貼り付け終了(1回だけ)
@@ -1470,7 +1470,7 @@ nvim_put({lines}, {type}, {after}, {follow})                      *nvim_put()*
                 任意のモードでカーソル位置にテキストを挿入します。
 
                 Compare |:put| and |p| which are always linewise.
-                常に行単位である |:put|と |p|を比較してください。
+                常に行単位である |:put| と |p| を比較してください。
 
                 Parameters: ~
                     {lines}   |readfile()|-style list of lines.
@@ -1482,16 +1482,16 @@ nvim_put({lines}, {type}, {after}, {follow})                      *nvim_put()*
                               • "c" |charwise| mode
                               • "l" |linewise| mode
                               • "" guess by contents, see |setreg()|
-                    {type}    動作を編集: |getregtype()|の結果。または:
-                              • "b" |blockwise-visual|モード。("b3"のように幅を
+                    {type}    動作を編集: |getregtype()| の結果。または:
+                              • "b" |blockwise-visual| モード。("b3"のように幅を
                                 含むことができる)
-                              • "c" |charwise|モード。
-                              • "l" |linewise|モード。
-                              • "" 内容から推測する。 |setreg()|を参照。
+                              • "c" |charwise| モード。
+                              • "l" |linewise| モード。
+                              • "" 内容から推測する。 |setreg()| を参照。
                     {after}   Insert after cursor (like |p|), or before (like
                               |P|).
-                    {after}   カーソルの後ろに挿入する(|p|のように)。または、
-                              前に挿入する(|P|のように)。
+                    {after}   カーソルの後ろに挿入する(|p| のように)。または、
+                              前に挿入する(|P| のように)。
                     {follow}  Place cursor at end of inserted text.
                     {follow}  挿入されたテキストの最後にカーソルを置く。
 
@@ -1512,7 +1512,7 @@ nvim_unsubscribe({event})                                 *nvim_unsubscribe()*
 nvim_get_color_by_name({name})                      *nvim_get_color_by_name()*
                 Returns the 24-bit RGB value of a |nvim_get_color_map()| color
                 name or "#rrggbb" hexadecimal string.
-                |nvim_get_color_map()|の色名か"#rrggbb"のような16進文字列の
+                |nvim_get_color_map()| の色名か"#rrggbb"のような16進文字列の
                 24ビットRGB値を返します。
 
                 Example: >
@@ -1551,7 +1551,7 @@ nvim_get_context({opts})                                  *nvim_get_context()*
                               "bufs", "gvars", …) to gather, or empty for
                               "all".
                     {opts}  オプションのパラメーター。
-                            • types: |context-types|のリスト ("regs", "jumps",
+                            • types: |context-types| のリスト ("regs", "jumps",
                               "bufs", "gvars", …)。空の場合は全て。
 
                 Return: ~
@@ -1559,7 +1559,7 @@ nvim_get_context({opts})                                  *nvim_get_context()*
 
 nvim_load_context({dict})                                *nvim_load_context()*
                 Sets the current editor state from the given |context| map.
-                指定された |context|のMapから現在のエディタの状態を設定します。
+                指定された |context| のMapから現在のエディタの状態を設定します。
 
                 Parameters: ~
                     {dict}  |Context| map.
@@ -1580,7 +1580,7 @@ nvim_get_mode()                                              *nvim_get_mode()*
 nvim_get_keymap({mode})                                    *nvim_get_keymap()*
                 Gets a list of global (non-buffer-local) |mapping|
                 definitions.
-                グローバル(バッファローカルでない)な |mapping|定義を取得します。
+                グローバル(バッファローカルでない)な |mapping| 定義を取得します。
 
                 Parameters: ~
                     {mode}  Mode short-name ("n", "i", "v", ...)
@@ -1589,12 +1589,12 @@ nvim_get_keymap({mode})                                    *nvim_get_keymap()*
                 Return: ~
                     Array of maparg()-like dictionaries describing mappings.
                     The "buffer" key is always zero.
-                    |maparg()|のようなマッピングを記述した辞書配列。
+                    |maparg()| のようなマッピングを記述した辞書配列。
                     "buffer" keyは常に0。
 
 nvim_set_keymap({mode}, {lhs}, {rhs}, {opts})              *nvim_set_keymap()*
                 Sets a global |mapping| for the given mode.
-                与えられたモードのグローバル |mapping|を設定します。
+                与えられたモードのグローバル |mapping| を設定します。
 
                 To set a buffer-local mapping, use |nvim_buf_set_keymap()|.
                 バッファローカルなマッピングを設定するには、 |nvim_buf_set_keymap()|
@@ -1603,8 +1603,8 @@ nvim_set_keymap({mode}, {lhs}, {rhs}, {opts})              *nvim_set_keymap()*
                 Unlike |:map|, leading/trailing whitespace is accepted as part
                 of the {lhs} or {rhs}. Empty {rhs} is |<Nop>|. |keycodes| are
                 replaced as usual.
-                |:map|と異なり、先頭/末尾の空白は{lhs}または{rhs}の一部として
-                受け入れられます。空の{rhs}は |<Nop>|です。 |keycodes|は通常通りに
+                |:map| と異なり、先頭/末尾の空白は {lhs} または {rhs} の一部として
+                受け入れられます。空の {rhs} は |<Nop>| です。 |keycodes| は通常通りに
                 置き換えられます。
 
                 Example: >
@@ -1622,7 +1622,7 @@ nvim_set_keymap({mode}, {lhs}, {rhs}, {opts})              *nvim_set_keymap()*
                             "v", "x", …) or "!" for |:map!|, or empty string
                             for |:map|.
                     {mode}  モードの短縮名(map command prefix: "n", "i",
-                            "v", "x", …)または、 |:map!|の"！"または、 |:map|の
+                            "v", "x", …)または、 |:map!| の"！"または、 |:map| の
                             空文字列。
                     {lhs}   Left-hand-side |{lhs}| of the mapping.
                     {lhs}   マッピングの左側。(Left-hand-side |{lhs}|)
@@ -1632,14 +1632,14 @@ nvim_set_keymap({mode}, {lhs}, {rhs}, {opts})              *nvim_set_keymap()*
                             |:map-arguments| as keys excluding |<buffer>| but
                             including |noremap|. Values are Booleans. Unknown
                             key is an error.
-                    {opts}  オプションのパラメーターMap。 |<buffer>|を除くすべて
-                            の |:map-arguments|をキーとして受け入れます。
-                            |<noremap>|というキーも受け入れます。 valueはbool値
+                    {opts}  オプションのパラメーターMap。 |<buffer>| を除くすべて
+                            の |:map-arguments| をキーとして受け入れます。
+                            |<noremap>| というキーも受け入れます。 valueはbool値
                             です。不明なkeyはエラーになります。
 
 nvim_del_keymap({mode}, {lhs})                             *nvim_del_keymap()*
                 Unmaps a global |mapping| for the given mode.
-                与えられたモードのグローバル |mapping|を削除します。
+                与えられたモードのグローバル |mapping| を削除します。
 
                 To unmap a buffer-local mapping, use |nvim_buf_del_keymap()|.
                 バッファローカルなマップを削除する場合は、 |nvim_buf_del_keymap()|
@@ -1654,7 +1654,7 @@ nvim_get_commands({opts})                                *nvim_get_commands()*
 
                 Currently only |user-commands| are supported, not builtin Ex
                 commands.
-                現在、 |user-commands|のみサポートされています。
+                現在、 |user-commands| のみサポートされています。
                 組み込みのEXコマンドではありません。
 
                 Parameters: ~
@@ -1671,7 +1671,7 @@ nvim_get_api_info()                                      *nvim_get_api_info()*
                 Returns a 2-tuple (Array), where item 0 is the current channel
                 id and item 1 is the |api-metadata| map (Dictionary).
                 2要素タプル(配列)を返します。アイテム0は現在のチャンネルID、
-                アイテム0は |api-metadata|辞書です。
+                アイテム0は |api-metadata| 辞書です。
 
                 Return: ~
                     2-tuple [{channel-id}, {api-metadata}]
@@ -1834,18 +1834,18 @@ nvim_get_chan_info({chan})                              *nvim_get_chan_info()*
 
                     • "mode" チャンネルで取得したデータの解釈方法。
                       • "bytes" 生データの送受信。
-                      • "terminal" |termina|インスタンスはASCIIシーケンスを解釈
+                      • "terminal" |termina| インスタンスはASCIIシーケンスを解釈
                         する。
-                      • "rpc" |RPC|通信がアクティブ。
+                      • "rpc" |RPC| 通信がアクティブ。
 
                     • "pty" 使用されている場合、疑似端末の名前(オプション)。
                       POSIXシステムでは、これは/dev/pts/1のようなデバイスパスに
                       なります。名前がわからない場合でもptyが使われていることを
                       示すキーは存在します。これはWindowsでwinptyを使用したケー
                       スです。
-                    • "buffer" 接続された |terminal|インスタンスを持つバッファ。
+                    • "buffer" 接続された |terminal| インスタンスを持つバッファ。
                       (オプション)
-                    • "client" |nvim_set_client_info()|を使用してRPCチャンネル
+                    • "client" |nvim_set_client_info()| を使用してRPCチャンネル
                       を追加した場合、反対側のクライアントに関する情報
                       (オプション)
 
@@ -1856,7 +1856,7 @@ nvim_list_chans()                                          *nvim_list_chans()*
                 Return: ~
                     Array of Dictionaries, each describing a channel with the
                     format specified at |nvim_get_chan_info()|.
-                    |nvim_get_chan_info()|で指定された形式でチャンネルを記述す
+                    |nvim_get_chan_info()| で指定された形式でチャンネルを記述す
                     る辞書配列。
 
                                                      *nvim_parse_expression()*
@@ -1948,8 +1948,8 @@ nvim_parse_expression({expr}, {flags}, {highlight})
                           ":let", but that is not present yet). Both elements
                           are Integers.
                         • "start": ノードが"start"される場所を説明するペア
-                          [line, column] "line"は常に0(たとえば、 |:let|で
-                          |nvim_parse_viml()|を使用する場合は0になりませんが、ま
+                          [line, column] "line"は常に0(たとえば、 |:let| で
+                          |nvim_parse_viml()| を使用する場合は0になりませんが、ま
                           だ存在しません)。両方の要素は整数です。
                         • "len": “length” of the node. This and "start" are
                           there for debugging purposes primary (debugging
@@ -2111,13 +2111,13 @@ nvim_list_uis()                                              *nvim_list_uis()*
                     • "rgb" UIがRGBカラーを使用する場合はtrue。(falseは |cterm-colors|
                       を意味します。)
                     • "ext_..." Requested UI extensions, see |ui-option|
-                    • "ext_..." 要求されたUI拡張。 |ui-option|を参照。
+                    • "ext_..." 要求されたUI拡張。 |ui-option| を参照。
                     • "chan" Channel id of remote UI (not present for TUI)
                     • "chan" リモートUIのチャンネルid。(TUIには存在しません)
 
 nvim_get_proc_children({pid})                       *nvim_get_proc_children()*
                 Gets the immediate children of process `pid` .
-                プロセス`pid`の直接の子プロセスを取得します。
+                プロセス `pid` の直接の子プロセスを取得します。
 
                 Return: ~
                     Array of child process ids, empty if process not found.
@@ -2125,7 +2125,7 @@ nvim_get_proc_children({pid})                       *nvim_get_proc_children()*
 
 nvim_get_proc({pid})                                         *nvim_get_proc()*
                 Gets info describing process `pid` .
-                プロセス`pid`に関する情報を取得します。
+                プロセス `pid` に関する情報を取得します。
 
                 Return: ~
                     Map of process properties, or NIL if process not found.
@@ -2141,9 +2141,9 @@ nvim_select_popupmenu_item({item}, {insert}, {finish}, {opts})
                 control the popupmenu with the mouse. Can also be used in a
                 mapping; use <cmd> |:map-cmd| to ensure the mapping doesn't
                 end completion mode.
-                |ins-completion|が無効の場合、このAPIコールは静かに無視されます。
-                |ui-popupmenu|を使用してマウスでポップアップメニューを制御する外
-                部UIに便利です。マッピングでも使用できます。<cmd> |:map-cmd|を使
+                |ins-completion| が無効の場合、このAPIコールは静かに無視されます。
+                |ui-popupmenu| を使用してマウスでポップアップメニューを制御する外
+                部UIに便利です。マッピングでも使用できます。 <cmd> |:map-cmd| を使
                 用してマッピングが補完モードを終了しないようにします。
 
                 Parameters: ~
@@ -2158,7 +2158,7 @@ nvim_select_popupmenu_item({item}, {insert}, {finish}, {opts})
                     {finish}  Finish the completion and dismiss the popupmenu.
                               Implies `insert` .
                     {finish}  補完を完了してポップアップメニューを閉じます。
-                              `insert`を意味します。
+                              `insert` を意味します。
                     {opts}    Optional parameters. Reserved for future use.
                     {opts}    オプションのパラメーター。将来のために予約済みです。
 
@@ -2169,7 +2169,7 @@ nvim__inspect_cell({grid}, {row}, {col})                *nvim__inspect_cell()*
 ==============================================================================
 Buffer Functions                                                  *api-buffer*
 
-Unloaded Buffers:~
+Unloaded Buffers: ~
 
 Buffers may be unloaded by the |:bunload| command or the
 buffer's |'bufhidden'| option. When a buffer is unloaded its
@@ -2178,14 +2178,14 @@ the buffer lines until it is reloaded (usually by opening the
 buffer again in a new window). API methods such as
 |nvim_buf_get_lines()| and |nvim_buf_line_count()| will be
 affected.
-バッファは |:bunload|または、 |'bufhidden'|によってアンロードできます。
+バッファは |:bunload| または、 |'bufhidden'| によってアンロードできます。
 バッファがアンロードされると、ファイルの内容はメモリから開放され、リロードされる
 (通常、新しいウィンドウで再度開く)までバッファを操作できません。
-|nvim_buf_get_lines()|や |nvim_buf_line_count()|などのAPIメソッドが影響を受けます。
+|nvim_buf_get_lines()| や |nvim_buf_line_count()| などのAPIメソッドが影響を受けます。
 
 You can use |nvim_buf_is_loaded()| or |nvim_buf_line_count()|
 to check whether a buffer is loaded.
-|nvim_buf_is_loaded()|または |nvim_buf_line_count()|を使用してバッファがロードさ
+|nvim_buf_is_loaded()| または |nvim_buf_line_count()| を使用してバッファがロードさ
 れているかどうかを確認できます。
 
 nvim_buf_line_count({buffer})                          *nvim_buf_line_count()*
@@ -2284,7 +2284,7 @@ nvim_buf_get_lines({buffer}, {start}, {end}, {strict_indexing})
 
                 Out-of-bounds indices are clamped to the nearest valid value,
                 unless `strict_indexing` is set.
-                範囲外のインデックスは`strict_indexing`が指定されていない限り、
+                範囲外のインデックスは `strict_indexing` が指定されていない限り、
                 最も近い有効な値に固定されます。
 
                 Parameters: ~
@@ -2327,7 +2327,7 @@ nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
 
                 Out-of-bounds indices are clamped to the nearest valid value,
                 unless `strict_indexing` is set.
-                範囲外のインデックスは`strict_indexing`が指定されていない限り、
+                範囲外のインデックスは `strict_indexing` が指定されていない限り、
                 最も近い有効な値に固定されます。
 
                 Parameters: ~
@@ -2347,7 +2347,7 @@ nvim_buf_set_lines({buffer}, {start}, {end}, {strict_indexing},
 nvim_buf_get_offset({buffer}, {index})                 *nvim_buf_get_offset()*
                 Returns the byte offset of a line (0-indexed). |api-indexing|
 		行のバイトオフセットを返却します（0から始まるインデックス）
-		|api-indexing|を参照
+		|api-indexing| を参照
 
                 Line 1 (index=0) has offset 0. UTF-8 bytes are counted. EOL is
                 one byte. 'fileformat' and 'fileencoding' are ignored. The
@@ -2356,14 +2356,14 @@ nvim_buf_get_offset({buffer}, {index})                 *nvim_buf_get_offset()*
                 written, see 'eol'.
 		1行目（index=0）は、オフセット0です。UTF-8のバイトはカウントされ
 		ます。EOLは1バイトです。
-		'fileformat'と 'fileencoding'は無視されます。
+		'fileformat' と 'fileencoding' は無視されます。
 		行のインデックスは、最終行の直後までのバッファの合計バイト数を
 		与えます。最後のEOLバイトは、EOLが書き込まれていればカウント
-		されます。 'eol'を参照。
+		されます。 'eol' を参照。
 
                 Unlike |line2byte()|, throws error for out-of-bounds indexing.
                 Returns -1 for unloaded buffer.
-                |line2byte()|と異なり、インデックス範囲外の例外を投げます。
+                |line2byte()| と異なり、インデックス範囲外の例外を投げます。
                 読み込まれていないバッファに-1を返却します。
 
                 Parameters: ~
@@ -2402,7 +2402,7 @@ nvim_buf_get_changedtick({buffer})                *nvim_buf_get_changedtick()*
 
                 Return: ~
                     `b:changedtick` value.
-                    `b:changedtick`の値
+                    `b:changedtick` の値
 
 
 nvim_buf_get_keymap({buffer}, {mode})                  *nvim_buf_get_keymap()*
@@ -2506,7 +2506,7 @@ nvim_buf_is_loaded({buffer})                            *nvim_buf_is_loaded()*
                 Checks if a buffer is valid and loaded. See |api-buffer| for
                 more info about unloaded buffers.
                 バッファが有効でロードされているかチェックします。アンロードされ
-                たバッファについては |api-buffer|を参照してください。
+                たバッファについては |api-buffer| を参照してください。
 
                 Parameters: ~
                     {buffer}  Buffer handle, or 0 for current buffer
@@ -2524,7 +2524,7 @@ nvim_buf_is_valid({buffer})                              *nvim_buf_is_valid()*
                     Even if a buffer is valid it may have been unloaded. See
                     |api-buffer| for more info about unloaded buffers.
                     バッファが有効であってもアンロードされているかもしれません。
-                    アンロードされたバッファについては |api-buffer|を参照してくだ
+                    アンロードされたバッファについては |api-buffer| を参照してくだ
                     さい。
 
                 Parameters: ~
@@ -2562,7 +2562,7 @@ nvim_buf_get_extmark_by_id({buffer}, {ns_id}, {id})
                     {buffer}  Buffer handle, or 0 for current buffer
                     {buffer}  バッファハンドル。カレントバッファは0。
                     {ns_id}   Namespace id from |nvim_create_namespace()|
-                    {ns_id}   |nvim_create_namespace()|のネームスペースid。
+                    {ns_id}   |nvim_create_namespace()| のネームスペースid。
                     {id}      Extmark id
 
                 Return: ~
@@ -2575,7 +2575,7 @@ nvim_buf_get_extmarks({buffer}, {ns_id}, {start}, {end}, {opts})
                 defined by buffer positions (inclusive, 0-indexed
                 |api-indexing|).
                 バッファ位置(内包的、0インデックス |api-indexing|)で定義された
-                |charwise|領域から"走査順"でextmarkを取得します。
+                |charwise| 領域から"走査順"でextmarkを取得します。
 
                 Region can be given as (row,col) tuples, or valid extmark ids
                 (whose positions define the bounds). 0 and -1 are understood
@@ -2592,8 +2592,8 @@ nvim_buf_get_extmarks({buffer}, {ns_id}, {start}, {end}, {opts})
                 If `end` is less than `start` , traversal works backwards.
                 (Useful with `limit` , to get the first marks prior to a given
                 position.)
-                `end`が`start`より小さい場合、逆方向に走査します。(指定された
-                位置の前の最初のマークを取得するために`limit`とともに使用すると
+                `end` が `start` より小さい場合、逆方向に走査します。(指定された
+                位置の前の最初のマークを取得するために `limit` とともに使用すると
                 便利です。)
 
                 Example:
@@ -2621,7 +2621,7 @@ nvim_buf_get_extmarks({buffer}, {ns_id}, {start}, {end}, {opts})
                     {buffer}  Buffer handle, or 0 for current buffer
                     {buffer}  バッファハンドル。カレントバッファは0。
                     {ns_id}   Namespace id from |nvim_create_namespace()|
-                    {ns_id}   |nvim_create_namespace()|のネームスペースid。
+                    {ns_id}   |nvim_create_namespace()| のネームスペースid。
                     {start}   Start of range, given as (row, col) or valid
                               extmark id (whose position defines the bound)
                     {start}   範囲の始まり。(row,col)または有効なextmark id(境界
@@ -2659,7 +2659,7 @@ nvim_buf_set_extmark({buffer}, {ns_id}, {id}, {line}, {col}, {opts})
                     {buffer}  Buffer handle, or 0 for current buffer
                     {buffer}  バッファハンドル。カレントバッファは0。
                     {ns_id}   Namespace id from |nvim_create_namespace()|
-                    {ns_id}   |nvim_create_namespace()|のネームスペースid。
+                    {ns_id}   |nvim_create_namespace()| のネームスペースid。
                     {id}      Extmark id, or 0 to create new
                     {id}      Extmark id。新規作成する場合は0。
                     {line}    Line number where to place the mark
@@ -2681,7 +2681,7 @@ nvim_buf_del_extmark({buffer}, {ns_id}, {id})         *nvim_buf_del_extmark()*
                     {buffer}  Buffer handle, or 0 for current buffer
                     {buffer}  バッファハンドル。カレントバッファは0。
                     {ns_id}   Namespace id from |nvim_create_namespace()|
-                    {ns_id}   |nvim_create_namespace()|のネームスペースid。
+                    {ns_id}   |nvim_create_namespace()| のネームスペースid。
                     {id}      Extmark id
 
                 Return: ~
@@ -2702,7 +2702,7 @@ nvim_buf_add_highlight({buffer}, {ns_id}, {hl_group}, {line},
                 marks do.
                 バッファにハイライトを動的に生成するプラグイン(セマンティックハ
                 イライターやリンター)に役立ちます。この関数は単一のハイライトを
-                バッファに追加します。 |matchaddpos()|とは異なり、サインやマーク
+                バッファに追加します。 |matchaddpos()| とは異なり、サインやマーク
                 の同様に行番号(ハイライトされた行の上で行が挿入/削除されたとき)
                 の変更に従います。
 
@@ -2715,9 +2715,9 @@ nvim_buf_add_highlight({buffer}, {ns_id}, {hl_group}, {line},
                 deleted by an API call, pass `ns_id = -1` .
                 ネームスペースは一連のハイライトを削除/更新に使用されます。ネー
                 ムスペースを作成するにはネームスペースidを返す
-                |nvim_create_namespace()|を使用します。この関数に`ns_id`として渡
+                |nvim_create_namespace()| を使用します。この関数に `ns_id` として渡
                 してネームスペースにハイライトを追加します。同じネームスペースの
-                すべてのハイライトは |nvim_buf_clear_namespace()|を1回呼び出すだ
+                すべてのハイライトは |nvim_buf_clear_namespace()| を1回呼び出すだ
                 けでクリアできます。ハイライトがAPI呼び出しで削除されない場合は、
                 `ns_id = -1`を渡します。
 
@@ -2728,10 +2728,10 @@ nvim_buf_add_highlight({buffer}, {ns_id}, {hl_group}, {line},
                 for backwards compatibility, new code should use
                 |nvim_create_namespace| to create a new empty namespace.
                 省略形として、`ns_id = 0`を使用して新しいネームスペースを作成
-                でき、割り当てられたidが返されます。`hi_group`が空の場合、ハイラ
-                イトは追加されませんが、新しい`ns_id`が返されます。これは後方互
+                でき、割り当てられたidが返されます。 `hi_group` が空の場合、ハイラ
+                イトは追加されませんが、新しい `ns_id` が返されます。これは後方互
                 換性のためにサポートされています。新しいコードでは
-                |nvim_create_namespace()|を使用して新しい空のネームスペースを作
+                |nvim_create_namespace()| を使用して新しい空のネームスペースを作
                 成する必要があります。
 
                 Parameters: ~
@@ -2796,7 +2796,7 @@ nvim_buf_get_virtual_text({buffer}, {lnum})      *nvim_buf_get_virtual_text()*
 
                 The format is exactly the same as given to
                 nvim_buf_set_virtual_text().
-                フォーマットは |nvim_set_virtual_text()|に指定されたものと同じで
+                フォーマットは |nvim_set_virtual_text()| に指定されたものと同じで
                 す。
 
                 If there is no virtual text associated with the given line, an
@@ -3013,7 +3013,7 @@ nvim_win_set_config({window}, {config})                *nvim_win_set_config()*
                 reconfigured together.
 		フローティングウインドウを再設定するとき、オプションキーがない場合は
 		変更されない。
-		`row` / `col` and `relative`必須。
+		`row` / `col` and `relative` 必須。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
@@ -3021,7 +3021,7 @@ nvim_win_set_config({window}, {config})                *nvim_win_set_config()*
                     {config}  Map defining the window configuration, see
                               |nvim_open_win()|
 			      ウインドウ設定のマップ定義。
-			      |nvim_open_win()|を確認
+			      |nvim_open_win()| を確認
 
                 See also: ~
                     |nvim_open_win()|
@@ -3031,10 +3031,10 @@ nvim_win_get_config({window})                          *nvim_win_get_config()*
 		ウインドウ設定を取得します。
 
                 The returned value may be given to |nvim_open_win()|.
-		返却値は |nvim_open_win()|より与えられます。
+		返却値は |nvim_open_win()| より与えられます。
 
                 `relative` is empty for normal windows.
-		通常のウインドウで、`relative`は空となります。
+		通常のウインドウで、 `relative` は空となります。
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
@@ -3044,11 +3044,11 @@ nvim_win_get_config({window})                          *nvim_win_get_config()*
                     Map defining the window configuration, see
                     |nvim_open_win()|
 		    ウインドウ設定のマップ定義。
-		    |nvim_open_win()|を確認
+		    |nvim_open_win()| を確認
 
 nvim_win_close({window}, {force})                           *nvim_win_close()*
                 Closes the window (like |:close| with a |window-ID|).
-		ウインドウを閉じます（ |window-ID|ありの |:close|と同様）
+		ウインドウを閉じます（ |window-ID| ありの |:close| と同様）
 
                 Parameters: ~
                     {window}  Window handle, or 0 for current window
@@ -3057,9 +3057,9 @@ nvim_win_close({window}, {force})                           *nvim_win_close()*
                               buffer with unwritten changes can be closed. The
                               buffer will become hidden, even if 'hidden' is
                               not set.
-			      `:close!`のように振る舞います。
+			      `:close!` のように振る舞います。
 			      変更のないバッファの最終ウインドウは、閉じられます。
-			      バッファは 'hidden'がセットされてないとしても、
+			      バッファは 'hidden' がセットされてないとしても、
 			      バッファは隠されます。
 
 
@@ -3182,7 +3182,7 @@ nvim_ui_attach({width}, {height}, {options})                *nvim_ui_attach()*
                     {height}   Requested screen rows
 			       リクエストされたスクリーンの列
                     {options}  |ui-option| map
-			       |ui-option|のマップ
+			       |ui-option| のマップ
 
 nvim_ui_detach()                                            *nvim_ui_detach()*
                 Deactivates UI events on the channel.

@@ -17,8 +17,8 @@ Nvim ジョブ制御		*job* *job-control* *E901* *E903* *E947* *E948*
 ジョブ ID							       *job-id*
 
 各ジョブは整数の ID で識別され、現在の Nvim セッションの間は一意です。各ジョブ
-ID は有効な |channel-id| であり、同じ "キー空間" を共有します。 |jobstart()|のよう
-な関数はジョブ ID を返します。 |jobstop()|、 |chansend()|、 |rpcnotify()|や
+ID は有効な |channel-id| であり、同じ "キー空間" を共有します。 |jobstart()| のよう
+な関数はジョブ ID を返します。 |jobstop()|、 |chansend()|、 |rpcnotify()| や
 |rpcrequest()| などの関数はジョブ ID を受け取ります。
 
 ジョブの標準入出力ストリームは、生のバイトや |msgpack-rpc| メッセージを送受信
@@ -62,7 +62,7 @@ ID は有効な |channel-id| であり、同じ "キー空間" を共有しま�
     する。
   - もう一つのシェルは -c オプションで開始しており、コマンド(0から9までを表示
     する for ループ)を実行した後、終了する。
-  - 様々なジョブイベントを処理するために `OnEvent()` コールバックが |jobstart()|に
+  - 様々なジョブイベントを処理するために `OnEvent()` コールバックが |jobstart()| に
     渡される。これはシェルから受け取った標準出力や標準エラー出力を表示する。
 
 |on_stdout| と |on_stderr| については |channel-callback| を参照。

@@ -201,7 +201,7 @@ Syntastic との統合			*rust-syntastic*
 を呼び出し、前者は編集された単一の ".rs" ファイルをコンパイル対象として Rust
 コンパイラ `rustc` に直接渡します。
 
-最近では、Rust コードの構築に Cargo がほぼ独占的に使用されているため、`cargo`
+最近では、Rust コードの構築に Cargo がほぼ独占的に使用されているため、 `cargo`
 がデフォルトのチェッカーになっています。
 >vim
 	let g:syntastic_rust_checkers = ['cargo']
@@ -212,7 +212,7 @@ Syntastic との統合			*rust-syntastic*
 					*b:rust_cargo_avoid_whole_workspace*
 g:rust_cargo_avoid_whole_workspace ~
 	Cargo ワークスペースの一部であるクレートを編集する場合、このオプション
-	が 1 (デフォルト) に設定されていれば、`cargo` はワークスペースディレク
+	が 1 (デフォルト) に設定されていれば、 `cargo` はワークスペースディレク
 	トリではなく、そのクレートディレクトリで直接実行されます。0 に設定する
 	と、この動作は回避されます。ただし、大きなワークスペースで作業している
 	場合、Cargo コマンドに時間がかかることがあり、また Syntastic エラーリ

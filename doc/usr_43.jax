@@ -104,7 +104,7 @@ Vim がファイルタイプを認識しない場合は、設定を追加して�
 
 しかし、/usr/share/scripts/README.txt を開いたとき、それは ruby ファイルではあ
 りえませんよね。"*" で終わるパターンの問題は、多くのファイルにマッチしすぎてし
-まうことです。この問題を避けるには、'runtimepath' の最後に指定されたディレクト
+まうことです。この問題を避けるには、 'runtimepath' の最後に指定されたディレクト
 リに "filetype.vim" を置きます。例えば Unix なら "~/.config/nvim/after/filetype.vim"
 などです。
 では、~/.config/nvim/filetype.vim にテキストファイルの検出を設定します: >
@@ -122,14 +122,14 @@ Vim がファイルタイプを認識しない場合は、設定を追加して�
 
 処理の流れは次のようになります。Vim は 'runtimepath' の各ディレクトリから
 "filetype.vim" を探します。最初に ~/.config/nvim/filetype.vim が見つかります。
-*.txt を処理する自動コマンドがここで定義されます。次に Vim は $VIMRUNTIME にある
+`*.txt` を処理する自動コマンドがここで定義されます。次に Vim は $VIMRUNTIME にある
 filetype.vim を見つけます ($VIMRUNTIME は 'runtimepath' の中程にあります)。最
 後に ~/.config/nvim/after/filetype.vim が見つかり、/usr/share/scripts の
 ruby ファイルを認識するための自動コマンドが追加されます。
 /usr/share/scripts/README.txt を開くと、定義された順番で自動コマンドがチェック
-されます。*.txt というパターンがマッチするので、"setf text" が実行され、ファイ
+されます。 `*.txt` というパターンがマッチするので、"setf text" が実行され、ファイ
 ルタイプが "text" に設定されます。ruby 用のパターンもマッチするので、"setf
-ruby" が実行されます。しかし、'filetype' は既に設定されているので何も起こりま
+ruby" が実行されます。しかし、 'filetype' は既に設定されているので何も起こりま
 せん。
 /usr/share/scripts/foobar を開くと、同様に自動コマンドがチェックされます。ruby
 のパターンだけがマッチするので、"setf ruby" が実行され、 'filetype' が ruby に

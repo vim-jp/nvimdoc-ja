@@ -373,7 +373,7 @@ C 言語と同じ条件演算子も使えます:
 
 これは ":else" に続けて "if" 文を使うのと同じ動作ですが、余計な ":endif" を使
 わなくて済みます。
-vimrc ファイルで便利に使える例を示しましょう。'term' オプションの値を調べ、そ
+vimrc ファイルで便利に使える例を示しましょう。 'term' オプションの値を調べ、そ
 の値に応じて処理を分けます: >
 
 	:if &term == "xterm"
@@ -920,9 +920,9 @@ Quickfixとlocationリスト:			*quickfix-functions*
 	foldtextresult()	閉じた折り畳みを代替表示するテキストを得る
 
 シンタックスハイライト:		  *syntax-functions* *highlighting-functions*
-	clearmatches()		|matchadd()|と |:match|コマンドで定義されたマッ
+	clearmatches()		|matchadd()| と |:match| コマンドで定義されたマッ
 				チをクリアする
-	getmatches()		|matchadd()|と |:match|コマンドで定義されたすべ
+	getmatches()		|matchadd()| と |:match| コマンドで定義されたすべ
 				てのマッチを得る
 	hlexists()		ハイライトグループの存在をチェック
 	hlID()			ハイライトグループのIDを得る
@@ -934,10 +934,10 @@ Quickfixとlocationリスト:			*quickfix-functions*
 	diff_hlID()		差分モードの指定位置のシンタックスIDを得る
 	matchadd()		強調表示するパターンを定義する
 	matchaddpos()		強調表示する位置のリストを定義する
-	matcharg()		|:match|の引数の情報を得る
-	matchdelete()		|matchadd()|と |:match|コマンドで定義されたマッ
+	matcharg()		|:match| の引数の情報を得る
+	matchdelete()		|matchadd()| と |:match| コマンドで定義されたマッ
 				チを削除する
-	setmatches()		|getmatches()|で得たマッチを使って復元する
+	setmatches()		|getmatches()| で得たマッチを使って復元する
 
 スペリング:					*spell-functions*
 	spellbadword()		カーソル位置以降のスペルミスを探す
@@ -2545,7 +2545,7 @@ BufNetWrite() 関数を定義します。
    トを発行する。関数名が "BufNet*" というパターンにマッチするので、"source
    fname" コマンドが実行される。"fname" はスクリプトの名前になります。スクリプ
    トがどこに保存されていても、"<script>" が展開されてファイル名になります
-   (|expand()|参照)。
+   (|expand()| 参照)。
 
 4. スクリプトが再び読み込まれる。"s:did_load" 変数が存在するので関数が定義され
    る。
