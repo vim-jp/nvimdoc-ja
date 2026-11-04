@@ -92,7 +92,7 @@ $ git push -u origin my-translation
 - [ ] luvref.txt
 - [ ] map.txt
 - [x] mbyte.txt
-- [ ] message.txt
+- [x] message.txt neovim@e7cd0e4375a48d32eea6776d6d26e92eed9fedbe
 - [x] mlang.txt
 - [ ] motion.txt
 - [ ] news-0.10.txt
